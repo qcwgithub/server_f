@@ -1,0 +1,86 @@
+using System;
+using System.Collections.Concurrent;
+using System.Threading;
+
+namespace ET
+{
+    public class ThreadSynchronizationContext : SynchronizationContext
+    {
+        public static ThreadSynchronizationContext Instance { get; private set; }
+        public static void CreateInstance()
+        {
+            Instance = new ET.ThreadSynchronizationContext(Thread.CurrentThread.ManagedThreadId);
+        }
+
+        private readonly int threadId;
+
+        // 线程同步队列,发送接收socket回调都放到该队列,由poll线程统一执行
+        private readonly ConcurrentQueue<Action> queue = new ConcurrentQueue<Action>();
+        public int TaskCount
+        {
+            get
+            {
+                return this.queue.Count;
+            }
+        }
+
+        private Action a;
+
+        public ThreadSynchronizationContext(int threadId)
+        {
+            this.threadId = threadId;
+        }
+
+        public void Update()
+        {
+            while (true)
+            {
+                if (!this.queue.TryDequeue(out a))
+                {
+                    return;
+                }
+
+                try
+                {
+                    a();
+                }
+                catch (Exception ex)
+                {
+                    Data.Program.LogError("Post exception ", ex);
+                }
+            }
+        }
+
+        public override void Post(SendOrPostCallback callback, object state)
+        {
+            this.Post(() =>
+            {
+                callback(state);
+            });
+        }
+
+        public void Post(Action action)
+        {
+            if (Thread.CurrentThread.ManagedThreadId == this.threadId)
+            {
+                try
+                {
+                    action();
+                }
+                catch (Exception ex)
+                {
+                    Data.Program.LogError("Post exception ", ex);
+                }
+
+                return;
+            }
+
+            this.queue.Enqueue(action);
+        }
+
+        public void PostNext(Action action)
+        {
+            this.queue.Enqueue(action);
+        }
+    }
+}
