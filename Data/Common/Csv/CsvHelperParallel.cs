@@ -89,16 +89,6 @@ namespace Data
             return long.Parse(cell);
         }
 
-        public fraction ReadFraction(int row, string name)
-        {
-            var cell = this.GetCell(row, name);
-            if (string.IsNullOrEmpty(cell))
-            {
-                return fraction.zero;
-            }
-            return fraction.FromString(cell);
-        }
-
         public BigInteger ReadBigInteger(int row, string name)
         {
             var cell = this.GetCell(row, name);

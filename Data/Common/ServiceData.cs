@@ -54,15 +54,13 @@ namespace Data
         public List<ProtocolClientData>[] otherServiceSockets2 = new List<ProtocolClientData>[(int)ServiceType.Count];
         public void SetOtherServiceSocket(ServiceType serviceType, int serviceId, ProtocolClientData tcpClientData)
         {
-            this.serviceType.AssertIsSameServerType(serviceType, "SetOtherServiceSocket", this.logger);
-
             {
                 if (this.otherServiceSockets.TryGetValue(serviceId, out ProtocolClientData old))
                 {
                     if (old.IsConnected() || old.IsConnecting())
                     {
-                        // Monitor 不要报了
-                        if (old.serviceTypeAndId != null && old.serviceTypeAndId.Value.serviceType.IsMonitor())
+                        // Commander 不要报了
+                        if (old.serviceTypeAndId != null && old.serviceTypeAndId.Value.serviceType.IsCommand())
                         {
 
                         }
@@ -113,7 +111,7 @@ namespace Data
             return this.otherServiceSockets.TryGetValue(serviceId, out socket) ? socket : null;
         }
 
-        // 有没有被动连接还活着，要去掉 Monitor
+        // 有没有被动连接还活着，要去掉 Command
         public virtual List<ServiceTypeAndId> GetPassivelyConnections()
         {
             var list = new List<ServiceTypeAndId>();
@@ -125,7 +123,7 @@ namespace Data
                     continue;
                 }
 
-                if (serviceType.IsMonitor())
+                if (serviceType.IsCommand())
                 {
                     continue;
                 }
@@ -383,54 +381,10 @@ namespace Data
 
         public ITimer timer_CheckConnections_Loop;
 
-        public readonly DataEntry dataEntry;
-        public readonly BaseServerData baseServerData;
-        public ConfigLoader configLoader => this.dataEntry.configLoader;
-
         // 自己的 service-config
         public ServiceConfig serviceConfig;
 
         public ResGetServiceConfigs current_resGetServiceConfigs;
-
-        public stParentServerId GetParentServerId_byLongId(longid longid)
-        {
-            return this.GetParentServerId_byServerId(longidext.DecodeServerId(longid));
-        }
-
-        public stParentServerId GetParentServerId_byServerId(int serverId)
-        {
-            NormalServerStatusConfig config = current_resGetServiceConfigs.GetNormalServerStatusConfig(serverId);
-            if (config == null)
-            {
-                throw new Exception($"NormalServerStatusConfig is null, serverId {serverId}");
-            }
-
-            return stParentServerId.Create(config.parentServerId);
-        }
-
-        public stTwoServerId GetTwoServerId_byLongId(longid longid)
-        {
-            return stTwoServerId.Create(longidext.DecodeServerId(longid), this.GetParentServerId_byLongId(longid));
-        }
-
-        public stTwoServerId GetTwoServerId_byServerId(int serverId)
-        {
-            return stTwoServerId.Create(serverId, this.GetParentServerId_byServerId(serverId));
-        }
-
-        // 搜索联盟
-        public List<int> GetServerIds_byParentServerId(stParentServerId parentServerId)
-        {
-            var list = new List<int>();
-            foreach (NormalServerStatusConfig config in current_resGetServiceConfigs.normalServerStatusConfigs)
-            {
-                if (config.parentServerId == parentServerId.value)
-                {
-                    list.Add(config.serverId);
-                }
-            }
-            return list;
-        }
 
         public void SaveServiceConfigs(ResGetServiceConfigs res)
         {
@@ -441,19 +395,15 @@ namespace Data
         {
             get
             {
-                return this.serviceType.BelongServerType() == ServerType.GroupServer
-                    ? this.current_resGetServiceConfigs.groupServiceConfigs
-                    : this.current_resGetServiceConfigs.normalServiceConfigs;
+                return this.current_resGetServiceConfigs.serviceConfigs;
             }
         }
 
-        public ServiceData(BaseServerData baseServerData, ServiceTypeAndId serviceTypeAndId, List<ServiceType> connectToServiceIds)
+        public ServiceData(ServiceTypeAndId serviceTypeAndId, List<ServiceType> connectToServiceIds)
         {
-            this.dataEntry = baseServerData.dataEntry;
-            this.baseServerData = baseServerData;
             this.serviceTypeAndId = serviceTypeAndId;
 
-            this.logger = this.dataEntry.log4netCreation.GetLogger(this.serviceTypeAndId.ToString());
+            this.logger = ServerData.instance.log4netCreation.GetLogger(this.serviceTypeAndId.ToString());
 
             this.connectToServiceTypes.AddRange(connectToServiceIds);
         }

@@ -193,10 +193,10 @@ namespace Data
         // PKCastlesTool 也写死了这个名字
         public static string AllServiceConfigsFile => $"{ServerConfigDir}/AllServiceConfigs.csv";
         public bool LoadAllServiceConfigs(
-            out List<ServiceConfig> allNormalServiceConfigs,
+            out List<ServiceConfig> allServiceConfigs,
             out string message)
         {
-            allNormalServiceConfigs = new List<ServiceConfig>();
+            allServiceConfigs = new List<ServiceConfig>();
 
             string text = ReadAllText(AllServiceConfigsFile);
 
@@ -215,10 +215,10 @@ namespace Data
                 config.outIp = helper.ReadString(nameof(config.outIp));
                 config.outPort = helper.ReadInt(nameof(config.outPort));
                     
-                allNormalServiceConfigs.Add(config);
+                allServiceConfigs.Add(config);
             }
 
-            if (!CheckAllServiceConfigs(allNormalServiceConfigs, out message))
+            if (!CheckAllServiceConfigs(allServiceConfigs, out message))
             {
                 return false;
             }

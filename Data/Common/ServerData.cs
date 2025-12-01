@@ -7,6 +7,12 @@ namespace Data
 {
     public class ServerData
     {
+        public static ServerData instance
+        {
+            get;
+            private set;
+        }
+
         public readonly Dictionary<string, string> arguments;
 
         public readonly ConfigLoader configLoader;
@@ -14,10 +20,9 @@ namespace Data
 
         public readonly ServerConfig serverConfig;
 
-        public readonly ConfigManagerLocation configManagerLocation;
+        public readonly GlobalServiceLocation globalServiceLocation;
 
         public int uncaughtExceptionCount;
-        public readonly ServerData serverData;
         public readonly int timezoneOffset;
 
         // public readonly Data.WheelTimer.WheelTimer timer;
@@ -97,64 +102,12 @@ namespace Data
                 return this.redis.GetDatabase(this.serverConfig.redisConfig.db);
             }
         }
-        public static List<ServiceType> GetConnectToServiceIds(ServiceType serviceType)
-        {
-            switch (serviceType)
-            {
-                case ServiceType.DBPlayer:
-                    return DBPlayerData.s_connectToServiceIds;
-
-                case ServiceType.WebGM:
-                    return WebGMServiceData.s_connectToServiceIds;
-
-                case ServiceType.Monitor:
-                    return MonitorData.s_connectToServiceIds;
-
-                case ServiceType.Player:
-                    return PSData.s_connectToServiceIds;
-
-                case ServiceType.Battle:
-                    return BattleServiceData.s_connectToServiceIds;
-
-                case ServiceType.Pay:
-                    return PayServiceData.s_connectToServiceIds;
-
-                case ServiceType.Robot:
-                    return RobotServiceData.s_connectToServiceIds;
-
-                case ServiceType.DBGroup:
-                    return DBGroupData.s_connectToServiceIds;
-
-                case ServiceType.WeChat:
-                    return WeChatServiceData.s_connectToServiceIds;
-
-                case ServiceType.GMonitor:
-                    return GMonitorData.s_connectToServiceIds;
-
-                case ServiceType.GAAA:
-                    return GAAAServiceData.s_connectToServiceIds;
-
-                case ServiceType.GStateless:
-                    return GStatelessServiceData.s_connectToServiceIds;
-
-                case ServiceType.Stateless:
-                    return StatelessServiceData.s_connectToServiceIds;
-
-                case ServiceType.ConfigManager:
-                    return ConfigManagerServiceData.s_connectToServiceIds;
-
-                default:
-                    Program.LogStartError("Not handled serviceType: " + serviceType);
-                    return null;
-            }
-        }
 
         // init message pack
         static void InitializeMessagePack()
         {
             StaticCompositeResolver.Instance.Register(
-                 MessagePack.Resolvers.GeneratedResolver.Instance,
-                 //  MessagePack.Unity.UnityResolver.Instance,
+                //  MessagePack.Resolvers.GeneratedResolver.Instance,
                  MessagePack.Resolvers.StandardResolver.Instance
             );
 
@@ -165,6 +118,8 @@ namespace Data
 
         public ServerData(Dictionary<string, string> args)
         {
+            instance = this;
+
             InitializeMessagePack();
             this.arguments = args;
             this.configLoader = new ConfigLoader();
@@ -177,19 +132,19 @@ namespace Data
                 throw new Exception(message);
             }
 
-            ServiceConfig configManagger_sc = ori_allServiceConfigs.Find(x => x.serviceType == ServiceType.ConfigManager);
-            if (configManagger_sc == null)
+            ServiceConfig global_sc = ori_allServiceConfigs.Find(x => x.serviceType == ServiceType.Global);
+            if (global_sc == null)
             {
-                Program.LogStartError("configManager_sc == null");
+                Program.LogStartError("global_sc == null");
                 return;
             }
-            this.configManagerLocation = new ConfigManagerLocation
+            this.globalServiceLocation = new GlobalServiceLocation
             {
-                serviceId = configManagger_sc.serviceId,
-                inIp = configManagger_sc.inIp,
-                inPort = configManagger_sc.inPort
+                serviceId = global_sc.serviceId,
+                inIp = global_sc.inIp,
+                inPort = global_sc.inPort
             };
-            this.configManagerLocation.Init();
+            this.globalServiceLocation.Init();
 
             string servicesStr;
             if (!args.TryGetValue("services", out servicesStr))
@@ -206,7 +161,7 @@ namespace Data
 
                 serviceTypeAndIds = list
                     .Select(sc => sc.Tai())
-                    .Where(tai => !tai.serviceType.IsMonitor())
+                    .Where(tai => !tai.serviceType.IsCommand())
                     .ToList();
             }
             else
@@ -254,7 +209,7 @@ namespace Data
             this.serviceDatas = new Dictionary<int, ServiceData>();
             foreach (ServiceTypeAndId typeAndId in serviceTypeAndIds)
             {
-                ServiceData sd = this.CreateServiceData(typeAndId);
+                ServiceData sd = CreateServiceData(typeAndId);
                 this.serviceDatas.Add(typeAndId.serviceId, sd);
             }
 
@@ -325,27 +280,51 @@ namespace Data
             this.shutdownServiceOrder = dones;
         }
 
-        ServiceData CreateServiceData(ServiceTypeAndId typeAndId)
+        static ServiceData CreateServiceData(ServiceTypeAndId typeAndId)
         {
             switch (typeAndId.serviceType)
             {
-                case ServiceType.DBPlayer:
-                    return new DBPlayerData(this, typeAndId);
+                case ServiceType.Gateway:
+                    return new GatewayServiceData(typeAndId);
 
-                case ServiceType.Monitor:
-                    return new MonitorData(this, typeAndId);
+                case ServiceType.Database:
+                    return new DatabaseServiceData(typeAndId);
 
-                case ServiceType.Player:
-                    return new PSData(this, typeAndId);
+                case ServiceType.User:
+                    return new UserServiceData(typeAndId);
+                    
+                case ServiceType.Global:
+                    return new GlobalServiceData(typeAndId);
 
-                case ServiceType.Robot:
-                    return new RobotServiceData(this, typeAndId);
-
-                case ServiceType.Stateless:
-                    return new StatelessServiceData(this, typeAndId);
+                case ServiceType.Command:
+                    return new CommandServiceData(typeAndId);
 
                 default:
                     throw new Exception("Not handled serviceType: " + typeAndId.serviceType);
+            }
+        }
+
+        static List<ServiceType> GetConnectToServiceIds(ServiceType serviceType)
+        {
+            switch (serviceType)
+            {
+                case ServiceType.Gateway:
+                    return GatewayServiceData.s_connectToServiceIds;
+    
+                case ServiceType.Database:
+                    return DatabaseServiceData.s_connectToServiceIds;
+
+                case ServiceType.User:
+                    return UserServiceData.s_connectToServiceIds;
+
+                case ServiceType.Global:
+                    return GlobalServiceData.s_connectToServiceIds;
+
+                case ServiceType.Command:
+                    return CommandServiceData.s_connectToServiceIds;
+
+                default:
+                    throw new Exception("Not handled serviceType: " + serviceType);
             }
         }
     }

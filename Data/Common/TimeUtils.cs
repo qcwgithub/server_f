@@ -24,14 +24,10 @@ namespace Data
         {
             if (dt.Kind != DateTimeKind.Utc)
             {
-#if UNITY_2017_1_OR_NEWER
-                UnityEngine.Debug.LogError("dt.Kind != Utc");
-#else
                 ConsoleColor old = Console.ForegroundColor;
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("dt.Kind != Utc");
                 Console.ForegroundColor = old;
-#endif
             }
         }
 

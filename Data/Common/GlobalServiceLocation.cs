@@ -1,6 +1,6 @@
 namespace Data
 {
-    public class ConfigManagerLocation
+    public class GlobalServiceLocation
     {
         public int serviceId;
         public string inIp;

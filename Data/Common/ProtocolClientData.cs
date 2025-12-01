@@ -16,44 +16,28 @@ namespace Data
         {
             get
             {
-#if UNITY_2017_1_OR_NEWER
-                return MsgTypeInt.ClientStart;
-#else
                 return MsgType.ClientStart;
-#endif
             }
         }
         public static ECode ECode_NotConnected
         {
             get
             {
-#if UNITY_2017_1_OR_NEWER
-                return ECodeInt.NotConnected;
-#else
                 return ECode.Server_NotConnected;
-#endif
             }
         }
         public static ECode ECode_Timeout
         {
             get
             {
-#if UNITY_2017_1_OR_NEWER
-                return ECodeInt.Timeout;
-#else
                 return ECode.Server_Timeout;
-#endif
             }
         }
         public static ECode ECode_Exception
         {
             get
             {
-#if UNITY_2017_1_OR_NEWER
-                return ECodeInt.Exception;
-#else
                 return ECode.Exception;
-#endif
             }
         }
 
@@ -75,9 +59,7 @@ namespace Data
         // when oppositeIsClient = false
         public bool oppositeIsService => !this.oppositeIsClient;
 
-#if !UNITY_2017_1_OR_NEWER
         public ServiceTypeAndId? serviceTypeAndId;
-#endif
 
         public abstract bool IsConnecting();
         public abstract bool IsConnected();
@@ -96,9 +78,7 @@ namespace Data
         public int msgProcessing;
         public Dictionary<int, stWaitingResponse> waitingResponseDict = new Dictionary<int, stWaitingResponse>();
 
-#if !UNITY_2017_1_OR_NEWER
         public abstract System.Net.EndPoint RemoteEndPoint { get; }
-#endif
         #endregion
 
         public static string s_identity = "pkcastles";
@@ -163,9 +143,7 @@ namespace Data
         #endregion
 
         #region send
-#if !UNITY_2017_1_OR_NEWER
         public abstract Task<MyResponse> SendAsync(MsgType type, object msg, int? pTimeoutS);
-#endif
         public abstract void Send(MsgType msgType, object msg, Action<ECode, object> cb, int? pTimeoutS);
         protected abstract void SendPacketIgnoreResult(int msgTypeOrECode, object msg, int seq, bool requireResponse);
         public abstract void SendRaw(byte[] buffer);
@@ -174,9 +152,6 @@ namespace Data
 
         #region recv
 
-#if UNITY_2017_1_OR_NEWER
-        bool reportNoResponseFun = true;
-#endif
         protected void OnMsg(int seq, int code, object msg, bool requireResponse)
         {
             try
@@ -207,17 +182,13 @@ namespace Data
                     if (!requireResponse)
                     {
                         this.callback.Dispatch(this,
-#if !UNITY_2017_1_OR_NEWER
                         seq,
-#endif
                         msgType, msg, null);
                     }
                     else
                     {
                         this.callback.Dispatch(this,
-#if !UNITY_2017_1_OR_NEWER
                         seq,
-#endif
                         msgType, msg,
                                 (ECode e2, object msg2) =>
                                 {
@@ -250,15 +221,7 @@ namespace Data
                     }
                     else
                     {
-#if UNITY_2017_1_OR_NEWER
-                        if (this.reportNoResponseFun)
-                        {
-                            this.reportNoResponseFun = false;
-                            this.callback.LogError(this, "[report once] No response fun for " + (-seq));
-                        }
-#else
                         this.callback.LogError(this, "No response fun for " + (-seq));
-#endif
                     }
                 }
                 else

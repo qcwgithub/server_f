@@ -53,11 +53,7 @@ namespace Data
             T t = this.res as T;
             if (t == null)
             {
-#if UNITY_2017_1_OR_NEWER
-                UnityEngine.Debug.LogErrorFormat(string.Format("CastRes typeof(this.res)={0}, should be {1}", this.res.GetType().Name, typeof(T).Name));
-#else
-                throw new System.InvalidCastException(string.Format("CastRes typeof(this.res)={0}, should be {1}", this.res.GetType().Name, typeof(T).Name));
-#endif
+                throw new InvalidCastException(string.Format("CastRes typeof(this.res)={0}, should be {1}", this.res.GetType().Name, typeof(T).Name));
             }
             return t;
         }

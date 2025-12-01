@@ -179,27 +179,27 @@ namespace Data
         static long s_frame = 0;
         public static void Main2(string[] args, IServer iserver)
         {
-            foreach (string arg in args)
-            {
-                if (arg.StartsWith("program="))
-                {
-                    string program = arg.Substring("program=".Length);
-                    if (program == "linux")
-                    {
-                        LinuxProgram.s_argMap = ParseArguments(args);
-                        new LinuxProgram().Ask();
-                        return;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Unknown program: " + program);
-                    }
-                }
-            }
+            // foreach (string arg in args)
+            // {
+            //     if (arg.StartsWith("program="))
+            //     {
+            //         string program = arg.Substring("program=".Length);
+            //         if (program == "linux")
+            //         {
+            //             LinuxProgram.s_argMap = ParseArguments(args);
+            //             new LinuxProgram().Ask();
+            //             return;
+            //         }
+            //         else
+            //         {
+            //             Console.WriteLine("Unknown program: " + program);
+            //         }
+            //     }
+            // }
 
 #if DEBUG
             CheckMsgTypeDuplicate();
-            DirtyElementTypeExt.CheckValueNotChange();
+            // DirtyElementTypeExt.CheckValueNotChange();
 #endif
 
             // 异步方法全部会回掉到主线程
@@ -528,25 +528,18 @@ namespace Data
             // 如果下面出现了异常，就让 s_sending 永远是 false
 
             bool shouldSend = false;
-            foreach (var baseServerData in s_serverData.serverDatas)
+            foreach (var kv in s_serverData.serviceTypeAndIds)
             {
-                foreach (var kv2 in baseServerData.serverArg.serviceTypeAndIds)
+                if (kv.serviceType.ShouldSendFeiShuWhenLogError())
                 {
-                    if (kv2.serviceType.ShouldSendFeiShuWhenLogError())
-                    {
-                        shouldSend = true;
-                        break;
-                    }
-                }
-                if (shouldSend)
-                {
+                    shouldSend = true;
                     break;
                 }
             }
 
             if (shouldSend)
             {
-                string title = $"[{s_serverData.commonServerConfig.purpose}]{e.LoggerName}";
+                string title = $"[{s_serverData.serverConfig.purpose}]{e.LoggerName}";
                 string content = e.RenderedMessage;
                 if (e.ExceptionObject != null)
                 {

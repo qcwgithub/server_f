@@ -6,6 +6,7 @@ namespace Data
 {
     public abstract class ServerConfig
     {
+        public string purpose;
         ////
         public class GeneralConfig
         {
@@ -15,7 +16,7 @@ namespace Data
             public List<string> allowChannels;
             public bool defaultOpen; // 默认是否对外开放。false 表示只有 GM 可以进
 
-            public void Init()
+            public void Init(ServerConfig serverConfig)
             {
                 if (string.IsNullOrEmpty(this.logDir))
                 {
@@ -25,6 +26,7 @@ namespace Data
 
                 this.logDir = this.logDir.Replace("{current}", Environment.CurrentDirectory);
                 this.logDir = this.logDir.Replace("{home}", Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
+                this.logDir = this.logDir.Replace("{purpose}", serverConfig.purpose);
                 if (this.logDir.Contains('{'))
                 {
                     Program.LogStartError("this.logDir.Contains('{')");
@@ -126,7 +128,7 @@ namespace Data
 
         public void Init()
         {
-            this.generalConfig.Init();
+            this.generalConfig.Init(this);
             this.feiShuConfig.Init();
             this.redisConfig.Init();
             this.mongoDBConfig.Init();

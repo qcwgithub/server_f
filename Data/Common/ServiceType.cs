@@ -1,18 +1,12 @@
-using System;
-using System.Runtime.CompilerServices;
-using MessagePack;
-
 namespace Data
 {
     public enum ServiceType
     {
-        DBPlayer,   // 200
-        Player,     // 400
-        Monitor,    // 4
-        GAAA,       // 900
-        GStateless, // 1000
-        Stateless,  // 1100
-        ConfigManager,  // 1200
+        Gateway,
+        Database,
+        User,
+        Global,
+        Command,
         Count,
     }
 
@@ -20,12 +14,12 @@ namespace Data
     {
         public static bool ShouldLogErrorWhenDisconnectFrom(this ServiceType self, ServiceType remote)
         {
-            if (self.IsMonitor())
+            if (self.IsCommand())
             {
                 return false;
             }
 
-            if (remote.IsMonitor())
+            if (remote.IsCommand())
             {
                 return false;
             }
@@ -35,7 +29,7 @@ namespace Data
 
         public static bool ShouldSendFeiShuWhenLogError(this ServiceType self)
         {
-            if (self.IsMonitor())
+            if (self.IsCommand())
             {
                 return false;
             }
@@ -43,14 +37,14 @@ namespace Data
             return true;
         }
 
-        public static bool IsMonitor(this ServiceType self)
+        public static bool IsCommand(this ServiceType self)
         {
-            return self == ServiceType.Monitor;
+            return self == ServiceType.Command;
         }
 
         public static bool ReleaseModeLogToConsole(this ServiceType self)
         {
-            if (self.IsMonitor())
+            if (self.IsCommand())
             {
                 return true;
             }
@@ -59,7 +53,7 @@ namespace Data
 
         public static bool IsDBService(this ServiceType self)
         {
-            return self == ServiceType.DBPlayer;
+            return self == ServiceType.Database;
         }
     }
 
