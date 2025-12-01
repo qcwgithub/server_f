@@ -17,10 +17,12 @@ namespace Data
     public class ResGetServiceConfigs
     {
         [Key(0)]
-        public int majorVersion;
+        public string purpose;
         [Key(1)]
-        public int minorVerson;
+        public int majorVersion;
         [Key(2)]
+        public int minorVerson;
+        [Key(3)]
         public bool open;
         [Key(4)]
         public List<ServiceConfig> serviceConfigs;
