@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 using StackExchange.Redis;
 using System.Collections.Generic;
 using Data;
-using longid = System.Int64;
+
 
 namespace Script
 {
     //// AUTO CREATED ////
-    public partial class PlayerBriefInfoProxy : DataProxy<PlayerBriefInfo, longid, int>
+    public partial class PlayerBriefInfoProxy : DataProxy<PlayerBriefInfo, long, int>
     {
         #region override
 
@@ -20,15 +20,15 @@ namespace Script
         }
 
         //// AUTO CREATED ////
-        protected override stDirtyElement DirtyElement(longid playerId, int _2 = 0)
+        protected override stDirtyElement DirtyElement(long playerId, int _2 = 0)
         {
             return stDirtyElement.Create_PlayerBriefInfo(playerId);
         }
 
         //// AUTO CREATED ////
-        protected override RedisKey Key(longid playerId, int _2 = 0)
+        protected override RedisKey Key(long playerId, int _2 = 0)
         {
-            return PlayerKey.Brief(playerId);
+            return UserKey.Brief(playerId);
         }
 
         //// AUTO CREATED ////
@@ -38,25 +38,25 @@ namespace Script
         }
 
         //// AUTO CREATED ////
-        public Task<PlayerBriefInfo> OnlyForSave_GetFromRedis(longid playerId)
+        public Task<PlayerBriefInfo> OnlyForSave_GetFromRedis(long playerId)
         {
             return this.GetFromRedis(playerId, 0);
         }
 
         //// AUTO CREATED ////
-        protected override PlayerBriefInfo CreatePlaceholder(longid playerId, int _2 = 0)
+        protected override PlayerBriefInfo CreatePlaceholder(long playerId, int _2 = 0)
         {
             throw new NotImplementedException();
         }
 
         //// AUTO CREATED ////
-        protected override string GetLockKeyForLoadFromDBToRedis(longid playerId, int _2 = 0)
+        protected override string GetLockKeyForLoadFromDBToRedis(long playerId, int _2 = 0)
         {
             return LockKey.LoadDataFromDBToRedis.PlayerBriefInfo(playerId);
         }
 
         //// AUTO CREATED ////
-        protected override async Task<(ECode, PlayerBriefInfo)> LoadFromDB(IConnectToDBService connectToDBService, longid playerId, int _2 = 0)
+        protected override async Task<(ECode, PlayerBriefInfo)> LoadFromDB(IConnectToDBService connectToDBService, long playerId, int _2 = 0)
         {
             var msgDb = new MsgQuery_PlayerBriefInfo_by_playerId();
             msgDb.playerId = playerId;
@@ -75,7 +75,7 @@ namespace Script
         }
 
         //// AUTO CREATED ////
-        protected override int GetBelongTaskQueue(longid playerId, int _2 = 0)
+        protected override int GetBelongTaskQueue(long playerId, int _2 = 0)
         {
             return PersistenceTaskQueueRedis.GetQueue(PlayerBriefInfo.ToTaskQueueHash(playerId));
         }
@@ -83,7 +83,7 @@ namespace Script
 
         /////////////////////////////////////////// PUBLIC ///////////////////////////////////////////
         //// AUTO CREATED ////
-        public async Task<PlayerBriefInfo> Get(ConnectToDBPlayerService connectToDBPlayerService, longid playerId)
+        public async Task<PlayerBriefInfo> Get(ConnectToDBPlayerService connectToDBPlayerService, long playerId)
         {
             if (playerId == 0)
             {

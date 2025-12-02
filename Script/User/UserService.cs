@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Data;
-using Script.Script;
 
 namespace Script
 {
@@ -12,11 +8,11 @@ namespace Script
         public ConnectToDatabaseService connectToDatabaseService { get; private set; }
         public ConnectToGlobalService connectToConfigManagerService { get; private set; }
 
-        public PSData psData
+        public UserServiceData usData
         {
             get
             {
-                return (PSData)this.data;
+                return (UserServiceData)this.data;
             }
         }
         public PSScript psScript;
@@ -40,36 +36,7 @@ namespace Script
             this.AddConnectToOtherService(this.connectToDatabaseService = new ConnectToDatabaseService(this));
             this.AddConnectToOtherService(this.connectToConfigManagerService = new ConnectToGlobalService(this));
 
-            //
-            var ltChannelCheckSensitive = new Leiting.ChannelCheckSensitive().Init(this.server, this);
-            var wechatCheckSensitive = new Wechat.WeChatCheckSensitive().Init(this.server, this);
-            var commonCheckSensitive = new CommonCheckSensitive().Init(this.server, this);
-            this.checkSensitiveDic = new Dictionary<string, List<ICheckSensitive>>
-            {
-                {MyChannels.leiting_en, new List<ICheckSensitive>{ ltChannelCheckSensitive }},
-                {MyChannels.leiting, new List<ICheckSensitive>{ ltChannelCheckSensitive }},
-                {MyChannels.wechat, new List<ICheckSensitive>{ ltChannelCheckSensitive, wechatCheckSensitive }},
-                {MyChannels.uuid, new List<ICheckSensitive>{ commonCheckSensitive }},
-                {MyChannels.quick, new List<ICheckSensitive>{ commonCheckSensitive }},
-            };
-
-            this.playerNamesRedis = new PlayerNamesRedis().Init(this.server);
-            this.clientPostHandleScript = new PlayerClientPostHandleScript().Init(this.server, this);
-            this.autoRequest = new PlayerAutoRequest().Init(this.server, this);
-            this.globalInfoCacheScript = new GlobalInfoCacheScript().Init(this.server, this);
-            this.robotInfoCacheScript = new RobotInfoCacheScript().Init(this.server, this);
-            this.originalMailCacheScript = new OriginalMailCacheScript().Init(this.server, this);
-            this.playerBattleSideTemplateScript = new PlayerBattleSideTemplateScript().Init(this.server, this);
-            this.playerBriefInfoTemplateScript = new PlayerBriefInfoTemplateScript().Init(this.server, this);
-            this.worldMapCacheScript = new WorldMapCacheScript().Init(this.server, this);
-            this.worldMapViewportRequester = new WorldMapViewportRequester().Init(this.server, this);
-            this.worldMapInfoRequester = new WorldMapInfoRequester().Init(this.server, this);
-            this.worldMapManager = new WorldMapManager().Init(this.server, this);
-            this.arenaMatchRankingListRedis = new ArenaMatchRankingListRedis().Init(this.server);
-            this.loopBattleTest = new LoopBattleTest().Init(this.server, this);
-            this.replayClearedBattleTest = new ReplayClearedBattleTest().Init(this.server, this);
-
-            base.AddHandler<PlayerService>();
+            base.AddHandler<UserService>();
 
             // 覆盖 OnConnectComplete
             this.dispatcher.AddHandler(new PlayerS_OnConnectComplete().Init(this.server, this), true);
@@ -80,7 +47,6 @@ namespace Script
             this.psScript = new PSScript().Init(this.server, this);
             this.pmSqlUtils = new PMSqlUtils().Init(this.server, this);
             this.pmScriptCreateNewPlayer = new PMScriptCreateNewPlayer().Init(this.server, this);
-            this.taScript = new TAScript().Init(this.server);
         }
 
         public override async Task Detach()
@@ -93,39 +59,13 @@ namespace Script
         {
             if (data != null && data.oppositeIsClient && msgType >= MsgType.ClientStart)
             {
-                PSPlayer player = this.tcpClientScript.GetPlayer(data) as PSPlayer;
-                if (player != null)
+                User user = this.tcpClientScript.GetPlayer(data) as User;
+                if (user != null)
                 {
                     base.Dispatch(data, seq, msgType, msg, (e, res) =>
                     {
                         // 额外处理
-                        object resFinal = this.clientPostHandleScript.PostHandle(player, msgType, msg, e, res);
-
-                        if (player.recentResList.Count > 0 && seq < player.recentResList[player.recentResList.Count - 1].seq)
-                        {
-                            player.recentResList.Clear();
-                            this.logger.Debug($"recent res Clear()");
-                        }
-
-                        if (msgType.NeedRestoreRes())
-                        {
-                            player.recentResList.Add(new stRecentRes
-                            {
-                                seq = seq,
-                                msgType = msgType,
-                                e = e,
-                                res = resFinal,
-                            });
-
-                            string res_s = resFinal == null ? "null" : resFinal.GetType().Name;
-                            this.logger.Debug($"recent res + seq {seq} msgType {msgType} e {e} res {res_s}");
-
-                            while (player.recentResList.Count > 20)
-                            {
-                                player.recentResList.RemoveAt(0);
-                            }
-                        }
-
+                        object resFinal = this.clientPostHandleScript.PostHandle(user, msgType, msg, e, res);
                         reply(e, resFinal);
                     });
 
@@ -136,66 +76,77 @@ namespace Script
 
             base.Dispatch(data, seq, msgType, msg, reply);
         }
-
-        public List<RestoreRes> CalcRestoreResList(PSPlayer player)
+        public bool IsDevelopment()
         {
-            try
+            // return process.env.NODE_ENV == "development";
+            return true;
+        }
+
+        public Task WaitAsync(int timeoutMs)
+        {
+            return Task.Delay(timeoutMs);
+        }
+
+        public async Task<ECode> WaitServiceConnectedAndStarted(ConnectToOtherService connectToOtherService, MsgType msgType)
+        {
+            int counter = 0;
+
+            while (true)
             {
-                if (player.recentResList.Count == 0)
+                if (this.data.state >= ServiceState.ShuttingDown)
                 {
-                    return null;
+                    return ECode.ServiceIsShuttingDown;
                 }
 
-                var restoreResList = new List<RestoreRes>();
-
-                foreach (stRecentRes recent in player.recentResList)
+                counter++;
+                if (counter == 2)
                 {
-                    var restore = new RestoreRes();
-                    restore.seq = recent.seq;
-                    restore.msgType = recent.msgType;
-                    restore.e = recent.e;
-
-                    if (recent.res != null && recent.res is List<object> objects)
-                    {
-                        restore.isList = true;
-
-                        restore.messageCodes = new List<MessageCode>();
-                        restore.messageBins = new List<byte[]>();
-                        foreach (object obj in objects)
-                        {
-                            MessageCode messageCode = TypeToMessageCodeCache.getMessageCode(obj);
-                            restore.messageCodes.Add(messageCode);
-                            restore.messageBins.Add(BinaryMessagePacker.PackBody(messageCode, obj));
-                        }
-                    }
-                    else
-                    {
-                        restore.isList = false;
-
-                        restore.messageCode = TypeToMessageCodeCache.getMessageCode(recent.res);
-                        restore.messageBin = BinaryMessagePacker.PackBody(restore.messageCode, recent.res);
-                    }
-
-                    restoreResList.Add(restore);
+                    this.logger.InfoFormat("{0} Wait connect to {1}...", msgType, connectToOtherService.to);
                 }
 
-                return restoreResList;
+                var r = await connectToOtherService.SendAsync(MsgType._GetServiceState, null);
+                if (r.err != ECode.Success)
+                {
+                    await Task.Delay(100);
+                    continue;
+                }
+
+                var res = r.CastRes<ResGetServiceState>();
+                if (res.serviceState != ServiceState.Started)
+                {
+                    await Task.Delay(100);
+                    continue;
+                }
+
+                if (counter >= 2)
+                {
+                    this.logger.InfoFormat("{0} Wait connect to {1}...Done", msgType, connectToOtherService.to);
+                }
+                break;
             }
-            catch (Exception ex)
-            {
-                this.logger.Error("CalcRestoreResList exception " + ex);
-                return null;
-            }
+
+            return ECode.Success;
+        }
+
+        public bool IsShuttingDown()
+        {
+            return this.data.state >= ServiceState.ShuttingDown;
+        }
+
+        public void SetState(ServiceState s)
+        {
+            this.data.state = s;
+            this.logger.Info(s);
         }
 
         public async Task SendPSInfoToAAA(bool all, ProtocolClientData socket)
         {
-            var serviceConfig = this.psData.serviceConfig;
+            var serviceConfig = this.usData.serviceConfig;
 
             var psInfo = new PSInfo();
             psInfo.serviceId = this.serviceId;
-            psInfo.playerCount = this.psData.playerDict.Count;
-            psInfo.allowNewPlayer = this.psData.allowNewPlayer;
+            psInfo.playerCount = this.usData.playerDict.Count;
+            psInfo.allowNewPlayer = this.usData.allowNewPlayer;
 
             //
             psInfo.outIp = serviceConfig.outIp;

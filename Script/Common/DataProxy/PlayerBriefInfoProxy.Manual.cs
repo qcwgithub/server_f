@@ -4,7 +4,7 @@ using StackExchange.Redis;
 using System.Collections.Generic;
 using Data;
 using System.Numerics;
-using longid = System.Int64;
+
 
 namespace Script
 {
@@ -15,7 +15,7 @@ namespace Script
             return "hash";
         }
 
-        protected override PlayerBriefInfo FromHashEntries(longid playerId, int p2, HashEntry[] entries)
+        protected override PlayerBriefInfo FromHashEntries(long playerId, int p2, HashEntry[] entries)
         {
             var self = new PlayerBriefInfo();
             // hash 里不保存 playerId
@@ -180,7 +180,7 @@ namespace Script
                 help.entries.Add(new HashEntry(field, value));
             }
         }
-        public async Task<int> CompareAndUpdate(ConnectToDBPlayerService connectToDBPlayerService, longid playerId, stPlayerBriefInfoNullable other)
+        public async Task<int> CompareAndUpdate(ConnectToDBPlayerService connectToDBPlayerService, long playerId, stPlayerBriefInfoNullable other)
         {
             PlayerBriefInfo self = await this.InternalGet(connectToDBPlayerService, playerId, 0);
 
@@ -264,7 +264,7 @@ namespace Script
         }
 
         // 更新多个字段
-        public async Task Update(ConnectToDBPlayerService connectToDBPlayerService, longid playerId, stPlayerBriefInfoNullable other)
+        public async Task Update(ConnectToDBPlayerService connectToDBPlayerService, long playerId, stPlayerBriefInfoNullable other)
         {
             var help = new stPlayerBriefInfoUpdateHelp();
 
@@ -343,39 +343,39 @@ namespace Script
             }
         }
 
-        public async Task UpdateName(ConnectToDBPlayerService connectToDBPlayerService, longid playerId, string name)
+        public async Task UpdateName(ConnectToDBPlayerService connectToDBPlayerService, long playerId, string name)
         {
             await this.Help(connectToDBPlayerService, playerId, nameof(PlayerBriefInfo.name), name);
         }
 
-        public async Task UpdateStyle(ConnectToDBPlayerService connectToDBPlayerService, longid playerId, string style)
+        public async Task UpdateStyle(ConnectToDBPlayerService connectToDBPlayerService, long playerId, string style)
         {
             await this.Help(connectToDBPlayerService, playerId, nameof(PlayerBriefInfo.style), style);
         }
 
-        public async Task UpdateStyleBorder(ConnectToDBPlayerService connectToDBPlayerService, longid playerId, string styleBorder)
+        public async Task UpdateStyleBorder(ConnectToDBPlayerService connectToDBPlayerService, long playerId, string styleBorder)
         {
             await this.Help(connectToDBPlayerService, playerId, nameof(PlayerBriefInfo.styleBorder), styleBorder);
         }
 
-        public async Task UpdateOfflineTime(ConnectToDBPlayerService connectToDBPlayerService, longid playerId, int offlineS)
+        public async Task UpdateOfflineTime(ConnectToDBPlayerService connectToDBPlayerService, long playerId, int offlineS)
         {
             await this.Help(connectToDBPlayerService, playerId, nameof(PlayerBriefInfo.offlineS), offlineS.ToString());
         }
 
-        public async Task UpdateOnlineTime(ConnectToDBPlayerService connectToDBPlayerService, longid playerId, int onlineS)
+        public async Task UpdateOnlineTime(ConnectToDBPlayerService connectToDBPlayerService, long playerId, int onlineS)
         {
             await this.Help(connectToDBPlayerService, playerId, nameof(PlayerBriefInfo.onlineS), onlineS.ToString());
         }
 
-        public async Task UpdateTrailerId(ConnectToDBPlayerService connectToDBPlayerService, longid playerId, string trailerId)
+        public async Task UpdateTrailerId(ConnectToDBPlayerService connectToDBPlayerService, long playerId, string trailerId)
         {
             await this.Help(connectToDBPlayerService, playerId, nameof(PlayerBriefInfo.trailerId), trailerId);
         }
 
         // SavePlayer
         // PrepareLogin
-        // public async Task UpdatePower(longid playerId, BigInteger power, bool alsoUpdateArenaPower)
+        // public async Task UpdatePower(long playerId, BigInteger power, bool alsoUpdateArenaPower)
         // {
         //     if (!alsoUpdateArenaPower)
         //     {
@@ -393,26 +393,26 @@ namespace Script
         //     }
         // }
 
-        public async Task UpdateGrade(ConnectToDBPlayerService connectToDBPlayerService, longid playerId, int grade)
+        public async Task UpdateGrade(ConnectToDBPlayerService connectToDBPlayerService, long playerId, int grade)
         {
             await this.Help(connectToDBPlayerService, playerId, nameof(PlayerBriefInfo.grade), grade.ToString());
         }
 
-        async Task Help(ConnectToDBPlayerService connectToDBPlayerService, longid playerId, HashEntry[] entries)
+        async Task Help(ConnectToDBPlayerService connectToDBPlayerService, long playerId, HashEntry[] entries)
         {
             // #13378
             await this.InternalGet(connectToDBPlayerService, playerId, 0);
             await this.SaveToRedis_Persist_IncreaseDirty(playerId, 0, entries);
         }
 
-        async Task Help(ConnectToDBPlayerService connectToDBPlayerService, longid playerId, string hashField, string value)
+        async Task Help(ConnectToDBPlayerService connectToDBPlayerService, long playerId, string hashField, string value)
         {
             // #13378
             await this.InternalGet(connectToDBPlayerService, playerId, 0);
             await this.SaveToRedis_Persist_IncreaseDirty(playerId, 0, hashField, value);
         }
 
-        async Task SaveToRedis_Persist_IncreaseDirty(longid p1, int p2, string hashField, string value)
+        async Task SaveToRedis_Persist_IncreaseDirty(long p1, int p2, string hashField, string value)
         {
             if (this.RedisValueFormat() != "hash")
             {
@@ -435,7 +435,7 @@ namespace Script
             // 其实也不是，是在步骤 1 时指定了 expiry = null
         }
 
-        async Task SaveToRedis_Persist_IncreaseDirty(longid p1, int p2, HashEntry[] entries)
+        async Task SaveToRedis_Persist_IncreaseDirty(long p1, int p2, HashEntry[] entries)
         {
             if (this.RedisValueFormat() != "hash")
             {

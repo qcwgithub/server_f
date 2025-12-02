@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Script
 {
-    public class ProtocolClientScriptS : ServiceScript<BaseServer, BaseService>, IProtocolClientCallback
+    public class ProtocolClientScriptS : ServiceScript<Service>, IProtocolClientCallback
     {
         public IMessagePacker GetMessagePacker(bool isMessagePack)
         {
@@ -17,9 +17,9 @@ namespace Script
 
         public void LogError(ProtocolClientData data, string str)
         {
-            if (data.playerId > 0)
+            if (data.userId > 0)
             {
-                this.service.logger.Error($"playerId ({data.playerId}) version ({data.player_version}) {str}");
+                this.service.logger.Error($"userId ({data.userId}) version ({data.user_version}) {str}");
             }
             else
             {
@@ -29,9 +29,9 @@ namespace Script
 
         public void LogError(ProtocolClientData data, string str, Exception ex)
         {
-            if (data.playerId > 0)
+            if (data.userId > 0)
             {
-                this.service.logger.Error($"playerId ({data.playerId}) version ({data.player_version}) {str}", ex);
+                this.service.logger.Error($"userId ({data.userId}) version ({data.user_version}) {str}", ex);
             }
             else
             {
@@ -105,33 +105,33 @@ namespace Script
         }
         #endregion
 
-        #region bind player
+        #region bind user
 
-        public void BindPlayer(ProtocolClientData @this, PSPlayer player)
+        public void BindUser(ProtocolClientData @this, User user)
         {
-            if (!player.IsRealPrepareLogin(out MsgPreparePlayerLogin msgPreparePlayerLogin))
+            if (!user.IsRealPrepareLogin(out MsgPreparePlayerLogin msgPreparePlayerLogin))
             {
                 MyDebug.Assert(false);
             }
 
-            player.socket = @this;
-            @this.player = player;
-            @this.playerId = player.playerId;
-            @this.player_version = msgPreparePlayerLogin.version;
-            @this.lastPlayerId = player.playerId;
+            user.socket = @this;
+            @this.user = user;
+            @this.userId = user.userId;
+            @this.user_version = msgPreparePlayerLogin.version;
+            @this.lastUserId = user.userId;
         }
 
-        public void UnbindPlayer(ProtocolClientData @this, PSPlayer player)
+        public void UnbindPlayer(ProtocolClientData @this, User user)
         {
-            player.socket = null;
-            @this.player = null;
-            @this.playerId = 0;
-            @this.player_version = string.Empty;
+            user.socket = null;
+            @this.user = null;
+            @this.userId = 0;
+            @this.user_version = string.Empty;
         }
 
         public object GetPlayer(ProtocolClientData @this)
         {
-            return @this.player == null ? null : @this.player;
+            return @this.user == null ? null : @this.user;
         }
 
 
@@ -141,8 +141,6 @@ namespace Script
 
         public ProtocolClientData RandomOtherServiceSocket(ServiceType serviceType)
         {
-            this.service.data.serviceType.AssertIsSameServerType(serviceType, "RandomOtherServiceSocket", this.service.logger);
-
             List<ProtocolClientData> list = this.service.data.otherServiceSockets2[(int)serviceType];
             if (list == null || list.Count == 0)
             {
@@ -168,8 +166,6 @@ namespace Script
         // 根据 服务类型， 向 全部这个类型的服务 统一发送
         public async Task<MyResponse> SendToAllServiceAsync(ServiceType serviceType, MsgType type, object msg)
         {
-            this.service.data.serviceType.AssertIsSameServerType(serviceType, "SendToAllServiceAsync", this.service.logger);
-
             List<ProtocolClientData> list = this.service.data.otherServiceSockets2[(int)serviceType];
             if (list == null || list.Count == 0)
             {
@@ -205,8 +201,6 @@ namespace Script
         // 根据 服务类型， 向 全部这个类型的服务 统一发送
         public async Task<List<MyResponse>> SendToAllServiceAsync2(ServiceType serviceType, MsgType type, object msg)
         {
-            this.service.data.serviceType.AssertIsSameServerType(serviceType, "SendToAllServiceAsync2", this.service.logger);
-
             var responses = new List<MyResponse>();
 
             List<ProtocolClientData> list = this.service.data.otherServiceSockets2[(int)serviceType];

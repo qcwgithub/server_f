@@ -8,11 +8,11 @@ using System;
 namespace Script
 {
     // https://open.feishu.cn/document/client-docs/bot-v3/add-custom-bot
-    public class FeiShuMessenger : ServerScript<BaseServer>
+    public class FeiShuMessenger : ServerScript
     {
         async Task<string> Post(string url, string jsonData)
         {
-            HttpClient httpClient = this.server.baseServerData.httpClient;
+            HttpClient httpClient = this.server.data.httpClient;
 
             var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             var httpResponse = await httpClient.PostAsync(url, content);
@@ -23,10 +23,10 @@ namespace Script
 
         public async void SendErrorMessage(string title, string content)
         {
-            CommonServerConfig.FeiShuConfig feiShuConfig = this.server.dataEntry.commonServerConfig.feiShuConfig;
+            ServerConfig.FeiShuConfig feiShuConfig = this.server.data.serverConfig.feiShuConfig;
 
             int nowS = TimeUtils.GetTimeS();
-            List<int> fstimes = this.server.dataEntry.error_feiShuSentTimes;
+            List<int> fstimes = this.server.data.error_feiShuSentTimes;
 
             while (fstimes.Count > 0 && fstimes[0] < nowS - feiShuConfig.error_limitTimeS)
             {
@@ -56,10 +56,10 @@ namespace Script
 
         public async void SendFatalMessage(string title, string content)
         {
-            CommonServerConfig.FeiShuConfig feiShuConfig = this.server.dataEntry.commonServerConfig.feiShuConfig;
+            ServerConfig.FeiShuConfig feiShuConfig = this.server.data.serverConfig.feiShuConfig;
 
             int nowS = TimeUtils.GetTimeS();
-            List<int> fstimes = this.server.dataEntry.fatal_feiShuSentTimes;
+            List<int> fstimes = this.server.data.fatal_feiShuSentTimes;
 
             while (fstimes.Count > 0 && fstimes[0] < nowS - feiShuConfig.fatal_limitTimeS)
             {
@@ -102,13 +102,13 @@ namespace Script
 
         public async void SendEventMessage(string content)
         {
-            CommonServerConfig.FeiShuConfig feiShuConfig = this.server.dataEntry.commonServerConfig.feiShuConfig;
+            ServerConfig.FeiShuConfig feiShuConfig = this.server.data.serverConfig.feiShuConfig;
             if (!feiShuConfig.event_enabled || string.IsNullOrEmpty(feiShuConfig.event_webhook))
             {
                 return;
             }
 
-            content = "[" + this.server.dataEntry.commonServerConfig.purpose + "]" + content;
+            content = "[" + this.server.data.serverConfig.purpose + "]" + content;
 
             var json = JsonUtils.stringify(
                 new
@@ -155,13 +155,13 @@ namespace Script
         {
             try
             {
-                CommonServerConfig.FeiShuConfig feiShuConfig = this.server.dataEntry.commonServerConfig.feiShuConfig;
+                ServerConfig.FeiShuConfig feiShuConfig = this.server.data.serverConfig.feiShuConfig;
                 if (!feiShuConfig.chat_enabled || string.IsNullOrEmpty(feiShuConfig.chat_webhook))
                 {
                     return;
                 }
 
-                content = "[" + this.server.dataEntry.commonServerConfig.purpose + "]" + content;
+                content = "[" + this.server.data.serverConfig.purpose + "]" + content;
 
                 var json = JsonUtils.stringify(
                     new

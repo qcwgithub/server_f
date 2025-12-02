@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using StackExchange.Redis;
 using System.Linq;
-using longid = System.Int64;
+
 
 namespace Script
 {

@@ -1,16 +1,49 @@
-namespace Data
-{
-    public sealed class CommandServiceData : ServiceData
-    {
-        public static readonly List<ServiceType> s_connectToServiceIds = new List<ServiceType>
-        {
-            ServiceType.Global,
-        };
+using Data;
 
-        public CommandServiceData(ServiceTypeAndId serviceTypeAndId)
-            : base(serviceTypeAndId, s_connectToServiceIds)
+namespace Script
+{
+    public class CommandService : Service
+    {
+        public MonitorConnectToSameServerType connectToSameServerType { get; private set; }
+        public ConnectToConfigManagerService connectToConfigManagerService { get; private set; }
+
+        public MonitorService(NormalServer server, int serviceId) : base(server, serviceId)
         {
-            
         }
+
+        public MonitorData monitorData
+        {
+            get
+            {
+                return (MonitorData)this.data;
+            }
+        }
+
+        public override void Attach()
+        {
+            base.Attach();
+
+            base.AddHandler<CommandService>();
+            this.AddConnectToOtherService(this.connectToConfigManagerService = new ConnectToGlobalService(this));
+            this.connectToSameServerType = new CommandConnectToSameServerType(this);
+
+            this.dispatcher.AddHandler(new Command_Start().Init(this));
+            this.dispatcher.AddHandler(new Command_Shutdown().Init(this));
+
+            this.dispatcher.AddHandler(new Command_PerformGetPendingMsgList().Init(this));
+            this.dispatcher.AddHandler(new Command_PerformReloadScript().Init(this));
+            this.dispatcher.AddHandler(new Command_PerformSaveProfileToFile().Init(this));
+            this.dispatcher.AddHandler(new Command_PerformShowScriptVersion().Init(this));
+            this.dispatcher.AddHandler(new Command_PerformShutdown().Init(this));
+            this.dispatcher.AddHandler(new Command_PerformUserGM().Init(this));
+            this.dispatcher.AddHandler(new Monitor_PerformKick().Init(this));
+            this.dispatcher.AddHandler(new Command_PerformSetPlayerGmFlag().Init(this));
+            this.dispatcher.AddHandler(new Command_SetAllowClientMinPatchVersion().Init(this));
+        }
+
+        // public override async Task Detach(ScriptEntry scriptEntry)
+        // {
+        //     await base.Detach(scriptEntry);
+        // }
     }
 }

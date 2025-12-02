@@ -140,14 +140,14 @@ namespace Script
 
                     if (r.err != ECode.Success && type.LogErrorIfNotSuccess() && !r.HasDontLogErrorFlag())
                     {
-                        if (socket.playerId != 0)
+                        if (socket.userId != 0)
                         {
-                            this.service.logger.ErrorFormat("{0} playerId {1} ECode.{2}", type, socket.playerId, r.err);
+                            this.service.logger.ErrorFormat("{0} playerId {1} ECode.{2}", type, socket.userId, r.err);
                         }
                         else
                         {
                             // 已知 oldSocket 会走到这，不是错误
-                            this.service.logger.InfoFormat("{0} lastPlayerId {1} ECode.{2}", type, socket.lastPlayerId, r.err);
+                            this.service.logger.InfoFormat("{0} lastPlayerId {1} ECode.{2}", type, socket.lastUserId, r.err);
                         }
                     }
                 }

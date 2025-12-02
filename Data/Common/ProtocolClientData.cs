@@ -70,10 +70,10 @@ namespace Data
 
 
         // when isConnectedFromClient == true
-        public object player;
-        public long playerId;
-        public string player_version;
-        public long lastPlayerId;
+        public object user;
+        public long userId;
+        public string user_version;
+        public long lastUserId;
 
         public int msgProcessing;
         public Dictionary<int, stWaitingResponse> waitingResponseDict = new Dictionary<int, stWaitingResponse>();

@@ -98,27 +98,32 @@ namespace Script
 
             foreach (ServiceTypeAndId typeAndId in this.data.serviceTypeAndIds)
             {
-                int serviceId = typeAndId.serviceId;
-                switch (typeAndId.serviceType)
-                {
-                    case ServiceType.Gateway:
-                        return new DBPlayerService(server, serviceId);
+                this.services.Add(this.CreateService(typeAndId));
+            }
+        }
 
-                    case ServiceType.Database:
-                        return new MonitorService(server, serviceId);
+        Service CreateService(ServiceTypeAndId typeAndId)
+        {
+            int serviceId = typeAndId.serviceId;
+            switch (typeAndId.serviceType)
+            {
+                case ServiceType.Gateway:
+                    return new GatewayService(this, serviceId);
 
-                    case ServiceType.User:
-                        return new PlayerService(server, serviceId);
+                case ServiceType.Database:
+                    return new DatabaseService(this, serviceId);
 
-                    case ServiceType.Global:
-                        return new RobotService(server, serviceId);
+                case ServiceType.User:
+                    return new UserService(this, serviceId);
 
-                    case ServiceType.Command:
-                        return new StatelessService(server, serviceId);
+                case ServiceType.Global:
+                    return new GlobalService(this, serviceId);
 
-                    default:
-                        throw new Exception("Not handled ServiceType: " + typeAndId.serviceType);
-                }
+                case ServiceType.Command:
+                    return new CommandService(this, serviceId);
+
+                default:
+                    throw new Exception("Not handled ServiceType: " + typeAndId.serviceType);
             }
         }
 
@@ -131,7 +136,7 @@ namespace Script
         }
 
         void StartServices()
-        {    
+        {
             // 启动顺序与关闭顺序相反
             this.services.Sort((a, b) =>
             {
@@ -146,7 +151,7 @@ namespace Script
             }
         }
 
-        public void Detach()
+        public async void Detach()
         {
             Console.WriteLine("**** Script.dll Detaching, {0}", this.GetScriptDllVersion());
             foreach (var service in this.services)

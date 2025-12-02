@@ -16,7 +16,7 @@ namespace Data
             return this.socket != null && this.socket.IsConnected();
         }
 
-        public long playerId = 0;
+        public long userId = 0;
         public log4net.ILog logger;
         public ITimer destroyTimer;
 

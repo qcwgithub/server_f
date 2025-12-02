@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 using StackExchange.Redis;
 using System.Collections.Generic;
 using Data;
-using longid = System.Int64;
+
 
 namespace Script
 {
     //// AUTO CREATED ////
-    public sealed class ProfileOriginalMailProxy : DataProxy<ProfileOriginalMail, longid, int>
+    public sealed class ProfileOriginalMailProxy : DataProxy<ProfileOriginalMail, long, int>
     {
         #region override
 
@@ -20,13 +20,13 @@ namespace Script
         }
 
         //// AUTO CREATED ////
-        protected override stDirtyElement DirtyElement(longid mailId, int _2 = 0)
+        protected override stDirtyElement DirtyElement(long mailId, int _2 = 0)
         {
             return stDirtyElement.Create_ProfileOriginalMail(mailId);
         }
 
         //// AUTO CREATED ////
-        protected override RedisKey Key(longid mailId, int _2 = 0)
+        protected override RedisKey Key(long mailId, int _2 = 0)
         {
             return MailKey.OriginalMail(mailId);
         }
@@ -38,13 +38,13 @@ namespace Script
         }
 
         //// AUTO CREATED ////
-        public Task<ProfileOriginalMail> OnlyForSave_GetFromRedis(longid mailId)
+        public Task<ProfileOriginalMail> OnlyForSave_GetFromRedis(long mailId)
         {
             return this.GetFromRedis(mailId, 0);
         }
 
         //// AUTO CREATED ////
-        protected override ProfileOriginalMail CreatePlaceholder(longid mailId, int _2 = 0)
+        protected override ProfileOriginalMail CreatePlaceholder(long mailId, int _2 = 0)
         {
             var placeholder = new ProfileOriginalMail();
             placeholder.mailId = mailId;
@@ -53,13 +53,13 @@ namespace Script
         }
 
         //// AUTO CREATED ////
-        protected override string GetLockKeyForLoadFromDBToRedis(longid mailId, int _2 = 0)
+        protected override string GetLockKeyForLoadFromDBToRedis(long mailId, int _2 = 0)
         {
             return LockKey.LoadDataFromDBToRedis.ProfileOriginalMail(mailId);
         }
 
         //// AUTO CREATED ////
-        protected override async Task<(ECode, ProfileOriginalMail)> LoadFromDB(IConnectToDBService connectToDBService, longid mailId, int _2 = 0)
+        protected override async Task<(ECode, ProfileOriginalMail)> LoadFromDB(IConnectToDBService connectToDBService, long mailId, int _2 = 0)
         {
             var msgDb = new MsgQuery_ProfileOriginalMail_by_mailId();
             msgDb.mailId = mailId;
@@ -74,7 +74,7 @@ namespace Script
         }
 
         //// AUTO CREATED ////
-        protected override int GetBelongTaskQueue(longid mailId, int _2 = 0)
+        protected override int GetBelongTaskQueue(long mailId, int _2 = 0)
         {
             return PersistenceTaskQueueRedis.GetQueue(ProfileOriginalMail.ToTaskQueueHash(mailId));
         }
@@ -82,7 +82,7 @@ namespace Script
 
         /////////////////////////////////////////// PUBLIC ///////////////////////////////////////////
         //// AUTO CREATED ////
-        public async Task<ProfileOriginalMail> Get(ConnectToDBGroupService connectToDBGroupService, longid mailId)
+        public async Task<ProfileOriginalMail> Get(ConnectToDBGroupService connectToDBGroupService, long mailId)
         {
             if (mailId == 0)
             {

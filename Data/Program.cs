@@ -256,7 +256,7 @@ namespace Data
             }
             catch (Exception ex)
             {
-                LogError("new DataEntry exception", ex);
+                LogError("new ServerData exception", ex);
 #if DEBUG
                 Console.Write("Press any key to exit...");
                 Console.ReadKey();

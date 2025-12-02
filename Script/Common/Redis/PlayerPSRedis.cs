@@ -5,42 +5,42 @@ using Data;
 using StackExchange.Redis;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using longid = System.Int64;
+
 
 namespace Script
 {
     /*
     清空Redis能否正常 | YES，是运行时数据
     */
-    public class PlayerPSRedis: ServerScript<NormalServer>
+    public class PlayerPSRedis: ServerScript
     {
         public IDatabase GetDb()
         {
-            return this.server.serverData.redis_db;
+            return this.server.data.redis_db;
         }
 
-        public string Key(longid playerId) => PlayerKey.PSId(playerId);
+        public string Key(long playerId) => UserKey.PSId(playerId);
 
-        public async Task SetPSId(longid playerId, int playerServiceId, int secondsToLive)
+        public async Task SetPSId(long playerId, int playerServiceId, int secondsToLive)
         {
-            await GetDb().StringSetAsync(PlayerKey.PSId(playerId), playerServiceId, TimeSpan.FromSeconds(secondsToLive));
+            await GetDb().StringSetAsync(UserKey.PSId(playerId), playerServiceId, TimeSpan.FromSeconds(secondsToLive));
         }
 
-        public async Task<int> GetPSId(longid playerId)
+        public async Task<int> GetPSId(long playerId)
         {
-            RedisValue redisValue = await GetDb().StringGetAsync(PlayerKey.PSId(playerId));
+            RedisValue redisValue = await GetDb().StringGetAsync(UserKey.PSId(playerId));
             return RedisUtils.ParseInt(redisValue);
         }
 
-        public async Task<List<int>> GetMany(List<longid> playerIds)
+        public async Task<List<int>> GetMany(List<long> playerIds)
         {
-            RedisValue[] redisValues = await GetDb().StringGetAsync(playerIds.Select(_ => new RedisKey(PlayerKey.PSId(_))).ToArray());
+            RedisValue[] redisValues = await GetDb().StringGetAsync(playerIds.Select(_ => new RedisKey(UserKey.PSId(_))).ToArray());
             return redisValues.Select(_ => RedisUtils.ParseInt(_)).ToList();
         }
 
-        public async void DeletePSId(longid playerId)
+        public async void DeletePSId(long playerId)
         {
-            await GetDb().KeyDeleteAsync(PlayerKey.PSId(playerId));
+            await GetDb().KeyDeleteAsync(UserKey.PSId(playerId));
         }
     }
 }

@@ -6,7 +6,7 @@ using Data;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
-using longid = System.Int64;
+
 
 namespace Script
 {
@@ -80,7 +80,7 @@ namespace Script
             return defaultValue;
         }
 
-        public static longid ParseLongId(RedisValue redisValue, longid defaultValue = 0)
+        public static long ParseLongId(RedisValue redisValue, long defaultValue = 0)
         {
             if (redisValue.TryParse(out long v))
             {
