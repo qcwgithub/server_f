@@ -47,7 +47,7 @@ namespace Script
                 foreach (long playerId in kickList)
                 {
                     var msgD = MsgDestroyUser.Create(playerId, this.msgType.ToString(), new MsgKick { flags = LogoutFlags.CancelAutoLogin });
-                    tasks.Add(this.service.connectToSelf.SendToSelfAsync(MsgType._PSDestroyPlayer, msgD));
+                    tasks.Add(this.service.connectToSelf.SendToSelfAsync(MsgType._User_DestroyUser, msgD));
                 }
 
                 await Task.WhenAll(tasks);

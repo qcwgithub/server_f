@@ -394,7 +394,7 @@ namespace Script
                             }
 
                             var msgX = new MsgLoadPlayerNewestInfos();
-                            msgX.what = LoadPlayerNewestWhat.Profile;
+                            msgX.what = LoadUserNewestWhat.Profile;
                             msgX.playerIds = new List<long> { playerId };
 
                             r = await this.service.connectToSameServerType.SendToServiceAsync(serviceId, MsgType._PlayerS_LoadPlayerNewestInfos, msgX);

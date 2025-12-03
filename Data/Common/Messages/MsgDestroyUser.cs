@@ -6,7 +6,7 @@ namespace Data
     public class MsgDestroyUser
     {
         [Key(0)]
-        public long playerId;
+        public long userId;
         [Key(1)]
         public string place;
         [Key(2)]
@@ -15,7 +15,7 @@ namespace Data
         public static MsgDestroyUser Create(long playerId, string place, MsgKick msgKick)
         {
             var self = new MsgDestroyUser();
-            self.playerId = playerId;
+            self.userId = playerId;
             self.place = place;
             self.msgKick = msgKick;
             return self;

@@ -5,17 +5,17 @@ namespace Script
     public class CommandService : Service
     {
         public MonitorConnectToSameServerType connectToSameServerType { get; private set; }
-        public ConnectToConfigManagerService connectToConfigManagerService { get; private set; }
+        public ConnectToGlobalService connectToGlobalService { get; private set; }
 
-        public MonitorService(NormalServer server, int serviceId) : base(server, serviceId)
+        public CommandService(Server server, int serviceId) : base(server, serviceId)
         {
         }
 
-        public MonitorData monitorData
+        public CommandServiceData commandServiceData
         {
             get
             {
-                return (MonitorData)this.data;
+                return (CommandServiceData)this.data;
             }
         }
 
@@ -24,7 +24,7 @@ namespace Script
             base.Attach();
 
             base.AddHandler<CommandService>();
-            this.AddConnectToOtherService(this.connectToConfigManagerService = new ConnectToGlobalService(this));
+            this.AddConnectToOtherService(this.connectToGlobalService = new ConnectToGlobalService(this));
             this.connectToSameServerType = new CommandConnectToSameServerType(this);
 
             this.dispatcher.AddHandler(new Command_Start().Init(this));

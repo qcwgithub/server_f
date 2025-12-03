@@ -132,7 +132,7 @@ namespace Data
                 throw new Exception(message);
             }
 
-            ServiceConfig global_sc = ori_allServiceConfigs.Find(x => x.serviceType == ServiceType.Global);
+            ServiceConfig? global_sc = ori_allServiceConfigs.Find(x => x.serviceType == ServiceType.Global);
             if (global_sc == null)
             {
                 Program.LogStartError("global_sc == null");

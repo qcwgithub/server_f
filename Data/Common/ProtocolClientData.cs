@@ -6,7 +6,7 @@ namespace Data
 {
     public struct stWaitingResponse
     {
-        public Action<ECode, object> callback;
+        public Action<ECode, object?> callback;
         // public CancellationTokenSource source;
     }
 
@@ -41,8 +41,8 @@ namespace Data
             }
         }
 
-        public IProtocolClientCallbackProvider callbackProvider;
-        public IProtocolClientCallback callback => this.callbackProvider?.GetProtocolClientCallback();
+        public IProtocolClientCallbackProvider? callbackProvider;
+        public IProtocolClientCallback? callback => this.callbackProvider?.GetProtocolClientCallback();
 
         #region variables
         public bool isConnector;
@@ -70,9 +70,9 @@ namespace Data
 
 
         // when isConnectedFromClient == true
-        public object user;
+        public object? user;
         public long userId;
-        public string user_version;
+        public string? user_version;
         public long lastUserId;
 
         public int msgProcessing;
@@ -82,7 +82,7 @@ namespace Data
         #endregion
 
         public static string s_identity = "pkcastles";
-        protected byte[] SendIdentity()
+        protected byte[]? SendIdentity()
         {
             if (s_identity.Length == 0)
             {
@@ -128,7 +128,7 @@ namespace Data
 
             if (r == VerifyIdentityResult.Failed)
             {
-                this.callback.LogInfo(this, $"{this.GetType().Name} verify identity failed, close socket!");
+                this.callback!.LogInfo(this, $"{this.GetType().Name} verify identity failed, close socket!");
             }
             else if (r == VerifyIdentityResult.Success)
             {
@@ -143,9 +143,9 @@ namespace Data
         #endregion
 
         #region send
-        public abstract Task<MyResponse> SendAsync(MsgType type, object msg, int? pTimeoutS);
+        public abstract Task<MyResponse> SendAsync(MsgType type, object? msg, int? pTimeoutS);
         public abstract void Send(MsgType msgType, object msg, Action<ECode, object> cb, int? pTimeoutS);
-        protected abstract void SendPacketIgnoreResult(int msgTypeOrECode, object msg, int seq, bool requireResponse);
+        protected abstract void SendPacketIgnoreResult(int msgTypeOrECode, object? msg, int seq, bool requireResponse);
         public abstract void SendRaw(byte[] buffer);
 
         #endregion
@@ -171,7 +171,7 @@ namespace Data
                     MsgType msgType = (MsgType)code;
                     if (this.oppositeIsClient && msgType < MsgType_ClientStart)
                     {
-                        this.callback.LogError(this, "receive invalid message from client! " + msgType.ToString());
+                        this.callback!.LogError(this, "receive invalid message from client! " + msgType.ToString());
                         if (requireResponse)
                         {
                             this.SendPacketIgnoreResult((int)ECode_Exception, null, -seq, false);
@@ -181,13 +181,13 @@ namespace Data
 
                     if (!requireResponse)
                     {
-                        this.callback.Dispatch(this,
+                        this.callback!.Dispatch(this,
                         seq,
                         msgType, msg, null);
                     }
                     else
                     {
-                        this.callback.Dispatch(this,
+                        this.callback!.Dispatch(this,
                         seq,
                         msgType, msg,
                                 (ECode e2, object msg2) =>
@@ -221,17 +221,17 @@ namespace Data
                     }
                     else
                     {
-                        this.callback.LogError(this, "No response fun for " + (-seq));
+                        this.callback!.LogError(this, "No response fun for " + (-seq));
                     }
                 }
                 else
                 {
-                    this.callback.LogError(this, "onMsg wrong seq: " + seq);
+                    this.callback!.LogError(this, "onMsg wrong seq: " + seq);
                 }
             }
             catch (Exception ex)
             {
-                this.callback.LogError(this, "ProtocolClientData.OnMsg " + ex);
+                this.callback!.LogError(this, "ProtocolClientData.OnMsg " + ex);
             }
         }
 
@@ -243,7 +243,7 @@ namespace Data
         {
             public static readonly string OnConnectComplete_false = "OnConnectComplete_false";
         }
-        public string closeReason { get; protected set; }
+        public string? closeReason { get; protected set; }
         public abstract void Close(string reason);
 
         protected void TimeoutAllWaitings()
@@ -251,7 +251,7 @@ namespace Data
             // timeout all waiting responses
             if (this.waitingResponseDict.Count > 0)
             {
-                var list = new List<Action<ECode, object>>();
+                var list = new List<Action<ECode, object?>>();
                 foreach (var kv in this.waitingResponseDict)
                 {
                     // kv.Value.source.Cancel();

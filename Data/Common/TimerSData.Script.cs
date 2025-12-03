@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-
 namespace Data
 {
     public partial class TimerSData
@@ -71,7 +67,7 @@ namespace Data
                 this.minTimeS = info.nextTimeS;
             }
 
-            List<TimerInfo> list;
+            List<TimerInfo>? list;
             if (!this.triggerDict.TryGetValue(info.nextTimeS, out list))
             {
                 list = new List<TimerInfo>();
@@ -117,7 +113,8 @@ namespace Data
             }
 
             TimerInfo info = (TimerInfo)timer;
-            this.timerDict.Remove(info.timerId); List<TimerInfo> list;
+            this.timerDict.Remove(info.timerId);
+            List<TimerInfo>? list;
             if (this.triggerDict.TryGetValue(info.nextTimeS, out list))
             {
                 int index = list.FindIndex(ele => ele.timerId == info.timerId);

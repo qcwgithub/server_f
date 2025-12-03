@@ -216,7 +216,7 @@ namespace Script
             msg.fromServiceType = this.data.serviceType;
             msg.fromServiceId = this.data.serviceId;
             msg.why = why;
-            var r = await socket.SendAsync(MsgType._ConfigManager_GetServiceConfigs, msg, null);
+            var r = await socket.SendAsync(MsgType._Global_GetServiceConfigs, msg, null);
             if (r.err != ECode.Success)
             {
                 return null;
@@ -246,7 +246,7 @@ namespace Script
                 return false;
             }
 
-            List<ServiceConfig> normals = res.serviceConfigs;
+            List<ServiceConfig> normals = res.allServiceConfigs;
 
             var self = this.server.data.serverConfig;
             if (normals == null || normals.Count == 0)

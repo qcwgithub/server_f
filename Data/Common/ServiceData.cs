@@ -33,18 +33,18 @@ namespace Data
         public IProtocolClientCallback tcpClientCallback;
         public IProtocolClientCallback GetProtocolClientCallback() => this.tcpClientCallback;
 
-        public TcpListenerData tcpListenerForServer;
-        public TcpListenerData tcpListenerForClient;
+        public TcpListenerData? tcpListenerForServer;
+        public TcpListenerData? tcpListenerForClient;
 
         // http listener
         public IHttpListenerCallback httpListenerCallback;
         public IHttpListenerCallback GetHttpListenerCallback() => this.httpListenerCallback;
-        public HttpListenerData httpListenerDataForAll;
+        public HttpListenerData? httpListenerDataForAll;
 
         public IWebSocketListenerCallback webSocketListenerCallback;
         public IWebSocketListenerCallback GetWebSocketListenerCallback() => this.webSocketListenerCallback;
-        public WebSocketListenerData webSocketListenerDataForServer;
-        public WebSocketListenerData webSocketListenerDataForClient;
+        public WebSocketListenerData? webSocketListenerDataForServer;
+        public WebSocketListenerData? webSocketListenerDataForClient;
 
         // 需要连接到哪些服务器
         public List<ServiceType> connectToServiceTypes = new List<ServiceType>();
@@ -55,7 +55,7 @@ namespace Data
         public void SetOtherServiceSocket(ServiceType serviceType, int serviceId, ProtocolClientData tcpClientData)
         {
             {
-                if (this.otherServiceSockets.TryGetValue(serviceId, out ProtocolClientData old))
+                if (this.otherServiceSockets.TryGetValue(serviceId, out ProtocolClientData? old))
                 {
                     if (old.IsConnected() || old.IsConnecting())
                     {
@@ -105,9 +105,9 @@ namespace Data
                 list.Add(tcpClientData);
             }
         }
-        public ProtocolClientData GetOtherServiceSocket(int serviceId)
+        public ProtocolClientData? GetOtherServiceSocket(int serviceId)
         {
-            ProtocolClientData socket;
+            ProtocolClientData? socket;
             return this.otherServiceSockets.TryGetValue(serviceId, out socket) ? socket : null;
         }
 
@@ -180,7 +180,7 @@ namespace Data
                 List<int> serviceIds = new List<int>();
                 foreach (ProtocolClientData socket in sockets)
                 {
-                    serviceIds.Add(socket.serviceTypeAndId.Value.serviceId);
+                    serviceIds.Add(socket.serviceTypeAndId!.Value.serviceId);
                 }
 
                 foreach (ProtocolClientData socket in sockets)
@@ -251,9 +251,9 @@ namespace Data
         }
 
         public Dictionary<string, string> stringMap = new Dictionary<string, string>();
-        public string GetString(string key)
+        public string? GetString(string key)
         {
-            string value;
+            string? value;
             return this.stringMap.TryGetValue(key, out value) ? value : null;
         }
         public void SetString(string key, string value)
@@ -263,7 +263,7 @@ namespace Data
 
         public void ListenForServer_Tcp()
         {
-            ref TcpListenerData d = ref this.tcpListenerForServer;
+            ref TcpListenerData? d = ref this.tcpListenerForServer;
             int port = this.serviceConfig.inPort;
 
             MyDebug.Assert(d == null);
@@ -277,7 +277,7 @@ namespace Data
         }
         public void StopListenForServer_Tcp()
         {
-            ref TcpListenerData d = ref this.tcpListenerForServer;
+            ref TcpListenerData? d = ref this.tcpListenerForServer;
             if (d != null)
             {
                 d.Close();
@@ -287,7 +287,7 @@ namespace Data
 
         public void ListenForClient_Tcp(int outPort)
         {
-            ref TcpListenerData d = ref this.tcpListenerForClient;
+            ref TcpListenerData? d = ref this.tcpListenerForClient;
 
             MyDebug.Assert(d == null);
             d = new TcpListenerData() { isForClient = true, callbackProvider = this };
@@ -297,7 +297,7 @@ namespace Data
         }
         public void StopListenForClient_Tcp()
         {
-            ref TcpListenerData d = ref this.tcpListenerForClient;
+            ref TcpListenerData? d = ref this.tcpListenerForClient;
             if (d != null)
             {
                 d.Close();
@@ -307,7 +307,7 @@ namespace Data
 
         public void ListenForClient_Ws(string[] clientListener_wsPrefixes)
         {
-            ref WebSocketListenerData d = ref this.webSocketListenerDataForClient;
+            ref WebSocketListenerData? d = ref this.webSocketListenerDataForClient;
 
             MyDebug.Assert(d == null);
 
@@ -319,7 +319,7 @@ namespace Data
         }
         public void StopListenForClient_Ws()
         {
-            ref WebSocketListenerData d = ref this.webSocketListenerDataForClient;
+            ref WebSocketListenerData? d = ref this.webSocketListenerDataForClient;
             if (d != null)
             {
                 d.Close();
@@ -329,7 +329,7 @@ namespace Data
 
         public void Listen_Http(string[] prefixes, List<string> httpAllowedIps)
         {
-            ref HttpListenerData d = ref this.httpListenerDataForAll;
+            ref HttpListenerData? d = ref this.httpListenerDataForAll;
 
             MyDebug.Assert(d == null);
 
@@ -343,7 +343,7 @@ namespace Data
 
         public void StopListen_Http()
         {
-            ref HttpListenerData d = ref this.httpListenerDataForAll;
+            ref HttpListenerData? d = ref this.httpListenerDataForAll;
             if (d != null)
             {
                 d.Stop();
@@ -395,7 +395,7 @@ namespace Data
         {
             get
             {
-                return this.current_resGetServiceConfigs.serviceConfigs;
+                return this.current_resGetServiceConfigs.allServiceConfigs;
             }
         }
 

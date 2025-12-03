@@ -23,13 +23,11 @@ namespace Data
         [Key(2)]
         public int minorVerson;
         [Key(3)]
-        public bool open;
-        [Key(4)]
-        public List<ServiceConfig> serviceConfigs;
+        public List<ServiceConfig> allServiceConfigs;
 
         public void VisitServiceConfig(ServiceType serviceType, Action<ServiceConfig> action)
         {
-            foreach (ServiceConfig sc in this.serviceConfigs)
+            foreach (ServiceConfig sc in this.allServiceConfigs)
             {
                 if (sc.serviceType == serviceType)
                 {
@@ -40,12 +38,12 @@ namespace Data
 
         public ServiceConfig FindServiceConfig(ServiceType serviceType, int serviceId)
         {
-            return this.serviceConfigs.Find(x => x.serviceType == serviceType && x.serviceId == serviceId);
+            return this.allServiceConfigs.Find(x => x.serviceType == serviceType && x.serviceId == serviceId);
         }
 
         public bool ExistServiceType(ServiceType serviceType)
         {
-            return this.serviceConfigs.Exists(x => x.serviceType == serviceType);
+            return this.allServiceConfigs.Exists(x => x.serviceType == serviceType);
         }
     }
 

@@ -19,6 +19,7 @@ namespace Data
         }
 
         public List<ServiceConfig> allServiceConfigs;
+        public ProfileGlobal profileGlobal;
 
         public void LoadConfigs(bool isReload)
         {

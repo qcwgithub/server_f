@@ -6,7 +6,7 @@ namespace Script
     {
         //
         public ConnectToDatabaseService connectToDatabaseService { get; private set; }
-        public ConnectToGlobalService connectToConfigManagerService { get; private set; }
+        public ConnectToGlobalService connectToGlobalService { get; private set; }
 
         public UserServiceData usData
         {
@@ -15,17 +15,10 @@ namespace Script
                 return (UserServiceData)this.data;
             }
         }
-        public PSScript psScript;
-        public PMSqlUtils pmSqlUtils;
-        public PMScriptCreateNewPlayer pmScriptCreateNewPlayer;
+        public UserServiceScript usScript;
 
         public UserService(Server server, int serviceId) : base(server, serviceId)
         {
-        }
-
-        protected override MessageDispatcher CreateMessageDispatcher(BaseServer baseScriptEntry)
-        {
-            return new PSMessageDispatcher().Init(baseScriptEntry, (BaseService)this);
         }
 
         public override void Attach()
@@ -34,57 +27,19 @@ namespace Script
 
             //
             this.AddConnectToOtherService(this.connectToDatabaseService = new ConnectToDatabaseService(this));
-            this.AddConnectToOtherService(this.connectToConfigManagerService = new ConnectToGlobalService(this));
+            this.AddConnectToOtherService(this.connectToGlobalService = new ConnectToGlobalService(this));
 
             base.AddHandler<UserService>();
 
             // 覆盖 OnConnectComplete
-            this.dispatcher.AddHandler(new PlayerS_OnConnectComplete().Init(this.server, this), true);
-#if DEBUG
-            this.dispatcher.AddHandler(new PlayerS_OnSetTimeOffset().Init(this.server, this), true);
-#endif
+            this.dispatcher.AddHandler(new User_OnConnectComplete().Init(this), true);
 
-            this.psScript = new PSScript().Init(this.server, this);
-            this.pmSqlUtils = new PMSqlUtils().Init(this.server, this);
-            this.pmScriptCreateNewPlayer = new PMScriptCreateNewPlayer().Init(this.server, this);
+            this.usScript = new UserServiceScript().Init(this);
         }
 
         public override async Task Detach()
         {
             await base.Detach();
-        }
-
-        // PlayerService 在此对 reply 再包一层
-        public override void Dispatch(ProtocolClientData data, int seq, MsgType msgType, object msg, Action<ECode, object> reply)
-        {
-            if (data != null && data.oppositeIsClient && msgType >= MsgType.ClientStart)
-            {
-                User user = this.tcpClientScript.GetPlayer(data) as User;
-                if (user != null)
-                {
-                    base.Dispatch(data, seq, msgType, msg, (e, res) =>
-                    {
-                        // 额外处理
-                        object resFinal = this.clientPostHandleScript.PostHandle(user, msgType, msg, e, res);
-                        reply(e, resFinal);
-                    });
-
-                    //
-                    return;
-                }
-            }
-
-            base.Dispatch(data, seq, msgType, msg, reply);
-        }
-        public bool IsDevelopment()
-        {
-            // return process.env.NODE_ENV == "development";
-            return true;
-        }
-
-        public Task WaitAsync(int timeoutMs)
-        {
-            return Task.Delay(timeoutMs);
         }
 
         public async Task<ECode> WaitServiceConnectedAndStarted(ConnectToOtherService connectToOtherService, MsgType msgType)

@@ -7,7 +7,7 @@ namespace Data
     public class MsgLoadPlayerNewestInfos
     {
         [Key(0)]
-        public LoadPlayerNewestWhat what;
+        public LoadUserNewestWhat what;
         [Key(1)]
         public List<long> playerIds;
         [Key(2)]
@@ -18,6 +18,6 @@ namespace Data
     public class ResLoadPlayerNewestInfos
     {
         [Key(0)]
-        public List<PlayerNewestInfo> newestInfos;
+        public List<UserNewestInfo> newestInfos;
     }
 }
