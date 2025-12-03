@@ -1,7 +1,1 @@
-"type","type2","type3","type4","type5","name","ensureEx","math","createFromHelper","comment"
-"@ProfileGuide",,,,,,,,,
-"hashset_","int_",,,,"guideFlags",,,,
-"list_","int_",,,,"functionFlags",,,,
-"list_","int_",,,,"functionFlags_got",,,,"已领取功能预告奖励"
-"dictionary_","int_","int_",,,"functionFlagsTime",,,,"功能开启的时间，如不存在，表示是以前开的"
-"#",,,,,,,,,
+type,type2,type3,type4,type5,name,ensureEx,math,createFromHelper,comment

@@ -31,10 +31,18 @@ namespace Script
 
             base.AddHandler<UserService>();
 
-            // 覆盖 OnConnectComplete
-            this.dispatcher.AddHandler(new User_OnConnectComplete().Init(this), true);
+            this.dispatcher.AddHandler(new User_Start().Init(this.server, this));
+            this.dispatcher.AddHandler(new User_Shutdown().Init(this.server, this));
+            this.dispatcher.AddHandler(new User_OnReloadConfigs().Init(this.server, this), true);
+            this.dispatcher.AddHandler(new User_OnConnectComplete().Init(this.server, this), true);
+            this.dispatcher.AddHandler(new User_Action().Init(this.server, this));
+            this.dispatcher.AddHandler(new User_SaveProfileToFile().Init(this.server, this));
+            this.dispatcher.AddHandler(new User_DestroyUser().Init(this.server, this));
+            this.dispatcher.AddHandler(new User_OnSocketClose().Init(this.server, this));
+            this.dispatcher.AddHandler(new User_SaveUser().Init(this.server, this));
+            this.dispatcher.AddHandler(new User_SaveUserImmediately().Init(this.server, this));
 
-            this.usScript = new UserServiceScript().Init(this);
+            this.usScript = new UserServiceScript().Init(this.server, this);
         }
 
         public override async Task Detach()
@@ -92,36 +100,6 @@ namespace Script
         {
             this.data.state = s;
             this.logger.Info(s);
-        }
-
-        public async Task SendPSInfoToAAA(bool all, ProtocolClientData socket)
-        {
-            var serviceConfig = this.usData.serviceConfig;
-
-            var psInfo = new PSInfo();
-            psInfo.serviceId = this.serviceId;
-            psInfo.playerCount = this.usData.playerDict.Count;
-            psInfo.allowNewPlayer = this.usData.allowNewPlayer;
-
-            //
-            psInfo.outIp = serviceConfig.outIp;
-            psInfo.outPort = serviceConfig.outPort;
-
-            //
-            psInfo.ws_outIp = serviceConfig.ws_outIp;
-            psInfo.ws_outPort = serviceConfig.ws_outPort;
-
-            var msgA = new MsgPSInfo();
-            msgA.psInfo = psInfo;
-
-            if (all)
-            {
-                await this.connectToStatelessService.SendToAllAsync(MsgType._AAA_PSInfo, msgA);
-            }
-            else
-            {
-                await socket.SendAsync(MsgType._AAA_PSInfo, msgA, pTimeoutS: null);
-            }
         }
     }
 }

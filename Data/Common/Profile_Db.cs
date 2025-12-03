@@ -1,0 +1,53 @@
+using MessagePack;
+using MongoDB.Bson.Serialization.Attributes;
+using System.Collections.Generic;
+
+namespace Data
+{
+    public class Profile_Db : IIsDifferent_Db<Profile>
+    {
+        #region auto
+
+        [BsonIgnoreIfNull]
+        public long? userId;
+        [BsonIgnoreIfNull]
+        public string userName;
+        [BsonIgnoreIfNull]
+        public long? createTime;
+        [BsonIgnoreIfNull]
+        public long? lastLoginTimeS;
+
+        public bool DeepCopyFrom(Profile other)
+        {
+            bool empty = true;
+
+            this.userId = ProfileHelper_Db.Copy_long(other.userId);
+            if (this.userId != null)
+            {
+                empty = false;
+            }
+
+            this.userName = ProfileHelper_Db.Copy_string(other.userName);
+            if (this.userName != null)
+            {
+                empty = false;
+            }
+
+            this.createTime = ProfileHelper_Db.Copy_long(other.createTime);
+            if (this.createTime != null)
+            {
+                empty = false;
+            }
+
+            this.lastLoginTimeS = ProfileHelper_Db.Copy_long(other.lastLoginTimeS);
+            if (this.lastLoginTimeS != null)
+            {
+                empty = false;
+            }
+
+            return !empty;
+        }
+
+        #endregion auto
+    }
+}

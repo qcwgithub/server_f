@@ -83,9 +83,9 @@ namespace Data
         // server.DBPlayer [201,400]
         _DBRegularSearchPlayerByName = 200,
         _DBGetMaxPlayerId = 201,
-        _DBQueryPlayerById = 202,
-        _DBSavePlayer = 203,
-        _DBInsertPlayer = 204,
+        _Database_QueryUser_byId = 202,
+        _Database_SaveUser = 203,
+        _Database_InsertUser = 204,
 
         _Iterate_dictOf_Profile_playerId_userName_by_playerId = 205,
         _Iterate_dictOf_UnionInfo_unionId_name_shortName_by_unionId = 206,
@@ -337,7 +337,7 @@ namespace Data
         _PS_ServerKick = 611,
         _PS_SendMessageToClient = 612,
         _PS_NotifyMail = 613,
-        _PS_SavePlayerImmediately = 614,
+        _User_SaveUserImmediately = 614,
         _PlayerS_ChangeNameByGM = 615,
         _PlayerS_GetPlayerNewestInfoMemory = 616,
         _PlayerS_ChangeChatSilenceByGM = 617,
@@ -369,5 +369,8 @@ namespace Data
         _SaveProfileToFile = 1010,
         _SetGmFlag = 1011,
         _CheckAlive = 1012,
+
+        ClientStart = 10000,
+        UserLogin = 10001,
     }
 }

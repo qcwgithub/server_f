@@ -16,8 +16,6 @@ namespace Script
             //// allowNewUser = false
             usData.allowNewUser = false;
 
-            await this.service.SendPSInfoToAAA(true, null);
-
             OnShutdown<Service>.s_ClearTimer(this.server, ref usData.timer_tick_loop);
 
             //// stop listening for client

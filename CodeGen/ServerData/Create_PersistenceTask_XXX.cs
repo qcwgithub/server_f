@@ -175,7 +175,6 @@ public class Create_PersistenceTask_XXX
         ff.TabPush("using Data;\n");
         ff.TabPush("using System.Diagnostics;\n");
         ff.TabPush("using System;\n");
-        ff.TabPush("using longid = System.Int64;\n");
 
         ff.Push("\n");
         config.PushUsingOriginal(ff);

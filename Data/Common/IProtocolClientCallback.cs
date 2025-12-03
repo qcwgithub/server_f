@@ -19,6 +19,6 @@ namespace Data
 
     public interface IProtocolClientCallbackProvider
     {
-        IProtocolClientCallback GetProtocolClientCallback();
+        IProtocolClientCallback? GetProtocolClientCallback();
     }
 }

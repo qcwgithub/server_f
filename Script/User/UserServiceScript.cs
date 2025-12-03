@@ -14,7 +14,7 @@ namespace Script
         {
             MyDebug.Assert(!user.destroyTimer.IsAlive());
 
-            var SEC = this.usData.playerDestroyTimeoutS;
+            var SEC = this.usData.destroyTimeoutS;
             this.logger.InfoFormat("SetDestroyTimer userId({1}), seconds({2}), reason({3})", place, user.userId, SEC, place);
 
             user.destroyTimer = server.timerScript.SetTimer(
@@ -39,7 +39,7 @@ namespace Script
         {
             MyDebug.Assert(!user.saveTimer.IsAlive());
 
-            var SEC = this.usData.playerSaveIntervalS;
+            var SEC = this.usData.saveIntervalS;
 #if DEBUG
             SEC = 3;
 #endif

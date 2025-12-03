@@ -5,7 +5,7 @@ using Data;
 
 namespace Script
 {
-    public class User_DestroyPlayer : UserHandler
+    public class User_DestroyUser : UserHandler
     {
         public override MsgType msgType => MsgType._User_DestroyUser;
 

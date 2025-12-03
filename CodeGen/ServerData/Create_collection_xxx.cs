@@ -23,7 +23,6 @@ public class Create_collection_xxx
         ff.TabPush("using MongoDB.Driver;\n");
         ff.TabPush("using Script;\n");
         ff.TabPush("using System.Linq;\n");
-        ff.TabPush("using longid = System.Int64;\n");
 
         config.PushUsingOriginal(ff);
 

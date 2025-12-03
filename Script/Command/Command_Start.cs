@@ -325,20 +325,20 @@ namespace Script
                         {
                             var msg = new MsgPSAction();
 
-                            string s = this.GetArg_String(nameof(msg.allowNewPlayer), false);
+                            string s = this.GetArg_String(nameof(msg.allowNewUser), false);
                             if (!string.IsNullOrEmpty(s))
                             {
-                                msg.allowNewPlayer = s == "true" || s == "1";
+                                msg.allowNewUser = s == "true" || s == "1";
                             }
 
-                            if (this.GetArg_Int(nameof(msg.playerDestroyTimeoutS), out int i))
+                            if (this.GetArg_Int(nameof(msg.destroyTimeoutS), out int i))
                             {
-                                msg.playerDestroyTimeoutS = i;
+                                msg.destroyTimeoutS = i;
                             }
 
-                            if (this.GetArg_Int(nameof(msg.playerSaveIntervalS), out i))
+                            if (this.GetArg_Int(nameof(msg.saveIntervalS), out i))
                             {
-                                msg.playerSaveIntervalS = i;
+                                msg.saveIntervalS = i;
                             }
 
                             s = this.GetArg_String(nameof(msg.printTALogComsumerBufferSize), false);

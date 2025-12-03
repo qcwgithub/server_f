@@ -61,7 +61,7 @@ public class GenProfile
     public static void GenEnsures(FileFormatter f, ProfileConfig profileConfig)
     {
         // static Ensure
-        f.PushTab().Push("public static ", profileConfig.name, " Ensure(", profileConfig.name, " p)\n");
+        f.PushTab().Push("public static ", profileConfig.name, " Ensure(", profileConfig.name, "? p)\n");
         f.PushTab().Push("{\n");
         f.AddTab(1);
         {
@@ -109,13 +109,7 @@ public class GenProfile
         //     f.PushTab().Push("public string lastDiffField;\n");
         // }
 
-        f.PushTab().Push("public bool IsDifferent(", profileConfig.name, " other\n");//, List<string> tracker = null", ")\n");
-
-        f.Push("#if UNITY_2017_1_OR_NEWER\n");
-        f.PushTab().Push(", List<string> tracker = null\n");
-        f.Push("#endif\n");
-
-        f.PushTab().Push(")\n");
+        f.PushTab().Push("public bool IsDifferent(", profileConfig.name, " other)\n");//, List<string> tracker = null", ")\n");
 
         f.PushTab().Push("{\n");
         f.AddTab(1);
@@ -125,16 +119,11 @@ public class GenProfile
             var config = profileConfig.fields[i];
 
             f.TabPush("if ({0})\n".Format(
-                config.typeInfo.ToIsDifferent("this." + config.name, "other." + config.name, true)));
+                config.typeInfo.ToIsDifferent("this." + config.name, "other." + config.name)));
             f.BlockStart();
             {
                 // if (profileConfig.addLastDiffField)
                 //     f.TabPush("this.lastDiffField = \"", config.name, "\";\n");
-
-
-                f.Push("#if UNITY_2017_1_OR_NEWER\n");
-                f.PushTab().Push("if (tracker != null) tracker.Add(\"", config.name, "\");\n");
-                f.Push("#endif\n");
 
                 f.TabPush("return true;\n");
             }

@@ -20,21 +20,47 @@ namespace Script
                 return ECode.UserNotExist;
             }
 
-            //--------
-            await this.server.playerPSRedis.SetPSId(userId, this.service.serviceId, this.service.psData.playerSaveIntervalS + 60);
-            // {
-            //     this.service.logger.ErrorFormat("!playerRedis.SetPlayerServiceId({0}, )", playerId);
-            //     // ignore error, continue
-            // }
-
-            var msgSave = new MsgDBSavePlayer();
-            msgSave.playerId = userId;
+            var msgSave = new MsgDatabaseSaveUser();
+            msgSave.userId = userId;
             msgSave.profileNullable = new ProfileNullable();
             var profileNullable = msgSave.profileNullable;
 
-            List<string> buffer = null;
+            List<string>? buffer = null;
             Profile last = player.lastProfile;
             Profile curr = player.profile;
+
+            #region auto
+
+            if (last.userId != curr.userId)
+            {
+                profileNullable.userId = curr.userId;
+                last.userId = curr.userId;
+                if (buffer == null) buffer = new List<string>();
+                buffer.Add("userId");
+            }
+            if (last.userName != curr.userName)
+            {
+                profileNullable.userName = curr.userName;
+                last.userName = curr.userName;
+                if (buffer == null) buffer = new List<string>();
+                buffer.Add("userName");
+            }
+            if (last.createTime != curr.createTime)
+            {
+                profileNullable.createTime = curr.createTime;
+                last.createTime = curr.createTime;
+                if (buffer == null) buffer = new List<string>();
+                buffer.Add("createTime");
+            }
+            if (last.lastLoginTimeS != curr.lastLoginTimeS)
+            {
+                profileNullable.lastLoginTimeS = curr.lastLoginTimeS;
+                last.lastLoginTimeS = curr.lastLoginTimeS;
+                if (buffer == null) buffer = new List<string>();
+                buffer.Add("lastLoginTimeS");
+            }
+
+            #endregion auto
 
             // player.lastProfile = curr; // 先假设一定成功吧
             if (last.IsDifferent(curr))
@@ -51,52 +77,21 @@ namespace Script
                 this.logger.InfoFormat("{0} place: {1}, playerId: {2}, fields: [{3}]", this.msgType, msg.place, userId, fieldsStr);
             }
 
-
             if (buffer != null)
             {
 #if DEBUG
                 msgSave.profile_debug = Profile.Ensure(null);
                 msgSave.profile_debug.DeepCopyFrom(curr);
 #endif
-
-                MyResponse r = await this.service.pmSqlUtils.SavePlayerToDB(msgSave);
+                MyResponse r = await this.service.connectToDatabaseService.SendAsync(MsgType._Database_SaveUser, msgSave);
                 if (r.err != ECode.Success)
                 {
-                    this.service.logger.ErrorFormat("SavePlayerToDB error: {0}, playerId: {1}", r.err, userId);
+                    this.service.logger.ErrorFormat("_Database_SaveUser error: {0}, userId: {1}", r.err, userId);
                     return r;
                 }
-
-                // 刷新战力
-                this.service.psScript.UpdatePower(player);
-
-                this.CheckAddToTPOpponents(player);
             }
 
-            this.service.psScript.CheckPlayerReceiveGlobalMails(player);
-
-            //// reply
             return ECode.Success;
-        }
-
-        // 将自己的阵容上传给关卡机器人
-        void CheckAddToTPOpponents(PSPlayer player)
-        {
-            if (!player.addToTPOpponents)
-            {
-                return;
-            }
-            player.addToTPOpponents = false; // reset now!
-
-            int territoryProgress = this.service.gameScripts.unionDefenseScript.CalcTerritoryProgress(player);
-
-            var detail = new TerritoryProgressOpponentDetail();
-            detail.playerId = player.playerId;
-            detail.unionId = player.unionId;
-            detail.territoryProgress = territoryProgress;
-            detail.side = UnionDefenseScript.GetPlayerBattleSide(player, this.service.psData.gameConfigs);
-            detail.timeS = TimeUtils.GetTimeS();
-            detail.isRobot = false;
-            this.server.territoryProgressOpponentsRedis.Add(player.playerId, detail).Forget(this.service);
         }
     }
 }

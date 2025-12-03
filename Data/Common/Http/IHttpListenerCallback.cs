@@ -10,6 +10,6 @@ namespace Data
 
     public interface IHttpListenerCallbackProvider
     {
-        IHttpListenerCallback GetHttpListenerCallback();
+        IHttpListenerCallback? GetHttpListenerCallback();
     }
 }

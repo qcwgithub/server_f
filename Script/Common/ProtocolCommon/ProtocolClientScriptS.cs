@@ -96,7 +96,7 @@ namespace Script
 
         public bool IsServiceConnected(int serviceId)
         {
-            ProtocolClientData socket;
+            ProtocolClientData? socket;
             if (!this.service.data.otherServiceSockets.TryGetValue(serviceId, out socket) || !socket.IsConnected())
             {
                 return false;
@@ -121,7 +121,7 @@ namespace Script
             @this.lastUserId = user.userId;
         }
 
-        public void UnbindPlayer(ProtocolClientData @this, User user)
+        public void UnbindUser(ProtocolClientData @this, User user)
         {
             user.socket = null;
             @this.user = null;
@@ -129,7 +129,7 @@ namespace Script
             @this.user_version = string.Empty;
         }
 
-        public object GetPlayer(ProtocolClientData @this)
+        public object? GetUser(ProtocolClientData @this)
         {
             return @this.user == null ? null : @this.user;
         }

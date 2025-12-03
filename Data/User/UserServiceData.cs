@@ -14,8 +14,8 @@ namespace Data
             return this.userDict.TryGetValue(playerId, out user) ? user : null;
         }
 
-        public int playerDestroyTimeoutS = 600;  // 下线后多久清除此玩家
-        public int playerSaveIntervalS = 60;
+        public int destroyTimeoutS = 600;  // 下线后多久清除此玩家
+        public int saveIntervalS = 60;
         public bool allowNewUser;
 
         public bool hasPlayer;

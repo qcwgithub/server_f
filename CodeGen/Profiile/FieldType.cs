@@ -360,7 +360,7 @@ public static class FieldTypeExt
         return f;
     }
 
-    public static string ToIsDifferent(this FieldTypeInfo typeInfo, string accessThis, string accessOther, bool insertClientTracker)
+    public static string ToIsDifferent(this FieldTypeInfo typeInfo, string accessThis, string accessOther)
     {
         switch (typeInfo.type)
         {
@@ -378,10 +378,7 @@ public static class FieldTypeExt
 
                     case FieldType.class_:
                         {
-                            if (insertClientTracker)
-                                return "{0}.IsDifferent_ListClass({1}\n#if UNITY_2017_1_OR_NEWER\n, tracker\n#endif\n)".Format(accessThis, accessOther);
-                            else
-                                return "{0}.IsDifferent_ListClass({1})".Format(accessThis, accessOther);
+                            return "{0}.IsDifferent_ListClass({1})".Format(accessThis, accessOther);
                         }
 
                     case FieldType.list_:
@@ -415,10 +412,7 @@ public static class FieldTypeExt
 
             case FieldType.class_:
                 {
-                    if (insertClientTracker)
-                        return "{0}.IsDifferent({1}\n#if UNITY_2017_1_OR_NEWER\n, tracker\n#endif\n)".Format(accessThis, accessOther);
-                    else
-                        return "{0}.IsDifferent({1})".Format(accessThis, accessOther);
+                    return "{0}.IsDifferent({1})".Format(accessThis, accessOther);
                 }
 
             case FieldType.dictionary_:
@@ -438,10 +432,7 @@ public static class FieldTypeExt
 
                     case FieldType.class_:
                         {
-                            if (insertClientTracker)
-                                return "{0}.IsDifferent_DictClass({1}\n#if UNITY_2017_1_OR_NEWER\n, tracker\n#endif\n)".Format(accessThis, accessOther);
-                            else
-                                return "{0}.IsDifferent_DictClass({1})".Format(accessThis, accessOther);
+                            return "{0}.IsDifferent_DictClass({1})".Format(accessThis, accessOther);
                         }
 
                     case FieldType.list_:

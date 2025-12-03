@@ -17,7 +17,7 @@ namespace Script
             int serviceId = (int)msg.GetLong("serviceId");
 
             var msg2 = new MsgSaveProfileToFile();
-            msg2.playerId = playerId;
+            msg2.userId = playerId;
             MyResponse r = await this.service.connectToSameServerType.SendToServiceAsync(serviceId, MsgType._SaveProfileToFile, msg2);
             if (r.err == ECode.Success)
             {

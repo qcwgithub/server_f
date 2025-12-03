@@ -45,7 +45,7 @@ namespace Script
         public readonly Server server;
         public readonly int serviceId;
         public TcpListenerScript tcpListenerScript { get; protected set; }
-        public ProtocolClientScriptS baseTcpClientScript { get; private set; }
+        public ProtocolClientScriptS tcpClientScript { get; private set; }
         public HttpListenerScript httpListenerScript { get; protected set; }
         public WebSocketListenerScript webSocketListenerScript { get; protected set; }
 
@@ -62,32 +62,31 @@ namespace Script
         protected void AddHandler<S>()
             where S : Service
         {
-            this.dispatcher.AddHandler(new OnRemoteWillShutdown<S>().Init((S)this));
-            this.dispatcher.AddHandler(new OnGetServiceState<S>().Init((S)this));
+            this.dispatcher.AddHandler(new OnRemoteWillShutdown<S>().Init(this.server, (S)this));
+            this.dispatcher.AddHandler(new OnGetServiceState<S>().Init(this.server, (S)this));
 
-            this.dispatcher.AddHandler(new OnConnectComplete<S>().Init((S)this));
-            this.dispatcher.AddHandler(new OnConnectorInfo<S>().Init((S)this));
-            this.dispatcher.AddHandler(new OnResGetServiceConfigs<S>().Init((S)this));
-            this.dispatcher.AddHandler(new OnGetConnectedInfos<S>().Init((S)this));
-            this.dispatcher.AddHandler(new OnSocketClose<S>().Init((S)this));
-            this.dispatcher.AddHandler(new OnReloadScript<S>().Init((S)this));
-            this.dispatcher.AddHandler(new OnReloadConfigs<S>().Init((S)this));
-            this.dispatcher.AddHandler(new OnGetReloadConfigOptions<S>().Init((S)this));
-            this.dispatcher.AddHandler(new OnGC<S>().Init((S)this));
+            this.dispatcher.AddHandler(new OnConnectComplete<S>().Init(this.server, (S)this));
+            this.dispatcher.AddHandler(new OnConnectorInfo<S>().Init(this.server, (S)this));
+            this.dispatcher.AddHandler(new OnResGetServiceConfigs<S>().Init(this.server, (S)this));
+            this.dispatcher.AddHandler(new OnGetConnectedInfos<S>().Init(this.server, (S)this));
+            this.dispatcher.AddHandler(new OnSocketClose<S>().Init(this.server, (S)this));
+            this.dispatcher.AddHandler(new OnReloadScript<S>().Init(this.server, (S)this));
+            this.dispatcher.AddHandler(new OnReloadConfigs<S>().Init(this.server, (S)this));
+            this.dispatcher.AddHandler(new OnGetReloadConfigOptions<S>().Init(this.server, (S)this));
+            this.dispatcher.AddHandler(new OnGC<S>().Init(this.server, (S)this));
 
-            this.dispatcher.AddHandler(new CheckConnections_Loop<S>().Init((S)this));
-            this.dispatcher.AddHandler(new CheckConnections<S>().Init((S)this));
+            this.dispatcher.AddHandler(new CheckConnections_Loop<S>().Init(this.server, (S)this));
+            this.dispatcher.AddHandler(new CheckConnections<S>().Init(this.server, (S)this));
 
-            this.dispatcher.AddHandler(new OnGetPendingMsgList<S>().Init((S)this));
-            this.dispatcher.AddHandler(new OnGetScriptVersion<S>().Init((S)this));
+            this.dispatcher.AddHandler(new OnGetPendingMsgList<S>().Init(this.server, (S)this));
+            this.dispatcher.AddHandler(new OnGetScriptVersion<S>().Init(this.server, (S)this));
 
-            this.dispatcher.AddHandler(new OnWaitTask<S>().Init((S)this));
-            this.dispatcher.AddHandler(new OnViewMongoDumpList<S>().Init((S)this));
+            this.dispatcher.AddHandler(new OnWaitTask<S>().Init(this.server, (S)this));
+            this.dispatcher.AddHandler(new OnViewMongoDumpList<S>().Init(this.server, (S)this));
         }
 
         public ServiceData data { get; private set; }
         public log4net.ILog logger => this.data.logger;
-        protected abstract ProtocolClientScriptS CreateTcpClientScript();
         public ConnectToSelf connectToSelf { get; private set; }
         public Dictionary<ServiceType, ConnectToOtherService> connectToOtherServiceDict { get; } = new Dictionary<ServiceType, ConnectToOtherService>();
         protected void AddConnectToOtherService(ConnectToOtherService connectToOtherService)
@@ -98,25 +97,20 @@ namespace Script
         {
             this.connectToSelf = new ConnectToSelf(this);
 
-            this.tcpListenerScript = new TcpListenerScript().Init(this);
-            this.baseTcpClientScript = this.CreateTcpClientScript();
-            this.httpListenerScript = new HttpListenerScript().Init(this);
-            this.webSocketListenerScript = new WebSocketListenerScript().Init(this);
+            this.tcpListenerScript = new TcpListenerScript().Init(this.server, this);
+            this.tcpClientScript = new ProtocolClientScriptS().Init(this.server, this);;
+            this.httpListenerScript = new HttpListenerScript().Init(this.server, this);
+            this.webSocketListenerScript = new WebSocketListenerScript().Init(this.server, this);
 
-            this.dispatcher = this.CreateMessageDispatcher(this.server);
-            // this.messagePacker = new JsonMessagePackerS().Init(this.server, this);
+            this.dispatcher = new MessageDispatcher().Init(this.server, this);
             this.messagePackerBin = new BinaryMessagePackerSafe();
 
             this.data = this.server.data.serviceDatas[this.serviceId];
 
-            this.data.tcpClientCallback = this.baseTcpClientScript;
+            this.data.tcpClientCallback = this.tcpClientScript;
             this.data.tcpListenerCallback = this.tcpListenerScript;
             this.data.httpListenerCallback = this.httpListenerScript;
             this.data.webSocketListenerCallback = this.webSocketListenerScript;
-        }
-        protected virtual MessageDispatcher CreateMessageDispatcher(Server server)
-        {
-            return new MessageDispatcher().Init(this);
         }
 
         public bool detaching { get; private set; }
@@ -137,7 +131,7 @@ namespace Script
                 await Task.Delay(1000);
             }
 
-            if (this.data.tcpClientCallback == this.baseTcpClientScript)
+            if (this.data.tcpClientCallback == this.tcpClientScript)
             {
                 this.data.tcpClientCallback = null;
             }

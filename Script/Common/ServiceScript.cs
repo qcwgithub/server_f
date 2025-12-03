@@ -9,11 +9,11 @@ namespace Script
 
     public static class ServiceScriptExt
     {
-        public static SELF Init<SELF, S>(this SELF self, S service)
+        public static SELF Init<SELF, S>(this SELF self, Server server, S service)
             where SELF : ServiceScript<S>
             where S : Service
         {
-            self.server = service.server;
+            self.server = server;
             self.service = service;
             return self;
         }

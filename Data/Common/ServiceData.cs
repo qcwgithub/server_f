@@ -26,23 +26,23 @@ namespace Data
         public ILog logger;
 
         // tcp listener
-        public ITcpListenerCallback tcpListenerCallback;
-        public ITcpListenerCallback GetTcpListenerCallback() => this.tcpListenerCallback;
+        public ITcpListenerCallback? tcpListenerCallback;
+        public ITcpListenerCallback? GetTcpListenerCallback() => this.tcpListenerCallback;
 
         // tcp client callback
-        public IProtocolClientCallback tcpClientCallback;
-        public IProtocolClientCallback GetProtocolClientCallback() => this.tcpClientCallback;
+        public IProtocolClientCallback? tcpClientCallback;
+        public IProtocolClientCallback? GetProtocolClientCallback() => this.tcpClientCallback;
 
         public TcpListenerData? tcpListenerForServer;
         public TcpListenerData? tcpListenerForClient;
 
         // http listener
-        public IHttpListenerCallback httpListenerCallback;
-        public IHttpListenerCallback GetHttpListenerCallback() => this.httpListenerCallback;
+        public IHttpListenerCallback? httpListenerCallback;
+        public IHttpListenerCallback? GetHttpListenerCallback() => this.httpListenerCallback;
         public HttpListenerData? httpListenerDataForAll;
 
-        public IWebSocketListenerCallback webSocketListenerCallback;
-        public IWebSocketListenerCallback GetWebSocketListenerCallback() => this.webSocketListenerCallback;
+        public IWebSocketListenerCallback? webSocketListenerCallback;
+        public IWebSocketListenerCallback? GetWebSocketListenerCallback() => this.webSocketListenerCallback;
         public WebSocketListenerData? webSocketListenerDataForServer;
         public WebSocketListenerData? webSocketListenerDataForClient;
 

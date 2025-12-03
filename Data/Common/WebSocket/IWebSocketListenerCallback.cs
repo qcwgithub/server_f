@@ -11,6 +11,6 @@ namespace Data
 
     public interface IWebSocketListenerCallbackProvider
     {
-        IWebSocketListenerCallback GetWebSocketListenerCallback();
+        IWebSocketListenerCallback? GetWebSocketListenerCallback();
     }
 }

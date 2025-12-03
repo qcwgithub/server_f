@@ -12,7 +12,6 @@ public class Create_XXXProxy
         ff.TabPush("using StackExchange.Redis;\n");
         ff.TabPush("using System.Collections.Generic;\n");
         ff.TabPush("using Data;\n");
-        ff.TabPush("using longid = System.Int64;\n");
 
         config.PushUsingOriginal(ff);
 

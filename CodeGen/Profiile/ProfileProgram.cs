@@ -49,23 +49,18 @@ public class ProfileProgram
     static void DoMainProfileStuff(ProfileConfig profileConfig)
     {
         List<ProfileFieldConfig> fields = profileConfig.fields;
-        ReplaceFile("Data/Common/Messages/ProfileNullable.cs", new Mark[]
+        ReplaceFile("Data/Common/ProfileNullable.cs", new Mark[]
         {
             new Mark { startMark = "#region auto", text = GenProfileNullable.Do(fields) }
         });
-        ReplaceFile("Data/Common/SCCommonData/Profile_Db.cs", new Mark[]
+        ReplaceFile("Data/Common/Profile_Db.cs", new Mark[]
         {
             new Mark { startMark = "#region auto", text = GenProfile_Db.Do(profileConfig) }
         });
 
-        ReplaceFile("Script/PM/ServerHandler/PlayerS_SavePlayer.cs", new Mark[]
+        ReplaceFile("Script/User/User_SaveUser.cs", new Mark[]
         {
             new Mark { startMark = "#region auto", text = GenPMSavePlayer.Do(fields) }
-        });
-
-        ReplaceFile("Script/PM/PMScriptCreateNewPlayer.cs", new Mark[]
-        {
-            new Mark { startMark = "#region auto", text = GenPMScriptCreateNewPlayer.Do(fields) }
         });
 
         /* ReplaceFile("Script/DBPlayer/table_player.cs", new Mark[]
@@ -78,7 +73,7 @@ public class ProfileProgram
             new Mark { startMark = "#region autoSave", text = Gen_table_player.Save(fields) },
         }); */
 
-        ReplaceFile("Script/DBPlayer/collection_player.cs", new Mark[]
+        ReplaceFile("Script/Database/collections/collection_user.cs", new Mark[]
         {
             new Mark { startMark = "#region autoSave", text = Gen_collection_player.Save(fields) },
         });
@@ -133,7 +128,7 @@ public class ProfileProgram
             profileConfig.fields.Add(c);
         }
 
-        ReplaceFile("Data/Common/SCCommonData/" + profileConfig.name + ".cs", new Mark[]
+        ReplaceFile("Data/User/" + profileConfig.name + ".cs", new Mark[]
         {
             new Mark { startMark = "#region auto", text = GenProfile.Gen(profileConfig) },
         });
@@ -199,11 +194,8 @@ public class ProfileProgram
         {
             string text = @"using System.Collections.Generic;
 using MessagePack;
-using longid = System.Int64;
 using System.Numerics;
-#if !UNITY_2017_1_OR_NEWER
 using MongoDB.Bson.Serialization.Attributes;
-#endif
 
 namespace Data
 {{
@@ -213,17 +205,17 @@ namespace Data
         #endregion auto
     }}
 }}";
-            File.WriteAllText("Data/Common/SCCommonData/" + list[i].name + "_Db.cs", string.Format(text, list[i].name));
+            File.WriteAllText("Data/Common/" + list[i].name + "_Db.cs", string.Format(text, list[i].name));
 
 
-            // File.Copy("Data/Common/SCCommonData/" + list[i].name + ".cs", "Data/Common/SCCommonData/" + list[i].name + "Nullable.cs", true);
+            // File.Copy("Data/Common/" + list[i].name + ".cs", "Data/Common/SCCommonData/" + list[i].name + "Nullable.cs", true);
 
-            ReplaceFile("Data/Common/SCCommonData/" + list[i].name + ".cs", new Mark[]
+            ReplaceFile("Data/Common/" + list[i].name + ".cs", new Mark[]
             {
                 new Mark { startMark = "#region auto", text = GenProfile.Gen(list[i]) },
             });
 
-            ReplaceFile("Data/Common/SCCommonData/" + list[i].name + "_Db.cs", new Mark[]
+            ReplaceFile("Data/Common/" + list[i].name + "_Db.cs", new Mark[]
             {
                 new Mark { startMark = "#region auto", text = GenProfile_Db.Do(list[i]) },
             });

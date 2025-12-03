@@ -10,7 +10,7 @@ namespace Script
 
         public User? GetUser(ProtocolClientData socket)
         {
-            object obj = this.service.tcpClientScript.GetPlayer(socket);
+            object obj = this.service.tcpClientScript.GetUser(socket);
             return (obj == null ? null : (User)obj);
         }
     }

@@ -23,7 +23,6 @@ public class Create_MsgSave_XXX
 
         ff.TabPush("using System.Collections.Generic;\n");
         ff.TabPush("using MessagePack;\n");
-        ff.TabPush("using longid = System.Int64;\n");
         ff.Push("\n");
 
         ff.TabPush("namespace Data\n");

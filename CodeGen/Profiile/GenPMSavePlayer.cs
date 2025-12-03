@@ -22,7 +22,7 @@ public class GenPMSavePlayer
                 string accessOther = "curr." + config.name;
 
                 f.TabPush("if ({0})\n".Format(
-                    config.typeInfo.ToIsDifferent(accessThis, accessOther, false)));
+                    config.typeInfo.ToIsDifferent(accessThis, accessOther)));
                 f.BlockStart();
                 {
                     f.TabPush("profileNullable.{0} = {1};\n".Format(config.name, accessOther));
