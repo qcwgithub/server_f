@@ -422,7 +422,7 @@ public class Create_XXXProxy
         }
         ff.BlockEnd();
 
-        string dir = "server/Script/Common/DataProxy/";
+        string dir = "Script/Common/DataProxy/";
         Directory.CreateDirectory(dir);
         string path = dir + config.profileType + "Proxy" + config.postfix + ".cs";
         File.WriteAllText(path, ff.GetString());

@@ -47,14 +47,14 @@ public class Create_PersistenceTask_XXX
         }
 
 
-        ProfileProgram.ReplaceFile("server/Data/Common/stDirtyElement.cs", new Mark[]
+        ProfileProgram.ReplaceFile("Data/Common/stDirtyElement.cs", new Mark[]
         {
                 new Mark { startMark = "#region auto_create", text = f_create.GetString() },
                 new Mark { startMark = "#region auto_toString", text = f_toString.GetString() },
                 new Mark { startMark = "#region auto_fromString", text = f_fromString.GetString() },
         });
 
-        ProfileProgram.ReplaceFile("server/Data/Common/DirtyElementType.cs", new Mark[]
+        ProfileProgram.ReplaceFile("Data/Common/DirtyElementType.cs", new Mark[]
         {
             new Mark { startMark = "#region auto_enum", text = f_enum.GetString() },
         });

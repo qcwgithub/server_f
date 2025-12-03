@@ -6,7 +6,7 @@ public class Create_collection_xxx
     {
         string content = GetContent(config);
 
-        string path = $"server/Script/{config.dbFilesConfig.scriptFolder}/{config.fileName}{config.postfix}.cs";
+        string path = $"Script/{config.dbFilesConfig.scriptFolder}/{config.fileName}{config.postfix}.cs";
 
         Directory.CreateDirectory(Path.GetDirectoryName(path));
         File.WriteAllText(path, content);

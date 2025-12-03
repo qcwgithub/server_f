@@ -5,7 +5,7 @@ public class Create_MsgSave_XXX
 {
     public static void Create(ServerDataConfig config)
     {
-        string dir = "server/Data/Common/Messages/";
+        string dir = "Data/Common/Messages/";
         Directory.CreateDirectory(dir);
         foreach (var query in config.query)
         {

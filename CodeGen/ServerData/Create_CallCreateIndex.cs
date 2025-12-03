@@ -16,7 +16,7 @@ public class Create_CallCreateIndex
 
         foreach (var config in configs)
         {
-            string path = string.Format("server/Script/{0}/{1}.cs", config.dbFilesConfig.scriptFolder, config.dbFilesConfig.scriptOnStart);
+            string path = string.Format("Script/{0}/{1}.cs", config.dbFilesConfig.scriptFolder, config.dbFilesConfig.scriptOnStart);
             int index = list.FindIndex(_ => _.path == path);
             if (index < 0)
             {

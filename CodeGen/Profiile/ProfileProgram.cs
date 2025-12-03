@@ -49,26 +49,26 @@ public class ProfileProgram
     static void DoMainProfileStuff(ProfileConfig profileConfig)
     {
         List<ProfileFieldConfig> fields = profileConfig.fields;
-        ReplaceFile("server/Data/Common/Messages/ProfileNullable.cs", new Mark[]
+        ReplaceFile("Data/Common/Messages/ProfileNullable.cs", new Mark[]
         {
             new Mark { startMark = "#region auto", text = GenProfileNullable.Do(fields) }
         });
-        ReplaceFile("server/Data/Common/SCCommonData/Profile_Db.cs", new Mark[]
+        ReplaceFile("Data/Common/SCCommonData/Profile_Db.cs", new Mark[]
         {
             new Mark { startMark = "#region auto", text = GenProfile_Db.Do(profileConfig) }
         });
 
-        ReplaceFile("server/Script/PM/ServerHandler/PlayerS_SavePlayer.cs", new Mark[]
+        ReplaceFile("Script/PM/ServerHandler/PlayerS_SavePlayer.cs", new Mark[]
         {
             new Mark { startMark = "#region auto", text = GenPMSavePlayer.Do(fields) }
         });
 
-        ReplaceFile("server/Script/PM/PMScriptCreateNewPlayer.cs", new Mark[]
+        ReplaceFile("Script/PM/PMScriptCreateNewPlayer.cs", new Mark[]
         {
             new Mark { startMark = "#region auto", text = GenPMScriptCreateNewPlayer.Do(fields) }
         });
 
-        /* ReplaceFile("server/Script/DBPlayer/table_player.cs", new Mark[]
+        /* ReplaceFile("Script/DBPlayer/table_player.cs", new Mark[]
         {
             new Mark { startMark = "#region autoVerifyCount", text = Gen_table_player.VerifyColumn_Count(fields) },
             new Mark { startMark = "#region autoVerifyColumn", text = Gen_table_player.VerifyColumn(fields) },
@@ -78,7 +78,7 @@ public class ProfileProgram
             new Mark { startMark = "#region autoSave", text = Gen_table_player.Save(fields) },
         }); */
 
-        ReplaceFile("server/Script/DBPlayer/collection_player.cs", new Mark[]
+        ReplaceFile("Script/DBPlayer/collection_player.cs", new Mark[]
         {
             new Mark { startMark = "#region autoSave", text = Gen_collection_player.Save(fields) },
         });
@@ -110,7 +110,7 @@ public class ProfileProgram
         profileConfig.name = "Profile";
         profileConfig.addLastDiffField = true;
         profileConfig.fields = new List<ProfileFieldConfig>();
-        Script.CsvHelper helper = Script.CsvUtils.Parse(CodeGen.Program.ReadAllText("server/CodeGen/ProfileConfig.csv"));
+        Script.CsvHelper helper = Script.CsvUtils.Parse(CodeGen.Program.ReadAllText("CodeGen/ProfileConfig.csv"));
         while (helper.ReadRow())
         {
             var c = new ProfileFieldConfig();
@@ -133,7 +133,7 @@ public class ProfileProgram
             profileConfig.fields.Add(c);
         }
 
-        ReplaceFile("server/Data/Common/SCCommonData/" + profileConfig.name + ".cs", new Mark[]
+        ReplaceFile("Data/Common/SCCommonData/" + profileConfig.name + ".cs", new Mark[]
         {
             new Mark { startMark = "#region auto", text = GenProfile.Gen(profileConfig) },
         });
@@ -143,7 +143,7 @@ public class ProfileProgram
 
     static void Do2()
     {
-        Script.CsvHelper helper = Script.CsvUtils.Parse(CodeGen.Program.ReadAllText("server/CodeGen/ProfileXConfig.csv"));
+        Script.CsvHelper helper = Script.CsvUtils.Parse(CodeGen.Program.ReadAllText("CodeGen/ProfileXConfig.csv"));
 
         ProfileConfig profileConfig = null;
         List<ProfileConfig> list = new List<ProfileConfig>();
@@ -213,17 +213,17 @@ namespace Data
         #endregion auto
     }}
 }}";
-            File.WriteAllText("server/Data/Common/SCCommonData/" + list[i].name + "_Db.cs", string.Format(text, list[i].name));
+            File.WriteAllText("Data/Common/SCCommonData/" + list[i].name + "_Db.cs", string.Format(text, list[i].name));
 
 
-            // File.Copy("server/Data/Common/SCCommonData/" + list[i].name + ".cs", "server/Data/Common/SCCommonData/" + list[i].name + "Nullable.cs", true);
+            // File.Copy("Data/Common/SCCommonData/" + list[i].name + ".cs", "Data/Common/SCCommonData/" + list[i].name + "Nullable.cs", true);
 
-            ReplaceFile("server/Data/Common/SCCommonData/" + list[i].name + ".cs", new Mark[]
+            ReplaceFile("Data/Common/SCCommonData/" + list[i].name + ".cs", new Mark[]
             {
                 new Mark { startMark = "#region auto", text = GenProfile.Gen(list[i]) },
             });
 
-            ReplaceFile("server/Data/Common/SCCommonData/" + list[i].name + "_Db.cs", new Mark[]
+            ReplaceFile("Data/Common/SCCommonData/" + list[i].name + "_Db.cs", new Mark[]
             {
                 new Mark { startMark = "#region auto", text = GenProfile_Db.Do(list[i]) },
             });

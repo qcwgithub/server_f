@@ -90,7 +90,7 @@ public class Create_XXXId
             }
             ff.BlockEnd();
 
-            File.WriteAllText($"server/Data/Common/SCCommonData/{config.name}.cs", ff.GetString());
+            File.WriteAllText($"Data/Common/SCCommonData/{config.name}.cs", ff.GetString());
         }
     }
 }

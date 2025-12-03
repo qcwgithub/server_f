@@ -92,28 +92,28 @@ public class ServerDataConfig
                 {
                     server_class = "NormalServer",
                     server_var = "server",
-                    server_path = "server/Script/NormalServer.cs",
+                    server_path = "Script/NormalServer.cs",
                     serviceType = "DBPlayer",
                     serviceClassName = "DBPlayerService",
                     scriptFolder = "DBPlayer",
                     scriptOnStart = "DBPlayer_Start",
                     PersistenceTaskQueueHandler_class = "PersistenceTaskQueueHandler",
-                    PersistenceTaskQueueHandler_path = "server/Script/DBPlayer/PersistenceTask/PersistenceTaskQueueHandler.cs",
-                    PersistenceTaskQueueHandler_path2 = (profileType, postfix) => $"server/Script/DBPlayer/PersistenceTask/PersistenceTaskQueueHandler.{profileType}{postfix}.cs",
+                    PersistenceTaskQueueHandler_path = "Script/DBPlayer/PersistenceTask/PersistenceTaskQueueHandler.cs",
+                    PersistenceTaskQueueHandler_path2 = (profileType, postfix) => $"Script/DBPlayer/PersistenceTask/PersistenceTaskQueueHandler.{profileType}{postfix}.cs",
                 };
 
                 s_dbFilesConfigDict[c_dbGroup] = new DbFilesConfig
                 {
                     server_class = "GroupServer",
                     server_var = "server",
-                    server_path = "server/Script/GroupServer.cs",
+                    server_path = "Script/GroupServer.cs",
                     serviceType = "DBGroup",
                     serviceClassName = "DBGroupService",
                     scriptFolder = "DBGroup",
                     scriptOnStart = "DBGroup_Start",
                     PersistenceTaskQueueHandler_class = "DBGroup_PersistenceTaskQueueHandler",
-                    PersistenceTaskQueueHandler_path = "server/Script/DBGroup/PersistenceTask/DBGroup_PersistenceTaskQueueHandler.cs",
-                    PersistenceTaskQueueHandler_path2 = (profileType, postfix) => $"server/Script/DBGroup/PersistenceTask/DBGroup_PersistenceTaskQueueHandler.{profileType}{postfix}.cs",
+                    PersistenceTaskQueueHandler_path = "Script/DBGroup/PersistenceTask/DBGroup_PersistenceTaskQueueHandler.cs",
+                    PersistenceTaskQueueHandler_path2 = (profileType, postfix) => $"Script/DBGroup/PersistenceTask/DBGroup_PersistenceTaskQueueHandler.{profileType}{postfix}.cs",
                 };
             }
             return s_dbFilesConfigDict[this.dbName];

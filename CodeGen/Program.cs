@@ -190,7 +190,7 @@ namespace CodeGen
 
             if (action.Contains("messagePack"))
             {
-                // GenMessageCode.SaveInt("server/Data/Common/Gen/MessageCode.cs");
+                // GenMessageCode.SaveInt("Data/Common/Gen/MessageCode.cs");
                 // return;
 
                 // client

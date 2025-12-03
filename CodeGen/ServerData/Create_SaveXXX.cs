@@ -6,7 +6,7 @@ public class Create_SaveXXX
 {
     public static void Create(ServerDataConfig config)
     {
-        string dir = string.Format("server/Script/{0}/", config.dbFilesConfig.scriptFolder);
+        string dir = string.Format("Script/{0}/", config.dbFilesConfig.scriptFolder);
         Directory.CreateDirectory(dir);
 
         foreach (var save in config.save)

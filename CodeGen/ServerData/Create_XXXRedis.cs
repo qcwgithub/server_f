@@ -70,7 +70,7 @@ public class Create_XXXRedis
         }
         ff.BlockEnd();
 
-        string dir = "server/Script/Common/Redis/";
+        string dir = "Script/Common/Redis/";
         Directory.CreateDirectory(dir);
         string path = dir + config.profileType + "Redis.cs";
         File.WriteAllText(path, ff.GetString());
