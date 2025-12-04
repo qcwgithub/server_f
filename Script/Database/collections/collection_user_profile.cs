@@ -1,17 +1,11 @@
-using System.Collections.Immutable;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Data;
 using MongoDB.Driver;
 using MongoDB.Bson;
 using Script;
-using System.Text.RegularExpressions;
-using System.Linq;
 
-public class collection_user : ServiceScript<DatabaseService>
+public class collection_user_profile : ServiceScript<DatabaseService>
 {
-    public const string COLLECTION = "user";
+    public const string COLLECTION = "user_profile";
     MongoClient mongoClient => this.server.data.mongoClient;
     string dbName => this.server.data.mongoDBConfig.dbData;
 
@@ -48,20 +42,14 @@ public class collection_user : ServiceScript<DatabaseService>
             // nameof(Profile.userName), true, false, this.service.logger);
     }
 
-    public async Task<MyResponse> QueryById(long userId)
+    public async Task<MyResponse> Query(long userId)
     {
         var collection = this.GetCollection();
 
         var filter = Builders<Profile>.Filter.Eq(nameof(Profile.userId), userId);
         var find = await collection.FindAsync(filter);
-        Profile info = await find.FirstOrDefaultAsync();
-        var list = new List<Profile>();
-        if (info != null)
-        {
-            list.Add(info);
-        }
-
-        return new MyResponse(ECode.Success, list);
+        Profile profile = await find.FirstOrDefaultAsync();
+        return new MyResponse(ECode.Success, profile);
     }
 
     public async Task<Dictionary<long, Profile>> Iterate_dictOf_Profile_by_userId(long start_userId, long end_userId)
@@ -83,7 +71,7 @@ public class collection_user : ServiceScript<DatabaseService>
         return dict;
     }
 
-    public async Task<MyResponse> Insert(long userId, Profile profile)
+    public async Task<MyResponse> Insert(Profile profile)
     {
         var profile_Db = ProfileHelper_Db.Copy_Class<Profile_Db, Profile>(profile);
 
@@ -135,12 +123,12 @@ public class collection_user : ServiceScript<DatabaseService>
             updList.Add(upd);
         }
 
-        if (profileNullable.createTime != null)
+        if (profileNullable.createTimeS != null)
         {
-            var createTime_Db = ProfileHelper_Db.Copy_long(profileNullable.createTime.Value);
-            var upd = createTime_Db != null
-                ? Builders<Profile_Db>.Update.Set(nameof(Profile_Db.createTime), createTime_Db)
-                : Builders<Profile_Db>.Update.Unset(nameof(Profile_Db.createTime));
+            var createTimeS_Db = ProfileHelper_Db.Copy_long(profileNullable.createTimeS.Value);
+            var upd = createTimeS_Db != null
+                ? Builders<Profile_Db>.Update.Set(nameof(Profile_Db.createTimeS), createTimeS_Db)
+                : Builders<Profile_Db>.Update.Unset(nameof(Profile_Db.createTimeS));
             updList.Add(upd);
         }
 

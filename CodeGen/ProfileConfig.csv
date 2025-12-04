@@ -1,5 +1,5 @@
 type,type2,type3,type4,type5,name,comment
 long_,,,,,userId,
 string_,,,,,userName,
-long_,,,,,createTime,
+long_,,,,,createTimeS,
 long_,,,,,lastLoginTimeS,

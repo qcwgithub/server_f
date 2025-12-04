@@ -109,7 +109,7 @@ namespace Script
 
         public void BindUser(ProtocolClientData @this, User user)
         {
-            if (!user.IsRealPrepareLogin(out MsgPreparePlayerLogin msgPreparePlayerLogin))
+            if (!user.IsRealPrepareLogin(out MsgPrepareUserLogin msgPreparePlayerLogin))
             {
                 MyDebug.Assert(false);
             }

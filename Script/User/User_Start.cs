@@ -11,7 +11,7 @@ namespace Script
     {
         protected override async Task<ECode> Handle2()
         {
-            var sd = this.service.usData;
+            var sd = this.service.sd;
             var serviceConfig = sd.serviceConfig;
 
             if (string.IsNullOrEmpty(serviceConfig.outIp))

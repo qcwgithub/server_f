@@ -3,12 +3,9 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class MsgInsertUser
+    public class MsgInsertUserProfile
     {
         [Key(0)]
-        public long userId;
-        
-        [Key(1)]
         public Profile profile;
     }    
 }

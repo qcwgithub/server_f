@@ -11,7 +11,7 @@ namespace Data
     }
     public static class ITimerEx
     {
-        public static bool IsAlive(this ITimer timer)
+        public static bool IsAlive(this ITimer? timer)
         {
             return timer != null && ((TimerInfo)timer).timerId != 0;
         }
@@ -22,17 +22,17 @@ namespace Data
         public long timerId;
         public int serviceId;
         public int timeoutS;
-        public int nextTimeS;
+        public long nextTimeS;
         public MsgType msgType;
         public object msg;
         public bool loop;
     }
 
-    public class TimerDataComparer : IComparer<int>
+    public class TimerDataComparer : IComparer<long>
     {
-        public int Compare(int s1, int s2)
+        public int Compare(long s1, long s2)
         {
-            return s1 - s2;
+            return (int)(s1 - s2);
         }
     }
 
@@ -47,10 +47,10 @@ namespace Data
         public long nextId = 1;
 
         public List<(int, MsgType, object)> tempList = new List<(int, MsgType, object)>();
-        public SortedDictionary<int, List<TimerInfo>> triggerDict = new SortedDictionary<int, List<TimerInfo>>(new TimerDataComparer());
+        public SortedDictionary<long, List<TimerInfo>> triggerDict = new SortedDictionary<long, List<TimerInfo>>(new TimerDataComparer());
         public Dictionary<long, TimerInfo> timerDict = new Dictionary<long, TimerInfo>();
         
-        public int minTimeS = int.MaxValue;
+        public long minTimeS = long.MaxValue;
 
         public bool started { get; private set; }
         public int tickIntervalMs = 1000;

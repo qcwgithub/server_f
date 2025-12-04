@@ -43,8 +43,6 @@ namespace Data
         [Key(1)]
         public Profile profile;
         [Key(2)]
-        public bool isNewProfile;
-        [Key(3)]
         public bool kickOther; // 顶号
     }
 }

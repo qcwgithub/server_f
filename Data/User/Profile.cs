@@ -13,7 +13,7 @@ namespace Data
         [Key(1)]
         public string userName;
         [Key(2)]
-        public long createTime;
+        public long createTimeS;
         [Key(3)]
         public long lastLoginTimeS;
 
@@ -45,7 +45,7 @@ namespace Data
             {
                 return true;
             }
-            if (this.createTime != other.createTime)
+            if (this.createTimeS != other.createTimeS)
             {
                 return true;
             }
@@ -60,7 +60,7 @@ namespace Data
         {
             this.userId = other.userId;
             this.userName = other.userName;
-            this.createTime = other.createTime;
+            this.createTimeS = other.createTimeS;
             this.lastLoginTimeS = other.lastLoginTimeS;
         }
 

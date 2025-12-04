@@ -13,7 +13,7 @@ namespace Data
         [BsonIgnoreIfNull]
         public string userName;
         [BsonIgnoreIfNull]
-        public long? createTime;
+        public long? createTimeS;
         [BsonIgnoreIfNull]
         public long? lastLoginTimeS;
 
@@ -33,8 +33,8 @@ namespace Data
                 empty = false;
             }
 
-            this.createTime = ProfileHelper_Db.Copy_long(other.createTime);
-            if (this.createTime != null)
+            this.createTimeS = ProfileHelper_Db.Copy_long(other.createTimeS);
+            if (this.createTimeS != null)
             {
                 empty = false;
             }

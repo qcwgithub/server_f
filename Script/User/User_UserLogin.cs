@@ -10,21 +10,10 @@ namespace Script
     public class User_UserLogin : UserHandler
     {
         public override MsgType msgType { get { return MsgType.UserLogin; } }
-        public static MyResponse CreateResLoginFailed_ShouldGoToAAA(ECode e, int retryAAAMs)
-        {
-            var resFailed = new ResLoginFailed();
-            resFailed.isAAA = false;
-            resFailed.reloginSdk = false; // ignore this field
-            resFailed.retryAAA = true;
-            resFailed.retryAAAMs = retryAAAMs;
-            resFailed.retryPlayer = false;
-            resFailed.retryPlayerMs = 0;
-            return new MyResponse(e, resFailed);
-        }
 
         public static void HandleOldSocket(Service service, User user)
         {
-            ProtocolClientData oldSocket = user.socket;
+            ProtocolClientData? oldSocket = user.socket;
             if (oldSocket == null)
             {
                 return;
@@ -82,7 +71,7 @@ namespace Script
             if (this.service.data.state != ServiceState.Started)
             {
                 this.logger.Info(message0 + ": server not ready, should go to AAA");
-                return CreateResLoginFailed_ShouldGoToAAA(ECode.ServerNotReady, 1000).ToTask();
+                return ECode.ServerNotReady.ToTask();
             }
 
             long userId = msg.userId;
@@ -90,33 +79,33 @@ namespace Script
             if (userId <= 0 || msg.token == null)
             {
                 this.logger.Info(message0 + ": userId <= 0 || msg.token == null, should go to AAA");
-                return CreateResLoginFailed_ShouldGoToAAA(ECode.InvalidParam, 3000).ToTask();
+                return ECode.InvalidParam.ToTask();
             }
 
             User? user = this.usData.GetUser(userId);
             if (user == null)
             {
                 this.logger.Info(message0 + ": user == null, should go to AAA");
-                return CreateResLoginFailed_ShouldGoToAAA(ECode.ShouldLoginAAA, 0).ToTask();
+                return ECode.ShouldLoginAAA.ToTask();
             }
 
             if (user.destroying)
             {
                 // 其实不是错误，但是想要知道一下有没有触发这种情况
                 this.logger.Error(message0 + ": user.destroying, should go to AAA");
-                return CreateResLoginFailed_ShouldGoToAAA(ECode.ShouldLoginAAA, 1000).ToTask();
+                return ECode.ShouldLoginAAA.ToTask();
             }
 
-            if (!user.IsRealPrepareLogin(out MsgPreparePlayerLogin msgPreparePlayerLogin))
+            if (!user.IsRealPrepareLogin(out MsgPrepareUserLogin msgPrepare))
             {
                 this.logger.Error(message0 + ": !IsRealPrepareLogin, should go to AAA");
-                return CreateResLoginFailed_ShouldGoToAAA(ECode.ShouldLoginAAA, 1000).ToTask();
+                return ECode.ShouldLoginAAA.ToTask();
             }
 
-            if (msg.token != msgPreparePlayerLogin.token)
+            if (msg.token != msgPrepare.token)
             {
                 this.logger.Error(message0 + ": msg.token != msgPreparePlayerLogin.token, should go to AAA");
-                return CreateResLoginFailed_ShouldGoToAAA(ECode.InvalidToken, 1000).ToTask();
+                return ECode.InvalidToken.ToTask();
             }
 
             int delayS = this.NeedDelayLogin(user);
@@ -143,10 +132,8 @@ namespace Script
                 // 情况1 同一个客户端意外地登录2次
                 // 情况2 客户端A已经登录，B再登录
                 this.logger.Error(message0 + $": oldUser != null ({oldUser.userId}), should go to AAA");
-                return CreateResLoginFailed_ShouldGoToAAA(ECode.OldUser, 2000)
-                        .ToTask();
+                return ECode.OldUser.ToTask();
             }
-
 
             this.logger.Info(message0 + ": check ok");
 
@@ -157,7 +144,7 @@ namespace Script
 
             this.service.tcpClientScript.BindUser(socket, user);
 
-            int nowS = TimeUtils.GetTimeS();
+            long nowS = TimeUtils.GetTimeS();
             user.onlineTimeS = nowS;
             if (user.onlineTimeS <= user.offlineTimeS)
             {
@@ -170,12 +157,8 @@ namespace Script
             var res = new ResUserLogin();
             res.userId = userId;
             res.profile = user.profile;
-            res.isNewProfile = user.isNewProfile;
             res.kickOther = kickOther;
             user.profile.lastLoginTimeS = nowS;
-
-            // reset isNewProfile
-            user.isNewProfile = false;
             return new MyResponse(ECode.Success, res).ToTask();
         }
     }

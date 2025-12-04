@@ -11,7 +11,7 @@ namespace Script
         {
             this.service.logger.Info(nameof(StopBusinesses));
 
-            UserServiceData usData = this.service.usData;
+            UserServiceData usData = this.service.sd;
 
             //// allowNewUser = false
             usData.allowNewUser = false;

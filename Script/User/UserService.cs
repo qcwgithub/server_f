@@ -8,14 +8,14 @@ namespace Script
         public ConnectToDatabaseService connectToDatabaseService { get; private set; }
         public ConnectToGlobalService connectToGlobalService { get; private set; }
 
-        public UserServiceData usData
+        public UserServiceData sd
         {
             get
             {
                 return (UserServiceData)this.data;
             }
         }
-        public UserServiceScript usScript;
+        public UserServiceScript ss;
 
         public UserService(Server server, int serviceId) : base(server, serviceId)
         {
@@ -41,65 +41,14 @@ namespace Script
             this.dispatcher.AddHandler(new User_OnSocketClose().Init(this.server, this));
             this.dispatcher.AddHandler(new User_SaveUser().Init(this.server, this));
             this.dispatcher.AddHandler(new User_SaveUserImmediately().Init(this.server, this));
+            this.dispatcher.AddHandler(new User_SetGmFlag().Init(this.server, this));
 
-            this.usScript = new UserServiceScript().Init(this.server, this);
+            this.ss = new UserServiceScript().Init(this.server, this);
         }
 
         public override async Task Detach()
         {
             await base.Detach();
-        }
-
-        public async Task<ECode> WaitServiceConnectedAndStarted(ConnectToOtherService connectToOtherService, MsgType msgType)
-        {
-            int counter = 0;
-
-            while (true)
-            {
-                if (this.data.state >= ServiceState.ShuttingDown)
-                {
-                    return ECode.ServiceIsShuttingDown;
-                }
-
-                counter++;
-                if (counter == 2)
-                {
-                    this.logger.InfoFormat("{0} Wait connect to {1}...", msgType, connectToOtherService.to);
-                }
-
-                var r = await connectToOtherService.SendAsync(MsgType._GetServiceState, null);
-                if (r.err != ECode.Success)
-                {
-                    await Task.Delay(100);
-                    continue;
-                }
-
-                var res = r.CastRes<ResGetServiceState>();
-                if (res.serviceState != ServiceState.Started)
-                {
-                    await Task.Delay(100);
-                    continue;
-                }
-
-                if (counter >= 2)
-                {
-                    this.logger.InfoFormat("{0} Wait connect to {1}...Done", msgType, connectToOtherService.to);
-                }
-                break;
-            }
-
-            return ECode.Success;
-        }
-
-        public bool IsShuttingDown()
-        {
-            return this.data.state >= ServiceState.ShuttingDown;
-        }
-
-        public void SetState(ServiceState s)
-        {
-            this.data.state = s;
-            this.logger.Info(s);
         }
     }
 }

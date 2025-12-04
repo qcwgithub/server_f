@@ -35,13 +35,13 @@ namespace Script
 
             if (user.destroyTimer.IsAlive())
             {
-                this.service.usScript.ClearDestroyTimer(user, false);
+                this.service.ss.ClearDestroyTimer(user, false);
             }
 
             // clear save timer
             if (user.saveTimer.IsAlive())
             {
-                this.service.usScript.ClearSaveTimer(user);
+                this.service.ss.ClearSaveTimer(user);
             }
 
             user.destroying = true;

@@ -9,7 +9,7 @@ namespace Data
                 return;
             }
 
-            var nowS = TimeUtils.GetTimeS();
+            long nowS = TimeUtils.GetTimeS();
             if (nowS < this.minTimeS)
             {
                 return;
@@ -25,7 +25,7 @@ namespace Data
             }
 
             // reset minTimeS to a big value
-            this.minTimeS = int.MaxValue;
+            this.minTimeS = long.MaxValue;
 
             // update minTimeS
             foreach (var kv in this.triggerDict)

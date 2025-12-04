@@ -45,12 +45,12 @@ namespace Script
                 if (buffer == null) buffer = new List<string>();
                 buffer.Add("userName");
             }
-            if (last.createTime != curr.createTime)
+            if (last.createTimeS != curr.createTimeS)
             {
-                profileNullable.createTime = curr.createTime;
-                last.createTime = curr.createTime;
+                profileNullable.createTimeS = curr.createTimeS;
+                last.createTimeS = curr.createTimeS;
                 if (buffer == null) buffer = new List<string>();
-                buffer.Add("createTime");
+                buffer.Add("createTimeS");
             }
             if (last.lastLoginTimeS != curr.lastLoginTimeS)
             {

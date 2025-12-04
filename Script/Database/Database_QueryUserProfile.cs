@@ -1,0 +1,22 @@
+using Data;
+
+namespace Script
+{
+    public class Database_QueryUserProfile : Handler<DatabaseService>
+    {
+        public override MsgType msgType => MsgType._Database_QueryUserProfile;
+        public override async Task<MyResponse> Handle(ProtocolClientData socket, object _msg)
+        {
+            var msg = Utils.CastObject<MsgQueryUserProfile>(_msg);
+            MyResponse r = await this.service.collection_user_profile.Query(msg.userId);
+            if (r.err != ECode.Success)
+            {
+                return r;
+            }
+
+            var res = new ResQueryUserProfile();
+            res.profile = r.CastRes<Profile>();
+            return new MyResponse(ECode.Success, res);
+        }
+    }
+}

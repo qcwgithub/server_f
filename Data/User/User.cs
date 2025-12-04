@@ -2,68 +2,60 @@ namespace Data
 {
     public sealed class User
     {
-        public bool destroying;
+        public readonly Profile profile;
+        public User(Profile profile)
+        {
+            this.profile = profile;
+        }
 
-        public Profile profile { get; set; }
-        public bool isNewProfile;
-        public Random random { get; set; }
-        public Dictionary<string, int> string2intDict { get; } = new Dictionary<string, int>();
-        public HashSet<string> stringSet { get; } = new HashSet<string>();
+        public long userId
+        {
+            get
+            {
+                return this.profile.userId;
+            }
+        }
 
-        public ProtocolClientData socket;
+        public ProtocolClientData? socket;
         public bool IsSocketConnected()
         {
             return this.socket != null && this.socket.IsConnected();
         }
+        
+        MsgSimulatePrepareUserLogin? msgSimulatePrepareUserLogin;
+        MsgPrepareUserLogin? msgPrepareUserLogin;
+        public void SetSimulatePrepareLogin(MsgSimulatePrepareUserLogin m)
+        {
+            this.msgSimulatePrepareUserLogin = m;
+            MyDebug.Assert(this.msgPrepareUserLogin == null);
+            this.msgPrepareUserLogin = null;
+        }
+        public void SetRealPrepareLogin(MsgPrepareUserLogin m)
+        {
+            this.msgPrepareUserLogin = m;
+            this.msgSimulatePrepareUserLogin = null;
+        }
 
-        public long userId = 0;
-        public log4net.ILog logger;
-        public ITimer destroyTimer;
+        public bool IsRealPrepareLogin(out MsgPrepareUserLogin? msg)
+        {
+            msg = this.msgPrepareUserLogin;
+            return msg != null;
+        }
 
-        public int onlineTimeS;
-        public int offlineTimeS;
+        public bool destroying;
+        public ITimer? destroyTimer;
 
-        public ITimer saveTimer;
+        public long onlineTimeS;
+        public long offlineTimeS;
+
+        public ITimer? saveTimer;
 
         //// 2 ////
-        public Profile lastProfile;
-
-        public bool battlePending;
+        public Profile? lastProfile;
 
         public bool isGm = false;
 
-        Dictionary<string, int> autoRequesting = new Dictionary<string, int>();
-        public bool IsAutoRequesting(string key, int nowS)
-        {
-            if (!this.autoRequesting.TryGetValue(key, out int timeS))
-            {
-                return false;
-            }
-
-            if (nowS - timeS >= 10)
-            {
-                this.autoRequesting.Remove(key);
-                return false;
-            }
-
-            return true;
-        }
-
-        public void SetAutoRequesting(string key, bool reqeusting, int timeS)
-        {
-            if (!reqeusting)
-            {
-                this.autoRequesting.Remove(key);
-            }
-            else
-            {
-                this.autoRequesting[key] = timeS;
-            }
-        }
-
         public Dictionary<MsgType, int> processingMsgs { get; } = new Dictionary<MsgType, int>();
         public int accumDelayLoginS; // 已经延迟登录多久了
-
-        public List<int> lastMessageSeqs { get; } = new List<int>();
     }
 }

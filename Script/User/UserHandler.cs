@@ -4,9 +4,9 @@ namespace Script
 {
     public abstract class UserHandler : Handler<UserService>
     {
-        public UserServiceData usData { get { return this.service.usData; } }
+        public UserServiceData usData { get { return this.service.sd; } }
 
-        public UserServiceScript usScript { get { return this.service.usScript; } }
+        public UserServiceScript usScript { get { return this.service.ss; } }
 
         public User? GetUser(ProtocolClientData socket)
         {

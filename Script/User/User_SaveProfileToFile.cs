@@ -14,27 +14,23 @@ namespace Script
         {
             var msg = Utils.CastObject<MsgSaveProfileToFile>(_msg);
             long userId = msg.userId;
-            User? user = this.service.usData.GetUser(userId);
+            User? user = this.service.sd.GetUser(userId);
 
             if (user == null)
             {
                 // 立刻加载
-                var msgDb = new MsgQueryUserById();
-                msgDb.userId = userId;
-                var r = await this.service.connectToDatabaseService.SendAsync(MsgType._Database_QueryUser_byId, msgDb);
-                if (r.err != ECode.Success)
+                (ECode e, Profile? profile) = await this.service.ss.QueryUserProfile(userId);
+                if (e != ECode.Success)
                 {
-                    return r;
+                    return e;
                 }
-
-                var resPlayers = r.CastRes<ResQueryUserById>();
-                if (resPlayers.list.Count == 0)
+                if (profile == null)
                 {
                     return ECode.UserNotExist;
                 }
 
                 user = new User();
-                user.profile = Profile.Ensure(resPlayers.list[0]);
+                user.profile = Profile.Ensure(profile);
             }
 
             string json = JsonUtils.stringify(user.profile);

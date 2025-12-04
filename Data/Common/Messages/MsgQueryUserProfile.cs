@@ -4,18 +4,16 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class MsgQueryUserById
+    public class MsgQueryUserProfile
     {
         [Key(0)]
         public long userId;
     }
 
     [MessagePackObject]
-    public class ResQueryUserById
+    public class ResQueryUserProfile
     {
         [Key(0)]
-        public long userId;
-        [Key(1)]
-        public List<Profile> list;
+        public Profile? profile;
     }
 }

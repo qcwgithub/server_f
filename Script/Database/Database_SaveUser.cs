@@ -11,12 +11,12 @@ namespace Script
             this.service.logger.InfoFormat("{0} userIdId:{1}", this.msgType, msg.userId);
             //MyResponse r = await this.service.table_player.Save(msg.playerId, msg.profileNullable);
 
-            MyResponse r = await this.service.collection_user.Save(msg.userId, msg.profileNullable);
+            MyResponse r = await this.service.collection_user_profile.Save(msg.userId, msg.profileNullable);
 
 #if DEBUG
-            Profile profile_check = (await this.service.collection_user.QueryById(msg.userId)).CastRes<List<Profile>>()[0];
+            Profile profile_check = (await this.service.collection_user_profile.Query(msg.userId)).CastRes<Profile>()!;
             profile_check.Ensure();
-            if (!msg.profile_debug.IsDifferent(profile_check))
+            if (!msg.profile_debug!.IsDifferent(profile_check))
             {
                 this.service.logger.Debug("--------Exact--------");
             }

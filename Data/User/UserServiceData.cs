@@ -18,10 +18,6 @@ namespace Data
         public int saveIntervalS = 60;
         public bool allowNewUser;
 
-        public bool hasPlayer;
-
-        public int lastReportOnlineTimeS;
-
         //------------------------------------------------------
 
         public static readonly List<ServiceType> s_connectToServiceIds = new List<ServiceType>

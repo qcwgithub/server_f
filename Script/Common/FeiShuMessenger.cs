@@ -25,8 +25,8 @@ namespace Script
         {
             ServerConfig.FeiShuConfig feiShuConfig = this.server.data.serverConfig.feiShuConfig;
 
-            int nowS = TimeUtils.GetTimeS();
-            List<int> fstimes = this.server.data.error_feiShuSentTimes;
+            long nowS = TimeUtils.GetTimeS();
+            List<long> fstimes = this.server.data.error_feiShuSentTimeS;
 
             while (fstimes.Count > 0 && fstimes[0] < nowS - feiShuConfig.error_limitTimeS)
             {
@@ -58,8 +58,8 @@ namespace Script
         {
             ServerConfig.FeiShuConfig feiShuConfig = this.server.data.serverConfig.feiShuConfig;
 
-            int nowS = TimeUtils.GetTimeS();
-            List<int> fstimes = this.server.data.fatal_feiShuSentTimes;
+            long nowS = TimeUtils.GetTimeS();
+            List<long> fstimes = this.server.data.fatal_feiShuSentTimeS;
 
             while (fstimes.Count > 0 && fstimes[0] < nowS - feiShuConfig.fatal_limitTimeS)
             {

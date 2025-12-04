@@ -28,8 +28,8 @@ namespace Data
         // public readonly Data.WheelTimer.WheelTimer timer;
 
         public readonly IOThread ioThread;
-        public List<int> error_feiShuSentTimes = new List<int>();
-        public List<int> fatal_feiShuSentTimes = new List<int>();
+        public List<long> error_feiShuSentTimeS = new List<long>();
+        public List<long> fatal_feiShuSentTimeS = new List<long>();
         public Action<string, string> feiShuSendErrorMessage;
         public Action<string, string> feiShuSendFatalMessage;
 

@@ -33,14 +33,14 @@ namespace Script
                     this.service.tcpClientScript.UnbindUser(user.socket, user);
                 }
 
-                int nowS = TimeUtils.GetTimeS();
+                long nowS = TimeUtils.GetTimeS();
                 user.offlineTimeS = nowS;
 
                 // this.service.sqlLog.PlayerLogout(player);
 
                 if (!user.destroyTimer.IsAlive())
                 {
-                    this.service.usScript.SetDestroyTimer(user, this.msgType.ToString());
+                    this.service.ss.SetDestroyTimer(user, this.msgType.ToString());
                 }
             }
 

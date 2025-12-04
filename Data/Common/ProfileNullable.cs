@@ -13,7 +13,7 @@ namespace Data
         [Key(1)]
         public string userName;
         [Key(2)]
-        public long? createTime;
+        public long? createTimeS;
         [Key(3)]
         public long? lastLoginTimeS;
 

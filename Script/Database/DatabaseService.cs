@@ -16,7 +16,7 @@ namespace Script
         {
         }
 
-        public collection_user collection_user;
+        public collection_user_profile collection_user_profile;
         public ConnectToGlobalService connectToGlobalService { get; private set; }
 
         public override void Attach()
@@ -36,14 +36,14 @@ namespace Script
             #region auto_handler_create
 
             #endregion auto_handler_create
-            this.collection_user = new collection_user().Init(this.server, this);
+            this.collection_user_profile = new collection_user_profile().Init(this.server, this);
 
             this.dispatcher.AddHandler(new Database_Start().Init(this.server, this));
             this.dispatcher.AddHandler(new Database_Shutdown().Init(this.server, this));
 
-            this.dispatcher.AddHandler(new Database_InsertUser().Init(this.server, this));
+            this.dispatcher.AddHandler(new Database_InsertUserProfile().Init(this.server, this));
 
-            this.dispatcher.AddHandler(new Database_QueryUser_byId().Init(this.server, this));
+            this.dispatcher.AddHandler(new Database_QueryUserProfile().Init(this.server, this));
             this.dispatcher.AddHandler(new Database_SaveUser().Init(this.server, this));
         }
     }

@@ -83,9 +83,9 @@ namespace Data
         // server.DBPlayer [201,400]
         _DBRegularSearchPlayerByName = 200,
         _DBGetMaxPlayerId = 201,
-        _Database_QueryUser_byId = 202,
+        _Database_QueryUserProfile = 202,
         _Database_SaveUser = 203,
-        _Database_InsertUser = 204,
+        _Database_InsertUserProfile = 204,
 
         _Iterate_dictOf_Profile_playerId_userName_by_playerId = 205,
         _Iterate_dictOf_UnionInfo_unionId_name_shortName_by_unionId = 206,
@@ -326,7 +326,7 @@ namespace Data
         // server.Player [601,700]
         _User_DestroyUser = 601,
         _PlayerS_GetPlayerProfile = 602,
-        _PSPreparePlayerLogin = 603,
+        _User_PrepareUserLogin = 603,
         _PSSimulatePreparePlayerLogin = 604,
         _User_SaveUser = 605,
         _PS_OnHttpRequest = 606,

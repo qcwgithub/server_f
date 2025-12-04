@@ -23,7 +23,7 @@ namespace Script
             {
                 this.service.SetState(ServiceState.Starting);
 
-                int startS = TimeUtils.GetTimeS();
+                long startS = TimeUtils.GetTimeS();
 
                 ECode e = ECode.Success;
 
@@ -54,7 +54,7 @@ namespace Script
                     }
                 }
 
-                int start2S = TimeUtils.GetTimeS();
+                long start2S = TimeUtils.GetTimeS();
 
                 if (e == ECode.Success)
                 {
@@ -81,7 +81,7 @@ namespace Script
                     return e;
                 }
 
-                int endS = TimeUtils.GetTimeS();
+                long endS = TimeUtils.GetTimeS();
                 this.service.logger.InfoFormat("{0} waitS({1}s) selfS({2}s)", this.msgType, start2S - startS, endS - start2S);
 
                 this.service.SetState(ServiceState.Started);
@@ -109,7 +109,7 @@ namespace Script
             if (lockSuccess)
             {
                 logger.InfoFormat("{0} ObtainInit ? yes 1", what);
-                int startS = TimeUtils.GetTimeS0();
+                long startS = TimeUtils.GetTimeS();
                 await init();
                 await lockController.Unlock(keys);
                 lockController.DetectLockTooLong(what, startS, lockTimeS);
