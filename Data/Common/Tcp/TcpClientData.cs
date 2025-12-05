@@ -243,7 +243,7 @@ namespace Data
             }
         }
 
-        public override async Task<MyResponse> SendAsync(MsgType type, object msg, int? pTimeoutS)
+        public override async Task<MyResponse> SendAsync(MsgType type, byte[] msg, int? pTimeoutS)
         {
             if (!this.IsConnected())
             {
@@ -287,7 +287,7 @@ namespace Data
             }
         }
 
-        public override void Send(MsgType msgType, object msg, Action<ECode, object> cb, int? pTimeoutS)
+        public override void Send(MsgType msgType, byte[] msg, Action<ECode, ArraySegment<byte>> cb, int? pTimeoutS)
         {
             if (!this.IsConnected())
             {
@@ -319,9 +319,9 @@ namespace Data
             this.SendPacketIgnoreResult((int)msgType, msg, seq, cb != null);
         }
 
-        protected override void SendPacketIgnoreResult(int msgTypeOrECode, object msg, int seq, bool requireResponse)
+        protected override void SendPacketIgnoreResult(int msgTypeOrECode, byte[] msg, int seq, bool requireResponse)
         {
-            var bytes = this.callback.GetMessagePacker(true).Pack(msgTypeOrECode, msg, seq, requireResponse);
+            var bytes = this.callback.GetMessagePacker().Pack(msgTypeOrECode, msg, seq, requireResponse);
             this.sendList.Add(bytes);
             this.PerformSend();
         }
@@ -329,7 +329,7 @@ namespace Data
         public override void SendRaw(byte[] buffer)
         {
             int seq = this.callback.nextMsgSeq;
-            this.callback.GetMessagePacker(true).ModifySeq(buffer, seq);
+            this.callback.GetMessagePacker().ModifySeq(buffer, seq);
             this.sendList.Add(buffer);
             this.PerformSend();
         }
@@ -421,9 +421,9 @@ namespace Data
                 if (!this.isAcceptor || this.identityVerified)
                 {
                     int exactCount;
-                    while (this.callback.GetMessagePacker(true).IsCompeteMessage(this.recvBuffer, offset, count, out exactCount))
+                    while (this.callback.GetMessagePacker().IsCompeteMessage(this.recvBuffer, offset, count, out exactCount))
                     {
-                        UnpackResult r = this.callback.GetMessagePacker(true).Unpack(this.recvBuffer, offset, exactCount);
+                        UnpackResult r = this.callback.GetMessagePacker().Unpack(this.recvBuffer, offset, exactCount);
                         this.OnMsg(r.seq, r.code, r.msg, r.requireResponse);
 
                         offset += r.totalLength;

@@ -1,7 +1,3 @@
-using System.Collections.Generic;
-using System;
-using System.Text;
-
 namespace Data
 {
     public struct UnpackResult
@@ -18,16 +14,15 @@ namespace Data
 
         // 对方是否要求回复
         public bool requireResponse;
-        
-        public object msg;
-        public string unpackErrorMessage;
+
+        public ArraySegment<byte> msg;
     }
 
     public interface IMessagePacker
     {
         bool IsCompeteMessage(byte[] buffer, int offset, int count, out int exactCount);
         UnpackResult Unpack(byte[] buffer, int offset, int count);
-        byte[] Pack(int msgTypeOrECode, object msg, int seq, bool requireResponse);
+        byte[] Pack(int msgTypeOrECode, byte[] msg, int seq, bool requireResponse);
         void ModifySeq(byte[] buffer, int seq);
     }
 }

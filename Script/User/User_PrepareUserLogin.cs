@@ -4,13 +4,12 @@ using Data;
 
 namespace Script
 {
-    public class User_PrepareUserLogin : UserHandler
+    public class User_PrepareUserLogin : UserHandler<MsgPrepareUserLogin>
     {
         public override MsgType msgType => MsgType._User_PrepareUserLogin;
 
-        public override async Task<MyResponse> Handle(ProtocolClientData socket, object _msg)
+        public override async Task<MyResponse> Handle(ProtocolClientData socket, MsgPrepareUserLogin msg)
         {
-            var msg = Utils.CastObject<MsgPrepareUserLogin>(_msg);
             long userId = msg.userId;
 
             this.logger.InfoFormat("{0} userId: {1}", this.msgType, userId);

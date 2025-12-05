@@ -1,62 +1,33 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Data;
 
 namespace Script
 {
-    public class BinaryMessagePackerSafe : IMessagePacker
-    {
-        BinaryMessagePacker _inner;
-        public BinaryMessagePackerSafe()
-        {
-            _inner = new BinaryMessagePacker();
-        }
-
-        public bool IsCompeteMessage(byte[] buffer, int offset, int count, out int exactCount)
-        {
-            return _inner.IsCompeteMessage(buffer, offset, count, out exactCount);
-        }
-
-        public UnpackResult Unpack(byte[] buffer, int offset, int count)
-        {
-            UnpackResult r = _inner.Unpack(buffer, offset, count);
-            if (r.totalLength <= 0)
-            {
-                throw new Exception("r.totalLength <= 0");
-            }
-            return r;
-        }
-
-        public byte[] Pack(int msgTypeOrECode, object msg, int seq, bool requireResponse)
-        {
-            return _inner.Pack(msgTypeOrECode, msg, seq, requireResponse);
-        }
-
-        public void ModifySeq(byte[] buffer, int seq)
-        {
-            _inner.ModifySeq(buffer, seq);
-        }
-    }
-
-    // Service 提供给 IScript 数据、其他脚本的访问
     public abstract partial class Service
     {
         public readonly Server server;
         public readonly int serviceId;
-        public TcpListenerScript tcpListenerScript { get; protected set; }
-        public ProtocolClientScriptS tcpClientScript { get; private set; }
-        public HttpListenerScript httpListenerScript { get; protected set; }
-        public WebSocketListenerScript webSocketListenerScript { get; protected set; }
-
-        public MessageDispatcher dispatcher { get; protected set; }
-        public IMessagePacker messagePackerBin { get; protected set; }
-        public IMessagePacker messagePackerJson { get; protected set; }
+        public readonly TcpListenerScript tcpListenerScript;
+        public readonly ProtocolClientScriptS tcpClientScript;
+        public readonly HttpListenerScript httpListenerScript;
+        public readonly WebSocketListenerScript webSocketListenerScript;
+        public readonly MessageDispatcher dispatcher;
+        public readonly ConnectToSelf connectToSelf;
+        public readonly Dictionary<ServiceType, ConnectToOtherService> connectToOtherServiceDict;
 
         public Service(Server server, int serviceId)
         {
             this.server = server;
             this.serviceId = serviceId;
+
+            this.connectToSelf = new ConnectToSelf(this);
+
+            this.tcpListenerScript = new TcpListenerScript().Init(this.server, this);
+            this.tcpClientScript = new ProtocolClientScriptS().Init(this.server, this);;
+            this.httpListenerScript = new HttpListenerScript().Init(this.server, this);
+            this.webSocketListenerScript = new WebSocketListenerScript().Init(this.server, this);
+
+            this.dispatcher = new MessageDispatcher().Init(this.server, this);
+            this.connectToOtherServiceDict = new Dictionary<ServiceType, ConnectToOtherService>();
         }
 
         protected void AddHandler<S>()
@@ -87,24 +58,12 @@ namespace Script
 
         public ServiceData data { get; private set; }
         public log4net.ILog logger => this.data.logger;
-        public ConnectToSelf connectToSelf { get; private set; }
-        public Dictionary<ServiceType, ConnectToOtherService> connectToOtherServiceDict { get; } = new Dictionary<ServiceType, ConnectToOtherService>();
         protected void AddConnectToOtherService(ConnectToOtherService connectToOtherService)
         {
             this.connectToOtherServiceDict.Add(connectToOtherService.to, connectToOtherService);
         }
         public virtual void Attach()
         {
-            this.connectToSelf = new ConnectToSelf(this);
-
-            this.tcpListenerScript = new TcpListenerScript().Init(this.server, this);
-            this.tcpClientScript = new ProtocolClientScriptS().Init(this.server, this);;
-            this.httpListenerScript = new HttpListenerScript().Init(this.server, this);
-            this.webSocketListenerScript = new WebSocketListenerScript().Init(this.server, this);
-
-            this.dispatcher = new MessageDispatcher().Init(this.server, this);
-            this.messagePackerBin = new BinaryMessagePackerSafe();
-
             this.data = this.server.data.serviceDatas[this.serviceId];
 
             this.data.tcpClientCallback = this.tcpClientScript;
@@ -164,16 +123,6 @@ namespace Script
         public virtual void OnFps(int fps)
         {
             this.dispatcher.OnFps(fps);
-        }
-
-        // public void ProxyDispatch(TcpClientData data, MsgType msgType, object msg, Action<ECode, object> reply)
-        // {
-        //     this.data.tcpClientCallback.Dispatch(data, msgType, msg, reply);
-        // }
-
-        public virtual void Dispatch(ProtocolClientData data, int seq, MsgType msgType, object? msg, Action<ECode, object> reply)
-        {
-            this.dispatcher.Dispatch(data, msgType, msg, reply);
         }
 
         public virtual ProtocolClientData GetOrConnectSocket(ServiceType to_serviceType, int to_serviceId, string inIp, int inPort)

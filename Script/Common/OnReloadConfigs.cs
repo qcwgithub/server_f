@@ -3,15 +3,13 @@ using Data;
 
 namespace Script
 {
-    public class OnReloadConfigs<S> : Handler<S>
+    public class OnReloadConfigs<S> : Handler<S, MsgReloadConfigs>
         where S : Service
     {
         public override MsgType msgType => MsgType._ReloadConfigs;
 
-        public override Task<MyResponse> Handle(ProtocolClientData socket, object _msg)
+        public override Task<MyResponse> Handle(ProtocolClientData socket, MsgReloadConfigs msg)
         {
-            var msg = Utils.CastObject<MsgReloadConfigs>(_msg);
-
             string message = $"[{this.service.serviceId}]{this.msgType} all? {msg.all} files? {JsonUtils.stringify(msg.files)}";
             this.service.logger.Info(message);
             this.server.feiShuMessenger.SendEventMessage(message);

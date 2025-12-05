@@ -4,9 +4,8 @@ using System.Threading.Tasks;
 namespace Script
 {
     // 等待某个 key 存在
-    public abstract class WaitInitDataProxy<G, S> : ServiceScript<G, S>
-        where G : BaseServer
-        where S : BaseService
+    public abstract class WaitInitDataProxy<S> : ServiceScript<S>
+        where S : Service
     {
         protected abstract IDatabase GetDb();
         protected abstract string waitKey { get; }

@@ -40,15 +40,7 @@ namespace Script
             if (fps < 5)
             {
                 string s = JsonUtils.stringify(this.recentMsgTypes.GroupBy(e => e).ToDictionary(g => g.Key, g => g.Count()));
-
-                if (this.service.data.current_resGetServiceConfigs != null && this.service.data.current_resGetServiceConfigs.open)
-                {
-                    this.service.logger.Fatal($"fps {fps}, recent {s}");
-                }
-                else
-                {
-                    this.service.logger.Warn($"fps {fps}, recent {s}");
-                }
+                this.service.logger.Warn($"fps {fps}, recent {s}");
             }
 
             this.recentMsgTypes.Clear();
@@ -79,11 +71,38 @@ namespace Script
             return string.Join(", ", list.Select(x => x.Item1.ToString() + "*" + x.Item2));
         }
 
+        public void Dispatch(ProtocolClientData socket, MsgType type, object msg, Action<ECode, byte[]> reply)
+        {
+            IHandler handler;
+            if (!this.handlers.TryGetValue(type, out handler))
+            {
+                this.service.logger.ErrorFormat("no handler for message {0}", type);
+                reply(ECode.Error, null);
+                return;
+            }
+
+            this.DispatchImpl(socket, handler, type, msg, reply);
+        }
+
+        public void Dispatch(ProtocolClientData socket, MsgType type, ArraySegment<byte> _msg, Action<ECode, byte[]> reply)
+        {
+            IHandler handler;
+            if (!this.handlers.TryGetValue(type, out handler))
+            {
+                this.service.logger.ErrorFormat("no handler for message {0}", type);
+                reply(ECode.Error, null);
+                return;
+            }
+
+            object msg = handler.UnpackMsg(_msg);
+            this.DispatchImpl(socket, handler, type, msg, reply);
+        }
+
         // about reply
         // 1 处理网络来的请求，reply 是回复请求
         // 2 自己调用 dispatch 的，reply 没什么用，为了统一，赋值为 utils.emptyReply
         // reply()的参数统一为 MyResponse
-        public async void Dispatch(ProtocolClientData socket, MsgType type, object? msg, Action<ECode, object> reply)
+        async void DispatchImpl(ProtocolClientData socket, IHandler handler, MsgType type, object msg, Action<ECode, byte[]> reply)
         {
             if (this.service.detached)
             {
@@ -103,17 +122,7 @@ namespace Script
                 reply = this.emptyReply;
             }
 
-            IHandler handler;
-            if (!this.handlers.TryGetValue(type, out handler))
-            {
-                this.service.logger.ErrorFormat("no handler for message {0}", type);
-                reply(ECode.Error, null);
-                return;
-            }
-
             MyResponse r = null;
-
-
             int busyIndex = this.service.data.AddToBusyList((int)type);
             if (this.service.data.busyCount >= this.service.data.lastErrorBusyCount + 100)
             {

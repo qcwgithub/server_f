@@ -7,7 +7,7 @@ using StackExchange.Redis;
 
 namespace Script
 {
-    public class DueTimeTaskQueueRedis: ServerScript<BaseServer>
+    public class DueTimeTaskQueueRedis: ServerScript
     {
         Func<int, string> key_taskQueue;
         public static int[] QUEUES = new int[]
@@ -61,7 +61,7 @@ namespace Script
 
         IDatabase GetDb()
         {
-            return this.server.baseServerData.redis_db;
+            return this.server.data.redis_db;
         }
 
         public async Task Add(int taskQueue, string member, int dueTimeS)

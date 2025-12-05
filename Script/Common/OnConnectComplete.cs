@@ -7,14 +7,13 @@ using Data;
 namespace Script
 {
     // 连接其他服务器成功
-    public class OnConnectComplete<S> : Handler<S>
+    public class OnConnectComplete<S> : Handler<S, MsgConnectorInfo>
         where S : Service
     {
         public override MsgType msgType => MsgType._OnConnectComplete;
 
-        public override async Task<MyResponse> Handle(ProtocolClientData socket, object _msg)
+        public override async Task<MyResponse> Handle(ProtocolClientData socket, MsgConnectorInfo msg)
         {
-            var msg = (MsgOnConnectComplete)_msg;
             this.logger.InfoFormat("{0} socket id: {1}, to: {2}", this.msgType, socket.GetSocketId(), socket.serviceTypeAndId.Value.ToString());
 
             // 连上去之后立即向他报告是我的身份

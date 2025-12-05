@@ -5,12 +5,11 @@ using Data;
 
 namespace Script
 {
-    public class User_SaveUser : UserHandler
+    public class User_SaveUser : UserHandler<MsgSaveUser>
     {
         public override MsgType msgType => MsgType._User_SaveUser;
-        public override async Task<MyResponse> Handle(ProtocolClientData socket/* null */, object _msg)
+        public override async Task<MyResponse> Handle(ProtocolClientData socket/* null */, MsgSaveUser msg)
         {
-            var msg = Utils.CastObject<MsgSaveUser>(_msg);
             long userId = msg.userId;
 
             var player = this.usData.GetUser(userId);

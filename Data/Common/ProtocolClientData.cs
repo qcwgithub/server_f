@@ -6,7 +6,7 @@ namespace Data
 {
     public struct stWaitingResponse
     {
-        public Action<ECode, object?> callback;
+        public Action<ECode, ArraySegment<byte>> callback;
         // public CancellationTokenSource source;
     }
 
@@ -143,16 +143,16 @@ namespace Data
         #endregion
 
         #region send
-        public abstract Task<MyResponse> SendAsync(MsgType type, object? msg, int? pTimeoutS);
-        public abstract void Send(MsgType msgType, object msg, Action<ECode, object> cb, int? pTimeoutS);
-        protected abstract void SendPacketIgnoreResult(int msgTypeOrECode, object? msg, int seq, bool requireResponse);
+        public abstract Task<MyResponse> SendAsync(MsgType type, byte[] msg, int? pTimeoutS);
+        public abstract void Send(MsgType msgType, byte[] msg, Action<ECode, ArraySegment<byte>> cb, int? pTimeoutS);
+        protected abstract void SendPacketIgnoreResult(int msgTypeOrECode, byte[] msg, int seq, bool requireResponse);
         public abstract void SendRaw(byte[] buffer);
 
         #endregion
 
         #region recv
 
-        protected void OnMsg(int seq, int code, object msg, bool requireResponse)
+        protected void OnMsg(int seq, int code, ArraySegment<byte> msg, bool requireResponse)
         {
             try
             {
@@ -181,24 +181,20 @@ namespace Data
 
                     if (!requireResponse)
                     {
-                        this.callback!.Dispatch(this,
-                        seq,
-                        msgType, msg, null);
+                        this.callback!.Dispatch(this, seq, msgType, msg, null);
                     }
                     else
                     {
-                        this.callback!.Dispatch(this,
-                        seq,
-                        msgType, msg,
-                                (ECode e2, object msg2) =>
+                        this.callback!.Dispatch(this, seq, msgType, msg,
+                            (ECode e2, byte[] msg2) =>
+                            {
+                                // 消息处理是异步的，在回复的时候，有可能已经断开了。因此这里要加个判断
+                                if (!this.IsClosed())
                                 {
-                                    // 消息处理是异步的，在回复的时候，有可能已经断开了。因此这里要加个判断
-                                    if (!this.IsClosed())
-                                    {
-                                        // Console.WriteLine("reply -seq = {0}, msgType = {1}", -seq, msgType);
-                                        this.SendPacketIgnoreResult((int)e2, msg2, -seq, false);
-                                    }
-                                });
+                                    // Console.WriteLine("reply -seq = {0}, msgType = {1}", -seq, msgType);
+                                    this.SendPacketIgnoreResult((int)e2, msg2, -seq, false);
+                                }
+                            });
                     }
                 }
                 //// 2 response message
@@ -251,7 +247,7 @@ namespace Data
             // timeout all waiting responses
             if (this.waitingResponseDict.Count > 0)
             {
-                var list = new List<Action<ECode, object?>>();
+                var list = new List<Action<ECode, ArraySegment<byte>>>();
                 foreach (var kv in this.waitingResponseDict)
                 {
                     // kv.Value.source.Cancel();

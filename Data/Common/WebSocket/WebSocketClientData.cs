@@ -172,7 +172,7 @@ namespace Data
         #region send
 
 #if !UNITY_2017_1_OR_NEWER
-        public override async Task<MyResponse> SendAsync(MsgType type, object msg, int? pTimeoutS)
+        public override async Task<MyResponse> SendAsync(MsgType type, byte[] msg, int? pTimeoutS)
         {
             if (!this.IsConnected())
             {
@@ -213,7 +213,7 @@ namespace Data
             }
         }
 
-        public override void Send(MsgType msgType, object msg, Action<ECode, object> cb, int? pTimeoutS)
+        public override void Send(MsgType msgType, byte[] msg, Action<ECode, ArraySegment<byte>> cb, int? pTimeoutS)
         {
             if (!this.IsConnected())
             {
@@ -283,16 +283,16 @@ namespace Data
             }
         }
 
-        protected override void SendPacketIgnoreResult(int msgTypeOrECode, object msg, int seq, bool requireResponse)
+        protected override void SendPacketIgnoreResult(int msgTypeOrECode, byte[] msg, int seq, bool requireResponse)
         {
-            var bytes = this.callback.GetMessagePacker(true).Pack(msgTypeOrECode, msg, seq, requireResponse);
+            var bytes = this.callback.GetMessagePacker().Pack(msgTypeOrECode, msg, seq, requireResponse);
             this.SendPacket(bytes, CancellationToken.None);
         }
 
         public override void SendRaw(byte[] buffer)
         {
             int seq = this.callback.nextMsgSeq;
-            this.callback.GetMessagePacker(true).ModifySeq(buffer, seq);
+            this.callback.GetMessagePacker().ModifySeq(buffer, seq);
             this.SendPacket(buffer, CancellationToken.None);
         }
 
@@ -392,10 +392,10 @@ namespace Data
                     {
                         if (result.MessageType == WebSocketMessageType.Binary)
                         {
-                            UnpackResult r = this.callback.GetMessagePacker(true).Unpack(this.recvBuffer, 0, this.recvOffset);
+                            UnpackResult r = this.callback.GetMessagePacker().Unpack(this.recvBuffer, 0, this.recvOffset);
                             if (!r.success)
                             {
-                                this.Close("!r.success, " + (r.unpackErrorMessage == null ? string.Empty : r.unpackErrorMessage));
+                                this.Close("!r.success, ");
                                 break;
                             }
 

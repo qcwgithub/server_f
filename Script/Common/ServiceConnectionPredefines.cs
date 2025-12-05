@@ -108,10 +108,10 @@ namespace Script
             this.self = self;
         }
 
-        public async Task<MyResponse> SendToSelfAsync(MsgType type, object? msg)
+        public async Task<MyResponse> SendToSelfAsync(MsgType type, object msg)
         {
             var cs = new TaskCompletionSource<MyResponse>();
-            this.self.Dispatch(null, /* seq */0, type, msg, (e, r) =>
+            this.self.dispatcher.Dispatch(null, type, msg, (e, r) =>
             {
                 bool success = cs.TrySetResult(new MyResponse(e, r));
                 if (!success)

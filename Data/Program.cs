@@ -473,7 +473,7 @@ namespace Data
             }
         }
 
-        public static void LogError(string message, Exception ex)
+        public static void LogError(string message, Exception? ex)
         {
             if (misc_logger != null)
             {

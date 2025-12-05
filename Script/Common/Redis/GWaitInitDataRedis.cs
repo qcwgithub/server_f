@@ -5,13 +5,12 @@ using System.Threading.Tasks;
 namespace Script
 {
     // 等待某个 key 存在
-    public abstract class GWaitInitDataRedis<G> : ServerScript<G>
-        where G : BaseServer
+    public abstract class GWaitInitDataRedis : ServerScript
     {
         public abstract IDatabase GetDb();
         protected abstract string waitKey { get; }
 
-        public async Task<ECode> WaitInit(BaseService service)
+        public async Task<ECode> WaitInit(Service service)
         {
             while (true)
             {

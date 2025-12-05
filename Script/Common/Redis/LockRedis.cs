@@ -1,4 +1,3 @@
-using UnityEngine;
 using Data;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,11 +10,11 @@ namespace Script
     /*
     清空Redis能否正常 | YES，是运行时数据
     */
-    public class LockRedis : ServerScript<BaseServer>
+    public class LockRedis : ServerScript
     {
         public IDatabase GetDb()
         {
-            return this.server.baseServerData.redis_db;
+            return this.server.data.redis_db;
         }
 
         ////
@@ -26,18 +25,6 @@ namespace Script
         public async Task UnlockForLoadFromDBToRedis(string lockKey, string lockValue)
         {
             await RedisUtils.Unlock(this.GetDb(), lockKey, lockValue);
-        }
-        
-        public async Task<string> LockOrder(string orderId, log4net.ILog logger)
-        {
-            string key = LockKey.Order(orderId);
-            return await RedisUtils.Lock(this.GetDb(), key, 10, 10, 200, logger);
-        }
-
-        public async Task UnlockOrder(string orderId, string lockValue)
-        {
-            string key = LockKey.Order(orderId);
-            await RedisUtils.Unlock(this.GetDb(), key, lockValue);
         }
 
         public async Task<string> LockAccount(string channel, string channelUserId, log4net.ILog logger)

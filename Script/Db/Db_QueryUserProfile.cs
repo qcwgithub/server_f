@@ -2,12 +2,11 @@ using Data;
 
 namespace Script
 {
-    public class Db_QueryUserProfile : Handler<DbService>
+    public class Db_QueryUserProfile : Handler<DbService, MsgQueryUserProfile>
     {
         public override MsgType msgType => MsgType._Db_QueryUserProfile;
-        public override async Task<MyResponse> Handle(ProtocolClientData socket, object _msg)
+        public override async Task<MyResponse> Handle(ProtocolClientData socket, MsgQueryUserProfile msg)
         {
-            var msg = Utils.CastObject<MsgQueryUserProfile>(_msg);
             MyResponse r = await this.service.collection_user_profile.Query(msg.userId);
             if (r.err != ECode.Success)
             {

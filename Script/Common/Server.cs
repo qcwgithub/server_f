@@ -18,10 +18,22 @@ namespace Script
 
         public ServerData data { get; private set; }
         public List<Service> services { get; protected set; }
-        public TimerScript timerScript { get; private set; }
-        public LockRedis lockRedis { get; private set; }
-        public FeiShuMessenger feiShuMessenger { get; private set; }
-        public abstract PersistenceTaskQueueRedis persistence_taskQueueRedis { get; }
+        public readonly TimerScript timerScript;
+        public readonly LockRedis lockRedis;
+        public readonly FeiShuMessenger feiShuMessenger ;
+        // public abstract PersistenceTaskQueueRedis persistence_taskQueueRedis { get; }
+        public readonly IMessageSerializer messageSerializer;
+        public readonly IMessagePacker messagePacker;
+
+        public Server()
+        {
+            this.messageSerializer = new BinaryMessageSerializer();
+            this.messagePacker = new BinaryMessagePacker();
+
+            this.timerScript = new TimerScript().Init(this);
+            this.lockRedis = new LockRedis().Init(this);
+            this.feiShuMessenger = new FeiShuMessenger().Init(this);
+        }
 
         int seq;
         public int GetScriptDllSeq()
@@ -77,9 +89,6 @@ namespace Script
                 }
             }
 
-            this.timerScript = new TimerScript().Init(this);
-            this.lockRedis = new LockRedis().Init(this);
-            this.feiShuMessenger = new FeiShuMessenger().Init(this);
 
             this.data.timerSData.SetTimerCallback(this.OnTimer);
 
@@ -147,7 +156,7 @@ namespace Script
 
             foreach (var service in this.services)
             {
-                service.Dispatch(null, /* seq */0, MsgType._Start, null, null);
+                service.dispatcher.Dispatch(MsgType._Start, null, null);
             }
         }
 
@@ -229,7 +238,7 @@ namespace Script
             {
                 if (service.serviceId == serviceId)
                 {
-                    service.Dispatch(null, /* seq */0, msgType, msg, null);
+                    service.dispatcher.Dispatch(msgType, msg, null);
                     found = true;
                     break;
                 }

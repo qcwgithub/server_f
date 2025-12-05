@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    public abstract class UserHandler : Handler<UserService>
+    public abstract class UserHandler<M> : Handler<UserService, M>
     {
         public UserServiceData usData { get { return this.service.sd; } }
 

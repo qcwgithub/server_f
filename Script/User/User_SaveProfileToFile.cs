@@ -6,20 +6,24 @@ using Data;
 
 namespace Script
 {
-    public class User_SaveProfileToFile : UserHandler
+    public class User_SaveProfileToFile : UserHandler<MsgSaveProfileToFile>
     {
         public override MsgType msgType => MsgType._SaveProfileToFile;
 
-        public override async Task<MyResponse> Handle(ProtocolClientData socket, object _msg)
+        public override async Task<MyResponse> Handle(ProtocolClientData socket, MsgSaveProfileToFile msg)
         {
-            var msg = Utils.CastObject<MsgSaveProfileToFile>(_msg);
-            long userId = msg.userId;
-            User? user = this.service.sd.GetUser(userId);
-
-            if (user == null)
+            Profile? profile = null;
+            User? user = this.service.sd.GetUser(msg.userId);
+            if (user != null)
             {
+                profile = user.profile;
+            }
+
+            if (profile == null)
+            {
+                ECode e;
                 // 立刻加载
-                (ECode e, Profile? profile) = await this.service.ss.QueryUserProfile(userId);
+                (e, profile) = await this.service.ss.QueryUserProfile(msg.userId);
                 if (e != ECode.Success)
                 {
                     return e;
@@ -28,12 +32,9 @@ namespace Script
                 {
                     return ECode.UserNotExist;
                 }
-
-                user = new User();
-                user.profile = Profile.Ensure(profile);
             }
 
-            string json = JsonUtils.stringify(user.profile);
+            string json = JsonUtils.stringify(profile);
             string fileName = "profile" + msg.userId + ".json";
             File.WriteAllText(fileName, json);
 

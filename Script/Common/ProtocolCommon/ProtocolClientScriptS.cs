@@ -7,12 +7,9 @@ namespace Script
 {
     public class ProtocolClientScriptS : ServiceScript<Service>, IProtocolClientCallback
     {
-        public IMessagePacker GetMessagePacker(bool isMessagePack)
+        public IMessagePacker GetMessagePacker()
         {
-            if (isMessagePack)
-                return this.service.messagePackerBin;
-            else
-                return this.service.messagePackerJson;
+            return this.server.messagePacker;
         }
 
         public void LogError(ProtocolClientData data, string str)
@@ -60,36 +57,36 @@ namespace Script
             }
         }
 
-        public void Dispatch(ProtocolClientData data, int seq, MsgType msgType, object msg, Action<ECode, object> reply)
+        public void Dispatch(ProtocolClientData data, MsgType msgType, ArraySegment<byte> msg, Action<ECode, byte[]> reply)
         {
-            this.service.Dispatch(data, seq, msgType, msg, reply);
+            this.service.dispatcher.Dispatch(data, msgType, msg, reply);
         }
 
-        public void OnConnectComplete(ProtocolClientData data, bool success)
+        public void OnConnectComplete(ProtocolClientData socket, bool success)
         {
             if (!success)
             {
-                data.Close(ProtocolClientData.CloseReason.OnConnectComplete_false);
+                socket.Close(ProtocolClientData.CloseReason.OnConnectComplete_false);
                 return;
             }
 
-            MyDebug.Assert(data.serviceTypeAndId != null);
-            var serviceTypeAndId = data.serviceTypeAndId.Value;
+            MyDebug.Assert(socket.serviceTypeAndId != null);
+            var serviceTypeAndId = socket.serviceTypeAndId.Value;
 
             var msg = new MsgOnConnectComplete();
             msg.to_serviceType = serviceTypeAndId.serviceType;
             msg.to_serviceId = serviceTypeAndId.serviceId;
-            this.service.Dispatch(data, 0, MsgType._OnConnectComplete, msg, null);
+            this.service.dispatcher.Dispatch(socket, MsgType._OnConnectComplete, msg, null);
         }
 
-        public void OnCloseComplete(ProtocolClientData data)
+        public void OnCloseComplete(ProtocolClientData socket)
         {
             var msg = new MsgOnClose
             {
-                isAcceptor = !data.isConnector,
+                isAcceptor = !socket.isConnector,
                 // isServer = @this.connectedFromServer,
             };
-            this.service.Dispatch(data, 0, MsgType._OnSocketClose, msg, null);
+            this.service.dispatcher.Dispatch(socket, MsgType._OnSocketClose, msg, null);
         }
 
         #region basic access

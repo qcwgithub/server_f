@@ -80,15 +80,6 @@ namespace Script
             return defaultValue;
         }
 
-        public static long ParseLongId(RedisValue redisValue, long defaultValue = 0)
-        {
-            if (redisValue.TryParse(out long v))
-            {
-                return v.i_am_sure_this_is_ok();
-            }
-            return defaultValue;
-        }
-
         public static int ParseInt(RedisValue redisValue, int defaultValue = 0)
         {
             int v;
@@ -266,10 +257,10 @@ namespace Script
             }
         }
         
-        public static async Task<bool> KeyCopy(BaseServer server, IDatabase db, string src, string dest)
+        public static async Task<bool> KeyCopy(Server server, IDatabase db, string src, string dest)
         {
             // https://redis.io/commands/copy/
-            if (server.baseServerData.redisVersion >= V6_2_0)
+            if (server.data.redisVersion >= V6_2_0)
             {
                 return await db.KeyCopyAsync(src, dest, -1, replace: true);
             }
@@ -347,7 +338,7 @@ namespace Script
             }
         }
         
-        public static async Task<ECode> Wait(NormalService service, string what, Func<Task<bool>> action)
+        public static async Task<ECode> Wait(Service service, string what, Func<Task<bool>> action)
         {
             while (true)
             {

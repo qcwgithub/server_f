@@ -341,29 +341,7 @@ namespace Script
                                 msg.saveIntervalS = i;
                             }
 
-                            s = this.GetArg_String(nameof(msg.printTALogComsumerBufferSize), false);
-                            if (!string.IsNullOrEmpty(s))
-                            {
-                                msg.printTALogComsumerBufferSize = s == "true" || s == "1";
-                            }
-
-                            s = this.GetArg_String(nameof(msg.clearTALogConsumerBuffer), false);
-                            if (!string.IsNullOrEmpty(s))
-                            {
-                                msg.clearTALogConsumerBuffer = s == "true" || s == "1";
-                            }
-
                             r = await this.service.connectToSameServerType.SendToServiceAsync(serviceId, MsgType._ServerAction, msg);
-                        }
-                        break;
-
-                    case "setAllowClientMinPatchVersion":
-                        {
-                            string android = this.GetArg_String(Platform.android, false);
-                            string ios = this.GetArg_String(Platform.ios, false);
-
-                            r = await this.service.connectToSelf.SendToSelfAsync(MsgType._Command_SetAllowClientMinPatchVersion,
-                                new MsgCommon().SetLong("serviceId", serviceId).SetString(Platform.android, android).SetString(Platform.ios, ios));
                         }
                         break;
 
@@ -516,18 +494,6 @@ namespace Script
                         {
                             case "playerGM":
                                 msgGMStr = this.GetArg_String("msgGM");
-                                break;
-
-                            case "finishAllGuide":
-                                {
-                                    MsgGM msgGM = new MsgGM();
-                                    msgGM.guideFlags = new List<int>();
-                                    for (GuideFlag e = 0; e < GuideFlag.Count; e++)
-                                    {
-                                        msgGM.guideFlags.Add((int)e);
-                                    }
-                                    msgGMStr = JsonUtils.stringify(msgGM);
-                                }
                                 break;
                         }
 

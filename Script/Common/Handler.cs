@@ -2,16 +2,30 @@ using System;
 using System.Collections;
 using System.Threading.Tasks;
 using Data;
+using MessagePack;
 
 namespace Script
 {
-    public abstract class Handler<S> : ServiceScript<S>, IHandler
+    public abstract class Handler<S, M> : ServiceScript<S>, IHandler
         where S : Service
     {
         public log4net.ILog logger => this.service.logger;
 
         public abstract MsgType msgType { get; }
-        public abstract Task<MyResponse> Handle(ProtocolClientData socket, object _msg);
+
+        public object UnpackMsg(ArraySegment<byte> msg)
+        {
+            M m = MessagePackSerializer.Deserialize<M>(msg);
+            return m;
+        }
+
+        public Task<MyResponse> Handle(ProtocolClientData socket, object msg)
+        {
+            return this.Handle(socket, (M)msg);
+        }
+
+        public abstract Task<MyResponse> Handle(ProtocolClientData socket, M msg);
+
         public virtual MyResponse PostHandle(ProtocolClientData socket, object _msg, MyResponse r) => r;
 
         protected async Task OnErrorExit(ECode e)
@@ -36,14 +50,6 @@ namespace Script
             this.service.logger.Fatal(string.Format("{0} exception, Process is exiting", this.msgType), ex);
             await Task.Delay(1000);
             System.Environment.Exit(1);
-        }
-
-        public ServerData serverData
-        {
-            get
-            {
-                return this.server.data;
-            }
         }
     }
 }

@@ -5,13 +5,12 @@ using Data;
 
 namespace Script
 {
-    public class User_DestroyUser : UserHandler
+    public class User_DestroyUser : UserHandler<MsgDestroyUser>
     {
         public override MsgType msgType => MsgType._User_DestroyUser;
 
-        public override async Task<MyResponse> Handle(ProtocolClientData socket, object _msg)
+        public override async Task<MyResponse> Handle(ProtocolClientData socket, MsgDestroyUser msg)
         {
-            var msg = Utils.CastObject<MsgDestroyUser>(_msg);
             long userId = msg.userId;
 
             this.service.logger.InfoFormat("{0} place: {1}, userId: {2}, preCount: {3}", this.msgType, msg.place, userId, this.usData.userDict.Count);

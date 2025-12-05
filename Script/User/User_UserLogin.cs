@@ -7,7 +7,7 @@ using System;
 
 namespace Script
 {
-    public class User_UserLogin : UserHandler
+    public class User_UserLogin : UserHandler<MsgUserLogin>
     {
         public override MsgType msgType { get { return MsgType.UserLogin; } }
 
@@ -63,9 +63,8 @@ namespace Script
             }
         }
 
-        public override Task<MyResponse> Handle(ProtocolClientData socket, object _msg)
+        public override Task<MyResponse> Handle(ProtocolClientData socket, MsgUserLogin msg)
         {
-            var msg = Utils.CastObject<MsgUserLogin>(_msg);
             string message0 = string.Format("{0} userId {1} preCount {2}", this.msgType, msg.userId, this.usData.userDict.Count);
 
             if (this.service.data.state != ServiceState.Started)

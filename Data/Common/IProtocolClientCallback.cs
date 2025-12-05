@@ -2,7 +2,7 @@ namespace Data
 {
     public interface IProtocolClientCallback
     {
-        IMessagePacker GetMessagePacker(bool isMessagePack);
+        IMessagePacker GetMessagePacker();
 
         int nextSocketId { get; }
         int nextMsgSeq { get; }
@@ -14,7 +14,7 @@ namespace Data
         void OnConnectComplete(ProtocolClientData data, bool success);
 
         void OnCloseComplete(ProtocolClientData data);
-        void Dispatch(ProtocolClientData data, int seq, MsgType msgType, object? msg, Action<ECode, object>? cb);
+        void Dispatch(ProtocolClientData data, int seq, MsgType msgType, ArraySegment<byte> msg, Action<ECode, byte[]> cb);
     }
 
     public interface IProtocolClientCallbackProvider

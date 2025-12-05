@@ -7,13 +7,12 @@ using Data;
 
 namespace Script
 {
-    public class User_Action : UserHandler
+    public class User_Action : UserHandler<MsgPSAction>
     {
         public override MsgType msgType => MsgType._ServerAction;
 
-        public override async Task<MyResponse> Handle(ProtocolClientData socket, object _msg)
+        public override async Task<MyResponse> Handle(ProtocolClientData socket, MsgPSAction msg)
         {
-            var msg = Utils.CastObject<MsgPSAction>(_msg);
             this.logger.Info(this.msgType);
             UserServiceData usData = this.usData;
 
