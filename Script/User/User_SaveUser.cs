@@ -20,10 +20,10 @@ namespace Script
                 return ECode.UserNotExist;
             }
 
-            var msgSave = new MsgDatabaseSaveUser();
-            msgSave.userId = userId;
-            msgSave.profileNullable = new ProfileNullable();
-            var profileNullable = msgSave.profileNullable;
+            var msgDb = new MsgSaveUserProfile();
+            msgDb.userId = userId;
+            msgDb.profileNullable = new ProfileNullable();
+            var profileNullable = msgDb.profileNullable;
 
             List<string>? buffer = null;
             Profile last = player.lastProfile;
@@ -80,13 +80,13 @@ namespace Script
             if (buffer != null)
             {
 #if DEBUG
-                msgSave.profile_debug = Profile.Ensure(null);
-                msgSave.profile_debug.DeepCopyFrom(curr);
+                msgDb.profile_debug = Profile.Ensure(null);
+                msgDb.profile_debug.DeepCopyFrom(curr);
 #endif
-                MyResponse r = await this.service.connectToDatabaseService.SendAsync(MsgType._Database_SaveUser, msgSave);
+                MyResponse r = await this.service.connectToDbService.SendAsync(MsgType._Db_SaveUserProfile, msgDb);
                 if (r.err != ECode.Success)
                 {
-                    this.service.logger.ErrorFormat("_Database_SaveUser error: {0}, userId: {1}", r.err, userId);
+                    this.service.logger.ErrorFormat("_Db_SaveUser error: {0}, userId: {1}", r.err, userId);
                     return r;
                 }
             }

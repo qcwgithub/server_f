@@ -16,7 +16,7 @@ namespace Script
             MyDebug.Assert(self.data.connectToServiceTypes.Contains(to));
         }
 
-        async Task<MyResponse> SendToServiceAsync(ServiceType serviceType, MsgType type, object msg)
+        async Task<MyResponse> SendToServiceAsync(ServiceType serviceType, MsgType type, object? msg)
         {
             ProtocolClientData socket = this.self.tcpClientScript.RandomOtherServiceSocket(serviceType);
             if (socket == null)
@@ -32,25 +32,20 @@ namespace Script
             return r;
         }
 
-        public async Task<MyResponse> SendAsync(MsgType msgType, object msg)
+        public async Task<MyResponse> SendAsync(MsgType msgType, object? msg)
         {
             return await this.SendToServiceAsync(this.to, msgType, msg);
         }
     }
 
-    public interface IConnectToDBService
+    public interface IConnectToDbService
     {
         Task<MyResponse> SendAsync(MsgType msgType, object msg);
     }
 
-    public interface IConnectToDatabaseService
+    public class ConnectToDbService : ConnectToOtherService, IConnectToDbService
     {
-        ConnectToDatabaseService connectToDatabaseService { get; }
-    }
-
-    public class ConnectToDatabaseService : ConnectToOtherService, IConnectToDBService
-    {
-        public ConnectToDatabaseService(Service self) : base(self, ServiceType.Database)
+        public ConnectToDbService(Service self) : base(self, ServiceType.Db)
         {
 
         }
@@ -64,9 +59,16 @@ namespace Script
         }
     }
 
+    public class ConnectToGatewayService : ConnectToOtherService
+    {
+        public ConnectToGatewayService(Service self) : base(self, ServiceType.Gateway)
+        {
+
+        }
+    }
+
     public class ConnectFromUserService
     {
-        // 只能是 NormalService，因为 GroupService 虽然可以被 Player 连接，但是他不知道某个 playerId 属于哪个 psId，只能通过 GAAA -> AAA 转发
         Service self;
         public ConnectFromUserService(Service self)
         {
@@ -106,7 +108,7 @@ namespace Script
             this.self = self;
         }
 
-        public async Task<MyResponse> SendToSelfAsync(MsgType type, object msg)
+        public async Task<MyResponse> SendToSelfAsync(MsgType type, object? msg)
         {
             var cs = new TaskCompletionSource<MyResponse>();
             this.self.Dispatch(null, /* seq */0, type, msg, (e, r) =>

@@ -32,10 +32,6 @@ namespace Data
             return (this.flags & DONT_LOG_ERROR) != 0;
         }
 
-        public static MyResponse noResponse = new MyResponse(ECode.NoResponse);
-        public static MyResponse exResponse = new MyResponse(ECode.Exception);
-        public static MyResponse badReturnResponse = new MyResponse(ECode.BadReturn);
-
         public static implicit operator MyResponse(ECode e) => new MyResponse(e);
 
         public static implicit operator ECode(MyResponse v)
@@ -43,7 +39,7 @@ namespace Data
             throw new NotImplementedException();
         }
 
-        public T? CastRes<T>() where T : class
+        public T CastRes<T>() where T : class
         {
             if (this.res == null)
             {

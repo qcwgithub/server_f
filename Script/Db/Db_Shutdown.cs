@@ -3,13 +3,13 @@ using System.Threading.Tasks;
 
 namespace Script
 {
-    public class Database_Shutdown : OnShutdown<DatabaseService>
+    public class Db_Shutdown : OnShutdown<DbService>
     {
         protected override async Task StopBusinesses()
         {
             this.ClearTimer(ref this.service.databaseServiceData.timer_persistence_taskQueueHandler_Loop);
 
-            DatabaseServiceData sd = this.service.databaseServiceData;
+            DbServiceData sd = this.service.databaseServiceData;
             while (sd.persistenceHandling)
             {
                 await Task.Delay(10);

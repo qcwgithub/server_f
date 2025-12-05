@@ -3,7 +3,7 @@ namespace Data
     public enum ServiceType
     {
         Gateway,
-        Database,
+        Db,
         User,
         Global,
         Command,
@@ -53,7 +53,7 @@ namespace Data
 
         public static bool IsDBService(this ServiceType self)
         {
-            return self == ServiceType.Database;
+            return self == ServiceType.Db;
         }
     }
 

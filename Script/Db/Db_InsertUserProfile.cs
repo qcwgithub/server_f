@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 
 namespace Script
 {
-    public class Database_InsertUserProfile : Handler<DatabaseService>
+    public class Db_InsertUserProfile : Handler<DbService>
     {
-        public override MsgType msgType => MsgType._Database_InsertUserProfile;
+        public override MsgType msgType => MsgType._Db_InsertUserProfile;
         public override async Task<MyResponse> Handle(ProtocolClientData socket, object _msg)
         {
             var msg = Utils.CastObject<MsgInsertUserProfile>(_msg);

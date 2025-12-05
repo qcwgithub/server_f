@@ -59,7 +59,7 @@ namespace Script
         }
 
         //// AUTO CREATED ////
-        protected override async Task<(ECode, ProfileOriginalMail)> LoadFromDB(IConnectToDBService connectToDBService, long mailId, int _2 = 0)
+        protected override async Task<(ECode, ProfileOriginalMail)> LoadFromDB(IConnectToDbService connectToDBService, long mailId, int _2 = 0)
         {
             var msgDb = new MsgQuery_ProfileOriginalMail_by_mailId();
             msgDb.mailId = mailId;

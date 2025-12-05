@@ -3,7 +3,7 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class MsgDatabaseSaveUser
+    public class MsgSaveUserProfile
     {
         [Key(0)]
         public long userId;

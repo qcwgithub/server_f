@@ -171,14 +171,14 @@ namespace Script
         //     this.data.tcpClientCallback.Dispatch(data, msgType, msg, reply);
         // }
 
-        public virtual void Dispatch(ProtocolClientData data, int seq, MsgType msgType, object msg, Action<ECode, object> reply)
+        public virtual void Dispatch(ProtocolClientData data, int seq, MsgType msgType, object? msg, Action<ECode, object> reply)
         {
             this.dispatcher.Dispatch(data, msgType, msg, reply);
         }
 
         public virtual ProtocolClientData GetOrConnectSocket(ServiceType to_serviceType, int to_serviceId, string inIp, int inPort)
         {
-            ProtocolClientData socket;
+            ProtocolClientData? socket;
             if (!data.otherServiceSockets.TryGetValue(to_serviceId, out socket) || socket.IsClosed())
             {
                 socket = new TcpClientData();
@@ -220,7 +220,7 @@ namespace Script
             return res;
         }
 
-        protected bool CheckResGetServiceConfigs(ResGetServiceConfigs res, out ServiceConfig myServiceConfig, out string message)
+        protected bool CheckResGetServiceConfigs(ResGetServiceConfigs res, out ServiceConfig? myServiceConfig, out string message)
         {
             myServiceConfig = null;
             message = string.Empty;
@@ -240,16 +240,16 @@ namespace Script
                 return false;
             }
 
-            List<ServiceConfig> normals = res.allServiceConfigs;
+            List<ServiceConfig> allServiceConfigs = res.allServiceConfigs;
 
             var self = this.server.data.serverConfig;
-            if (normals == null || normals.Count == 0)
+            if (allServiceConfigs == null || allServiceConfigs.Count == 0)
             {
-                message = "normals == null || normals.Count == 0";
+                message = "allServiceConfigs == null || allServiceConfigs.Count == 0";
                 return false;
             }
 
-            myServiceConfig = normals.Find(x => x.serviceType == this.data.serviceType && x.serviceId == this.data.serviceId);
+            myServiceConfig = allServiceConfigs.Find(x => x.serviceType == this.data.serviceType && x.serviceId == this.data.serviceId);
 
             if (myServiceConfig == null)
             {
@@ -275,7 +275,7 @@ namespace Script
             return true;
         }
 
-        // override by ConfigManagerService
+        // override by GlobalService
         public virtual async Task<ECode> InitServiceConfigsUntilSuccess()
         {
             int counter = 0;
@@ -300,13 +300,13 @@ namespace Script
                     continue;
                 }
 
-                if (!this.CheckResGetServiceConfigs(res, out ServiceConfig myServiceConfig, out string message))
+                if (!this.CheckResGetServiceConfigs(res, out ServiceConfig? myServiceConfig, out string message))
                 {
                     throw new Exception(message);
                 }
 
                 this.data.SaveServiceConfigs(res);
-                this.data.serviceConfig = myServiceConfig;
+                this.data.serviceConfig = myServiceConfig!;
 
                 if (counter >= 2)
                 {

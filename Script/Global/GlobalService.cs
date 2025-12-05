@@ -15,33 +15,26 @@ namespace Script
             }
         }
 
+        public readonly Global_OnReladConfigs global_OnReladConfigs;
+        public readonly collection_profile_global collection_profil_global;
+
         public GlobalService(Server server, int serviceId) : base(server, serviceId)
         {
+            this.collection_profil_global = new collection_profile_global().Init(this.server, this);
+            this.global_OnReladConfigs = new Global_OnReladConfigs().Init(this.server, this);
         }
-
-        public GroupServiceConnectFromStatelessService connectFromStatelessService { get; private set; }
-        public Global_OnReladConfigs global_OnReladConfigs { get; private set; }
-
-        public collection_profile_global collection_profil_global;
 
         public override void Attach()
         {
             base.Attach();
             base.AddHandler<GlobalService>();
-            this.connectFromStatelessService = new GroupServiceConnectFromStatelessService(this);
 
             MongoRegister.Init();
 
-            this.dispatcher.AddHandler(new Global_Start().Init(this));
-            this.dispatcher.AddHandler(new Global_Shutdown().Init(this));
-
-            this.dispatcher.AddHandler(new Global_GetServiceConfigs().Init(this));
-
-            this.global_OnReladConfigs = new Global_OnReladConfigs().Init(this);
+            this.dispatcher.AddHandler(new Global_Start().Init(this.server, this));
+            this.dispatcher.AddHandler(new Global_Shutdown().Init(this.server, this));
+            this.dispatcher.AddHandler(new Global_GetServiceConfigs().Init(this.server, this));
             this.dispatcher.AddHandler(this.global_OnReladConfigs, true);
-
-            // manual
-            this.collection_profil_global = new collection_profile_global().Init(this);
         }
 
         protected override Task<ResGetServiceConfigs> RequestServiceConfigs(string why)

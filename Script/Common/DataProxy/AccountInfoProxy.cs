@@ -60,7 +60,7 @@ namespace Script
         }
 
         //// AUTO CREATED ////
-        protected override async Task<(ECode, AccountInfo)> LoadFromDB(IConnectToDBService connectToDBService, string channel, string channelUserId)
+        protected override async Task<(ECode, AccountInfo)> LoadFromDB(IConnectToDbService connectToDBService, string channel, string channelUserId)
         {
             var msgDb = new MsgQuery_AccountInfo_by_channel_channelUserId();
             msgDb.channel = channel;

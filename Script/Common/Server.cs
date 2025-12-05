@@ -110,8 +110,8 @@ namespace Script
                 case ServiceType.Gateway:
                     return new GatewayService(this, serviceId);
 
-                case ServiceType.Database:
-                    return new DatabaseService(this, serviceId);
+                case ServiceType.Db:
+                    return new DbService(this, serviceId);
 
                 case ServiceType.User:
                     return new UserService(this, serviceId);

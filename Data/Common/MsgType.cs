@@ -83,9 +83,9 @@ namespace Data
         // server.DBPlayer [201,400]
         _DBRegularSearchPlayerByName = 200,
         _DBGetMaxPlayerId = 201,
-        _Database_QueryUserProfile = 202,
-        _Database_SaveUser = 203,
-        _Database_InsertUserProfile = 204,
+        _Db_QueryUserProfile = 202,
+        _Db_SaveUserProfile = 203,
+        _Db_InsertUserProfile = 204,
 
         _Iterate_dictOf_Profile_playerId_userName_by_playerId = 205,
         _Iterate_dictOf_UnionInfo_unionId_name_shortName_by_unionId = 206,

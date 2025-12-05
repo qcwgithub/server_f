@@ -287,8 +287,8 @@ namespace Data
                 case ServiceType.Gateway:
                     return new GatewayServiceData(typeAndId);
 
-                case ServiceType.Database:
-                    return new DatabaseServiceData(typeAndId);
+                case ServiceType.Db:
+                    return new DbServiceData(typeAndId);
 
                 case ServiceType.User:
                     return new UserServiceData(typeAndId);
@@ -311,8 +311,8 @@ namespace Data
                 case ServiceType.Gateway:
                     return GatewayServiceData.s_connectToServiceIds;
     
-                case ServiceType.Database:
-                    return DatabaseServiceData.s_connectToServiceIds;
+                case ServiceType.Db:
+                    return DbServiceData.s_connectToServiceIds;
 
                 case ServiceType.User:
                     return UserServiceData.s_connectToServiceIds;

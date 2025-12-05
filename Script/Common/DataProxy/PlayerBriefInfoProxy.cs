@@ -56,7 +56,7 @@ namespace Script
         }
 
         //// AUTO CREATED ////
-        protected override async Task<(ECode, PlayerBriefInfo)> LoadFromDB(IConnectToDBService connectToDBService, long playerId, int _2 = 0)
+        protected override async Task<(ECode, PlayerBriefInfo)> LoadFromDB(IConnectToDbService connectToDBService, long playerId, int _2 = 0)
         {
             var msgDb = new MsgQuery_PlayerBriefInfo_by_playerId();
             msgDb.playerId = playerId;

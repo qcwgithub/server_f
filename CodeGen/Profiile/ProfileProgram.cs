@@ -73,7 +73,7 @@ public class ProfileProgram
             new Mark { startMark = "#region autoSave", text = Gen_table_player.Save(fields) },
         }); */
 
-        ReplaceFile("Script/Database/collections/collection_user.cs", new Mark[]
+        ReplaceFile("Script/Db/collections/collection_user.cs", new Mark[]
         {
             new Mark { startMark = "#region autoSave", text = Gen_collection_player.Save(fields) },
         });

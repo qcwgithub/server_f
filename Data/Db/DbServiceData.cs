@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Data
 {
-    public class DatabaseServiceData : ServiceData
+    public class DbServiceData : ServiceData
     {
         public static readonly List<ServiceType> s_connectToServiceIds = new List<ServiceType>
         {
@@ -14,7 +14,7 @@ namespace Data
         public int persistence_lastAssignTaskQueueOwnersTimeS;
         public List<int> persistence_ownTaskQueues;
         public bool persistenceHandling;
-        public DatabaseServiceData(ServiceTypeAndId serviceTypeAndId)
+        public DbServiceData(ServiceTypeAndId serviceTypeAndId)
             : base(serviceTypeAndId, s_connectToServiceIds)
         {
             this.lockControllerData = new LockControllerData();

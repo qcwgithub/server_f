@@ -2,9 +2,9 @@ using Data;
 
 namespace Script
 {
-    public class Database_QueryUserProfile : Handler<DatabaseService>
+    public class Db_QueryUserProfile : Handler<DbService>
     {
-        public override MsgType msgType => MsgType._Database_QueryUserProfile;
+        public override MsgType msgType => MsgType._Db_QueryUserProfile;
         public override async Task<MyResponse> Handle(ProtocolClientData socket, object _msg)
         {
             var msg = Utils.CastObject<MsgQueryUserProfile>(_msg);

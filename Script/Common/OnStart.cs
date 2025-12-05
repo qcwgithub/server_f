@@ -100,35 +100,5 @@ namespace Script
         {
             return Task.FromResult(ECode.Success);
         }
-
-        public static async Task s_ObtainInit(string what, LockController lockController, string[] keys, Func<Task> init, log4net.ILog logger)
-        {
-            int lockTimeS = 600;
-            bool lockSuccess = await lockController.Lock(keys, lockTimeS, false);
-
-            if (lockSuccess)
-            {
-                logger.InfoFormat("{0} ObtainInit ? yes 1", what);
-                long startS = TimeUtils.GetTimeS();
-                await init();
-                await lockController.Unlock(keys);
-                lockController.DetectLockTooLong(what, startS, lockTimeS);
-                logger.InfoFormat("{0} ObtainInit ? yes 2", what);
-            }
-            else
-            {
-                logger.InfoFormat("{0} ObtainInit ? no 1", what);
-                lockSuccess = await lockController.Lock(keys, 1, true);
-                if (lockSuccess)
-                {
-                    await lockController.Unlock(keys);
-                }
-                else
-                {
-                    MyDebug.Assert(false);
-                }
-                logger.InfoFormat("{0} ObtainInit ? no 2", what);
-            }
-        }
     }
 }

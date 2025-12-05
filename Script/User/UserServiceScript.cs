@@ -15,7 +15,7 @@ namespace Script
             var msgDb = new MsgQueryUserProfile();
             msgDb.userId = userId;
 
-            var r = await this.service.connectToDatabaseService.SendAsync(MsgType._Database_QueryUserProfile, msgDb);
+            var r = await this.service.connectToDbService.SendAsync(MsgType._Db_QueryUserProfile, msgDb);
             if (r.err != ECode.Success)
             {
                 this.service.logger.Error($"QueryUserProfile({userId}) r.err {r.err}");
@@ -44,7 +44,7 @@ namespace Script
             var msgDb = new MsgInsertUserProfile();
             msgDb.profile = profile;
 
-            var r = await this.service.connectToDatabaseService.SendAsync(MsgType._Database_InsertUserProfile, msgDb);
+            var r = await this.service.connectToDbService.SendAsync(MsgType._Db_InsertUserProfile, msgDb);
             if (r.err != ECode.Success)
             {
                 this.service.logger.Error($"InsertUserProfile({profile.userId}) r.err {r.err}");

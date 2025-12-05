@@ -3,7 +3,7 @@ using MongoDB.Driver;
 using MongoDB.Bson;
 using Script;
 
-public class collection_user_profile : ServiceScript<DatabaseService>
+public class collection_user_profile : ServiceScript<DbService>
 {
     public const string COLLECTION = "user_profile";
     MongoClient mongoClient => this.server.data.mongoClient;
@@ -38,8 +38,8 @@ public class collection_user_profile : ServiceScript<DatabaseService>
             nameof(Profile.userId), true, true, this.service.logger);
 
         // RegularSearchByName 要用到
-        // await MongoHelper.CreateIndex(this.mongoClient, this.dbName, COLLECTION,
-            // nameof(Profile.userName), true, false, this.service.logger);
+        await MongoHelper.CreateIndex(this.mongoClient, this.dbName, COLLECTION,
+            nameof(Profile.userName), true, false, this.service.logger);
     }
 
     public async Task<MyResponse> Query(long userId)
