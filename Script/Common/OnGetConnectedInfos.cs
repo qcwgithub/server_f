@@ -4,14 +4,12 @@ using Data;
 
 namespace Script
 {
-    public class OnGetConnectedInfos<S> : Handler<S>
+    public class OnGetConnectedInfos<S> : Handler<S, MsgGetConnectedInfos>
         where S : Service
     {
         public override MsgType msgType => MsgType._GetConnectedInfos;
-        public override Task<MyResponse> Handle(ProtocolClientData socket, object _msg)
+        public override Task<MyResponse> Handle(ProtocolClientData socket, MsgGetConnectedInfos msg)
         {
-            var msg = Utils.CastObject<MsgGetConnectedInfos>(_msg);
-
             ServiceData sd = this.service.data;
 
             var res = new ResGetConnectedInfos();

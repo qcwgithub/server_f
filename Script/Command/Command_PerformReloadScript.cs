@@ -5,13 +5,12 @@ using Data;
 
 namespace Script
 {
-    public class Command_PerformReloadScript : Handler<CommandService>
+    public class Command_PerformReloadScript : Handler<CommandService, MsgCommon>
     {
         public override MsgType msgType => MsgType._Command_PerformReloadScript;
 
-        public override async Task<MyResponse> Handle(ProtocolClientData socket, object _msg)
+        public override async Task<MyResponse> Handle(ProtocolClientData socket, MsgCommon msg)
         {
-            var msg = Utils.CastObject<MsgCommon>(_msg);
             int serviceId = (int)msg.GetLong("serviceId");
             string zip = msg.GetString("zip");
 

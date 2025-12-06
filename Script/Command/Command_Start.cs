@@ -10,7 +10,7 @@ namespace Script
 {
     public class Command_Start : OnStart<CommandService>
     {
-        public override async Task<MyResponse> Handle(ProtocolClientData socket, object _msg)
+        public override async Task<MyResponse> Handle(ProtocolClientData socket, MsgStart msg)
         {
             // this.service.SetState(ServiceState.Starting);
 
@@ -148,30 +148,30 @@ namespace Script
             string action = this.GetArg_Action();
             switch (action)
             {
-                case "printUserUSId":
-                    {
-                        long userId = this.GetArg_UserId();
-                        int psId = await this.server.playerPSRedis.GetPSId(userId);
-                        this.service.logger.InfoFormat("userId: {0} psId: {1}", userId, psId);
+                // case "printUserUSId":
+                //     {
+                //         long userId = this.GetArg_UserId();
+                //         int psId = await this.server.playerPSRedis.GetPSId(userId);
+                //         this.service.logger.InfoFormat("userId: {0} psId: {1}", userId, psId);
 
-                        return ECode.Success;
-                    }
+                //         return ECode.Success;
+                //     }
 
-                case "taskQueueLengthes":
-                    {
-                        (long, long)[] lengthes = await this.server.persistence_taskQueueRedis.GetLengthInfo(PersistenceTaskQueueRedis.QUEUES);
-                        for (int i = 0; i < PersistenceTaskQueueRedis.QUEUES.Length; i++)
-                        {
-                            this.service.logger.InfoFormat("taskQueue {0} list {1} zset {2}", PersistenceTaskQueueRedis.QUEUES[i], lengthes[i].Item1, lengthes[i].Item2);
-                        }
-                        return ECode.Success;
-                    }
+                // case "taskQueueLengthes":
+                //     {
+                //         (long, long)[] lengthes = await this.server.persistence_taskQueueRedis.GetLengthInfo(PersistenceTaskQueueRedis.QUEUES);
+                //         for (int i = 0; i < PersistenceTaskQueueRedis.QUEUES.Length; i++)
+                //         {
+                //             this.service.logger.InfoFormat("taskQueue {0} list {1} zset {2}", PersistenceTaskQueueRedis.QUEUES[i], lengthes[i].Item1, lengthes[i].Item2);
+                //         }
+                //         return ECode.Success;
+                //     }
 
                 default:
                     {
                         if (action.StartsWith("playerAction."))
                         {
-                            return await this.PlayerAction(action.Substring("playerAction.".Length));
+                            return await this.UserAction(action.Substring("playerAction.".Length));
                         }
                         else
                         {
@@ -362,41 +362,41 @@ namespace Script
                         }
                         break;
 
-                    case "saveUserProfileToFile": // 即使不在线也行的方法
-                        {
-                            long playerId = this.GetArg_UserId();
-                            if (playerId == 0)
-                            {
-                                this.service.logger.InfoFormat("playerId is 0");
-                                return ECode.Success;
-                            }
+                    // case "saveUserProfileToFile": // 即使不在线也行的方法
+                    //     {
+                    //         long playerId = this.GetArg_UserId();
+                    //         if (playerId == 0)
+                    //         {
+                    //             this.service.logger.InfoFormat("playerId is 0");
+                    //             return ECode.Success;
+                    //         }
 
-                            var msgX = new MsgLoadPlayerNewestInfos();
-                            msgX.what = LoadUserNewestWhat.Profile;
-                            msgX.playerIds = new List<long> { playerId };
+                    //         var msgX = new MsgLoadPlayerNewestInfos();
+                    //         msgX.what = LoadUserNewestWhat.Profile;
+                    //         msgX.playerIds = new List<long> { playerId };
 
-                            r = await this.service.connectToSameServerType.SendToServiceAsync(serviceId, MsgType._PlayerS_LoadPlayerNewestInfos, msgX);
-                            if (r.err == ECode.Success)
-                            {
-                                var res = r.CastRes<ResLoadPlayerNewestInfos>();
+                    //         r = await this.service.connectToSameServerType.SendToServiceAsync(serviceId, MsgType._PlayerS_LoadPlayerNewestInfos, msgX);
+                    //         if (r.err == ECode.Success)
+                    //         {
+                    //             var res = r.CastRes<ResLoadPlayerNewestInfos>();
 
-                                if (res.newestInfos.Count == 0)
-                                {
-                                    this.service.logger.Info("user not exist");
-                                }
-                                else
-                                {
-                                    string json = JsonUtils.stringify(res.newestInfos[0].profile);
-                                    int zoneId = longidext.DecodeServerId(playerId);
-                                    long rid = playerId % longidext.N;
-                                    string fileName = $"profile{zoneId}_{rid}.json";
-                                    File.WriteAllText(fileName, json);
+                    //             if (res.newestInfos.Count == 0)
+                    //             {
+                    //                 this.service.logger.Info("user not exist");
+                    //             }
+                    //             else
+                    //             {
+                    //                 string json = JsonUtils.stringify(res.newestInfos[0].profile);
+                    //                 int zoneId = longidext.DecodeServerId(playerId);
+                    //                 long rid = playerId % longidext.N;
+                    //                 string fileName = $"profile{zoneId}_{rid}.json";
+                    //                 File.WriteAllText(fileName, json);
 
-                                    this.service.logger.Info("save profile to file ok, file name: " + fileName);
-                                }
-                            }
-                        }
-                        break;
+                    //                 this.service.logger.Info("save profile to file ok, file name: " + fileName);
+                    //             }
+                    //         }
+                    //     }
+                    //     break;
 
                     case "showUserCount":
                         {
@@ -427,24 +427,24 @@ namespace Script
             return ECode.Success;
         }
 
-        async Task<MyResponse> PlayerAction(string action)
+        async Task<MyResponse> UserAction(string action)
         {
-            long playerId = this.GetArg_UserId();
-            if (playerId == 0)
+            long userId = this.GetArg_UserId();
+            if (userId == 0)
             {
-                this.service.logger.InfoFormat("playerId is 0");
+                this.service.logger.InfoFormat("userId is 0");
                 return ECode.Success;
             }
 
-            int usId = await this.server.playerPSRedis.GetPSId(playerId);
+            int usId = 0;//await this.server.playerPSRedis.GetPSId(userId);
             // this.service.logger.InfoFormat("playerId: {0} psId: {1}", playerId, psId);
             if (usId == 0)
             {
-                this.service.logger.InfoFormat("playerId: {0} psId is null", playerId);
+                this.service.logger.InfoFormat("playerId: {0} psId is null", userId);
                 return ECode.Success;
             }
 
-            this.service.logger.InfoFormat("playerId: {0} psId: {1}", playerId, usId);
+            this.service.logger.InfoFormat("playerId: {0} psId: {1}", userId, usId);
 
             ServiceConfig sc = this.service.data.current_resGetServiceConfigs.FindServiceConfig(ServiceType.User, usId);
             if (sc == null)
@@ -469,13 +469,13 @@ namespace Script
                 case "kick":
                     {
                         r = await this.service.connectToSelf.SendToSelfAsync(MsgType._Command_PerformKick,
-                            new MsgCommon().SetLong("serviceId", usId).SetLong("playerId", playerId));
+                            new MsgCommon().SetLong("serviceId", usId).SetLong("playerId", userId));
                     }
                     break;
                 case "saveProfileToFile":
                     {
                         r = await this.service.connectToSelf.SendToSelfAsync(MsgType._Command_PerformSaveProfileToFile,
-                            new MsgCommon().SetLong("serviceId", usId).SetLong("playerId", playerId));
+                            new MsgCommon().SetLong("serviceId", usId).SetLong("playerId", userId));
                     }
                     break;
                     
@@ -498,7 +498,7 @@ namespace Script
                         }
 
                         r = await this.service.connectToSelf.SendToSelfAsync(MsgType._Command_PerformPlayerGM,
-                            new MsgCommon().SetLong("serviceId", usId).SetLong("playerId", playerId).SetString("msgGM", msgGMStr));
+                            new MsgCommon().SetLong("serviceId", usId).SetLong("playerId", userId).SetString("msgGM", msgGMStr));
                     }
                     break;
 

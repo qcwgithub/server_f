@@ -6,26 +6,25 @@ using Data;
 
 namespace Script
 {
-    public class Command_PerformSetPlayerGmFlag : Handler<CommandService>
+    public class Command_PerformSetPlayerGmFlag : Handler<CommandService, MsgCommon>
     {
         public override MsgType msgType => MsgType._Command_PerformSetPlayerGmFlag;
 
-        public override async Task<MyResponse> Handle(ProtocolClientData socket, object _msg)
+        public override async Task<MyResponse> Handle(ProtocolClientData socket, MsgCommon msg)
         {
-            var msg = Utils.CastObject<MsgCommon>(_msg);
-            long startId = msg.GetLongId("startId");
-            long endId = msg.GetLongId("endId");
+            long startId = msg.GetLong("startId");
+            long endId = msg.GetLong("endId");
             int serviceId = (int)msg.GetLong("serviceId");
 
             var msgSet = new MsgSetGmFlag();
-            msgSet.startPlayerId = startId;
-            msgSet.endPlayerId = endId;
+            msgSet.startUserId = startId;
+            msgSet.endUserId = endId;
 
             var r = await this.service.connectToSameServerType.SendToServiceAsync(serviceId, MsgType._SetGmFlag, msgSet);
             var res = r.CastRes<ResSetGmFlag>();
-            if (res.listPlayer != null)
+            if (res.listUser != null)
             {
-                foreach (var item in res.listPlayer)
+                foreach (var item in res.listUser)
                 {
                     this.service.logger.InfoFormat("{0} success set GM!", item);
                 }

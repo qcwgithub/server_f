@@ -6,15 +6,13 @@ namespace Script
 {
     public class Global_OnReladConfigs : OnReloadConfigs<GlobalService>
     {
-        public override async Task<MyResponse> Handle(ProtocolClientData socket, object _msg)
+        public override async Task<MyResponse> Handle(ProtocolClientData socket, MsgReloadConfigs msg)
         {
-            MyResponse r = await base.Handle(socket, _msg);
+            MyResponse r = await base.Handle(socket, msg);
             if (r.err != ECode.Success)
             {
                 return r;
             }
-
-            var msg = Utils.CastObject<MsgReloadConfigs>(_msg);
 
             return r;
         }

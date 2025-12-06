@@ -181,11 +181,11 @@ namespace Data
 
                     if (!requireResponse)
                     {
-                        this.callback!.Dispatch(this, seq, msgType, msg, null);
+                        this.callback!.Dispatch(this, msgType, msg, null);
                     }
                     else
                     {
-                        this.callback!.Dispatch(this, seq, msgType, msg,
+                        this.callback!.Dispatch(this, msgType, msg,
                             (ECode e2, byte[] msg2) =>
                             {
                                 // 消息处理是异步的，在回复的时候，有可能已经断开了。因此这里要加个判断

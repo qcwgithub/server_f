@@ -2,12 +2,11 @@ using Data;
 
 namespace Script
 {
-    public class Db_SaveUserProfile : Handler<DbService>
+    public class Db_SaveUserProfile : Handler<DbService, MsgSaveUserProfile>
     {
         public override MsgType msgType => MsgType._Db_SaveUserProfile;
-        public override async Task<MyResponse> Handle(ProtocolClientData socket, object _msg)
+        public override async Task<MyResponse> Handle(ProtocolClientData socket, MsgSaveUserProfile msg)
         {
-            var msg = Utils.CastObject<MsgSaveUserProfile>(_msg);
             this.service.logger.InfoFormat("{0} userIdId:{1}", this.msgType, msg.userId);
             //MyResponse r = await this.service.table_player.Save(msg.playerId, msg.profileNullable);
 

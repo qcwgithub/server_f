@@ -4,16 +4,14 @@ using System.Collections.Generic;
 
 namespace Script
 {
-    public class OnGetReloadConfigOptions<S> : Handler<S>
+    public class OnGetReloadConfigOptions<S> : Handler<S, MsgGetReloadConfigOptions>
         where S : Service
     {
         public override MsgType msgType => MsgType._GetReloadConfigOptions;
 
-        public override Task<MyResponse> Handle(ProtocolClientData socket, object _msg)
+        public override Task<MyResponse> Handle(ProtocolClientData socket, MsgGetReloadConfigOptions msg)
         {
             this.service.logger.InfoFormat("{0}", this.msgType);
-
-            var msg = Utils.CastObject<MsgGetReloadConfigOptions>(_msg);
 
             var res = new ResGetReloadConfigOptions();
             res.files = new List<string>();

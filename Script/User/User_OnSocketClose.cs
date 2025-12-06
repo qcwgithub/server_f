@@ -8,11 +8,10 @@ namespace Script
 {
     public class User_OnSocketClose : OnSocketClose<UserService>
     {
-        public override async Task<MyResponse> Handle(ProtocolClientData socket, object _msg)
+        public override async Task<MyResponse> Handle(ProtocolClientData socket, MsgOnClose msg)
         {
-            await base.Handle(socket, _msg);
+            await base.Handle(socket, msg);
 
-            var msg = (MsgOnClose)_msg;
             // if (msg.isServer)
             // {
             //     return ECode.Success;

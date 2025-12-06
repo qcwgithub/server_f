@@ -13,7 +13,7 @@ namespace Script
     // 数据特点：
     // 1 一个 id 一条。例如 playerId, unionId
     // 2 不是全部加载到 redis 的，只有用到的时候才会加载，超时了就从 redis 消失了
-    public abstract partial class DataProxy<DataType, P1, P2>: ServerScript where DataType : class, ICanBePlaceholder
+    public abstract partial class DataProxy<DataType, P1, P2> : ServerScript where DataType : class, ICanBePlaceholder
     {
         protected abstract IDatabase GetDb();
         protected abstract stDirtyElement DirtyElement(P1 p1, P2 p2);
@@ -117,9 +117,11 @@ namespace Script
 
             stDirtyElement dirtyElement = this.DirtyElement(p1, p2);
 
+            throw new Exception("TODO");
+
             await Task.WhenAll(
-                this.SaveToRedis(p1, p2, data),
-                this.server.persistence_taskQueueRedis.RPushToTaskQueue(this.GetBelongTaskQueue(p1, p2), dirtyElement.ToString())
+                this.SaveToRedis(p1, p2, data) // ,
+                                               // this.server.persistence_taskQueueRedis.RPushToTaskQueue(this.GetBelongTaskQueue(p1, p2), dirtyElement.ToString())
             );
 
             // 2 *PERSIST*

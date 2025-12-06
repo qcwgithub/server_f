@@ -100,6 +100,25 @@ namespace Script
         }
     }
 
+    public class MonitorConnectToSameServerType
+    {
+        Service self;
+        public MonitorConnectToSameServerType(Service self)
+        {
+            this.self = self;
+        }
+
+        public async Task<MyResponse> SendToServiceAsync(int serviceId, MsgType msgType, object msg)
+        {
+            ProtocolClientData socket = this.self.data.GetOtherServiceSocket(serviceId);
+            if (socket == null || !socket.IsConnected())
+            {
+                return ECode.Server_NotConnected;
+            }
+            return await socket.SendAsync(msgType, msg, pTimeoutS: null);
+        }
+    }
+
     public class ConnectToSelf
     {
         Service self;

@@ -3,13 +3,13 @@ using Data;
 
 namespace Script
 {
-    public class OnWaitTask<S> : Handler<S>
+    public class OnWaitTask<S> : Handler<S, MsgWaitTask>
         where S : Service
     {
         public override MsgType msgType => MsgType._WaitTask;
-        public sealed override async Task<MyResponse> Handle(ProtocolClientData socket, object _msg)
+        public sealed override async Task<MyResponse> Handle(ProtocolClientData socket, MsgWaitTask msg)
         {
-            await Utils.CastObject<Task>(_msg);
+            await msg.task;
             return ECode.Success;
         }
     }

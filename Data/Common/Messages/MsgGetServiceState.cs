@@ -3,6 +3,12 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
+    public class MsgGetServiceState
+    {
+        
+    }
+
+    [MessagePackObject]
     public class ResGetServiceState
     {
         [Key(0)]

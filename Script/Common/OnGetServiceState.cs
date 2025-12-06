@@ -3,12 +3,12 @@ using Data;
 
 namespace Script
 {
-    public class OnGetServiceState<S> : Handler<S>
+    public class OnGetServiceState<S> : Handler<S, MsgGetServiceState>
         where S : Service
     {
         public override MsgType msgType => MsgType._GetServiceState;
 
-        public override Task<MyResponse> Handle(ProtocolClientData socket, object _msg)
+        public override Task<MyResponse> Handle(ProtocolClientData socket, MsgGetServiceState msg)
         {
             var res = new ResGetServiceState();
             res.serviceType = this.service.data.serviceType;

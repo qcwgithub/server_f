@@ -4,11 +4,11 @@ using Data;
 
 namespace Script
 {
-    public class OnGetScriptVersion<S> : Handler<S>
+    public class OnGetScriptVersion<S> : Handler<S, MsgGetScriptVersion>
         where S : Service
     {
         public override MsgType msgType => MsgType._GetScriptVersion;
-        public override Task<MyResponse> Handle(ProtocolClientData socket, object _msg)
+        public override Task<MyResponse> Handle(ProtocolClientData socket, MsgGetScriptVersion msg)
         {
             // if (this.server.data.state != ServerState.Started)
             // {
@@ -16,7 +16,6 @@ namespace Script
             //     return ECode.Error.toTask();
             // }
 
-            var msg = Utils.CastObject<MsgGetScriptVersion>(_msg);
             this.service.logger.InfoFormat("{0} ", this.msgType);
 
             var res = new ResGetScriptVersion();

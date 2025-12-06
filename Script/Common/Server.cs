@@ -156,7 +156,7 @@ namespace Script
 
             foreach (var service in this.services)
             {
-                service.dispatcher.Dispatch(MsgType._Start, null, null);
+                service.dispatcher.Dispatch(null, MsgType._Start, new MsgStart(), null);
             }
         }
 
@@ -238,7 +238,7 @@ namespace Script
             {
                 if (service.serviceId == serviceId)
                 {
-                    service.dispatcher.Dispatch(msgType, msg, null);
+                    service.dispatcher.Dispatch(null, msgType, msg, null);
                     found = true;
                     break;
                 }

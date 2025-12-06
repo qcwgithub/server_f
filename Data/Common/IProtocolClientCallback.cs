@@ -14,7 +14,7 @@ namespace Data
         void OnConnectComplete(ProtocolClientData data, bool success);
 
         void OnCloseComplete(ProtocolClientData data);
-        void Dispatch(ProtocolClientData data, int seq, MsgType msgType, ArraySegment<byte> msg, Action<ECode, byte[]> cb);
+        void Dispatch(ProtocolClientData data, MsgType msgType, ArraySegment<byte> msg, Action<ECode, byte[]> cb);
     }
 
     public interface IProtocolClientCallbackProvider

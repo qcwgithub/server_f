@@ -4,11 +4,11 @@ using Data;
 
 namespace Script
 {
-    public class OnReloadScript<S> : Handler<S>
+    public class OnReloadScript<S> : Handler<S, MsgReloadScript>
         where S : Service
     {
         public override MsgType msgType => MsgType._ReloadScript;
-        public override Task<MyResponse> Handle(ProtocolClientData socket, object _msg)
+        public override Task<MyResponse> Handle(ProtocolClientData socket, MsgReloadScript msg)
         {
             // if (this.server.data.state != ServerState.Started)
             // {
@@ -16,7 +16,6 @@ namespace Script
             //     return ECode.Error.toTask();
             // }
 
-            var msg = Utils.CastObject<MsgReloadScript>(_msg);
             this.service.logger.InfoFormat("{0} local {1}", this.msgType, msg.local);
 
             var res = new ResReloadScript();

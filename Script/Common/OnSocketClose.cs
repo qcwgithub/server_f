@@ -5,7 +5,7 @@ using Data;
 
 namespace Script
 {
-    public class OnSocketClose<S> : Handler<S>
+    public class OnSocketClose<S> : Handler<S, MsgOnClose>
         where S : Service
     {
         public override MsgType msgType => MsgType._OnSocketClose;
@@ -27,7 +27,7 @@ namespace Script
             }
         }
 
-        public override Task<MyResponse> Handle(ProtocolClientData socket, object _msg)
+        public override Task<MyResponse> Handle(ProtocolClientData socket, MsgOnClose msg)
         {
             if (socket.serviceTypeAndId != null)
             {

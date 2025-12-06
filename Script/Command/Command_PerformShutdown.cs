@@ -5,13 +5,12 @@ using Data;
 
 namespace Script
 {
-    public class Command_PerformShutdown : Handler<CommandService>
+    public class Command_PerformShutdown : Handler<CommandService, MsgCommon>
     {
         public override MsgType msgType => MsgType._Command_PerformShutdown;
 
-        public override async Task<MyResponse> Handle(ProtocolClientData socket, object _msg)
+        public override async Task<MyResponse> Handle(ProtocolClientData socket, MsgCommon msg)
         {
-            var msg = Utils.CastObject<MsgCommon>(_msg);
             int serviceId = (int)msg.GetLong("serviceId");
             int force = (int)msg.GetLong("force");
 

@@ -5,9 +5,9 @@ namespace Script
     // 连接其他服务器成功
     public class User_OnConnectComplete : OnConnectComplete<UserService>
     {
-        public override async Task<MyResponse> Handle(ProtocolClientData socket, object _msg)
+        public override async Task<MyResponse> Handle(ProtocolClientData socket, MsgConnectorInfo msg)
         {
-            MyResponse r = await base.Handle(socket, _msg);
+            MyResponse r = await base.Handle(socket, msg);
             if (r.err != ECode.Success)
             {
                 return r;

@@ -5,6 +5,7 @@ namespace Script
     public class CommandService : Service
     {
         public ConnectToGlobalService connectToGlobalService { get; private set; }
+        public MonitorConnectToSameServerType connectToSameServerType { get; private set; }
 
         public CommandService(Server server, int serviceId) : base(server, serviceId)
         {
@@ -24,6 +25,7 @@ namespace Script
 
             base.AddHandler<CommandService>();
             this.AddConnectToOtherService(this.connectToGlobalService = new ConnectToGlobalService(this));
+            this.connectToSameServerType = new MonitorConnectToSameServerType(this);
 
             this.dispatcher.AddHandler(new Command_Start().Init(this.server, this));
             this.dispatcher.AddHandler(new Command_Shutdown().Init(this.server, this));
