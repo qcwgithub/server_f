@@ -372,5 +372,6 @@ namespace Data
 
         ClientStart = 10000,
         UserLogin = 10001,
+        Kick = 10002,
     }
 }

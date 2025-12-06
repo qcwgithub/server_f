@@ -29,42 +29,42 @@ namespace Script
 
         async Task BroadcastToAll(MsgType msgType, object msg)
         {
-            GroupServiceData sd = this.service.groupServiceData;
+            // GroupServiceData sd = this.service.groupServiceData;
 
-            var tasks = new List<Task>();
+            // var tasks = new List<Task>();
 
-            foreach (List<ProtocolClientData> list in sd.otherServiceSockets2)
-            {
-                if (list == null)
-                {
-                    continue;
-                }
+            // foreach (List<ProtocolClientData> list in sd.otherServiceSockets2)
+            // {
+            //     if (list == null)
+            //     {
+            //         continue;
+            //     }
 
-                foreach (ProtocolClientData soc in list)
-                {
-                    if (soc == null || soc.serviceTypeAndId == null || !soc.IsConnected())
-                    {
-                        continue;
-                    }
+            //     foreach (ProtocolClientData soc in list)
+            //     {
+            //         if (soc == null || soc.serviceTypeAndId == null || !soc.IsConnected())
+            //         {
+            //             continue;
+            //         }
 
-                    tasks.Add(soc.SendAsync(msgType, msg, null));
-                }
-            }
+            //         tasks.Add(soc.SendAsync(msgType, msg, null));
+            //     }
+            // }
 
-            foreach (var kv in sd.normalSockets)
-            {
-                foreach (ProtocolClientData soc in kv.Value)
-                {
-                    if (soc == null || soc.serviceTypeAndId == null || !soc.IsConnected())
-                    {
-                        continue;
-                    }
+            // foreach (var kv in sd.normalSockets)
+            // {
+            //     foreach (ProtocolClientData soc in kv.Value)
+            //     {
+            //         if (soc == null || soc.serviceTypeAndId == null || !soc.IsConnected())
+            //         {
+            //             continue;
+            //         }
 
-                    tasks.Add(soc.SendAsync(msgType, msg, null));
-                }
-            }
+            //         tasks.Add(soc.SendAsync(msgType, msg, null));
+            //     }
+            // }
 
-            await Task.WhenAll(tasks);
+            // await Task.WhenAll(tasks);
         }
     }
 }

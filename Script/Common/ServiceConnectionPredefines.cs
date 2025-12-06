@@ -78,7 +78,7 @@ namespace Script
             MyDebug.Assert(UserServiceData.s_connectToServiceIds.Contains(self.data.serviceType));
         }
 
-        // 发送给 PlayerService 必须指定 serviceId
+        // 发送给 UserService 必须指定 serviceId
         public async Task<MyResponse> SendAsync(int psId, MsgType msgType, object msg)
         {
             ProtocolClientData socket = this.self.data.GetOtherServiceSocket(psId);

@@ -55,7 +55,7 @@ namespace Script
             }
 
             this.usData.userDict.Remove(userId);
-            this.server.playerPSRedis.DeletePSId(userId);
+            // this.server.playerPSRedis.DeletePSId(userId);
 
             return ECode.Success;
         }

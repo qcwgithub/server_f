@@ -15,7 +15,7 @@ namespace Script
 
         public object UnpackMsg(ArraySegment<byte> msg)
         {
-            M m = MessagePackSerializer.Deserialize<M>(msg);
+            M m = this.server.messageSerializer.Deserialize<M>(msg);
             return m;
         }
 
