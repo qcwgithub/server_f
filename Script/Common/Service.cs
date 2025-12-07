@@ -159,7 +159,7 @@ namespace Script
             msg.fromServiceType = this.data.serviceType;
             msg.fromServiceId = this.data.serviceId;
             msg.why = why;
-            var r = await socket.SendAsync(MsgType._Global_GetServiceConfigs, msg, null);
+            var r = await socket.SendAsync(MsgType._Global_GetServiceConfigs, this.server.messageSerializer.Serialize(msg), null);
             if (r.err != ECode.Success)
             {
                 return null;
@@ -294,7 +294,8 @@ namespace Script
                     this.logger.InfoFormat("{0} Wait connect to {1}...", msgType, connectToOtherService.to);
                 }
 
-                var r = await connectToOtherService.SendAsync(MsgType._GetServiceState, null);
+                var msg = new MsgGetServiceState();
+                var r = await connectToOtherService.SendAsync(MsgType._GetServiceState, msg);
                 if (r.err != ECode.Success)
                 {
                     await Task.Delay(100);

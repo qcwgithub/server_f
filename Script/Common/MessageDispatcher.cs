@@ -94,14 +94,10 @@ namespace Script
                 return;
             }
 
-            object msg = handler.UnpackMsg(_msg);
+            object msg = handler.DeserializeMsg(_msg);
             this.DispatchImpl(socket, handler, type, msg, reply);
         }
 
-        // about reply
-        // 1 处理网络来的请求，reply 是回复请求
-        // 2 自己调用 dispatch 的，reply 没什么用，为了统一，赋值为 utils.emptyReply
-        // reply()的参数统一为 MyResponse
         async void DispatchImpl(ProtocolClientData socket, IHandler handler, MsgType type, object msg, Action<ECode, byte[]> reply)
         {
             if (this.service.detached)

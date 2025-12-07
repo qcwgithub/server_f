@@ -62,7 +62,7 @@ namespace Script
         // 当数据不在 redis 中时，需要从数据库加载
         // 此时需要锁一下，防止多人同时加载
         protected abstract string GetLockKeyForLoadFromDBToRedis(P1 p1, P2 p2);
-        protected abstract Task<(ECode, DataType)> LoadFromDB(IConnectToDbService connectToDBService, P1 p1, P2 p2);
+        protected abstract Task<(ECode, DataType)> LoadFromDB(ConnectToDbService connectToDBService, P1 p1, P2 p2);
         // protected abstract bool SaveImmediately();
         // protected abstract Task<ECode> SaveToDB(DataType info);
         protected async Task SaveToRedis(P1 p1, P2 p2, DataType data)
@@ -139,7 +139,7 @@ namespace Script
             return S_EXPIRY.Subtract(TimeSpan.FromSeconds(seconds));
         }
 
-        protected async Task<DataType> InternalGet(IConnectToDbService connectToDBService, P1 p1, P2 p2)
+        protected async Task<DataType> InternalGet(ConnectToDbService connectToDBService, P1 p1, P2 p2)
         {
             DataType data = await this.GetFromRedis(p1, p2);
             if (data != null)
@@ -206,7 +206,7 @@ namespace Script
                 return data.IsPlaceholder() ? null : data;
             }
         }
-        public async Task<List<DataType>> GetManyHelp(IConnectToDbService connectToDBService, List<P1> idList)
+        public async Task<List<DataType>> GetManyHelp(ConnectToDbService connectToDBService, List<P1> idList)
         {
             RedisValue[] values = await this.GetDb().StringGetAsync(idList.Select(id => this.Key(id, default(P2))).ToArray());
 
@@ -252,7 +252,7 @@ namespace Script
             return list;
         }
 
-        public async Task<List<DataType>> GetMany(IConnectToDbService connectToDBService, List<P1> idList, bool fillNullIfNotExist)
+        public async Task<List<DataType>> GetMany(ConnectToDbService connectToDBService, List<P1> idList, bool fillNullIfNotExist)
         {
             var list2 = await this.GetManyHelp(connectToDBService, idList);
             if (fillNullIfNotExist)
@@ -272,7 +272,7 @@ namespace Script
             return list;
         }
 
-        public async Task<Dictionary<P1, DataType>> GetManyAsDict(IConnectToDbService connectToDBService, List<P1> idList, bool fillNullIfNotExist)
+        public async Task<Dictionary<P1, DataType>> GetManyAsDict(ConnectToDbService connectToDBService, List<P1> idList, bool fillNullIfNotExist)
         {
             var list2 = await this.GetManyHelp(connectToDBService, idList);
 

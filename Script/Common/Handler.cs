@@ -6,17 +6,23 @@ using MessagePack;
 
 namespace Script
 {
-    public abstract class Handler<S, M> : ServiceScript<S>, IHandler
+    public abstract class Handler<S, M, R> : ServiceScript<S>, IHandler
         where S : Service
     {
         public log4net.ILog logger => this.service.logger;
 
         public abstract MsgType msgType { get; }
 
-        public object UnpackMsg(ArraySegment<byte> msg)
+        public object DeserializeMsg(ArraySegment<byte> msg)
         {
             M m = this.server.messageSerializer.Deserialize<M>(msg);
             return m;
+        }
+
+        public byte[] SerializeRes(object res)
+        {
+            byte[] bytes = this.server.messageSerializer.Serialize<R>((R)res);
+            return bytes;
         }
 
         public Task<MyResponse> Handle(ProtocolClientData socket, object msg)

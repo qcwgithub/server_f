@@ -2,6 +2,7 @@ using System;
 using Data;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using MongoDB.Bson.Serialization.Serializers;
 
 namespace Script
 {
@@ -161,7 +162,7 @@ namespace Script
         }
 
         // 根据 服务类型， 向 全部这个类型的服务 统一发送
-        public async Task<MyResponse> SendToAllServiceAsync(ServiceType serviceType, MsgType type, object msg)
+        public async Task<MyResponse> SendToAllServiceAsync<T>(ServiceType serviceType, MsgType type, T msg)
         {
             List<ProtocolClientData> list = this.service.data.otherServiceSockets2[(int)serviceType];
             if (list == null || list.Count == 0)
@@ -172,11 +173,13 @@ namespace Script
             MyResponse r = null;
             ProtocolClientData[] copy = list.ToArray();
 
+            byte[] bytes = this.server.messageSerializer.Serialize<T>(msg);
+
             foreach (var socket in copy)
             {
                 if (socket != null && socket.IsConnected())
                 {
-                    r = await socket.SendAsync(type, msg, pTimeoutS: null);
+                    r = await socket.SendAsync(type, bytes, pTimeoutS: null);
                     if (r.err == ECode.Server_Timeout)
                     {
                         this.service.logger.ErrorFormat("send {0} to {1} Timeout", type.ToString(), socket.serviceTypeAndId.Value.ToString());
@@ -196,7 +199,7 @@ namespace Script
         }
 
         // 根据 服务类型， 向 全部这个类型的服务 统一发送
-        public async Task<List<MyResponse>> SendToAllServiceAsync2(ServiceType serviceType, MsgType type, object msg)
+        public async Task<List<MyResponse>> SendToAllServiceAsync2<T>(ServiceType serviceType, MsgType type, T msg)
         {
             var responses = new List<MyResponse>();
 
@@ -208,11 +211,13 @@ namespace Script
 
             ProtocolClientData[] copy = list.ToArray();
 
+            byte[]bytes = this.server.messageSerializer.Serialize<T>(msg);
+
             foreach (var socket in copy)
             {
                 if (socket != null && socket.IsConnected())
                 {
-                    MyResponse r = await socket.SendAsync(type, msg, pTimeoutS: null);
+                    MyResponse r = await socket.SendAsync(type, bytes, pTimeoutS: null);
                     responses.Add(r);
                     if (r.err == ECode.Server_Timeout)
                     {

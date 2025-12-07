@@ -16,14 +16,16 @@ namespace Script
             MyDebug.Assert(self.data.connectToServiceTypes.Contains(to));
         }
 
-        async Task<MyResponse> SendToServiceAsync(ServiceType serviceType, MsgType type, object? msg)
+        async Task<MyResponse> SendToServiceAsync<T>(ServiceType serviceType, MsgType type, T msg)
         {
             ProtocolClientData socket = this.self.tcpClientScript.RandomOtherServiceSocket(serviceType);
             if (socket == null)
             {
                 return ECode.Server_NotConnected;
             }
-            MyResponse r = await socket.SendAsync(type, msg, pTimeoutS: null);
+
+            byte[] bytes = this.self.server.messageSerializer.Serialize<T>(msg);
+            MyResponse r = await socket.SendAsync(type, bytes, pTimeoutS: null);
             if (r.err == ECode.Server_Timeout)
             {
                 this.self.logger.ErrorFormat("send {0} to {1} Timeout", type.ToString(), socket.serviceTypeAndId.Value.ToString());
@@ -32,18 +34,13 @@ namespace Script
             return r;
         }
 
-        public async Task<MyResponse> SendAsync(MsgType msgType, object? msg)
+        public async Task<MyResponse> SendAsync<T>(MsgType msgType, T msg)
         {
             return await this.SendToServiceAsync(this.to, msgType, msg);
         }
     }
 
-    public interface IConnectToDbService
-    {
-        Task<MyResponse> SendAsync(MsgType msgType, object msg);
-    }
-
-    public class ConnectToDbService : ConnectToOtherService, IConnectToDbService
+    public class ConnectToDbService : ConnectToOtherService
     {
         public ConnectToDbService(Service self) : base(self, ServiceType.Db)
         {
@@ -79,14 +76,16 @@ namespace Script
         }
 
         // 发送给 UserService 必须指定 serviceId
-        public async Task<MyResponse> SendAsync(int psId, MsgType msgType, object msg)
+        public async Task<MyResponse> SendAsync<T>(int serviceId, MsgType msgType, T msg)
         {
-            ProtocolClientData socket = this.self.data.GetOtherServiceSocket(psId);
+            ProtocolClientData socket = this.self.data.GetOtherServiceSocket(serviceId);
             if (socket == null || !socket.IsConnected())
             {
                 return ECode.Server_NotConnected;
             }
-            return await socket.SendAsync(msgType, msg, pTimeoutS: null);
+
+            byte[] bytes = this.self.server.messageSerializer.Serialize<T>(msg);
+            return await socket.SendAsync(msgType, bytes, pTimeoutS: null);
         }
 
         public async Task<MyResponse> SendToAllAsync(MsgType msgType, object msg)
@@ -108,14 +107,16 @@ namespace Script
             this.self = self;
         }
 
-        public async Task<MyResponse> SendToServiceAsync(int serviceId, MsgType msgType, object msg)
+        public async Task<MyResponse> SendToServiceAsync<T>(int serviceId, MsgType msgType, T msg)
         {
             ProtocolClientData socket = this.self.data.GetOtherServiceSocket(serviceId);
             if (socket == null || !socket.IsConnected())
             {
                 return ECode.Server_NotConnected;
             }
-            return await socket.SendAsync(msgType, msg, pTimeoutS: null);
+
+            byte[] bytes = this.self.server.messageSerializer.Serialize<T>(msg);
+            return await socket.SendAsync(msgType, bytes, pTimeoutS: null);
         }
     }
 
