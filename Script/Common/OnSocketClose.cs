@@ -5,7 +5,7 @@ using Data;
 
 namespace Script
 {
-    public class OnSocketClose<S> : Handler<S, MsgOnClose>
+    public class OnSocketClose<S> : Handler<S, MsgSocketClose, ResSocketClose>
         where S : Service
     {
         public override MsgType msgType => MsgType._OnSocketClose;
@@ -27,7 +27,7 @@ namespace Script
             }
         }
 
-        public override Task<MyResponse> Handle(ProtocolClientData socket, MsgOnClose msg)
+        public override async Task<ECode> Handle(ProtocolClientData socket, MsgSocketClose msg, ResSocketClose res)
         {
             if (socket.serviceTypeAndId != null)
             {
@@ -44,7 +44,7 @@ namespace Script
                 this.service.logger.Info("0 passive connections, shutdown in 0 second...");
             }
 
-            return ECode.Success.ToTask();
+            return ECode.Success;
         }
     }
 }

@@ -6,11 +6,11 @@ using Data;
 
 namespace Script
 {
-    public class User_SaveProfileToFile : UserHandler<MsgSaveProfileToFile>
+    public class User_SaveProfileToFile : UserHandler<MsgSaveProfileToFile, ResSaveProfileToFile>
     {
         public override MsgType msgType => MsgType._SaveProfileToFile;
 
-        public override async Task<MyResponse> Handle(ProtocolClientData socket, MsgSaveProfileToFile msg)
+        public override async Task<ECode> Handle(ProtocolClientData socket, MsgSaveProfileToFile msg, ResSaveProfileToFile res)
         {
             Profile? profile = null;
             User? user = this.service.sd.GetUser(msg.userId);
@@ -37,10 +37,9 @@ namespace Script
             string json = JsonUtils.stringify(profile);
             string fileName = "profile" + msg.userId + ".json";
             File.WriteAllText(fileName, json);
-
-            var res = new ResSaveProfileToFile();
+            
             res.fileName = fileName;
-            return new MyResponse(ECode.Success, res);
+            return ECode.Success;
         }
     }
 }

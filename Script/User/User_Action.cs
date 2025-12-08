@@ -7,11 +7,11 @@ using Data;
 
 namespace Script
 {
-    public class User_Action : UserHandler<MsgPSAction>
+    public class User_Action : UserHandler<MsgPSAction, ResPSAction>
     {
         public override MsgType msgType => MsgType._ServerAction;
 
-        public override async Task<MyResponse> Handle(ProtocolClientData socket, MsgPSAction msg)
+        public override async Task<ECode> Handle(ProtocolClientData socket, MsgPSAction msg, ResPSAction res)
         {
             this.logger.Info(this.msgType);
             UserServiceData usData = this.usData;

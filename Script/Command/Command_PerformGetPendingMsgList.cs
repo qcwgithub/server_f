@@ -5,17 +5,17 @@ using Data;
 
 namespace Script
 {
-    public class Command_PerformGetPendingMsgList : Handler<CommandService, MsgCommon>
+    public class Command_PerformGetPendingMsgList : Handler<CommandService, MsgCommon, ResCommon>
     {
         public override MsgType msgType => MsgType._Command_PerformGetPendingMsgList;
 
-        public override async Task<MyResponse> Handle(ProtocolClientData socket, MsgCommon msg)
+        public override async Task<ECode> Handle(ProtocolClientData socket, MsgCommon msg, ResCommon res)
         {
             int serviceId = (int)msg.GetLong("serviceId");
 
             var msg2 = new MsgGetPendingMsgList();
             MyResponse r = await this.service.connectToSameServerType.SendToServiceAsync(serviceId, MsgType._GetPendingMessageList, msg2);
-            if (r.err != ECode.Success)
+            if (r.e != ECode.Success)
             {
                 return r;
             }

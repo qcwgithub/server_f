@@ -11,4 +11,10 @@ namespace Data
         [Key(1)]
         public int to_serviceId;
     }
+
+    [MessagePackObject]
+    public class ResOnConnectComplete
+    {
+        
+    }
 }

@@ -17,4 +17,10 @@ namespace Data
         [Key(0)]
         public LogoutFlags flags;
     }
+
+    [MessagePackObject]
+    public class ResKick
+    {
+        
+    }
 }

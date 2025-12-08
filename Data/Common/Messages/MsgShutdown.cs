@@ -10,7 +10,7 @@ namespace Data
     }
 
     [MessagePackObject]
-    public class ResShudown
+    public class ResShutdown
     {
 
     }

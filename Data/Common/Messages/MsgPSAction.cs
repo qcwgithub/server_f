@@ -13,4 +13,10 @@ namespace Data
         [Key(2)]
         public int? saveIntervalS;
     }
+
+    [MessagePackObject]
+    public class ResPSAction
+    {
+
+    }
 }

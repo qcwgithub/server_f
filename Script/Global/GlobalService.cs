@@ -42,25 +42,23 @@ namespace Script
             throw new Exception();
         }
 
-        public async Task<ResGetServiceConfigs> CreateResGetServiceConfigs()
+        public void FillResGetServiceConfigs(ResGetServiceConfigs res)
         {
             var sd = this.globalServiceData;
 
-            var res = new ResGetServiceConfigs();
             res.purpose = this.server.data.serverConfig.purpose;
             res.majorVersion = this.server.GetScriptDllVersion().Major;
             res.minorVerson = this.server.GetScriptDllVersion().Minor;
 
             res.allServiceConfigs = sd.allServiceConfigs;
-
-            return res;
         }
 
         public override async Task<ECode> InitServiceConfigsUntilSuccess()
         {
             await this.InitProfileGlobal();
 
-            ResGetServiceConfigs res = await this.CreateResGetServiceConfigs();
+            var res = new ResGetServiceConfigs();
+            this.FillResGetServiceConfigs(res);
 
             if (!this.CheckResGetServiceConfigs(res, out ServiceConfig myServiceConfig, out string message))
             {

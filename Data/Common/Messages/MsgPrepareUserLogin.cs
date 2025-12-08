@@ -60,7 +60,7 @@ namespace Data
         }
     }
     [MessagePackObject]
-    public class ResPreparePlayerLogin
+    public class ResPrepareUserLogin
     {
         [Key(0)]
         public int playerCount;

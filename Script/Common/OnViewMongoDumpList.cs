@@ -5,24 +5,23 @@ using System.Collections.Generic;
 
 namespace Script
 {
-    public class OnViewMongoDumpList<S> : Handler<S, MsgViewMongoDumpList>
+    public class OnViewMongoDumpList<S> : Handler<S, MsgViewMongoDumpList, ResViewMongoDumpList>
         where S : Service
     {
         public override MsgType msgType => MsgType._ViewMongoDumpList;
 
-        public override Task<MyResponse> Handle(ProtocolClientData socket, MsgViewMongoDumpList msg)
+        public override async Task<ECode> Handle(ProtocolClientData socket, MsgViewMongoDumpList msg, ResViewMongoDumpList res)
         {
-            var res = new ResViewMongoDumpList();
             res.directories = new List<string>();
 
             if (!Directory.Exists(msg.dir))
             {
-                return new MyResponse(ECode.Success, res).ToTask();
+                return ECode.Success;
             }
 
             string[] directories = Directory.GetDirectories(msg.dir);
             res.directories.AddRange(directories);
-            return new MyResponse(ECode.Success, res).ToTask();
+            return ECode.Success;
         }
     }
 }

@@ -11,5 +11,10 @@ namespace Data
         public ProfileNullable? profileNullable;
         [Key(2)]
         public Profile? profile_debug;
-    }    
+    }
+
+    [MessagePackObject]
+    public class ResSaveUserProfile
+    {
+    }
 }

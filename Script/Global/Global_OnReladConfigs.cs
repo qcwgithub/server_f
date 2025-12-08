@@ -6,21 +6,22 @@ namespace Script
 {
     public class Global_OnReladConfigs : OnReloadConfigs<GlobalService>
     {
-        public override async Task<MyResponse> Handle(ProtocolClientData socket, MsgReloadConfigs msg)
+        public override async Task<ECode> Handle(ProtocolClientData socket, MsgReloadConfigs msg, ResReloadConfigs res)
         {
-            MyResponse r = await base.Handle(socket, msg);
-            if (r.err != ECode.Success)
+            ECode e = await base.Handle(socket, msg, res);
+            if (e != ECode.Success)
             {
-                return r;
+                return e;
             }
 
-            return r;
+            return e;
         }
 
         public async Task Shared_OnReload_NormalServerStatusConfigs()
         {
             var broadcast = new A_ResGetServiceConfigs();
-            broadcast.res = await this.service.CreateResGetServiceConfigs();
+            broadcast.res = new ResGetServiceConfigs();
+            this.service.FillResGetServiceConfigs(broadcast.res);
 
             // 自己也走相同逻辑
             this.service.data.SaveServiceConfigs(broadcast.res);

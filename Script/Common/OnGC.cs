@@ -3,19 +3,18 @@ using Data;
 
 namespace Script
 {
-    public class OnGC<S> : Handler<S, MsgGC>
+    public class OnGC<S> : Handler<S, MsgGC, ResGC>
         where S : Service
     {
         public override MsgType msgType => MsgType._GC;
 
-        public override Task<MyResponse> Handle(ProtocolClientData socket, MsgGC msg)
+        public override async Task<ECode> Handle(ProtocolClientData socket, MsgGC msg, ResGC res)
         {
             this.service.logger.Info(this.msgType.ToString());
 
             System.GC.Collect();
 
-            var res = new ResGC();
-            return new MyResponse(ECode.Success, res).ToTask();
+            return ECode.Success;
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Script
         public List<Service> services { get; protected set; }
         public readonly TimerScript timerScript;
         public readonly LockRedis lockRedis;
-        public readonly FeiShuMessenger feiShuMessenger ;
+        public readonly FeiShuMessenger feiShuMessenger;
         // public abstract PersistenceTaskQueueRedis persistence_taskQueueRedis { get; }
         public readonly IMessageSerializer messageSerializer;
         public readonly IMessagePacker messagePacker;
@@ -156,7 +156,7 @@ namespace Script
 
             foreach (var service in this.services)
             {
-                service.dispatcher.Dispatch(null, MsgType._Start, new MsgStart(), null);
+                service.dispatcher.DispatchLocal<MsgStart, ResStart>(MsgType._Start, new MsgStart());
             }
         }
 
@@ -238,7 +238,7 @@ namespace Script
             {
                 if (service.serviceId == serviceId)
                 {
-                    service.dispatcher.Dispatch(null, msgType, msg, null);
+                    service.dispatcher.DispatchLocal(null, msgType, msg, null);
                     found = true;
                     break;
                 }
@@ -278,7 +278,7 @@ namespace Script
                 msgShutdown.force = false;
                 foreach (var baseService in allServices)
                 {
-                    await baseService.connectToSelf.SendToSelfAsync(MsgType._Shutdown, msgShutdown);
+                    await baseService.connectToSelf.Send<MsgShutdown, ResShutdown>(MsgType._Shutdown, msgShutdown);
                     await Task.Delay(100);
                 }
             }

@@ -6,11 +6,11 @@ using Data;
 
 namespace Script
 {
-    public class Monitor_PerformKick : Handler<CommandService, MsgCommon>
+    public class Monitor_PerformKick : Handler<CommandService, MsgCommon, ResCommon>
     {
         public override MsgType msgType => MsgType._Command_PerformKick;
 
-        public override async Task<MyResponse> Handle(ProtocolClientData socket, MsgCommon msg)
+        public override async Task<ECode> Handle(ProtocolClientData socket, MsgCommon msg, ResCommon res)
         {
             int serviceId = (int)msg.GetLong("serviceId");
             long userId = msg.GetLong("userId");

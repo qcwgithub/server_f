@@ -42,14 +42,14 @@ public class collection_user_profile : ServiceScript<DbService>
             nameof(Profile.userName), true, false, this.service.logger);
     }
 
-    public async Task<MyResponse> Query(long userId)
+    public async Task<Profile> Query(long userId)
     {
         var collection = this.GetCollection();
 
         var filter = Builders<Profile>.Filter.Eq(nameof(Profile.userId), userId);
         var find = await collection.FindAsync(filter);
         Profile profile = await find.FirstOrDefaultAsync();
-        return new MyResponse(ECode.Success, profile);
+        return profile;
     }
 
     public async Task<Dictionary<long, Profile>> Iterate_dictOf_Profile_by_userId(long start_userId, long end_userId)
@@ -71,13 +71,12 @@ public class collection_user_profile : ServiceScript<DbService>
         return dict;
     }
 
-    public async Task<MyResponse> Insert(Profile profile)
+    public async Task Insert(Profile profile)
     {
         var profile_Db = ProfileHelper_Db.Copy_Class<Profile_Db, Profile>(profile);
 
         var collection_Db = this.GetCollection_Db();
         await collection_Db.InsertOneAsync(profile_Db);
-        return ECode.Success;
     }
 
     public async Task<List<long>> RegularSearchByName(string searchText)
@@ -97,7 +96,7 @@ public class collection_user_profile : ServiceScript<DbService>
         return userIds;
     }
 
-    public async Task<MyResponse> Save(long userId, ProfileNullable profileNullable)
+    public async Task<ECode> Save(long userId, ProfileNullable profileNullable)
     {
         var collection_Db = this.GetCollection_Db();
 

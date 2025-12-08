@@ -8,7 +8,7 @@ namespace Script
 {
     public class User_OnSocketClose : OnSocketClose<UserService>
     {
-        public override async Task<MyResponse> Handle(ProtocolClientData socket, MsgOnClose msg)
+        public override async Task<ECode> Handle(ProtocolClientData socket, MsgSocketClose msg, ResSocketClose res)
         {
             await base.Handle(socket, msg);
 

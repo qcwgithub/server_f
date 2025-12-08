@@ -4,11 +4,11 @@ using Data;
 
 namespace Script
 {
-    public class OnReloadScript<S> : Handler<S, MsgReloadScript>
+    public class OnReloadScript<S> : Handler<S, MsgReloadScript, ResReloadScript>
         where S : Service
     {
         public override MsgType msgType => MsgType._ReloadScript;
-        public override Task<MyResponse> Handle(ProtocolClientData socket, MsgReloadScript msg)
+        public override async Task<ECode> Handle(ProtocolClientData socket, MsgReloadScript msg, ResReloadScript res)
         {
             // if (this.server.data.state != ServerState.Started)
             // {
@@ -18,12 +18,11 @@ namespace Script
 
             this.service.logger.InfoFormat("{0} local {1}", this.msgType, msg.local);
 
-            var res = new ResReloadScript();
             // if (this.scriptEntry.GetScriptDllVersion() == msg.version)
             // {
             //     res.message = "success, version not change";
             //     this.service.logger.Info(res.message);
-            //     return new MyResponse(ECode.Success, res).ToTask();
+            //     return ECode.Success;
             // }
 
             string preVersion = this.server.GetScriptDllVersion().ToString();
@@ -38,7 +37,7 @@ namespace Script
                 {
                     res.message = "write file failed";
                     this.service.logger.Error(res.message);
-                    return new MyResponse(ECode.Error, res).ToTask();
+                    return ECode.Error;
                 }
             }
 
@@ -47,7 +46,7 @@ namespace Script
             {
                 res.message = "load dll failed";
                 this.service.logger.Error(res.message);
-                return new MyResponse(ECode.Error, res).ToTask();
+                return ECode.Error;
             }
 
             res.message = "success";
@@ -59,7 +58,7 @@ namespace Script
             this.server.feiShuMessenger.SendEventMessage(message);
             this.service.logger.Info(message);
 
-            return new MyResponse(ECode.Success, res).ToTask();
+            return ECode.Success;
         }
     }
 }

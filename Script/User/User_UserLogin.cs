@@ -1,13 +1,8 @@
-using System.Collections;
-using System.Threading.Tasks;
 using Data;
-using System.Collections.Generic;
-using System.Linq;
-using System;
 
 namespace Script
 {
-    public class User_UserLogin : UserHandler<MsgUserLogin>
+    public class User_UserLogin : UserHandler<MsgUserLogin, ResUserLogin>
     {
         public override MsgType msgType { get { return MsgType.UserLogin; } }
 
@@ -30,7 +25,7 @@ namespace Script
             {
                 var msgKick = new MsgKick();
                 msgKick.flags = LogoutFlags.CancelAutoLogin;
-                oldSocket.Send(MsgType.Kick, msgKick, null, 2);
+                oldSocket.SendBytes(MsgType.Kick, msgKick, null, 2);
             }
         }
 
@@ -63,14 +58,14 @@ namespace Script
             }
         }
 
-        public override Task<MyResponse> Handle(ProtocolClientData socket, MsgUserLogin msg)
+        public override async Task<ECode> Handle(ProtocolClientData socket, MsgUserLogin msg, ResUserLogin res)
         {
             string message0 = string.Format("{0} userId {1} preCount {2}", this.msgType, msg.userId, this.usData.userDict.Count);
 
             if (this.service.data.state != ServiceState.Started)
             {
                 this.logger.Info(message0 + ": server not ready, should go to AAA");
-                return ECode.ServerNotReady.ToTask();
+                return ECode.ServerNotReady;
             }
 
             long userId = msg.userId;
@@ -78,40 +73,41 @@ namespace Script
             if (userId <= 0 || msg.token == null)
             {
                 this.logger.Info(message0 + ": userId <= 0 || msg.token == null, should go to AAA");
-                return ECode.InvalidParam.ToTask();
+                return ECode.InvalidParam;
             }
 
             User? user = this.usData.GetUser(userId);
             if (user == null)
             {
                 this.logger.Info(message0 + ": user == null, should go to AAA");
-                return ECode.ShouldLoginAAA.ToTask();
+                return ECode.ShouldLoginAAA;
             }
 
             if (user.destroying)
             {
                 // 其实不是错误，但是想要知道一下有没有触发这种情况
                 this.logger.Error(message0 + ": user.destroying, should go to AAA");
-                return ECode.ShouldLoginAAA.ToTask();
+                return ECode.ShouldLoginAAA;
             }
 
             if (!user.IsRealPrepareLogin(out MsgPrepareUserLogin msgPrepare))
             {
                 this.logger.Error(message0 + ": !IsRealPrepareLogin, should go to AAA");
-                return ECode.ShouldLoginAAA.ToTask();
+                return ECode.ShouldLoginAAA;
             }
 
             if (msg.token != msgPrepare.token)
             {
                 this.logger.Error(message0 + ": msg.token != msgPreparePlayerLogin.token, should go to AAA");
-                return ECode.InvalidToken.ToTask();
+                return ECode.InvalidToken;
             }
 
             int delayS = this.NeedDelayLogin(user);
             if (delayS > 0)
             {
                 this.logger.Info(message0 + ": delayS > 0, should wait");
-                return new MyResponse(ECode.DelayLogin, new ResDelayLogin { delayS = delayS }).ToTask();
+                res.delayS = delayS;
+                return ECode.DelayLogin;
             }
 
             // 除了 PMPreparePlayerLogin，这里也需要对 oldSocket 做检测，因为客户端重连时不会经过 PMPreparePlayerLogin
@@ -131,7 +127,7 @@ namespace Script
                 // 情况1 同一个客户端意外地登录2次
                 // 情况2 客户端A已经登录，B再登录
                 this.logger.Error(message0 + $": oldUser != null ({oldUser.userId}), should go to AAA");
-                return ECode.OldUser.ToTask();
+                return ECode.OldUser;
             }
 
             this.logger.Info(message0 + ": check ok");
@@ -153,12 +149,11 @@ namespace Script
             // 发送玩家数据
             // int aaaId=
             // var locAAA = this.server.GetKnownLoc(ServerConst.AAA_ID);
-            var res = new ResUserLogin();
             res.userId = userId;
             res.profile = user.profile;
             res.kickOther = kickOther;
             user.profile.lastLoginTimeS = nowS;
-            return new MyResponse(ECode.Success, res).ToTask();
+            return ECode.Success;
         }
     }
 }

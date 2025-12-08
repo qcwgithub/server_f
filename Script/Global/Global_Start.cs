@@ -6,9 +6,9 @@ namespace Script
 {
     public class Global_Start : OnStart<GlobalService>
     {
-        protected override Task<ECode> Handle2()
+        protected override async Task<ECode> Handle2()
         {
-            return ECode.Success.ToTaskE();
+            return ECode.Success;
         }
     }
 }

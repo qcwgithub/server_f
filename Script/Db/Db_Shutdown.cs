@@ -17,10 +17,10 @@ namespace Script
 
             var msgPersistence = new MsgPersistence();
             msgPersistence.isShuttingDownSaveAll = true;
-            MyResponse r = await this.service.connectToSelf.SendToSelfAsync(MsgType._PersistenceTaskQueueHandler, msgPersistence);
-            if (r.err != ECode.Success)
+            var r = await this.service.connectToSelf.Send<MsgPersistence, ResPersistence>(MsgType._PersistenceTaskQueueHandler, msgPersistence);
+            if (r.e != ECode.Success)
             {
-                this.service.logger.ErrorFormat("{0} save all r.err {1}", this.msgType, r.err);
+                this.service.logger.ErrorFormat("{0} save all r.err {1}", this.msgType, r.e);
             }
         }
     }

@@ -4,12 +4,12 @@ using System.Collections.Generic;
 
 namespace Script
 {
-    public class OnGetReloadConfigOptions<S> : Handler<S, MsgGetReloadConfigOptions>
+    public class OnGetReloadConfigOptions<S> : Handler<S, MsgGetReloadConfigOptions, ResGetReloadConfigOptions>
         where S : Service
     {
         public override MsgType msgType => MsgType._GetReloadConfigOptions;
 
-        public override Task<MyResponse> Handle(ProtocolClientData socket, MsgGetReloadConfigOptions msg)
+        public override Task<ECode> Handle(ProtocolClientData socket, MsgGetReloadConfigOptions msg, ResGetReloadConfigOptions res)
         {
             this.service.logger.InfoFormat("{0}", this.msgType);
 
@@ -18,7 +18,7 @@ namespace Script
 
             this.service.data.GetReloadConfigOptions(res.files);
 
-            return new MyResponse(ECode.Success, res).ToTask();
+            return ECode.Success;
         }
     }
 }

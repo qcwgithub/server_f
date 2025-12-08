@@ -21,4 +21,10 @@ namespace Data
             return self;
         }
     }
+
+    [MessagePackObject]
+    public class ResDestroyUser
+    {
+
+    }
 }

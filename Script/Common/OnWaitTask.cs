@@ -3,11 +3,11 @@ using Data;
 
 namespace Script
 {
-    public class OnWaitTask<S> : Handler<S, MsgWaitTask>
+    public class OnWaitTask<S> : Handler<S, MsgWaitTask, ResWaitTask>
         where S : Service
     {
         public override MsgType msgType => MsgType._WaitTask;
-        public sealed override async Task<MyResponse> Handle(ProtocolClientData socket, MsgWaitTask msg)
+        public sealed override async Task<ECode> Handle(ProtocolClientData socket, MsgWaitTask msg, ResWaitTask res)
         {
             await msg.task;
             return ECode.Success;

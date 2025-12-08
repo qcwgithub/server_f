@@ -6,24 +6,23 @@ using Data;
 
 namespace Script
 {
-    public class Command_PerformSaveProfileToFile : Handler<CommandService, MsgCommon>
+    public class Command_PerformSaveProfileToFile : Handler<CommandService, MsgCommon, ResCommon>
     {
         public override MsgType msgType => MsgType._Command_PerformSaveProfileToFile;
 
-        public override async Task<MyResponse> Handle(ProtocolClientData socket, MsgCommon msg)
+        public override async Task<ECode> Handle(ProtocolClientData socket, MsgCommon msg, ResCommon res)
         {
             long userId = msg.GetLong("userId");
             int serviceId = (int)msg.GetLong("serviceId");
 
             var msg2 = new MsgSaveProfileToFile();
             msg2.userId = userId;
-            MyResponse r = await this.service.connectToSameServerType.SendToServiceAsync(serviceId, MsgType._SaveProfileToFile, msg2);
-            if (r.err == ECode.Success)
+            var r = await this.service.connectToSameServerType.SendToService<MsgSaveProfileToFile, ResSaveProfileToFile>(serviceId, MsgType._SaveProfileToFile, msg2);
+            if (r.e == ECode.Success)
             {
-                var res = r.CastRes<ResSaveProfileToFile>();
-                this.service.logger.Info("save profile to file ok, file name: " + res.fileName);
+                this.service.logger.Info("save profile to file ok, file name: " + r.res.fileName);
             }
-            return r;
+            return r.e;
         }
     }
 }

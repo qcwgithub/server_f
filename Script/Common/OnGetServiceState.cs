@@ -3,18 +3,18 @@ using Data;
 
 namespace Script
 {
-    public class OnGetServiceState<S> : Handler<S, MsgGetServiceState>
+    public class OnGetServiceState<S> : Handler<S, MsgGetServiceState, ResGetServiceState>
         where S : Service
     {
         public override MsgType msgType => MsgType._GetServiceState;
 
-        public override Task<MyResponse> Handle(ProtocolClientData socket, MsgGetServiceState msg)
+        public override Task<ECode> Handle(ProtocolClientData socket, MsgGetServiceState msg, ResGetServiceState res)
         {
             var res = new ResGetServiceState();
             res.serviceType = this.service.data.serviceType;
             res.serviceId = this.service.data.serviceId;
             res.serviceState = this.service.data.state;
-            return new MyResponse(ECode.Success, res).ToTask();
+            return ECode.Success;
         }
     }
 }

@@ -3,12 +3,12 @@ using Data;
 
 namespace Script
 {
-    public class OnReloadConfigs<S> : Handler<S, MsgReloadConfigs>
+    public class OnReloadConfigs<S> : Handler<S, MsgReloadConfigs, ResReloadConfigs>
         where S : Service
     {
         public override MsgType msgType => MsgType._ReloadConfigs;
 
-        public override Task<MyResponse> Handle(ProtocolClientData socket, MsgReloadConfigs msg)
+        public override async Task<ECode> Handle(ProtocolClientData socket, MsgReloadConfigs msg, ResReloadConfigs res)
         {
             string message = $"[{this.service.serviceId}]{this.msgType} all? {msg.all} files? {JsonUtils.stringify(msg.files)}";
             this.service.logger.Info(message);
@@ -18,14 +18,12 @@ namespace Script
             {
                 if (msg.files == null || msg.files.Count == 0)
                 {
-                    return ECode.InvalidParam.ToTask();
+                    return ECode.InvalidParam;
                 }
             }
 
             this.service.data.ReloadConfigs(msg.all, msg.files);
-
-            var res = new ResReloadConfigs();
-            return new MyResponse(ECode.Success, res).ToTask();
+            return ECode.Success;
         }
     }
 }

@@ -16,27 +16,22 @@ namespace Script
             MyDebug.Assert(self.data.connectToServiceTypes.Contains(to));
         }
 
-        async Task<MyResponse> SendToServiceAsync<T>(ServiceType serviceType, MsgType type, T msg)
+        async Task<MyResponse<Res>> SendToService<Msg, Res>(ServiceType serviceType, MsgType type, Msg msg)
+            where Res : class
         {
             ProtocolClientData socket = this.self.tcpClientScript.RandomOtherServiceSocket(serviceType);
             if (socket == null)
             {
-                return ECode.Server_NotConnected;
+                return new MyResponse<Res>(ECode.Server_NotConnected, null);
             }
 
-            byte[] bytes = this.self.server.messageSerializer.Serialize<T>(msg);
-            MyResponse r = await socket.SendAsync(type, bytes, pTimeoutS: null);
-            if (r.err == ECode.Server_Timeout)
-            {
-                this.self.logger.ErrorFormat("send {0} to {1} Timeout", type.ToString(), socket.serviceTypeAndId.Value.ToString());
-            }
-
-            return r;
+            return await socket.Send<Msg, Res>(type, msg);
         }
 
-        public async Task<MyResponse> SendAsync<T>(MsgType msgType, T msg)
+        public async Task<MyResponse<Res>> Send<Msg, Res>(MsgType msgType, Msg msg)
+            where Res : class
         {
-            return await this.SendToServiceAsync(this.to, msgType, msg);
+            return await this.SendToService<Msg, Res>(this.to, msgType, msg);
         }
     }
 
@@ -76,26 +71,26 @@ namespace Script
         }
 
         // 发送给 UserService 必须指定 serviceId
-        public async Task<MyResponse> SendAsync<T>(int serviceId, MsgType msgType, T msg)
+        public async Task<MyResponse<Res>> Send<Msg, Res>(int serviceId, MsgType msgType, Msg msg)
+            where Res : class
         {
             ProtocolClientData socket = this.self.data.GetOtherServiceSocket(serviceId);
             if (socket == null || !socket.IsConnected())
             {
-                return ECode.Server_NotConnected;
+                return new MyResponse<Res>(ECode.Server_NotConnected, null);
             }
 
-            byte[] bytes = this.self.server.messageSerializer.Serialize<T>(msg);
-            return await socket.SendAsync(msgType, bytes, pTimeoutS: null);
+            return await socket.Send<Msg, Res>(msgType, msg);
         }
 
-        public async Task<MyResponse> SendToAllAsync(MsgType msgType, object msg)
+        public async Task<MyResponse<Res>> SendToAll<Msg, Res>(MsgType msgType, Msg msg) where Res : class
         {
-            return await this.self.tcpClientScript.SendToAllServiceAsync(ServiceType.User, msgType, msg);
+            return await this.self.tcpClientScript.SendToAllService<Msg, Res>(ServiceType.User, msgType, msg);
         }
 
-        public async Task<List<MyResponse>> SendToAllAsync2(MsgType msgType, object msg)
+        public async Task<List<MyResponse<Res>>> SendToAll2<Msg, Res>(MsgType msgType, Msg msg) where Res : class
         {
-            return await this.self.tcpClientScript.SendToAllServiceAsync2(ServiceType.User, msgType, msg);
+            return await this.self.tcpClientScript.SendToAllServiceAsync2<Msg, Res>(ServiceType.User, msgType, msg);
         }
     }
 
@@ -107,16 +102,16 @@ namespace Script
             this.self = self;
         }
 
-        public async Task<MyResponse> SendToServiceAsync<T>(int serviceId, MsgType msgType, T msg)
+        public async Task<MyResponse<Res>> SendToService<Msg, Res>(int serviceId, MsgType msgType, Msg msg)
+            where Res : class, new()
         {
             ProtocolClientData socket = this.self.data.GetOtherServiceSocket(serviceId);
             if (socket == null || !socket.IsConnected())
             {
-                return ECode.Server_NotConnected;
+                return new MyResponse<Res>(ECode.Server_NotConnected, null);
             }
 
-            byte[] bytes = this.self.server.messageSerializer.Serialize<T>(msg);
-            return await socket.SendAsync(msgType, bytes, pTimeoutS: null);
+            return await socket.Send<Msg, Res>(msgType, msg);
         }
     }
 
@@ -128,19 +123,10 @@ namespace Script
             this.self = self;
         }
 
-        public async Task<MyResponse> SendToSelfAsync(MsgType type, object msg)
+        public async Task<MyResponse<Res>> Send<Msg, Res>(MsgType msgType, Msg msg)
+            where Res : class
         {
-            var cs = new TaskCompletionSource<MyResponse>();
-            this.self.dispatcher.Dispatch(null, type, msg, (e, r) =>
-            {
-                bool success = cs.TrySetResult(new MyResponse(e, r));
-                if (!success)
-                {
-                    Console.WriteLine("!cs.TrySetResult " + type);
-                }
-            });
-            var xxx = await cs.Task;
-            return xxx;
+            return await this.self.dispatcher.DispatchLocal<Msg, Res>(msgType, msg);
         }
     }
 }

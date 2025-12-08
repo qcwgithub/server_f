@@ -15,16 +15,14 @@ namespace Script
             var msgDb = new MsgQueryUserProfile();
             msgDb.userId = userId;
 
-            var r = await this.service.connectToDbService.SendAsync(MsgType._Db_QueryUserProfile, msgDb);
-            if (r.err != ECode.Success)
+            var r = await this.service.connectToDbService.Send<MsgQueryUserProfile, ResQueryUserProfile>(MsgType._Db_QueryUserProfile, msgDb);
+            if (r.e != ECode.Success)
             {
-                this.service.logger.Error($"QueryUserProfile({userId}) r.err {r.err}");
-                return (r.err, null);
+                this.service.logger.Error($"QueryUserProfile({userId}) r.err {r.e}");
+                return (r.e, null);
             }
 
-            var resDb = r.CastRes<ResQueryUserProfile>();
-
-            Profile? profile = resDb.profile;
+            Profile? profile = r.res.profile;
             if (profile != null)
             {
                 if (profile.userId != userId)
@@ -44,11 +42,11 @@ namespace Script
             var msgDb = new MsgInsertUserProfile();
             msgDb.profile = profile;
 
-            var r = await this.service.connectToDbService.SendAsync(MsgType._Db_InsertUserProfile, msgDb);
-            if (r.err != ECode.Success)
+            var r = await this.service.connectToDbService.Send<MsgInsertUserProfile, ResInsertUserProfile>(MsgType._Db_InsertUserProfile, msgDb);
+            if (r.e != ECode.Success)
             {
-                this.service.logger.Error($"InsertUserProfile({profile.userId}) r.err {r.err}");
-                return r.err;
+                this.service.logger.Error($"InsertUserProfile({profile.userId}) r.e {r.e}");
+                return r.e;
             }
 
             return ECode.Success;

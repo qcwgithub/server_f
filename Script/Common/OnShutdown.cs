@@ -6,7 +6,7 @@ using System;
 
 namespace Script
 {
-    public abstract class OnShutdown<S> : Handler<S, MsgShutdown>
+    public abstract class OnShutdown<S> : Handler<S, MsgShutdown, ResShutdown>
         where S : Service
     {
         public override MsgType msgType => MsgType._Shutdown;
@@ -50,7 +50,7 @@ namespace Script
             }
         }
 
-        public sealed override async Task<MyResponse> Handle(ProtocolClientData socket, MsgShutdown msg)
+        public sealed override async Task<ECode> Handle(ProtocolClientData socket, MsgShutdown msg, ResShutdown res)
         {
             this.service.logger.Info($"{this.msgType} force {msg.force}");
 

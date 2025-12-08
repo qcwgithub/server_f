@@ -7,5 +7,11 @@ namespace Data
     {
         [Key(0)]
         public Profile profile;
-    }    
+    }
+
+    [MessagePackObject]
+    public class ResInsertUserProfile
+    {
+
+    }
 }

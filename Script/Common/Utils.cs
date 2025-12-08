@@ -1,12 +1,38 @@
 using Data;
+using MessagePack;
 using System;
 using System.Collections.Generic;
 using System.Web;
 
 namespace Script
 {
-    public class Utils
+    public static class Utils
     {
+        public static byte[] Serialize<T>(T msg)
+        {
+            return MessagePackSerializer.Serialize<T>(msg);
+        }
+
+        public static T Deserialize<T>(ArraySegment<byte> msg)
+        {
+            return MessagePackSerializer.Deserialize<T>(msg);
+        }
+
+        public static async Task<MyResponse<Res>> Send<Msg, Res>(this ProtocolClientData socket, MsgType msgType, byte[] msgBytes) where Res : class
+        {
+            (ECode e, ArraySegment<byte> resBytes) = await socket.SendBytesAsync(msgType, msgBytes, pTimeoutS: null);
+            Res res = Deserialize<Res>(resBytes);
+            return new MyResponse<Res>(e, res);
+        }
+
+        public static async Task<MyResponse<Res>> Send<Msg, Res>(this ProtocolClientData socket, MsgType msgType, Msg msg) where Res : class
+        {
+            byte[] msgBytes = Serialize<Msg>(msg);
+            (ECode e, ArraySegment<byte> resBytes) = await socket.SendBytesAsync(msgType, msgBytes, pTimeoutS: null);
+            Res res = Deserialize<Res>(resBytes);
+            return new MyResponse<Res>(e, res);
+        }
+
         public static T CastObject<T>(object msg)
         {
             if (msg == null || !(msg is T))

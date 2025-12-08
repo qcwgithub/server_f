@@ -22,7 +22,7 @@ namespace Script
             this.connectToSelf = new ConnectToSelf(this);
 
             this.tcpListenerScript = new TcpListenerScript().Init(this.server, this);
-            this.tcpClientScript = new ProtocolClientScriptS().Init(this.server, this);;
+            this.tcpClientScript = new ProtocolClientScriptS().Init(this.server, this); ;
             this.httpListenerScript = new HttpListenerScript().Init(this.server, this);
             this.webSocketListenerScript = new WebSocketListenerScript().Init(this.server, this);
 
@@ -159,14 +159,13 @@ namespace Script
             msg.fromServiceType = this.data.serviceType;
             msg.fromServiceId = this.data.serviceId;
             msg.why = why;
-            var r = await socket.SendAsync(MsgType._Global_GetServiceConfigs, this.server.messageSerializer.Serialize(msg), null);
-            if (r.err != ECode.Success)
+            var r = await socket.Send<MsgGetServiceConfigs, ResGetServiceConfigs>(MsgType._Global_GetServiceConfigs, msg);
+            if (r.e != ECode.Success)
             {
                 return null;
             }
 
-            var res = r.CastRes<ResGetServiceConfigs>();
-            return res;
+            return r.res;
         }
 
         protected bool CheckResGetServiceConfigs(ResGetServiceConfigs res, out ServiceConfig? myServiceConfig, out string message)
@@ -295,15 +294,14 @@ namespace Script
                 }
 
                 var msg = new MsgGetServiceState();
-                var r = await connectToOtherService.SendAsync(MsgType._GetServiceState, msg);
-                if (r.err != ECode.Success)
+                var r = await connectToOtherService.Send<MsgGetServiceState, ResGetServiceState>(MsgType._GetServiceState, msg);
+                if (r.e != ECode.Success)
                 {
                     await Task.Delay(100);
                     continue;
                 }
 
-                var res = r.CastRes<ResGetServiceState>();
-                if (res.serviceState != ServiceState.Started)
+                if (r.res.serviceState != ServiceState.Started)
                 {
                     await Task.Delay(100);
                     continue;

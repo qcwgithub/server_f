@@ -5,11 +5,11 @@ using Data;
 
 namespace Script
 {
-    public class Command_PerformReloadScript : Handler<CommandService, MsgCommon>
+    public class Command_PerformReloadScript : Handler<CommandService, MsgCommon, ResCommon>
     {
         public override MsgType msgType => MsgType._Command_PerformReloadScript;
 
-        public override async Task<MyResponse> Handle(ProtocolClientData socket, MsgCommon msg)
+        public override async Task<ECode> Handle(ProtocolClientData socket, MsgCommon msg, ResCommon res)
         {
             int serviceId = (int)msg.GetLong("serviceId");
             string zip = msg.GetString("zip");
@@ -68,18 +68,15 @@ namespace Script
                 msgReload.pdbBytes = pdbBytes;
             }
 
-            MyResponse r = await this.service.connectToSameServerType.SendToServiceAsync(serviceId, MsgType._ReloadScript, msgReload);
-
-            var resReload = r.CastRes<ResReloadScript>();
-
-            if (r.err != ECode.Success)
+            var r = await this.service.connectToSameServerType.SendToService<MsgReloadScript, ResReloadScript>(serviceId, MsgType._ReloadScript, msgReload);
+            if (r.e != ECode.Success)
             {
-                this.service.logger.ErrorFormat("reload script failed, message: {0}", resReload.message);
-                return r;
+                this.service.logger.ErrorFormat("reload script failed, message: {0}", r.res.message);
+                return r.e;
             }
 
-            this.service.logger.InfoFormat("reload script ok, message: {0}", resReload.message);
-            return r;
+            this.service.logger.InfoFormat("reload script ok, message: {0}", r.res.message);
+            return r.e;
         }
     }
 }

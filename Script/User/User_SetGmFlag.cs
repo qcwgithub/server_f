@@ -4,13 +4,12 @@ using Data;
 
 namespace Script
 {
-    public class User_SetGmFlag : UserHandler<MsgSetGmFlag>
+    public class User_SetGmFlag : UserHandler<MsgSetGmFlag, ResSetGmFlag>
     {
         public override MsgType msgType => MsgType._SetGmFlag;
 
-        public override Task<MyResponse> Handle(ProtocolClientData socket, MsgSetGmFlag msg)
+        public override async Task<ECode> Handle(ProtocolClientData socket, MsgSetGmFlag msg, ResSetGmFlag res)
         {
-            var res = new ResSetGmFlag();
             res.listUser = new List<long>();
             for (long i = msg.startUserId; i <= msg.endUserId; i++)
             {
@@ -22,7 +21,7 @@ namespace Script
                 }
             }
             
-            return new MyResponse(ECode.Success, res).ToTask();
+            return ECode.Success;
         }
     }
 }

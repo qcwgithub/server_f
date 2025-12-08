@@ -168,7 +168,7 @@ namespace Data
                 {
                     if (socket.IsConnected())
                     {
-                        tasks.Add(socket.SendAsync(MsgType._RemoteWillShutdown, null, pTimeoutS: 5));
+                        tasks.Add(socket.SendBytesAsync(MsgType._RemoteWillShutdown, null, pTimeoutS: 5));
                     }
                 }
                 if (tasks.Count > 0)
@@ -206,7 +206,7 @@ namespace Data
                 ProtocolClientData socket = kv.Value;
                 if (socket.IsConnected())
                 {
-                    tasks.Add(socket.SendAsync(MsgType._RemoteWillShutdown, null, pTimeoutS: 5));
+                    tasks.Add(socket.SendBytesAsync(MsgType._RemoteWillShutdown, null, pTimeoutS: 5));
                 }
             }
             if (tasks.Count > 0)

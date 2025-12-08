@@ -3,17 +3,17 @@ using Data;
 namespace Script
 {
     // 连接的发起方，保持连接。每隔一段时间检查一下
-    public class CheckConnections<S> : Handler<S, MsgCheckConnections>
+    public class CheckConnections<S> : Handler<S, MsgCheckConnections, ResCheckConnections>
         where S : Service
     {
         public override MsgType msgType => MsgType._CheckConnections;
 
-        public override Task<MyResponse> Handle(ProtocolClientData _socket/* null */, MsgCheckConnections msg)
+        public override async Task<ECode> Handle(ProtocolClientData _socket, MsgCheckConnections msg, ResCheckConnections res)
         {
             ServiceData sd = this.service.data;
             if (sd.connectToServiceTypes.Count == 0)
             {
-                return ECode.Success.ToTask();
+                return ECode.Success;
             }
 
             foreach (ServiceType to_serviceType in sd.connectToServiceTypes)
@@ -29,7 +29,7 @@ namespace Script
                 });
             }
 
-            return ECode.Success.ToTask();
+            return ECode.Success;
         }
     }
 }

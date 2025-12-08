@@ -4,11 +4,11 @@ using Data;
 
 namespace Script
 {
-    public class User_PrepareUserLogin : UserHandler<MsgPrepareUserLogin>
+    public class User_PrepareUserLogin : UserHandler<MsgPrepareUserLogin, ResPrepareUserLogin>
     {
         public override MsgType msgType => MsgType._User_PrepareUserLogin;
 
-        public override async Task<MyResponse> Handle(ProtocolClientData socket, MsgPrepareUserLogin msg)
+        public override async Task<ECode> Handle(ProtocolClientData socket, MsgPrepareUserLogin msg, ResPrepareUserLogin res)
         {
             long userId = msg.userId;
 
@@ -77,10 +77,9 @@ namespace Script
             user.SetRealPrepareLogin(msg);
 
             this.InitDestroyTimer_and_SaveTimer(user, this.msgType);
-
-            var res = new ResPreparePlayerLogin();
+            
             res.playerCount = this.service.sd.userDict.Count;
-            return new MyResponse(ECode.Success, res);
+            return ECode.Success;
         }
 
         // 正式登录、模拟登录共用

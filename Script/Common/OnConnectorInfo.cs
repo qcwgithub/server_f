@@ -6,12 +6,12 @@ using Data;
 namespace Script
 {
     // 登记连接我的是哪个服务
-    public class OnConnectorInfo<S> : Handler<S, MsgConnectorInfo>
+    public class OnConnectorInfo<S> : Handler<S, MsgConnectorInfo, ResConnectorInfo>
         where S : Service
     {
         public override MsgType msgType => MsgType._ConnectorInfo;
 
-        public override Task<MyResponse> Handle(ProtocolClientData socket, MsgConnectorInfo msg)
+        public override async Task<ECode> Handle(ProtocolClientData socket, MsgConnectorInfo msg, ResConnectorInfo res)
         {
             ConnectorInfo info = msg.connectorInfo;
             string message = string.Format("{0} ServiceType.{1} serviceId {2} this.service.data.state {3}",
@@ -27,7 +27,7 @@ namespace Script
 
             this.service.data.SetOtherServiceSocket(info.serviceType, info.serviceId, socket);
 
-            return ECode.Success.ToTask();
+            return ECode.Success;
         }
     }
 }

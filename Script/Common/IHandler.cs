@@ -6,7 +6,8 @@ namespace Script
     {
         MsgType msgType { get; }
         object DeserializeMsg(ArraySegment<byte> msg);
-        Task<MyResponse> Handle(ProtocolClientData socket, object msg);
-        MyResponse PostHandle(ProtocolClientData socket, object msg, MyResponse r);
+        byte[] SerializeRes(object res);
+        Task<(ECode, object)> Handle(ProtocolClientData socket, object msg);
+        (ECode, object) PostHandle(ProtocolClientData socket, object msg, ECode e, object res);
     }
 }

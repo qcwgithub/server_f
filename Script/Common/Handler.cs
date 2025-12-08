@@ -6,8 +6,10 @@ using MessagePack;
 
 namespace Script
 {
-    public abstract class Handler<S, M, R> : ServiceScript<S>, IHandler
+    public abstract class Handler<S, Msg, Res> : ServiceScript<S>, IHandler
         where S : Service
+        where Msg : class
+        where Res : class, new()
     {
         public log4net.ILog logger => this.service.logger;
 
@@ -15,24 +17,28 @@ namespace Script
 
         public object DeserializeMsg(ArraySegment<byte> msg)
         {
-            M m = this.server.messageSerializer.Deserialize<M>(msg);
+            Msg m = this.server.messageSerializer.Deserialize<Msg>(msg);
             return m;
         }
 
         public byte[] SerializeRes(object res)
         {
-            byte[] bytes = this.server.messageSerializer.Serialize<R>((R)res);
+            byte[] bytes = this.server.messageSerializer.Serialize<Res>((Res)res);
             return bytes;
         }
 
-        public Task<MyResponse> Handle(ProtocolClientData socket, object msg)
+        public async Task<(ECode, object)> Handle(ProtocolClientData socket, object msg)
         {
-            return this.Handle(socket, (M)msg);
+            Res res = new Res();
+            ECode e = await this.Handle(socket, (Msg)msg, res);
+            return (e, res);
         }
 
-        public abstract Task<MyResponse> Handle(ProtocolClientData socket, M msg);
-
-        public virtual MyResponse PostHandle(ProtocolClientData socket, object _msg, MyResponse r) => r;
+        public abstract Task<ECode> Handle(ProtocolClientData socket, Msg msg, Res res);
+        public virtual (ECode, object) PostHandle(ProtocolClientData socket, object _msg, ECode e, object res)
+        {
+            return (e, res);
+        }
 
         protected async Task OnErrorExit(ECode e)
         {

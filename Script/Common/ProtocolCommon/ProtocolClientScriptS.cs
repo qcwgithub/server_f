@@ -1,8 +1,5 @@
-using System;
 using Data;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using MongoDB.Bson.Serialization.Serializers;
+using DnsClient.Protocol;
 
 namespace Script
 {
@@ -58,12 +55,16 @@ namespace Script
             }
         }
 
-        public void Dispatch(ProtocolClientData data, MsgType msgType, ArraySegment<byte> msg, Action<ECode, byte[]> reply)
+        public async void DispatchNetwork(ProtocolClientData data, int seq, MsgType msgType, ArraySegment<byte> msgBytes, Action<ECode, byte[]> reply)
         {
-            this.service.dispatcher.Dispatch(data, msgType, msg, reply);
+            (ECode e, byte[] resBytes) = await this.service.dispatcher.DispatchNetwork(data, msgType, msgBytes);
+            if (reply != null)
+            {
+                reply(e, resBytes);
+            }
         }
 
-        public void OnConnectComplete(ProtocolClientData socket, bool success)
+        public async void OnConnectComplete(ProtocolClientData socket, bool success)
         {
             if (!success)
             {
@@ -77,17 +78,17 @@ namespace Script
             var msg = new MsgOnConnectComplete();
             msg.to_serviceType = serviceTypeAndId.serviceType;
             msg.to_serviceId = serviceTypeAndId.serviceId;
-            this.service.dispatcher.Dispatch(socket, MsgType._OnConnectComplete, msg, null);
+            await this.service.dispatcher.DispatchLocal<MsgOnConnectComplete, ResOnConnectComplete>(socket, MsgType._OnConnectComplete, msg);
         }
 
-        public void OnCloseComplete(ProtocolClientData socket)
+        public async void OnCloseComplete(ProtocolClientData socket)
         {
-            var msg = new MsgOnClose
+            var msg = new MsgSocketClose
             {
                 isAcceptor = !socket.isConnector,
                 // isServer = @this.connectedFromServer,
             };
-            this.service.dispatcher.Dispatch(socket, MsgType._OnSocketClose, msg, null);
+            await this.service.dispatcher.DispatchLocal<MsgSocketClose, ResSocketClose>(socket, MsgType._OnSocketClose, msg);
         }
 
         #region basic access
@@ -162,25 +163,26 @@ namespace Script
         }
 
         // 根据 服务类型， 向 全部这个类型的服务 统一发送
-        public async Task<MyResponse> SendToAllServiceAsync<T>(ServiceType serviceType, MsgType type, T msg)
+        public async Task<MyResponse<Res>> SendToAllService<Msg, Res>(ServiceType serviceType, MsgType type, Msg msg)
+            where Res : class
         {
             List<ProtocolClientData> list = this.service.data.otherServiceSockets2[(int)serviceType];
             if (list == null || list.Count == 0)
             {
-                return ECode.Server_NotConnected;
+                return new MyResponse<Res>(ECode.Server_NotConnected, null);
             }
 
-            MyResponse r = null;
             ProtocolClientData[] copy = list.ToArray();
 
-            byte[] bytes = this.server.messageSerializer.Serialize<T>(msg);
+            byte[] bytes = this.server.messageSerializer.Serialize<Msg>(msg);
+            MyResponse<Res> r = null;
 
             foreach (var socket in copy)
             {
                 if (socket != null && socket.IsConnected())
                 {
-                    r = await socket.SendAsync(type, bytes, pTimeoutS: null);
-                    if (r.err == ECode.Server_Timeout)
+                    r = await socket.Send<Msg, Res>(type, bytes);
+                    if (r.e == ECode.Server_Timeout)
                     {
                         this.service.logger.ErrorFormat("send {0} to {1} Timeout", type.ToString(), socket.serviceTypeAndId.Value.ToString());
                     }
@@ -189,7 +191,7 @@ namespace Script
 
             if (r == null)
             {
-                return ECode.Server_NotConnected;
+                return new MyResponse<Res>(ECode.Server_NotConnected, null);
             }
             else
             {
@@ -199,9 +201,10 @@ namespace Script
         }
 
         // 根据 服务类型， 向 全部这个类型的服务 统一发送
-        public async Task<List<MyResponse>> SendToAllServiceAsync2<T>(ServiceType serviceType, MsgType type, T msg)
+        public async Task<List<MyResponse<Res>>> SendToAllServiceAsync2<Msg, Res>(ServiceType serviceType, MsgType type, Msg msg)
+            where Res : class
         {
-            var responses = new List<MyResponse>();
+            var responses = new List<MyResponse<Res>>();
 
             List<ProtocolClientData> list = this.service.data.otherServiceSockets2[(int)serviceType];
             if (list == null || list.Count == 0)
@@ -211,15 +214,15 @@ namespace Script
 
             ProtocolClientData[] copy = list.ToArray();
 
-            byte[]bytes = this.server.messageSerializer.Serialize<T>(msg);
+            byte[] bytes = this.server.messageSerializer.Serialize<Msg>(msg);
 
             foreach (var socket in copy)
             {
                 if (socket != null && socket.IsConnected())
                 {
-                    MyResponse r = await socket.SendAsync(type, bytes, pTimeoutS: null);
+                    var r = await socket.Send<Msg, Res>(type, bytes);
                     responses.Add(r);
-                    if (r.err == ECode.Server_Timeout)
+                    if (r.e == ECode.Server_Timeout)
                     {
                         this.service.logger.ErrorFormat("send {0} to {1} Timeout", type.ToString(), socket.serviceTypeAndId.Value.ToString());
                     }

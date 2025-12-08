@@ -5,17 +5,17 @@ namespace Script
     // 连接其他服务器成功
     public class User_OnConnectComplete : OnConnectComplete<UserService>
     {
-        public override async Task<MyResponse> Handle(ProtocolClientData socket, MsgConnectorInfo msg)
+        public override async Task<ECode> Handle(ProtocolClientData socket, MsgConnectorInfo msg, ResConnectorInfo res)
         {
-            MyResponse r = await base.Handle(socket, msg);
-            if (r.err != ECode.Success)
+            var e = await base.Handle(socket, msg, res);
+            if (e != ECode.Success)
             {
-                return r;
+                return e;
             }
 
             if (socket.serviceTypeAndId == null)
             {
-                return r;
+                return e;
             }
 
             // var serviceTypeAndId = (ServiceTypeAndId)socket.serviceTypeAndId;
@@ -25,7 +25,7 @@ namespace Script
             //     await this.service.SendPSInfoToAAA(false, socket);
             // }
 
-            return r;
+            return e;
         }
     }
 }

@@ -39,4 +39,10 @@ namespace Data
             return this;
         }
     }
+
+    [MessagePackObject]
+    public class ResCommon
+    {
+
+    }
 }

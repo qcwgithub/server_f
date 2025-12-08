@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Script
 {
-    public abstract class OnStart<S> : Handler<S, MsgStart>
+    public abstract class OnStart<S> : Handler<S, MsgStart, ResStart>
         where S : Service
     {
         public override MsgType msgType => MsgType._Start;
@@ -17,7 +17,7 @@ namespace Script
             this.service.data.timer_CheckConnections_Loop = this.server.timerScript.SetTimer(this.service.serviceId, 0, MsgType._CheckConnections_Loop, null);
         }
 
-        public override async Task<MyResponse> Handle(ProtocolClientData socket, MsgStart msg)
+        public override async Task<ECode> Handle(ProtocolClientData socket, MsgStart msg, ResStart res)
         {
             try
             {

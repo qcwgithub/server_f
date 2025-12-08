@@ -7,4 +7,10 @@ namespace Data
         [Key(0)]
         public bool isShuttingDownSaveAll;
     }
+
+    [MessagePackObject]
+    public class ResPersistence
+    {
+        
+    }
 }

@@ -44,5 +44,7 @@ namespace Data
         public Profile profile;
         [Key(2)]
         public bool kickOther; // 顶号
+        [Key(3)]
+        public int delayS;
     }
 }

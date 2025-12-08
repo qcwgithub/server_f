@@ -7,6 +7,10 @@ namespace Script
         Dictionary<MsgType, IHandler> handlers = new Dictionary<MsgType, IHandler>();
 
         ///////// handlers ///////////
+        public IHandler? GetHandler(MsgType msgType)
+        {
+            return this.handlers.TryGetValue(msgType, out IHandler? handler) ? handler : null;
+        }
         public void AddHandler(IHandler handler, bool isReplace = false)
         {
             // remove first
@@ -21,8 +25,6 @@ namespace Script
         {
             return this.handlers.Remove(type);
         }
-        private readonly Action<ECode, object> emptyReply = (e, r) => { };
-
 
         public List<MsgType> recentMsgTypes = new List<MsgType>();
         protected virtual void BeforeHandle(ProtocolClientData socket, MsgType type, object msg)
@@ -46,7 +48,7 @@ namespace Script
             this.recentMsgTypes.Clear();
         }
 
-        protected virtual void BeforePostHandle(ProtocolClientData socket, MsgType type, object msg, MyResponse r)
+        protected virtual void BeforePostHandle(ProtocolClientData socket, MsgType type, object msg, ECode e, object res)
         {
 
         }
@@ -71,34 +73,51 @@ namespace Script
             return string.Join(", ", list.Select(x => x.Item1.ToString() + "*" + x.Item2));
         }
 
-        public void Dispatch(ProtocolClientData socket, MsgType type, object msg, Action<ECode, byte[]> reply)
+        public async Task<MyResponse<Res>> DispatchLocal<Msg, Res>(MsgType msgType, Msg msg)
+            where Res : class
         {
-            IHandler handler;
-            if (!this.handlers.TryGetValue(type, out handler))
+            IHandler? handler = this.GetHandler(msgType);
+            if (handler == null)
             {
-                this.service.logger.ErrorFormat("no handler for message {0}", type);
-                reply(ECode.Error, null);
-                return;
+                this.service.logger.ErrorFormat("no handler for message {0}", msgType);
+                return new MyResponse<Res>(ECode.Error, null);
             }
 
-            this.DispatchImpl(socket, handler, type, msg, reply);
+            (ECode e, object res) = await this.DispatchImpl(null, handler, msgType, msg);
+            return new MyResponse<Res>(e, (Res)res);
         }
 
-        public void Dispatch(ProtocolClientData socket, MsgType type, ArraySegment<byte> _msg, Action<ECode, byte[]> reply)
+        public async Task<MyResponse<Res>> DispatchLocal<Msg, Res>(ProtocolClientData socket, MsgType msgType, Msg msg)
+            where Res : class
         {
-            IHandler handler;
-            if (!this.handlers.TryGetValue(type, out handler))
+            IHandler? handler = this.GetHandler(msgType);
+            if (handler == null)
             {
-                this.service.logger.ErrorFormat("no handler for message {0}", type);
-                reply(ECode.Error, null);
-                return;
+                this.service.logger.ErrorFormat("no handler for message {0}", msgType);
+                return new MyResponse<Res>(ECode.Error, null);
             }
 
-            object msg = handler.DeserializeMsg(_msg);
-            this.DispatchImpl(socket, handler, type, msg, reply);
+            (ECode e, object res) = await this.DispatchImpl(socket, handler, msgType, msg);
+            return new MyResponse<Res>(e, (Res)res);
         }
 
-        async void DispatchImpl(ProtocolClientData socket, IHandler handler, MsgType type, object msg, Action<ECode, byte[]> reply)
+        public async Task<(ECode, byte[])> DispatchNetwork(ProtocolClientData socket, MsgType msgType, ArraySegment<byte> msgData)
+        {
+            IHandler? handler = this.GetHandler(msgType);
+            if (handler == null)
+            {
+                this.service.logger.ErrorFormat("no handler for message {0}", msgType);
+                return (ECode.Error, []);
+            }
+
+            object msg = handler.DeserializeMsg(msgData);
+            (ECode e, object res) = await this.DispatchImpl(socket, handler, msgType, msg);
+
+            byte[] resBytes = handler.SerializeRes(res);
+            return (e, resBytes);
+        }
+
+        async Task<(ECode, object)> DispatchImpl(ProtocolClientData socket, IHandler handler, MsgType type, object msg)
         {
             if (this.service.detached)
             {
@@ -113,12 +132,9 @@ namespace Script
                 }
             }
 
-            if (reply == null)
-            {
-                reply = this.emptyReply;
-            }
+            ECode e = default;
+            object res = default;
 
-            MyResponse r = null;
             int busyIndex = this.service.data.AddToBusyList((int)type);
             if (this.service.data.busyCount >= this.service.data.lastErrorBusyCount + 100)
             {
@@ -130,7 +146,7 @@ namespace Script
                 if (socket != null && socket.msgProcessing != 0 && !type.CanParallel())
                 {
                     // 消息处理中
-                    r = new MyResponse(ECode.MsgProcessing, null);
+                    e = ECode.MsgProcessing;
                     this.service.logger.ErrorFormat("MsgType.{0} wait MsgType.{1}", type, (MsgType)socket.msgProcessing);
                 }
                 else
@@ -141,18 +157,18 @@ namespace Script
                     }
 
                     this.BeforeHandle(socket, type, msg);
-                    r = await handler.Handle(socket, msg);
+                    (e, res) = await handler.Handle(socket, msg);
 
-                    if (r.err != ECode.Success && type.LogErrorIfNotSuccess() && !r.HasDontLogErrorFlag())
+                    if (e != ECode.Success && type.LogErrorIfNotSuccess())
                     {
                         if (socket.userId != 0)
                         {
-                            this.service.logger.ErrorFormat("{0} playerId {1} ECode.{2}", type, socket.userId, r.err);
+                            this.service.logger.ErrorFormat("{0} playerId {1} ECode.{2}", type, socket.userId, e);
                         }
                         else
                         {
                             // 已知 oldSocket 会走到这，不是错误
-                            this.service.logger.InfoFormat("{0} lastPlayerId {1} ECode.{2}", type, socket.lastUserId, r.err);
+                            this.service.logger.InfoFormat("{0} lastPlayerId {1} ECode.{2}", type, socket.lastUserId, e);
                         }
                     }
                 }
@@ -160,7 +176,7 @@ namespace Script
             catch (Exception ex)
             {
                 this.service.logger.Fatal("disaptch exception 1! msgType: " + type, ex);
-                r = new MyResponse(ECode.Exception, null);
+                e = ECode.Exception;
             }
 
             try
@@ -170,14 +186,14 @@ namespace Script
                     socket.msgProcessing = 0;
                 }
                 this.service.data.RemoveFromBusyList(busyIndex);
-                this.BeforePostHandle(socket, type, msg, r);
-                r = handler.PostHandle(socket, msg, r);
-                reply(r.err, r.res == null ? null : r.res);
+                this.BeforePostHandle(socket, type, msg, e, res);
+                (e, res) = handler.PostHandle(socket, msg, e, res);
+                return (e, res);
             }
             catch (Exception ex)
             {
                 this.service.logger.Fatal("disaptch exception 2! msgType: " + type, ex);
-                reply(ECode.Exception, null);
+                return (ECode.Exception, null);
             }
         }
     }

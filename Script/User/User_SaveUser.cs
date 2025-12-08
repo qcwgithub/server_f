@@ -5,10 +5,10 @@ using Data;
 
 namespace Script
 {
-    public class User_SaveUser : UserHandler<MsgSaveUser>
+    public class User_SaveUser : UserHandler<MsgSaveUser, ResSaveUser>
     {
         public override MsgType msgType => MsgType._User_SaveUser;
-        public override async Task<MyResponse> Handle(ProtocolClientData socket/* null */, MsgSaveUser msg)
+        public override async Task<ECode> Handle(ProtocolClientData socket, MsgSaveUser msg, ResSaveUser res)
         {
             long userId = msg.userId;
 
@@ -82,11 +82,11 @@ namespace Script
                 msgDb.profile_debug = Profile.Ensure(null);
                 msgDb.profile_debug.DeepCopyFrom(curr);
 #endif
-                MyResponse r = await this.service.connectToDbService.SendAsync(MsgType._Db_SaveUserProfile, msgDb);
-                if (r.err != ECode.Success)
+                var r = await this.service.connectToDbService.Send<MsgSaveUserProfile, ResSaveUserProfile>(MsgType._Db_SaveUserProfile, msgDb);
+                if (r.e != ECode.Success)
                 {
-                    this.service.logger.ErrorFormat("_Db_SaveUser error: {0}, userId: {1}", r.err, userId);
-                    return r;
+                    this.service.logger.ErrorFormat("_Db_SaveUser error: {0}, userId: {1}", r.e, userId);
+                    return r.e;
                 }
             }
 

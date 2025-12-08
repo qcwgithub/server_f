@@ -6,11 +6,11 @@ using Data;
 
 namespace Script
 {
-    public class Command_PerformSetPlayerGmFlag : Handler<CommandService, MsgCommon>
+    public class Command_PerformSetPlayerGmFlag : Handler<CommandService, MsgCommon, ResCommon>
     {
         public override MsgType msgType => MsgType._Command_PerformSetPlayerGmFlag;
 
-        public override async Task<MyResponse> Handle(ProtocolClientData socket, MsgCommon msg)
+        public override async Task<ECode> Handle(ProtocolClientData socket, MsgCommon msg, ResCommon res)
         {
             long startId = msg.GetLong("startId");
             long endId = msg.GetLong("endId");

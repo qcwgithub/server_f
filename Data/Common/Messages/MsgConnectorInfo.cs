@@ -20,4 +20,10 @@ namespace Data
         [Key(0)]
         public ConnectorInfo connectorInfo;
     }
+
+    [MessagePackObject]
+    public class ResConnectorInfo
+    {
+
+    }
 }

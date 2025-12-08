@@ -4,11 +4,11 @@ using Data;
 
 namespace Script
 {
-    public class OnGetConnectedInfos<S> : Handler<S, MsgGetConnectedInfos>
+    public class OnGetConnectedInfos<S> : Handler<S, MsgGetConnectedInfos, ResGetConnectedInfos>
         where S : Service
     {
         public override MsgType msgType => MsgType._GetConnectedInfos;
-        public override Task<MyResponse> Handle(ProtocolClientData socket, MsgGetConnectedInfos msg)
+        public override Task<ECode> Handle(ProtocolClientData socket, MsgGetConnectedInfos msg, ResGetConnectedInfos res)
         {
             ServiceData sd = this.service.data;
 
@@ -33,7 +33,7 @@ namespace Script
                 }
             }
 
-            return new MyResponse(ECode.Success, res).ToTask();
+            return ECode.Success;
         }
     }
 }

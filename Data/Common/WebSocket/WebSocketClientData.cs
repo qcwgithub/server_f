@@ -171,18 +171,17 @@ namespace Data
 
         #region send
 
-#if !UNITY_2017_1_OR_NEWER
-        public override async Task<MyResponse> SendAsync(MsgType type, byte[] msg, int? pTimeoutS)
+        public override async Task<(ECode, ArraySegment<byte>)> SendBytesAsync(MsgType type, byte[] msg, int? pTimeoutS)
         {
             if (!this.IsConnected())
             {
-                return ECode.Server_NotConnected;
+                return (ECode.Server_NotConnected, default);
             }
 
-            var cs = new TaskCompletionSource<MyResponse>();
-            this.Send(type, msg, (e, r) =>
+            var cs = new TaskCompletionSource<(ECode, ArraySegment<byte>)>();
+            this.SendBytes(type, msg, (e, r) =>
             {
-                bool success = cs.TrySetResult(new MyResponse(e, r));
+                bool success = cs.TrySetResult((e, r));
                 if (!success)
                 {
                     Console.WriteLine("!cs.TrySetResult " + type);
@@ -191,7 +190,6 @@ namespace Data
             var xxx = await cs.Task;
             return xxx;
         }
-#endif
 
         async void TimeoutTrigger(int timeoutS, int seq)
         {
@@ -213,7 +211,7 @@ namespace Data
             }
         }
 
-        public override void Send(MsgType msgType, byte[] msg, Action<ECode, ArraySegment<byte>> cb, int? pTimeoutS)
+        protected override void SendBytes(MsgType msgType, byte[] msg, Action<ECode, ArraySegment<byte>> cb, int? pTimeoutS)
         {
             if (!this.IsConnected())
             {
@@ -289,7 +287,7 @@ namespace Data
             this.SendPacket(bytes, CancellationToken.None);
         }
 
-        public override void SendRaw(byte[] buffer)
+        protected override void SendRaw(byte[] buffer)
         {
             int seq = this.callback.nextMsgSeq;
             this.callback.GetMessagePacker().ModifySeq(buffer, seq);

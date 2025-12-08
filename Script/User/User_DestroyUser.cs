@@ -5,11 +5,11 @@ using Data;
 
 namespace Script
 {
-    public class User_DestroyUser : UserHandler<MsgDestroyUser>
+    public class User_DestroyUser : UserHandler<MsgDestroyUser, ResDestroyUser>
     {
         public override MsgType msgType => MsgType._User_DestroyUser;
 
-        public override async Task<MyResponse> Handle(ProtocolClientData socket, MsgDestroyUser msg)
+        public override async Task<ECode> Handle(ProtocolClientData socket, MsgDestroyUser msg, ResDestroyUser res)
         {
             long userId = msg.userId;
 
@@ -24,7 +24,7 @@ namespace Script
 
             if (msg.msgKick != null && user.IsSocketConnected())
             {
-                user.socket.Send(MsgType.Kick, msg.msgKick, null, 0);
+                user.socket.Send<MsgKick, ResKick>(MsgType.Kick, msg.msgKick).Forget(this.service);
             }
 
             if (user.socket != null)
@@ -48,10 +48,10 @@ namespace Script
             // 保存一次
             var msgSave = new MsgSaveUser { userId = userId, place = this.msgType.ToString() };
             // this.service.ProxyDispatch(null, MsgType._PSSavePlayer, msgSave, null);
-            MyResponse r = await this.service.connectToSelf.SendToSelfAsync(MsgType._User_SaveUser, msgSave);
-            if (r.err != ECode.Success)
+            var r = await this.service.connectToSelf.Send<MsgSaveUser, ResSaveUser>(MsgType._User_SaveUser, msgSave);
+            if (r.e != ECode.Success)
             {
-                return r.err;
+                return r.e;
             }
 
             this.usData.userDict.Remove(userId);
