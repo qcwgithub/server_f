@@ -239,7 +239,7 @@ namespace Script
                     // 关服
                     case "shutdown":
                         {
-                            var r = await this.service.connectToSelf.Send<MsgCommon, ResCommon>(MsgType._Command_PerformShutdown,
+                            var r = await this.service.connectToSelf.Request<MsgCommon, ResCommon>(MsgType._Command_PerformShutdown,
                                    new MsgCommon().SetLong("serviceId", serviceId).SetLong("force", this.GetArg_Int("force", false)));
                             e = r.e;
                         }
@@ -248,7 +248,7 @@ namespace Script
                     // 打印积压了多少消息
                     case "printPendingMsgList":
                         {
-                            var r = await this.service.connectToSelf.Send<MsgCommon, ResCommon>(MsgType._Command_PerformGetPendingMsgList,
+                            var r = await this.service.connectToSelf.Request<MsgCommon, ResCommon>(MsgType._Command_PerformGetPendingMsgList,
                                    new MsgCommon().SetLong("serviceId", serviceId));
                             e = r.e;
                         }
@@ -257,7 +257,7 @@ namespace Script
                     // 打印服务器 Script.dll 版本
                     case "showScriptVersion":
                         {
-                            var r = await this.service.connectToSelf.Send<MsgCommon, ResCommon>(MsgType._Command_PerformShowScriptVersion,
+                            var r = await this.service.connectToSelf.Request<MsgCommon, ResCommon>(MsgType._Command_PerformShowScriptVersion,
                                    new MsgCommon().SetLong("serviceId", serviceId));
                             e = r.e;
                         }
@@ -268,7 +268,7 @@ namespace Script
                         {
                             string zip = this.GetArg_String("zip", false);
 
-                            var r = await this.service.connectToSelf.Send<MsgCommon, ResCommon>(MsgType._Command_PerformReloadScript,
+                            var r = await this.service.connectToSelf.Request<MsgCommon, ResCommon>(MsgType._Command_PerformReloadScript,
                                         new MsgCommon().SetLong("serviceId", serviceId).SetString("zip", zip));
                             e = r.e;
                         }
@@ -294,7 +294,7 @@ namespace Script
                                 msgReload.files = new List<string>();
                                 msgReload.files.AddRange(array);
                             }
-                            var r = await this.service.connectToSameServerType.SendToService<MsgReloadConfigs, ResReloadConfigs>(serviceId, MsgType._ReloadConfigs, msgReload);
+                            var r = await this.service.connectToSameServerType.RequestToService<MsgReloadConfigs, ResReloadConfigs>(serviceId, MsgType._ReloadConfigs, msgReload);
                             e = r.e;
                         }
                         break;
@@ -303,7 +303,7 @@ namespace Script
                         {
                             var msgGet = new MsgGetReloadConfigOptions();
                             ResGetReloadConfigOptions resGet;
-                            var r = await this.service.connectToSameServerType.SendToService<MsgGetReloadConfigOptions, ResGetReloadConfigOptions>(serviceId, MsgType._GetReloadConfigOptions, msgGet);
+                            var r = await this.service.connectToSameServerType.RequestToService<MsgGetReloadConfigOptions, ResGetReloadConfigOptions>(serviceId, MsgType._GetReloadConfigOptions, msgGet);
                             e = r.e;
 
                             if (e == ECode.Success)
@@ -320,7 +320,7 @@ namespace Script
                     case "gc":
                         {
                             var msgGc = new MsgGC();
-                            var r = await this.service.connectToSameServerType.SendToService<MsgGC, ResGC>(serviceId, MsgType._GC, msgGc);
+                            var r = await this.service.connectToSameServerType.RequestToService<MsgGC, ResGC>(serviceId, MsgType._GC, msgGc);
                             e = r.e;
                         }
                         break;
@@ -346,7 +346,7 @@ namespace Script
                                 msg.saveIntervalS = i;
                             }
 
-                            var r = await this.service.connectToSameServerType.SendToService<MsgPSAction, ResPSAction>(serviceId, MsgType._ServerAction, msg);
+                            var r = await this.service.connectToSameServerType.RequestToService<MsgPSAction, ResPSAction>(serviceId, MsgType._ServerAction, msg);
                             e = r.e;
                         }
                         break;
@@ -363,7 +363,7 @@ namespace Script
                             {
                                 throw new System.Exception("missing endId");
                             }
-                            var r = await this.service.connectToSelf.Send<MsgCommon, ResCommon>(MsgType._Command_PerformSetPlayerGmFlag,
+                            var r = await this.service.connectToSelf.Request<MsgCommon, ResCommon>(MsgType._Command_PerformSetPlayerGmFlag,
                                 new MsgCommon().SetLong("serviceId", serviceId).SetLong("startId", startId).SetLong("endId", endId));
                             e = r.e;
                         }
@@ -408,7 +408,7 @@ namespace Script
                     case "showUserCount":
                         {
                             var msg2 = new MsgGetUserCount();
-                            var r = await this.service.connectToSameServerType.SendToService<MsgGetUserCount, ResGetUserCount>(serviceId, MsgType._GetPlayerCount, msg2);
+                            var r = await this.service.connectToSameServerType.RequestToService<MsgGetUserCount, ResGetUserCount>(serviceId, MsgType._GetPlayerCount, msg2);
                             e = r.e;
 
                             if (e == ECode.Success)
@@ -475,14 +475,14 @@ namespace Script
             {
                 case "kick":
                     {
-                        var r = await this.service.connectToSelf.Send<MsgCommon, ResCommon>(MsgType._Command_PerformKick,
+                        var r = await this.service.connectToSelf.Request<MsgCommon, ResCommon>(MsgType._Command_PerformKick,
                             new MsgCommon().SetLong("serviceId", usId).SetLong("playerId", userId));
                         e = r.e;
                     }
                     break;
                 case "saveProfileToFile":
                     {
-                        var r = await this.service.connectToSelf.Send<MsgCommon, ResCommon>(MsgType._Command_PerformSaveProfileToFile,
+                        var r = await this.service.connectToSelf.Request<MsgCommon, ResCommon>(MsgType._Command_PerformSaveProfileToFile,
                             new MsgCommon().SetLong("serviceId", usId).SetLong("playerId", userId));
                         e = r.e;
                     }
@@ -506,7 +506,7 @@ namespace Script
                                 break;
                         }
 
-                        var r = await this.service.connectToSelf.Send<MsgCommon, ResCommon>(MsgType._Command_PerformPlayerGM,
+                        var r = await this.service.connectToSelf.Request<MsgCommon, ResCommon>(MsgType._Command_PerformPlayerGM,
                             new MsgCommon().SetLong("serviceId", usId).SetLong("playerId", userId).SetString("msgGM", msgGMStr));
                         e = r.e;
                     }

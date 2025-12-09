@@ -20,16 +20,15 @@ namespace Script
             msgSet.startUserId = startId;
             msgSet.endUserId = endId;
 
-            var r = await this.service.connectToSameServerType.SendToServiceAsync(serviceId, MsgType._SetGmFlag, msgSet);
-            var res = r.CastRes<ResSetGmFlag>();
-            if (res.listUser != null)
+            var r = await this.service.connectToSameServerType.RequestToService<MsgSetGmFlag, ResSetGmFlag>(serviceId, MsgType._SetGmFlag, msgSet);
+            if (r.res.listUser != null)
             {
-                foreach (var item in res.listUser)
+                foreach (var item in r.res.listUser)
                 {
                     this.service.logger.InfoFormat("{0} success set GM!", item);
                 }
             }
-            return r;
+            return r.e;
         }
     }
 }

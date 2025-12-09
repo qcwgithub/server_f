@@ -143,8 +143,7 @@ namespace Data
         #endregion
 
         #region send
-        public abstract Task<(ECode, ArraySegment<byte>)> SendBytesAsync(MsgType type, byte[] msg, int? pTimeoutS);
-        protected abstract void SendBytes(MsgType msgType, byte[] msg, Action<ECode, ArraySegment<byte>> cb, int? pTimeoutS);
+        public abstract void SendBytes(MsgType msgType, byte[] msg, Action<ECode, ArraySegment<byte>>? cb, int? pTimeoutS);
         protected abstract void SendPacketIgnoreResult(int msgTypeOrECode, byte[] msg, int seq, bool requireResponse);
         protected abstract void SendRaw(byte[] buffer);
 

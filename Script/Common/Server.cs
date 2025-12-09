@@ -156,7 +156,7 @@ namespace Script
 
             foreach (var service in this.services)
             {
-                service.dispatcher.DispatchLocal<MsgStart, ResStart>(MsgType._Start, new MsgStart());
+                service.dispatcher.DispatchLocal<MsgStart, ResStart>(null, MsgType._Start, new MsgStart());
             }
         }
 
@@ -238,7 +238,7 @@ namespace Script
             {
                 if (service.serviceId == serviceId)
                 {
-                    service.dispatcher.DispatchLocal(null, msgType, msg, null);
+                    service.dispatcher.DispatchLocal<object, object>(null, msgType, msg);
                     found = true;
                     break;
                 }
@@ -278,7 +278,7 @@ namespace Script
                 msgShutdown.force = false;
                 foreach (var baseService in allServices)
                 {
-                    await baseService.connectToSelf.Send<MsgShutdown, ResShutdown>(MsgType._Shutdown, msgShutdown);
+                    await baseService.connectToSelf.Request<MsgShutdown, ResShutdown>(MsgType._Shutdown, msgShutdown);
                     await Task.Delay(100);
                 }
             }

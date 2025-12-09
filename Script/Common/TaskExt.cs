@@ -14,7 +14,7 @@ namespace Script
 
         public static void Forget(this Task task, Service service)
         {
-            service.dispatcher.DispatchLocal<MsgWaitTask, ResWaitTask>(MsgType._WaitTask, new MsgWaitTask { task = task });
+            service.dispatcher.DispatchLocal<MsgWaitTask, ResWaitTask>(null, MsgType._WaitTask, new MsgWaitTask { task = task });
         }
 
         public static async Task Parallel(Func<int, Task> fillTask, Action<Task, Ptr<bool>> onTaskFinish = null)

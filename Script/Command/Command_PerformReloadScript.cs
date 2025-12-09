@@ -68,7 +68,7 @@ namespace Script
                 msgReload.pdbBytes = pdbBytes;
             }
 
-            var r = await this.service.connectToSameServerType.SendToService<MsgReloadScript, ResReloadScript>(serviceId, MsgType._ReloadScript, msgReload);
+            var r = await this.service.connectToSameServerType.RequestToService<MsgReloadScript, ResReloadScript>(serviceId, MsgType._ReloadScript, msgReload);
             if (r.e != ECode.Success)
             {
                 this.service.logger.ErrorFormat("reload script failed, message: {0}", r.res.message);

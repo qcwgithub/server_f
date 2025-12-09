@@ -21,7 +21,8 @@ namespace Script
             msgKick.userId = userId;
             msgKick.logoutSdk = true;
 
-            return await this.service.connectToSameServerType.SendToServiceAsync(serviceId, MsgType._PS_ServerKick, msgKick);
+            var r = await this.service.connectToSameServerType.RequestToService<MsgServerKick, ResServerKick>(serviceId, MsgType._PS_ServerKick, msgKick);
+            return r.e;
         }
     }
 }

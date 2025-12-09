@@ -14,17 +14,16 @@ namespace Script
             int serviceId = (int)msg.GetLong("serviceId");
 
             var msg2 = new MsgGetPendingMsgList();
-            MyResponse r = await this.service.connectToSameServerType.SendToServiceAsync(serviceId, MsgType._GetPendingMessageList, msg2);
+            var r = await this.service.connectToSameServerType.RequestToService<MsgGetPendingMsgList, ResGetPendingMsgList>(serviceId, MsgType._GetPendingMessageList, msg2);
             if (r.e != ECode.Success)
             {
-                return r;
+                return r.e;
             }
 
-            var res = r.CastRes<ResGetPendingMsgList>();
             var dict = new Dictionary<MsgType, int>();
-            for (int j = 0; j < res.list.Count; j++)
+            for (int j = 0; j < r.res.list.Count; j++)
             {
-                int v = res.list[j];
+                int v = r.res.list[j];
                 if (v != -1)
                 {
                     MsgType t = (MsgType)v;
@@ -38,8 +37,8 @@ namespace Script
                     }
                 }
             }
-            this.service.logger.InfoFormat("serviceId {0} pendingDict {1} list.Count {2}", serviceId, JsonUtils.stringify(dict), res.list.Count);
-            return r;
+            this.service.logger.InfoFormat("serviceId {0} pendingDict {1} list.Count {2}", serviceId, JsonUtils.stringify(dict), r.res.list.Count);
+            return ECode.Success;
         }
     }
 }

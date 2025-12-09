@@ -25,7 +25,7 @@ namespace Script
             {
                 var msgKick = new MsgKick();
                 msgKick.flags = LogoutFlags.CancelAutoLogin;
-                oldSocket.SendBytes(MsgType.Kick, msgKick, null, 2);
+                oldSocket.Send<MsgKick>(MsgType.Kick, msgKick);
             }
         }
 

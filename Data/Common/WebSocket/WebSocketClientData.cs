@@ -171,26 +171,6 @@ namespace Data
 
         #region send
 
-        public override async Task<(ECode, ArraySegment<byte>)> SendBytesAsync(MsgType type, byte[] msg, int? pTimeoutS)
-        {
-            if (!this.IsConnected())
-            {
-                return (ECode.Server_NotConnected, default);
-            }
-
-            var cs = new TaskCompletionSource<(ECode, ArraySegment<byte>)>();
-            this.SendBytes(type, msg, (e, r) =>
-            {
-                bool success = cs.TrySetResult((e, r));
-                if (!success)
-                {
-                    Console.WriteLine("!cs.TrySetResult " + type);
-                }
-            }, pTimeoutS);
-            var xxx = await cs.Task;
-            return xxx;
-        }
-
         async void TimeoutTrigger(int timeoutS, int seq)
         {
             for (int i = 0; i < timeoutS; i++)
@@ -211,7 +191,7 @@ namespace Data
             }
         }
 
-        protected override void SendBytes(MsgType msgType, byte[] msg, Action<ECode, ArraySegment<byte>> cb, int? pTimeoutS)
+        public override void SendBytes(MsgType msgType, byte[] msg, Action<ECode, ArraySegment<byte>>? cb, int? pTimeoutS)
         {
             if (!this.IsConnected())
             {

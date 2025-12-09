@@ -16,7 +16,8 @@ namespace Script
 
             var msgShutdown = new MsgShutdown();
             msgShutdown.force = force == 1;
-            return await this.service.connectToSameServerType.SendToServiceAsync(serviceId, MsgType._Shutdown, msgShutdown);
+            var r = await this.service.connectToSameServerType.RequestToService<MsgShutdown, ResShutdown>(serviceId, MsgType._Shutdown, msgShutdown);
+            return r.e;
         }
     }
 }

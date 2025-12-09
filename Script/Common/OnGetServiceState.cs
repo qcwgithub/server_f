@@ -8,9 +8,8 @@ namespace Script
     {
         public override MsgType msgType => MsgType._GetServiceState;
 
-        public override Task<ECode> Handle(ProtocolClientData socket, MsgGetServiceState msg, ResGetServiceState res)
+        public override async Task<ECode> Handle(ProtocolClientData socket, MsgGetServiceState msg, ResGetServiceState res)
         {
-            var res = new ResGetServiceState();
             res.serviceType = this.service.data.serviceType;
             res.serviceId = this.service.data.serviceId;
             res.serviceState = this.service.data.state;

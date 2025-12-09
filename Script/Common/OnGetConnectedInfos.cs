@@ -8,11 +8,10 @@ namespace Script
         where S : Service
     {
         public override MsgType msgType => MsgType._GetConnectedInfos;
-        public override Task<ECode> Handle(ProtocolClientData socket, MsgGetConnectedInfos msg, ResGetConnectedInfos res)
+        public override async Task<ECode> Handle(ProtocolClientData socket, MsgGetConnectedInfos msg, ResGetConnectedInfos res)
         {
             ServiceData sd = this.service.data;
-
-            var res = new ResGetConnectedInfos();
+        
             res.connectedInfos = new List<ServiceTypeAndId>();
 
             foreach (List<ProtocolClientData> list in sd.otherServiceSockets2)

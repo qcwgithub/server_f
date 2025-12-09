@@ -15,7 +15,7 @@ namespace Script
         {
             if (this.service.data.connectToServiceTypes.Count > 0)
             {
-                var r = await this.service.connectToSelf.Send<MsgCheckConnections, ResCheckConnections>(MsgType._CheckConnections, new MsgCheckConnections());
+                var r = await this.service.connectToSelf.Request<MsgCheckConnections, ResCheckConnections>(MsgType._CheckConnections, new MsgCheckConnections());
                 return r.e;
             }
 

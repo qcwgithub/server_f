@@ -25,7 +25,7 @@ namespace Script
                 return new MyResponse<Res>(ECode.Server_NotConnected, null);
             }
 
-            return await socket.Send<Msg, Res>(type, msg);
+            return await socket.Request<Msg, Res>(type, msg);
         }
 
         public async Task<MyResponse<Res>> Send<Msg, Res>(MsgType msgType, Msg msg)
@@ -80,7 +80,7 @@ namespace Script
                 return new MyResponse<Res>(ECode.Server_NotConnected, null);
             }
 
-            return await socket.Send<Msg, Res>(msgType, msg);
+            return await socket.Request<Msg, Res>(msgType, msg);
         }
 
         public async Task<MyResponse<Res>> SendToAll<Msg, Res>(MsgType msgType, Msg msg) where Res : class
@@ -102,7 +102,7 @@ namespace Script
             this.self = self;
         }
 
-        public async Task<MyResponse<Res>> SendToService<Msg, Res>(int serviceId, MsgType msgType, Msg msg)
+        public async Task<MyResponse<Res>> RequestToService<Msg, Res>(int serviceId, MsgType msgType, Msg msg)
             where Res : class, new()
         {
             ProtocolClientData socket = this.self.data.GetOtherServiceSocket(serviceId);
@@ -111,7 +111,7 @@ namespace Script
                 return new MyResponse<Res>(ECode.Server_NotConnected, null);
             }
 
-            return await socket.Send<Msg, Res>(msgType, msg);
+            return await socket.Request<Msg, Res>(msgType, msg);
         }
     }
 
@@ -123,10 +123,10 @@ namespace Script
             this.self = self;
         }
 
-        public async Task<MyResponse<Res>> Send<Msg, Res>(MsgType msgType, Msg msg)
+        public async Task<MyResponse<Res>> Request<Msg, Res>(MsgType msgType, Msg msg)
             where Res : class
         {
-            return await this.self.dispatcher.DispatchLocal<Msg, Res>(msgType, msg);
+            return await this.self.dispatcher.DispatchLocal<Msg, Res>(null, msgType, msg);
         }
     }
 }

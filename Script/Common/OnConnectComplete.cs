@@ -19,7 +19,7 @@ namespace Script
             // 连上去之后立即向他报告是我的身份
             var msgInfo = new MsgConnectorInfo();
             msgInfo.connectorInfo = this.service.CreateConnectorInfo();
-            await socket.Send<MsgConnectorInfo, ResConnectorInfo>(MsgType._ConnectorInfo, msgInfo);
+            await socket.Request<MsgConnectorInfo, ResConnectorInfo>(MsgType._ConnectorInfo, msgInfo);
 
             // var s = socket;
             // bool isClient = !msg.isServer;

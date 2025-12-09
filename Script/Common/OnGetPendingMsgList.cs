@@ -10,9 +10,8 @@ namespace Script
     {
         public override MsgType msgType => MsgType._GetPendingMessageList;
 
-        public override Task<ECode> Handle(ProtocolClientData socket, MsgGetPendingMsgList msg, ResGetPendingMsgList res)
+        public override async Task<ECode> Handle(ProtocolClientData socket, MsgGetPendingMsgList msg, ResGetPendingMsgList res)
         {
-            var res = new ResGetPendingMsgList();
             res.list = new List<int>();
             res.list.AddRange(this.service.data.busyList);
             return ECode.Success;

@@ -8,7 +8,7 @@ namespace Script
         where S : Service
     {
         public override MsgType msgType => MsgType._GetScriptVersion;
-        public override Task<ECode> Handle(ProtocolClientData socket, MsgGetScriptVersion msg, ResGetScriptVersion res)
+        public override async Task<ECode> Handle(ProtocolClientData socket, MsgGetScriptVersion msg, ResGetScriptVersion res)
         {
             // if (this.server.data.state != ServerState.Started)
             // {
@@ -18,7 +18,6 @@ namespace Script
 
             this.service.logger.InfoFormat("{0} ", this.msgType);
 
-            var res = new ResGetScriptVersion();
             res.version = this.server.GetScriptDllVersion().ToString();
             return ECode.Success;
         }

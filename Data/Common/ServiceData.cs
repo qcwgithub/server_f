@@ -149,8 +149,6 @@ namespace Data
         // 关闭所有主动发起的连接
         public virtual async Task CloseProactiveConnections()
         {
-            var tasks = new List<Task>();
-
             for (ServiceType serviceType = 0; serviceType < ServiceType.Count; serviceType++)
             {
                 if (!this.connectToServiceTypes.Contains(serviceType))
@@ -164,17 +162,24 @@ namespace Data
                     continue;
                 }
 
+                int total = 0;
+                int finish = 0;
+
                 foreach (ProtocolClientData socket in sockets)
                 {
                     if (socket.IsConnected())
                     {
-                        tasks.Add(socket.SendBytesAsync(MsgType._RemoteWillShutdown, null, pTimeoutS: 5));
+                        total++;
+                        socket.SendBytes(MsgType._RemoteWillShutdown, [], (e, segment) =>
+                        {
+                            finish++;
+                        },
+                        pTimeoutS: 5);
                     }
                 }
-                if (tasks.Count > 0)
+                while (finish < total)
                 {
-                    await Task.WhenAll(tasks);
-                    tasks.Clear();
+                    await Task.Delay(1000);
                 }
 
                 List<int> serviceIds = new List<int>();
@@ -200,20 +205,25 @@ namespace Data
         {
             // 主动关闭的也提前告知
             // -----------------------------------------------------------
-            var tasks = new List<Task>();
+            int total = 0;
+            int finish = 0;
             foreach (var kv in this.otherServiceSockets)
             {
                 ProtocolClientData socket = kv.Value;
                 if (socket.IsConnected())
                 {
-                    tasks.Add(socket.SendBytesAsync(MsgType._RemoteWillShutdown, null, pTimeoutS: 5));
+                    total++;
+                    socket.SendBytes(MsgType._RemoteWillShutdown, [], (e, segment) =>
+                    {
+                        finish++;
+                    }, pTimeoutS: 5);
                 }
             }
-            if (tasks.Count > 0)
+            while (finish < total)
             {
-                await Task.WhenAll(tasks);
-                tasks.Clear();
+                await Task.Delay(1000);
             }
+
             // -----------------------------------------------------------
 
             foreach (var kv in this.otherServiceSockets)

@@ -9,8 +9,8 @@ namespace Script
 
         public override async Task<ECode> Handle(ProtocolClientData socket, MsgSaveUser msg, ResSaveUser res)
         {
-            MyResponse r = await this.service.connectToSelf.SendToSelfAsync(MsgType._User_SaveUser, msg);
-            return r;
+            var r = await this.service.connectToSelf.Request<MsgSaveUser, ResSaveUser>(MsgType._User_SaveUser, msg);
+            return r.e;
         }
     }
 }

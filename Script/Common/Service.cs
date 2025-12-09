@@ -159,7 +159,7 @@ namespace Script
             msg.fromServiceType = this.data.serviceType;
             msg.fromServiceId = this.data.serviceId;
             msg.why = why;
-            var r = await socket.Send<MsgGetServiceConfigs, ResGetServiceConfigs>(MsgType._Global_GetServiceConfigs, msg);
+            var r = await socket.Request<MsgGetServiceConfigs, ResGetServiceConfigs>(MsgType._Global_GetServiceConfigs, msg);
             if (r.e != ECode.Success)
             {
                 return null;

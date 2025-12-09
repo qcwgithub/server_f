@@ -55,7 +55,7 @@ namespace Script
             }
         }
 
-        public async void DispatchNetwork(ProtocolClientData data, int seq, MsgType msgType, ArraySegment<byte> msgBytes, Action<ECode, byte[]> reply)
+        public async void DispatchNetwork(ProtocolClientData data, int seq, MsgType msgType, ArraySegment<byte> msgBytes, Action<ECode, byte[]>? reply)
         {
             (ECode e, byte[] resBytes) = await this.service.dispatcher.DispatchNetwork(data, msgType, msgBytes);
             if (reply != null)
@@ -181,7 +181,7 @@ namespace Script
             {
                 if (socket != null && socket.IsConnected())
                 {
-                    r = await socket.Send<Msg, Res>(type, bytes);
+                    r = await socket.Request<Msg, Res>(type, bytes);
                     if (r.e == ECode.Server_Timeout)
                     {
                         this.service.logger.ErrorFormat("send {0} to {1} Timeout", type.ToString(), socket.serviceTypeAndId.Value.ToString());
@@ -220,7 +220,7 @@ namespace Script
             {
                 if (socket != null && socket.IsConnected())
                 {
-                    var r = await socket.Send<Msg, Res>(type, bytes);
+                    var r = await socket.Request<Msg, Res>(type, bytes);
                     responses.Add(r);
                     if (r.e == ECode.Server_Timeout)
                     {

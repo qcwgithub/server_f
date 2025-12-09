@@ -73,20 +73,6 @@ namespace Script
             return string.Join(", ", list.Select(x => x.Item1.ToString() + "*" + x.Item2));
         }
 
-        public async Task<MyResponse<Res>> DispatchLocal<Msg, Res>(MsgType msgType, Msg msg)
-            where Res : class
-        {
-            IHandler? handler = this.GetHandler(msgType);
-            if (handler == null)
-            {
-                this.service.logger.ErrorFormat("no handler for message {0}", msgType);
-                return new MyResponse<Res>(ECode.Error, null);
-            }
-
-            (ECode e, object res) = await this.DispatchImpl(null, handler, msgType, msg);
-            return new MyResponse<Res>(e, (Res)res);
-        }
-
         public async Task<MyResponse<Res>> DispatchLocal<Msg, Res>(ProtocolClientData socket, MsgType msgType, Msg msg)
             where Res : class
         {

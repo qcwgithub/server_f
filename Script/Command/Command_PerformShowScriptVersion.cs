@@ -14,15 +14,14 @@ namespace Script
             int serviceId = (int)msg.GetLong("serviceId");
 
             var msg2 = new MsgGetScriptVersion();
-            MyResponse r = await this.service.connectToSameServerType.SendToServiceAsync(serviceId, MsgType._GetScriptVersion, msg2);
+            var r = await this.service.connectToSameServerType.RequestToService<MsgGetScriptVersion, ResGetScriptVersion>(serviceId, MsgType._GetScriptVersion, msg2);
 
             if (r.e == ECode.Success)
             {
-                var res = r.CastRes<ResGetScriptVersion>();
-                this.service.logger.Info("version: " + res.version);
+                this.service.logger.Info("version: " + r.res.version);
             }
 
-            return r;
+            return r.e;
         }
     }
 }

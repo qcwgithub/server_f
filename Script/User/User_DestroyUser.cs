@@ -24,7 +24,7 @@ namespace Script
 
             if (msg.msgKick != null && user.IsSocketConnected())
             {
-                user.socket.Send<MsgKick, ResKick>(MsgType.Kick, msg.msgKick).Forget(this.service);
+                user.socket.Request<MsgKick, ResKick>(MsgType.Kick, msg.msgKick).Forget(this.service);
             }
 
             if (user.socket != null)
@@ -48,7 +48,7 @@ namespace Script
             // 保存一次
             var msgSave = new MsgSaveUser { userId = userId, place = this.msgType.ToString() };
             // this.service.ProxyDispatch(null, MsgType._PSSavePlayer, msgSave, null);
-            var r = await this.service.connectToSelf.Send<MsgSaveUser, ResSaveUser>(MsgType._User_SaveUser, msgSave);
+            var r = await this.service.connectToSelf.Request<MsgSaveUser, ResSaveUser>(MsgType._User_SaveUser, msgSave);
             if (r.e != ECode.Success)
             {
                 return r.e;

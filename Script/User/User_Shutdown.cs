@@ -25,7 +25,7 @@ namespace Script
             //// kick players
             List<long> kickList = new List<long>();
             this.service.logger.InfoFormat("start kick all userss, total {0}", usData.userDict.Count);
-            List<Task<MyResponse>> tasks = new List<Task<MyResponse>>();
+            List<Task> tasks = new List<Task>();
             while (true)
             {
                 foreach (var kv in usData.userDict)
@@ -45,7 +45,7 @@ namespace Script
                 foreach (long playerId in kickList)
                 {
                     var msgD = MsgDestroyUser.Create(playerId, this.msgType.ToString(), new MsgKick { flags = LogoutFlags.CancelAutoLogin });
-                    tasks.Add(this.service.connectToSelf.SendToSelfAsync(MsgType._User_DestroyUser, msgD));
+                    tasks.Add(this.service.connectToSelf.Request<MsgDestroyUser, ResDestroyUser>(MsgType._User_DestroyUser, msgD));
                 }
 
                 await Task.WhenAll(tasks);

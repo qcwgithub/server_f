@@ -18,19 +18,41 @@ namespace Script
             return MessagePackSerializer.Deserialize<T>(msg);
         }
 
-        public static async Task<MyResponse<Res>> Send<Msg, Res>(this ProtocolClientData socket, MsgType msgType, byte[] msgBytes) where Res : class
+        public static async Task<MyResponse<Res>> Request<Msg, Res>(this ProtocolClientData socket, MsgType msgType, byte[] msgBytes) where Res : class
         {
-            (ECode e, ArraySegment<byte> resBytes) = await socket.SendBytesAsync(msgType, msgBytes, pTimeoutS: null);
-            Res res = Deserialize<Res>(resBytes);
+            var cs = new TaskCompletionSource<(ECode, ArraySegment<byte>)>();
+
+            socket.SendBytes(msgType, msgBytes, (e, segment) =>
+            {
+                bool success = cs.TrySetResult((e, segment));
+                if (!success)
+                {
+                    Console.WriteLine("!cs.TrySetResult " + msgType);
+                }
+            },
+            pTimeoutS: null);
+    
+            (ECode e, ArraySegment<byte> segment) = await cs.Task;
+
+            Res res = Deserialize<Res>(segment);
             return new MyResponse<Res>(e, res);
         }
 
-        public static async Task<MyResponse<Res>> Send<Msg, Res>(this ProtocolClientData socket, MsgType msgType, Msg msg) where Res : class
+        public static void Send(this ProtocolClientData socket, MsgType msgType, byte[] msgBytes)
+        {
+            socket.SendBytes(msgType, msgBytes, null, pTimeoutS: null);
+        }
+
+        public static async Task<MyResponse<Res>> Request<Msg, Res>(this ProtocolClientData socket, MsgType msgType, Msg msg) where Res : class
         {
             byte[] msgBytes = Serialize<Msg>(msg);
-            (ECode e, ArraySegment<byte> resBytes) = await socket.SendBytesAsync(msgType, msgBytes, pTimeoutS: null);
-            Res res = Deserialize<Res>(resBytes);
-            return new MyResponse<Res>(e, res);
+            return await Request<Msg, Res>(socket, msgType, msgBytes);
+        }
+
+        public static void Send<Msg>(this ProtocolClientData socket, MsgType msgType, Msg msg)
+        {
+            byte[] msgBytes = Serialize<Msg>(msg);
+            Send(socket, msgType, msgBytes);
         }
 
         public static T CastObject<T>(object msg)
