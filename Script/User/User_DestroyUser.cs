@@ -24,7 +24,7 @@ namespace Script
 
             if (msg.msgKick != null && user.IsSocketConnected())
             {
-                user.socket.Request<MsgKick, ResKick>(MsgType.Kick, msg.msgKick).Forget(this.service);
+                user.socket.Send<MsgKick>(MsgType.Kick, msg.msgKick);
             }
 
             if (user.socket != null)
