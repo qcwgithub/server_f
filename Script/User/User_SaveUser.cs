@@ -7,6 +7,11 @@ namespace Script
 {
     public class User_SaveUser : UserHandler<MsgSaveUser, ResSaveUser>
     {
+        public User_SaveUser(Server server, UserService service) : base(server, service)
+        {
+        }
+
+
         public override MsgType msgType => MsgType._User_SaveUser;
         public override async Task<ECode> Handle(ProtocolClientData socket, MsgSaveUser msg, ResSaveUser res)
         {
@@ -19,9 +24,11 @@ namespace Script
                 return ECode.UserNotExist;
             }
 
-            var msgDb = new MsgSaveUserProfile();
-            msgDb.userId = userId;
-            msgDb.profileNullable = new ProfileNullable();
+            var msgDb = new MsgSaveUserProfile
+            {
+                userId = userId,
+                profileNullable = new ProfileNullable()
+            };
             var profileNullable = msgDb.profileNullable;
 
             List<string>? buffer = null;

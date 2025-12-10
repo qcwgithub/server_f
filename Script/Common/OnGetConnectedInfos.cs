@@ -7,6 +7,10 @@ namespace Script
     public class OnGetConnectedInfos<S> : Handler<S, MsgGetConnectedInfos, ResGetConnectedInfos>
         where S : Service
     {
+        public OnGetConnectedInfos(Server server, S service) : base(server, service)
+        {
+        }
+
         public override MsgType msgType => MsgType._GetConnectedInfos;
         public override async Task<ECode> Handle(ProtocolClientData socket, MsgGetConnectedInfos msg, ResGetConnectedInfos res)
         {

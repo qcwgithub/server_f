@@ -6,6 +6,11 @@ namespace Script
         where Msg : class
         where Res : class, new()
     {
+        protected UserHandler(Server server, UserService service) : base(server, service)
+        {
+        }
+
+
         public UserServiceData usData { get { return this.service.sd; } }
 
         public UserServiceScript usScript { get { return this.service.ss; } }

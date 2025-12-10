@@ -6,6 +6,12 @@ using Script;
 public class collection_user_profile : ServiceScript<DbService>
 {
     public const string COLLECTION = "user_profile";
+
+    public collection_user_profile(Server server, DbService service) : base(server, service)
+    {
+    }
+
+
     MongoClient mongoClient => this.server.data.mongoClient;
     string dbName => this.server.data.mongoDBConfig.dbData;
 

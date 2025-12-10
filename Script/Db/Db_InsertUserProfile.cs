@@ -4,6 +4,11 @@ namespace Script
 {
     public class Db_InsertUserProfile : Handler<DbService, MsgInsertUserProfile, ResInsertUserProfile>
     {
+        public Db_InsertUserProfile(Server server, DbService service) : base(server, service)
+        {
+        }
+
+
         public override MsgType msgType => MsgType._Db_InsertUserProfile;
         public override async Task<ECode> Handle(ProtocolClientData socket, MsgInsertUserProfile msg, ResInsertUserProfile res)
         {

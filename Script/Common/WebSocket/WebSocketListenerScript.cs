@@ -12,6 +12,11 @@ namespace Script
 {
     public class WebSocketListenerScript : ServiceScript<Service>, IWebSocketListenerCallback
     {
+        public WebSocketListenerScript(Server server, Service service) : base(server, service)
+        {
+        }
+
+
         public void OnReceiveWebSocketRequest(WebSocketListenerData webSocketListener, WebSocket webSocket)
         {
             // var msg = new MsgOnWebSocketRequest();

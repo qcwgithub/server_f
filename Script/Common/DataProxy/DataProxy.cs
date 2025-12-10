@@ -29,7 +29,7 @@ namespace Script
         protected virtual DataType FromSingleValue(P1 p1, P2 p2, RedisValue redisValue) => throw new NotImplementedException();
         protected virtual RedisValue ToSingleValue(DataType data) => throw new NotImplementedException();
 
-        protected async Task<DataType> GetFromRedis(P1 p1, P2 p2)
+        protected async Task<DataType?> GetFromRedis(P1 p1, P2 p2)
         {
             string format = this.RedisValueFormat();
             switch (format)
@@ -139,9 +139,9 @@ namespace Script
             return S_EXPIRY.Subtract(TimeSpan.FromSeconds(seconds));
         }
 
-        protected async Task<DataType> InternalGet(ConnectToDbService connectToDBService, P1 p1, P2 p2)
+        protected async Task<DataType?> InternalGet(ConnectToDbService connectToDBService, P1 p1, P2 p2)
         {
-            DataType data = await this.GetFromRedis(p1, p2);
+            DataType? data = await this.GetFromRedis(p1, p2);
             if (data != null)
             {
                 if (this.CanExpire())
@@ -206,20 +206,20 @@ namespace Script
                 return data.IsPlaceholder() ? null : data;
             }
         }
-        public async Task<List<DataType>> GetManyHelp(ConnectToDbService connectToDBService, List<P1> idList)
+        public async Task<List<DataType?>> GetManyHelp(ConnectToDbService connectToDBService, List<P1> idList)
         {
-            RedisValue[] values = await this.GetDb().StringGetAsync(idList.Select(id => this.Key(id, default(P2))).ToArray());
+            RedisValue[] values = await this.GetDb().StringGetAsync(idList.Select(id => this.Key(id, default)).ToArray());
 
-            var list = new List<DataType>();
+            var list = new List<DataType?>();
 
-            List<Task<DataType>> tasks = null;
-            List<int> indexes = null;
+            List<Task<DataType?>>? tasks = null;
+            List<int>? indexes = null;
             for (int i = 0; i < values.Length; i++)
             {
                 list.Add(null);
                 if (!values[i].IsNullOrEmpty)
                 {
-                    var data = JsonUtils.parse<DataType>(values[i]);
+                    var data = JsonUtils.parse<DataType>(values[i]!);
                     if (!data.IsPlaceholder())
                     {
                         list[i] = data;
@@ -229,11 +229,15 @@ namespace Script
                 {
                     if (tasks == null)
                     {
-                        tasks = new List<Task<DataType>>();
+                        tasks = new List<Task<DataType?>>();
+                    }
+
+                    if (indexes == null)
+                    {
                         indexes = new List<int>();
                     }
 
-                    tasks.Add(this.InternalGet(connectToDBService, idList[i], default(P2)));
+                    tasks.Add(this.InternalGet(connectToDBService, idList[i], default));
                     indexes.Add(i);
                 }
             }
@@ -252,7 +256,7 @@ namespace Script
             return list;
         }
 
-        public async Task<List<DataType>> GetMany(ConnectToDbService connectToDBService, List<P1> idList, bool fillNullIfNotExist)
+        public async Task<List<DataType?>> GetMany(ConnectToDbService connectToDBService, List<P1> idList, bool fillNullIfNotExist)
         {
             var list2 = await this.GetManyHelp(connectToDBService, idList);
             if (fillNullIfNotExist)
@@ -260,7 +264,7 @@ namespace Script
                 return list2;
             }
 
-            var list = new List<DataType>();
+            var list = new List<DataType?>();
             for (int i = 0; i < idList.Count; i++)
             {
                 if (list2[i] != null)

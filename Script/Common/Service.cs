@@ -21,39 +21,39 @@ namespace Script
 
             this.connectToSelf = new ConnectToSelf(this);
 
-            this.tcpListenerScript = new TcpListenerScript().Init(this.server, this);
-            this.tcpClientScript = new ProtocolClientScriptS().Init(this.server, this); ;
-            this.httpListenerScript = new HttpListenerScript().Init(this.server, this);
-            this.webSocketListenerScript = new WebSocketListenerScript().Init(this.server, this);
+            this.tcpListenerScript = new TcpListenerScript(this.server, this);
+            this.tcpClientScript = new ProtocolClientScriptS(this.server, this); ;
+            this.httpListenerScript = new HttpListenerScript(this.server, this);
+            this.webSocketListenerScript = new WebSocketListenerScript(this.server, this);
 
-            this.dispatcher = new MessageDispatcher().Init(this.server, this);
+            this.dispatcher = new MessageDispatcher(this.server, this);
             this.connectToOtherServiceDict = new Dictionary<ServiceType, ConnectToOtherService>();
         }
 
         protected void AddHandler<S>()
             where S : Service
         {
-            this.dispatcher.AddHandler(new OnRemoteWillShutdown<S>().Init(this.server, (S)this));
-            this.dispatcher.AddHandler(new OnGetServiceState<S>().Init(this.server, (S)this));
+            this.dispatcher.AddHandler(new OnRemoteWillShutdown<S>(this.server, (S)this));
+            this.dispatcher.AddHandler(new OnGetServiceState<S>(this.server, (S)this));
 
-            this.dispatcher.AddHandler(new OnConnectComplete<S>().Init(this.server, (S)this));
-            this.dispatcher.AddHandler(new OnConnectorInfo<S>().Init(this.server, (S)this));
-            this.dispatcher.AddHandler(new OnResGetServiceConfigs<S>().Init(this.server, (S)this));
-            this.dispatcher.AddHandler(new OnGetConnectedInfos<S>().Init(this.server, (S)this));
-            this.dispatcher.AddHandler(new OnSocketClose<S>().Init(this.server, (S)this));
-            this.dispatcher.AddHandler(new OnReloadScript<S>().Init(this.server, (S)this));
-            this.dispatcher.AddHandler(new OnReloadConfigs<S>().Init(this.server, (S)this));
-            this.dispatcher.AddHandler(new OnGetReloadConfigOptions<S>().Init(this.server, (S)this));
-            this.dispatcher.AddHandler(new OnGC<S>().Init(this.server, (S)this));
+            this.dispatcher.AddHandler(new OnConnectComplete<S>(this.server, (S)this));
+            this.dispatcher.AddHandler(new OnConnectorInfo<S>(this.server, (S)this));
+            this.dispatcher.AddHandler(new OnResGetServiceConfigs<S>(this.server, (S)this));
+            this.dispatcher.AddHandler(new OnGetConnectedInfos<S>(this.server, (S)this));
+            this.dispatcher.AddHandler(new OnSocketClose<S>(this.server, (S)this));
+            this.dispatcher.AddHandler(new OnReloadScript<S>(this.server, (S)this));
+            this.dispatcher.AddHandler(new OnReloadConfigs<S>(this.server, (S)this));
+            this.dispatcher.AddHandler(new OnGetReloadConfigOptions<S>(this.server, (S)this));
+            this.dispatcher.AddHandler(new OnGC<S>(this.server, (S)this));
 
-            this.dispatcher.AddHandler(new CheckConnections_Loop<S>().Init(this.server, (S)this));
-            this.dispatcher.AddHandler(new CheckConnections<S>().Init(this.server, (S)this));
+            this.dispatcher.AddHandler(new CheckConnections_Loop<S>(this.server, (S)this));
+            this.dispatcher.AddHandler(new CheckConnections<S>(this.server, (S)this));
 
-            this.dispatcher.AddHandler(new OnGetPendingMsgList<S>().Init(this.server, (S)this));
-            this.dispatcher.AddHandler(new OnGetScriptVersion<S>().Init(this.server, (S)this));
+            this.dispatcher.AddHandler(new OnGetPendingMsgList<S>(this.server, (S)this));
+            this.dispatcher.AddHandler(new OnGetScriptVersion<S>(this.server, (S)this));
 
-            this.dispatcher.AddHandler(new OnWaitTask<S>().Init(this.server, (S)this));
-            this.dispatcher.AddHandler(new OnViewMongoDumpList<S>().Init(this.server, (S)this));
+            this.dispatcher.AddHandler(new OnWaitTask<S>(this.server, (S)this));
+            this.dispatcher.AddHandler(new OnViewMongoDumpList<S>(this.server, (S)this));
         }
 
         public ServiceData data { get; private set; }
@@ -145,7 +145,7 @@ namespace Script
             return socket;
         }
 
-        protected virtual async Task<ResGetServiceConfigs> RequestServiceConfigs(string why)
+        protected virtual async Task<ResGetServiceConfigs?> RequestServiceConfigs(string why)
         {
             var location = this.server.data.globalServiceLocation;
 
@@ -159,6 +159,7 @@ namespace Script
             msg.fromServiceType = this.data.serviceType;
             msg.fromServiceId = this.data.serviceId;
             msg.why = why;
+
             var r = await socket.Request<MsgGetServiceConfigs, ResGetServiceConfigs>(MsgType._Global_GetServiceConfigs, msg);
             if (r.e != ECode.Success)
             {

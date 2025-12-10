@@ -4,6 +4,11 @@ namespace Script
 {
     public partial class Db_Start : OnStart<DbService>
     {
+        public Db_Start(Server server, DbService service) : base(server, service)
+        {
+        }
+
+
         protected override async Task<ECode> Handle2()
         {
             #region auto_callCreateIndex

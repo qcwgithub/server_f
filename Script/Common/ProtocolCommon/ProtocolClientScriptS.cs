@@ -5,6 +5,10 @@ namespace Script
 {
     public class ProtocolClientScriptS : ServiceScript<Service>, IProtocolClientCallback
     {
+        public ProtocolClientScriptS(Server server, Service service) : base(server, service)
+        {
+        }
+
         public IMessagePacker GetMessagePacker()
         {
             return this.server.messagePacker;
@@ -108,7 +112,7 @@ namespace Script
 
         public void BindUser(ProtocolClientData @this, User user)
         {
-            if (!user.IsRealPrepareLogin(out MsgPrepareUserLogin msgPreparePlayerLogin))
+            if (!user.IsRealPrepareLogin(out MsgPrepareUserLogin? msgPreparePlayerLogin))
             {
                 MyDebug.Assert(false);
             }
@@ -116,7 +120,7 @@ namespace Script
             user.socket = @this;
             @this.user = user;
             @this.userId = user.userId;
-            @this.user_version = msgPreparePlayerLogin.version;
+            @this.user_version = msgPreparePlayerLogin!.version;
             @this.lastUserId = user.userId;
         }
 
@@ -138,7 +142,7 @@ namespace Script
 
         #region send
 
-        public ProtocolClientData RandomOtherServiceSocket(ServiceType serviceType)
+        public ProtocolClientData? RandomOtherServiceSocket(ServiceType serviceType)
         {
             List<ProtocolClientData> list = this.service.data.otherServiceSockets2[(int)serviceType];
             if (list == null || list.Count == 0)
@@ -175,7 +179,7 @@ namespace Script
             ProtocolClientData[] copy = list.ToArray();
 
             byte[] bytes = this.server.messageSerializer.Serialize<Msg>(msg);
-            MyResponse<Res> r = null;
+            MyResponse<Res>? r = null;
 
             foreach (var socket in copy)
             {

@@ -1,12 +1,14 @@
-using System.Threading.Tasks;
 using Data;
-using System.Collections.Generic;
 
 namespace Script
 {
     public class OnGetReloadConfigOptions<S> : Handler<S, MsgGetReloadConfigOptions, ResGetReloadConfigOptions>
         where S : Service
     {
+        public OnGetReloadConfigOptions(Server server, S service) : base(server, service)
+        {
+        }
+
         public override MsgType msgType => MsgType._GetReloadConfigOptions;
 
         public override async Task<ECode> Handle(ProtocolClientData socket, MsgGetReloadConfigOptions msg, ResGetReloadConfigOptions res)

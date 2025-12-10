@@ -7,6 +7,10 @@ namespace Script
 {
     public class Command_PerformReloadScript : Handler<CommandService, MsgCommon, ResCommon>
     {
+        public Command_PerformReloadScript(Server server, CommandService service) : base(server, service)
+        {
+        }
+
         public override MsgType msgType => MsgType._Command_PerformReloadScript;
 
         public override async Task<ECode> Handle(ProtocolClientData socket, MsgCommon msg, ResCommon res)
@@ -24,8 +28,8 @@ namespace Script
             }
             else
             {
-                byte[] dllBytes = null;
-                byte[] pdbBytes = null;
+                byte[]? dllBytes = null;
+                byte[]? pdbBytes = null;
                 ZipUtils.UnzipInMemory(zip,
                 path =>
                 {

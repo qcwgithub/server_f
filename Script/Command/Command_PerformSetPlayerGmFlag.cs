@@ -8,6 +8,10 @@ namespace Script
 {
     public class Command_PerformSetPlayerGmFlag : Handler<CommandService, MsgCommon, ResCommon>
     {
+        public Command_PerformSetPlayerGmFlag(Server server, CommandService service) : base(server, service)
+        {
+        }
+
         public override MsgType msgType => MsgType._Command_PerformSetPlayerGmFlag;
 
         public override async Task<ECode> Handle(ProtocolClientData socket, MsgCommon msg, ResCommon res)

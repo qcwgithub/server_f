@@ -7,6 +7,10 @@ namespace Script
 {
     public class Command_PerformShowScriptVersion : Handler<CommandService, MsgCommon, ResCommon>
     {
+        public Command_PerformShowScriptVersion(Server server, CommandService service) : base(server, service)
+        {
+        }
+
         public override MsgType msgType => MsgType._Command_PerformShowScriptVersion;
 
         public override async Task<ECode> Handle(ProtocolClientData socket, MsgCommon msg, ResCommon res)

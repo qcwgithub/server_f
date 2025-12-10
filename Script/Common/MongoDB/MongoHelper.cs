@@ -155,7 +155,7 @@ namespace Script
             string indexName = await collection.Indexes.CreateOneAsync(
                     new CreateIndexModel<BsonDocument>(indexKeysDefinition, new CreateIndexOptions() { Unique = isUnique, Background = true }));
 
-            string keysString = null;
+            string? keysString = null;
             if (keys.Count == 1)
             {
                 keysString = keys[0];

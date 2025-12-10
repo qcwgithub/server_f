@@ -7,6 +7,10 @@ namespace Script
     public abstract class WaitInitDataProxy<S> : ServiceScript<S>
         where S : Service
     {
+        protected WaitInitDataProxy(Server server, S service) : base(server, service)
+        {
+        }
+
         protected abstract IDatabase GetDb();
         protected abstract string waitKey { get; }
 

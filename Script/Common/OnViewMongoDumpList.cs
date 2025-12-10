@@ -8,6 +8,10 @@ namespace Script
     public class OnViewMongoDumpList<S> : Handler<S, MsgViewMongoDumpList, ResViewMongoDumpList>
         where S : Service
     {
+        public OnViewMongoDumpList(Server server, S service) : base(server, service)
+        {
+        }
+
         public override MsgType msgType => MsgType._ViewMongoDumpList;
 
         public override async Task<ECode> Handle(ProtocolClientData socket, MsgViewMongoDumpList msg, ResViewMongoDumpList res)

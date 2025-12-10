@@ -7,6 +7,11 @@ namespace Script
     public class OnGetScriptVersion<S> : Handler<S, MsgGetScriptVersion, ResGetScriptVersion>
         where S : Service
     {
+        public OnGetScriptVersion(Server server, S service) : base(server, service)
+        {
+        }
+
+
         public override MsgType msgType => MsgType._GetScriptVersion;
         public override async Task<ECode> Handle(ProtocolClientData socket, MsgGetScriptVersion msg, ResGetScriptVersion res)
         {

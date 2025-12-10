@@ -11,6 +11,10 @@ namespace Script
         where Msg : class
         where Res : class, new()
     {
+        protected Handler(Server server, S service) : base(server, service)
+        {
+        }
+
         public log4net.ILog logger => this.service.logger;
 
         public abstract MsgType msgType { get; }

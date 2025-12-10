@@ -7,6 +7,10 @@ namespace Script
 {
     public class Command_PerformGetPendingMsgList : Handler<CommandService, MsgCommon, ResCommon>
     {
+        public Command_PerformGetPendingMsgList(Server server, CommandService service) : base(server, service)
+        {
+        }
+
         public override MsgType msgType => MsgType._Command_PerformGetPendingMsgList;
 
         public override async Task<ECode> Handle(ProtocolClientData socket, MsgCommon msg, ResCommon res)

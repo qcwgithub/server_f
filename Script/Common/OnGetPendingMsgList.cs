@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Data;
 
 namespace Script
@@ -8,6 +5,10 @@ namespace Script
     public class OnGetPendingMsgList<S> : Handler<S, MsgGetPendingMsgList, ResGetPendingMsgList>
         where S : Service
     {
+        public OnGetPendingMsgList(Server server, S service) : base(server, service)
+        {
+        }
+
         public override MsgType msgType => MsgType._GetPendingMessageList;
 
         public override async Task<ECode> Handle(ProtocolClientData socket, MsgGetPendingMsgList msg, ResGetPendingMsgList res)

@@ -120,7 +120,7 @@ namespace Script
                     }
                 });
 
-            Exception lastEx = null;
+            Exception? lastEx = null;
 
             for (int i = 0; i < 5; i++)
             {

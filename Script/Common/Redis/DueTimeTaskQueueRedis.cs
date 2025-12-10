@@ -88,7 +88,7 @@ namespace Script
         }
 
         // take = -1 表示全部
-        public async Task<List<string>> GetByDueTime(int taskQueue, int dueTimeS, long take = -1)
+        public async Task<List<string>?> GetByDueTime(int taskQueue, int dueTimeS, long take = -1)
         {
             RedisValue[] values = await this.GetDb().SortedSetRangeByScoreAsync(this.key_taskQueue(taskQueue), double.NegativeInfinity, (double)dueTimeS, Exclude.None, Order.Ascending, 0, take);
             if (values == null || values.Length == 0)

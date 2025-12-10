@@ -6,6 +6,10 @@ namespace Script
     public class OnReloadConfigs<S> : Handler<S, MsgReloadConfigs, ResReloadConfigs>
         where S : Service
     {
+        public OnReloadConfigs(Server server, S service) : base(server, service)
+        {
+        }
+
         public override MsgType msgType => MsgType._ReloadConfigs;
 
         public override async Task<ECode> Handle(ProtocolClientData socket, MsgReloadConfigs msg, ResReloadConfigs res)

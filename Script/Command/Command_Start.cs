@@ -10,6 +10,11 @@ namespace Script
 {
     public class Command_Start : OnStart<CommandService>
     {
+        public Command_Start(Server server, CommandService service) : base(server, service)
+        {
+        }
+
+
         public override async Task<ECode> Handle(ProtocolClientData socket, MsgStart msg, ResStart res)
         {
             // this.service.SetState(ServiceState.Starting);
@@ -98,7 +103,7 @@ namespace Script
         long GetArg_UserId()
         {
             var args = this.server.data.arguments;
-            string userIdString;
+            string? userIdString;
             long userId;
             if (!args.TryGetValue("userId", out userIdString) || !long.TryParse(userIdString, out userId))
             {

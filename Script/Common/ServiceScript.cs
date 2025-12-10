@@ -3,19 +3,13 @@ namespace Script
     public abstract class ServiceScript<S>
         where S : Service
     {
-        public Server server { get; set; }
-        public S service { get; set; }
-    }
+        public readonly Server server;
+        public readonly S service;
 
-    public static class ServiceScriptExt
-    {
-        public static SELF Init<SELF, S>(this SELF self, Server server, S service)
-            where SELF : ServiceScript<S>
-            where S : Service
+        public ServiceScript(Server server, S service)
         {
-            self.server = server;
-            self.service = service;
-            return self;
+            this.server = server;
+            this.service = service;
         }
     }
 }

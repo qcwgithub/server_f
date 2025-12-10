@@ -9,6 +9,11 @@ namespace Script
     public abstract class OnStart<S> : Handler<S, MsgStart, ResStart>
         where S : Service
     {
+        protected OnStart(Server server, S service) : base(server, service)
+        {
+        }
+
+
         public override MsgType msgType => MsgType._Start;
 
         void StartKeepConnections()
@@ -35,7 +40,7 @@ namespace Script
 
                     foreach (var serviceType in this.service.data.connectToServiceTypes)
                     {
-                        if (!this.service.connectToOtherServiceDict.TryGetValue(serviceType, out ConnectToOtherService connectToOtherService))
+                        if (!this.service.connectToOtherServiceDict.TryGetValue(serviceType, out ConnectToOtherService? connectToOtherService))
                         {
                             MyDebug.Assert(false);
                         }
@@ -46,7 +51,7 @@ namespace Script
                             continue;
                         }
 
-                        e = await this.service.WaitServiceConnectedAndStarted(connectToOtherService, this.msgType);
+                        e = await this.service.WaitServiceConnectedAndStarted(connectToOtherService!, this.msgType);
                         if (e != ECode.Success)
                         {
                             break;

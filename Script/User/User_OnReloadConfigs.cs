@@ -7,6 +7,10 @@ namespace Script
 {
     public class User_OnReloadConfigs : OnReloadConfigs<UserService>
     {
+        public User_OnReloadConfigs(Server server, UserService service) : base(server, service)
+        {
+        }
+
         public override async Task<ECode> Handle(ProtocolClientData socket, MsgReloadConfigs msg, ResReloadConfigs res)
         {
             ECode e = await base.Handle(socket, msg, res);

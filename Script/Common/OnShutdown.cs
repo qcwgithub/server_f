@@ -9,6 +9,11 @@ namespace Script
     public abstract class OnShutdown<S> : Handler<S, MsgShutdown, ResShutdown>
         where S : Service
     {
+        protected OnShutdown(Server server, S service) : base(server, service)
+        {
+        }
+
+
         public override MsgType msgType => MsgType._Shutdown;
 
         // 每个服务需要实现此接口，把自己的业务结束掉

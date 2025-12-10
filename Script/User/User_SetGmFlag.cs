@@ -6,6 +6,10 @@ namespace Script
 {
     public class User_SetGmFlag : UserHandler<MsgSetGmFlag, ResSetGmFlag>
     {
+        public User_SetGmFlag(Server server, UserService service) : base(server, service)
+        {
+        }
+
         public override MsgType msgType => MsgType._SetGmFlag;
 
         public override async Task<ECode> Handle(ProtocolClientData socket, MsgSetGmFlag msg, ResSetGmFlag res)

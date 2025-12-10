@@ -20,8 +20,8 @@ namespace Script
 
         public GlobalService(Server server, int serviceId) : base(server, serviceId)
         {
-            this.collection_profil_global = new collection_profile_global().Init(this.server, this);
-            this.global_OnReladConfigs = new Global_OnReladConfigs().Init(this.server, this);
+            this.collection_profil_global = new collection_profile_global(this.server, this);
+            this.global_OnReladConfigs = new Global_OnReladConfigs(this.server, this);
         }
 
         public override void Attach()
@@ -31,13 +31,13 @@ namespace Script
 
             MongoRegister.Init();
 
-            this.dispatcher.AddHandler(new Global_Start().Init(this.server, this));
-            this.dispatcher.AddHandler(new Global_Shutdown().Init(this.server, this));
-            this.dispatcher.AddHandler(new Global_GetServiceConfigs().Init(this.server, this));
+            this.dispatcher.AddHandler(new Global_Start(this.server, this));
+            this.dispatcher.AddHandler(new Global_Shutdown(this.server, this));
+            this.dispatcher.AddHandler(new Global_GetServiceConfigs(this.server, this));
             this.dispatcher.AddHandler(this.global_OnReladConfigs, true);
         }
 
-        protected override Task<ResGetServiceConfigs> RequestServiceConfigs(string why)
+        protected override Task<ResGetServiceConfigs?> RequestServiceConfigs(string why)
         {
             throw new Exception();
         }
@@ -60,13 +60,13 @@ namespace Script
             var res = new ResGetServiceConfigs();
             this.FillResGetServiceConfigs(res);
 
-            if (!this.CheckResGetServiceConfigs(res, out ServiceConfig myServiceConfig, out string message))
+            if (!this.CheckResGetServiceConfigs(res, out ServiceConfig? myServiceConfig, out string message))
             {
                 throw new Exception(message);
             }
 
             this.data.SaveServiceConfigs(res);
-            this.data.serviceConfig = myServiceConfig;
+            this.data.serviceConfig = myServiceConfig!;
 
             return ECode.Success;
         }

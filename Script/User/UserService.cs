@@ -26,7 +26,7 @@ namespace Script
             this.AddConnectToOtherService(this.connectToGlobalService = new ConnectToGlobalService(this));
             this.AddConnectToOtherService(this.connectToGatewayService = new ConnectToGatewayService(this));
 
-            this.ss = new UserServiceScript().Init(this.server, this);
+            this.ss = new UserServiceScript(this.server, this);
         }
 
         public override void Attach()
@@ -34,17 +34,17 @@ namespace Script
             base.Attach();
             base.AddHandler<UserService>();
 
-            this.dispatcher.AddHandler(new User_Start().Init(this.server, this));
-            this.dispatcher.AddHandler(new User_Shutdown().Init(this.server, this));
-            this.dispatcher.AddHandler(new User_OnReloadConfigs().Init(this.server, this), true);
-            this.dispatcher.AddHandler(new User_OnConnectComplete().Init(this.server, this), true);
-            this.dispatcher.AddHandler(new User_Action().Init(this.server, this));
-            this.dispatcher.AddHandler(new User_SaveProfileToFile().Init(this.server, this));
-            this.dispatcher.AddHandler(new User_DestroyUser().Init(this.server, this));
-            this.dispatcher.AddHandler(new User_OnSocketClose().Init(this.server, this));
-            this.dispatcher.AddHandler(new User_SaveUser().Init(this.server, this));
-            this.dispatcher.AddHandler(new User_SaveUserImmediately().Init(this.server, this));
-            this.dispatcher.AddHandler(new User_SetGmFlag().Init(this.server, this));
+            this.dispatcher.AddHandler(new User_Start(this.server, this));
+            this.dispatcher.AddHandler(new User_Shutdown(this.server, this));
+            this.dispatcher.AddHandler(new User_OnReloadConfigs(this.server, this), true);
+            this.dispatcher.AddHandler(new User_OnConnectComplete(this.server, this), true);
+            this.dispatcher.AddHandler(new User_Action(this.server, this));
+            this.dispatcher.AddHandler(new User_SaveProfileToFile(this.server, this));
+            this.dispatcher.AddHandler(new User_DestroyUser(this.server, this));
+            this.dispatcher.AddHandler(new User_OnSocketClose(this.server, this));
+            this.dispatcher.AddHandler(new User_SaveUser(this.server, this));
+            this.dispatcher.AddHandler(new User_SaveUserImmediately(this.server, this));
+            this.dispatcher.AddHandler(new User_SetGmFlag(this.server, this));
         }
 
         public override async Task Detach()

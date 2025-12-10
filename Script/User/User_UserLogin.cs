@@ -4,6 +4,11 @@ namespace Script
 {
     public class User_UserLogin : UserHandler<MsgUserLogin, ResUserLogin>
     {
+        public User_UserLogin(Server server, UserService service) : base(server, service)
+        {
+        }
+
+
         public override MsgType msgType { get { return MsgType.UserLogin; } }
 
         public static void HandleOldSocket(Service service, User user)

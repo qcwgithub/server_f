@@ -6,6 +6,11 @@ namespace Script
     public class CheckConnections<S> : Handler<S, MsgCheckConnections, ResCheckConnections>
         where S : Service
     {
+        public CheckConnections(Server server, S service) : base(server, service)
+        {
+        }
+
+
         public override MsgType msgType => MsgType._CheckConnections;
 
         public override async Task<ECode> Handle(ProtocolClientData _socket, MsgCheckConnections msg, ResCheckConnections res)

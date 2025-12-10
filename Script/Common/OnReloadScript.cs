@@ -7,6 +7,11 @@ namespace Script
     public class OnReloadScript<S> : Handler<S, MsgReloadScript, ResReloadScript>
         where S : Service
     {
+        public OnReloadScript(Server server, S service) : base(server, service)
+        {
+        }
+
+
         public override MsgType msgType => MsgType._ReloadScript;
         public override async Task<ECode> Handle(ProtocolClientData socket, MsgReloadScript msg, ResReloadScript res)
         {

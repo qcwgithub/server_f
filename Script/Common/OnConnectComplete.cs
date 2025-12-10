@@ -10,6 +10,11 @@ namespace Script
     public class OnConnectComplete<S> : Handler<S, MsgConnectorInfo, ResConnectorInfo>
         where S : Service
     {
+        public OnConnectComplete(Server server, S service) : base(server, service)
+        {
+        }
+
+
         public override MsgType msgType => MsgType._OnConnectComplete;
 
         public override async Task<ECode> Handle(ProtocolClientData socket, MsgConnectorInfo msg, ResConnectorInfo res)

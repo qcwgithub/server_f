@@ -9,6 +9,12 @@ namespace Script
     {
         public const int INTERVAL_S_QUICK = 1;
         public const int INTERVAL_S_SLOW = 31;
+
+        public CheckConnections_Loop(Server server, S service) : base(server, service)
+        {
+        }
+
+
         public override MsgType msgType => MsgType._CheckConnections_Loop;
 
         public override async Task<ECode> Handle(ProtocolClientData _socket, MsgCheckConnections_Loop msg, ResCheckConnections_Loop res)

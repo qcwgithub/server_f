@@ -5,6 +5,10 @@ namespace Script
 {
     public class Db_Shutdown : OnShutdown<DbService>
     {
+        public Db_Shutdown(Server server, DbService service) : base(server, service)
+        {
+        }
+
         protected override async Task StopBusinesses()
         {
             this.ClearTimer(ref this.service.databaseServiceData.timer_persistence_taskQueueHandler_Loop);

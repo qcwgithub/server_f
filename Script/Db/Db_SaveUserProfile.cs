@@ -4,6 +4,11 @@ namespace Script
 {
     public class Db_SaveUserProfile : Handler<DbService, MsgSaveUserProfile, ResSaveUserProfile>
     {
+        public Db_SaveUserProfile(Server server, DbService service) : base(server, service)
+        {
+        }
+
+
         public override MsgType msgType => MsgType._Db_SaveUserProfile;
         public override async Task<ECode> Handle(ProtocolClientData socket, MsgSaveUserProfile msg, ResSaveUserProfile res)
         {

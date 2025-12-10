@@ -5,6 +5,11 @@ namespace Script
 {
     public class TcpListenerScript : ServiceScript<Service>, ITcpListenerCallback
     {
+        public TcpListenerScript(Server server, Service service) : base(server, service)
+        {
+        }
+
+
         public void LogError(string str)
         {
             this.service.logger.Error(str);

@@ -6,6 +6,11 @@ namespace Script
 {
     public class User_PrepareUserLogin : UserHandler<MsgPrepareUserLogin, ResPrepareUserLogin>
     {
+        public User_PrepareUserLogin(Server server, UserService service) : base(server, service)
+        {
+        }
+
+
         public override MsgType msgType => MsgType._User_PrepareUserLogin;
 
         public override async Task<ECode> Handle(ProtocolClientData socket, MsgPrepareUserLogin msg, ResPrepareUserLogin res)

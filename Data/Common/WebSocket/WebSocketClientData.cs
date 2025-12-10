@@ -15,7 +15,7 @@ namespace Data
     public class WebSocketClientData : ProtocolClientData
     {
         #region variables
-        public WebSocket webSocket;
+        public WebSocket? webSocket;
 
         ////
         // bool connecting;

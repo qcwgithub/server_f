@@ -8,6 +8,10 @@ namespace Script
 {
     public class User_SaveProfileToFile : UserHandler<MsgSaveProfileToFile, ResSaveProfileToFile>
     {
+        public User_SaveProfileToFile(Server server, UserService service) : base(server, service)
+        {
+        }
+
         public override MsgType msgType => MsgType._SaveProfileToFile;
 
         public override async Task<ECode> Handle(ProtocolClientData socket, MsgSaveProfileToFile msg, ResSaveProfileToFile res)

@@ -9,7 +9,7 @@ namespace Data
         [Key(0)]
         public bool all;
         [Key(1)]
-        public List<string> files; // when all = false
+        public List<string>? files; // when all = false
     }
 
     [MessagePackObject]

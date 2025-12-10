@@ -74,7 +74,7 @@ namespace Script
         public async Task<MyResponse<Res>> Send<Msg, Res>(int serviceId, MsgType msgType, Msg msg)
             where Res : class
         {
-            ProtocolClientData socket = this.self.data.GetOtherServiceSocket(serviceId);
+            ProtocolClientData? socket = this.self.data.GetOtherServiceSocket(serviceId);
             if (socket == null || !socket.IsConnected())
             {
                 return new MyResponse<Res>(ECode.Server_NotConnected, null);
@@ -105,7 +105,7 @@ namespace Script
         public async Task<MyResponse<Res>> RequestToService<Msg, Res>(int serviceId, MsgType msgType, Msg msg)
             where Res : class, new()
         {
-            ProtocolClientData socket = this.self.data.GetOtherServiceSocket(serviceId);
+            ProtocolClientData? socket = this.self.data.GetOtherServiceSocket(serviceId);
             if (socket == null || !socket.IsConnected())
             {
                 return new MyResponse<Res>(ECode.Server_NotConnected, null);

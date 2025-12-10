@@ -104,7 +104,7 @@ namespace Data
             return info;
         }
 
-        public void ClearTimer(ITimer timer)
+        public void ClearTimer(ITimer? timer)
         {
             MyDebug.Assert(timer.IsAlive());
             if (!timer.IsAlive())
@@ -112,7 +112,7 @@ namespace Data
                 return;
             }
 
-            TimerInfo info = (TimerInfo)timer;
+            TimerInfo info = (TimerInfo)timer!;
             this.timerDict.Remove(info.timerId);
             List<TimerInfo>? list;
             if (this.triggerDict.TryGetValue(info.nextTimeS, out list))

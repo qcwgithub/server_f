@@ -6,6 +6,10 @@ namespace Script
 {
     public class Global_GetServiceConfigs : Handler<GlobalService, MsgGetServiceConfigs, ResGetServiceConfigs>
     {
+        public Global_GetServiceConfigs(Server server, GlobalService service) : base(server, service)
+        {
+        }
+
         public override MsgType msgType => MsgType._Global_GetServiceConfigs;
 
         public override async Task<ECode> Handle(ProtocolClientData socket, MsgGetServiceConfigs msg, ResGetServiceConfigs res)

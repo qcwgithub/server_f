@@ -9,6 +9,11 @@ namespace Script
 {
     public class User_Action : UserHandler<MsgPSAction, ResPSAction>
     {
+        public User_Action(Server server, UserService service) : base(server, service)
+        {
+        }
+
+
         public override MsgType msgType => MsgType._ServerAction;
 
         public override async Task<ECode> Handle(ProtocolClientData socket, MsgPSAction msg, ResPSAction res)

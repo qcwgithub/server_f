@@ -8,6 +8,10 @@ namespace Script
 {
     public class Monitor_PerformKick : Handler<CommandService, MsgCommon, ResCommon>
     {
+        public Monitor_PerformKick(Server server, CommandService service) : base(server, service)
+        {
+        }
+
         public override MsgType msgType => MsgType._Command_PerformKick;
 
         public override async Task<ECode> Handle(ProtocolClientData socket, MsgCommon msg, ResCommon res)

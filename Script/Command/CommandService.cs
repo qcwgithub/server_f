@@ -9,6 +9,8 @@ namespace Script
 
         public CommandService(Server server, int serviceId) : base(server, serviceId)
         {
+            this.AddConnectToOtherService(this.connectToGlobalService = new ConnectToGlobalService(this));
+            this.connectToSameServerType = new MonitorConnectToSameServerType(this);
         }
 
         public CommandServiceData commandServiceData
@@ -24,19 +26,17 @@ namespace Script
             base.Attach();
 
             base.AddHandler<CommandService>();
-            this.AddConnectToOtherService(this.connectToGlobalService = new ConnectToGlobalService(this));
-            this.connectToSameServerType = new MonitorConnectToSameServerType(this);
 
-            this.dispatcher.AddHandler(new Command_Start().Init(this.server, this));
-            this.dispatcher.AddHandler(new Command_Shutdown().Init(this.server, this));
+            this.dispatcher.AddHandler(new Command_Start(this.server, this));
+            this.dispatcher.AddHandler(new Command_Shutdown(this.server, this));
 
-            this.dispatcher.AddHandler(new Command_PerformGetPendingMsgList().Init(this.server, this));
-            this.dispatcher.AddHandler(new Command_PerformReloadScript().Init(this.server, this));
-            this.dispatcher.AddHandler(new Command_PerformSaveProfileToFile().Init(this.server, this));
-            this.dispatcher.AddHandler(new Command_PerformShowScriptVersion().Init(this.server, this));
-            this.dispatcher.AddHandler(new Command_PerformShutdown().Init(this.server, this));
-            this.dispatcher.AddHandler(new Monitor_PerformKick().Init(this.server, this));
-            this.dispatcher.AddHandler(new Command_PerformSetPlayerGmFlag().Init(this.server, this));
+            this.dispatcher.AddHandler(new Command_PerformGetPendingMsgList(this.server, this));
+            this.dispatcher.AddHandler(new Command_PerformReloadScript(this.server, this));
+            this.dispatcher.AddHandler(new Command_PerformSaveProfileToFile(this.server, this));
+            this.dispatcher.AddHandler(new Command_PerformShowScriptVersion(this.server, this));
+            this.dispatcher.AddHandler(new Command_PerformShutdown(this.server, this));
+            this.dispatcher.AddHandler(new Monitor_PerformKick(this.server, this));
+            this.dispatcher.AddHandler(new Command_PerformSetPlayerGmFlag(this.server, this));
         }
 
         // public override async Task Detach(ScriptEntry scriptEntry)

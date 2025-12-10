@@ -6,6 +6,11 @@ namespace Script
 {
     public class UserServiceScript : ServiceScript<UserService>
     {
+        public UserServiceScript(Server server, UserService service) : base(server, service)
+        {
+        }
+
+
         public UserServiceData usData { get { return this.service.sd; } }
 
         public log4net.ILog logger { get { return this.service.logger; } }

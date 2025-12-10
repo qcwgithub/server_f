@@ -6,6 +6,10 @@ namespace Script
 {
     public class Global_OnReladConfigs : OnReloadConfigs<GlobalService>
     {
+        public Global_OnReladConfigs(Server server, GlobalService service) : base(server, service)
+        {
+        }
+
         public override async Task<ECode> Handle(ProtocolClientData socket, MsgReloadConfigs msg, ResReloadConfigs res)
         {
             ECode e = await base.Handle(socket, msg, res);

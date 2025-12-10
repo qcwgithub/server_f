@@ -8,6 +8,11 @@ namespace Script
 {
     public class User_OnSocketClose : OnSocketClose<UserService>
     {
+        public User_OnSocketClose(Server server, UserService service) : base(server, service)
+        {
+        }
+
+
         public override async Task<ECode> Handle(ProtocolClientData socket, MsgSocketClose msg, ResSocketClose res)
         {
             await base.Handle(socket, msg);

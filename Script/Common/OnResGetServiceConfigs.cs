@@ -8,6 +8,11 @@ namespace Script
     public class OnResGetServiceConfigs<S> : Handler<S, A_ResGetServiceConfigs, ResNull>
         where S : Service
     {
+        public OnResGetServiceConfigs(Server server, S service) : base(server, service)
+        {
+        }
+
+
         public override MsgType msgType => MsgType._A_ResGetServiceConfigs;
 
         public override async Task<ECode> Handle(ProtocolClientData socket, A_ResGetServiceConfigs msg, ResNull res)

@@ -18,7 +18,7 @@ namespace Script
         public DbService(Server server, int serviceId) : base(server, serviceId)
         {
             this.AddConnectToOtherService(this.connectToGlobalService = new ConnectToGlobalService(this));
-            this.collection_user_profile = new collection_user_profile().Init(this.server, this);
+            this.collection_user_profile = new collection_user_profile(this.server, this);
         }
 
         public override void Attach()
@@ -37,12 +37,12 @@ namespace Script
 
             #endregion auto_handler_create
 
-            this.dispatcher.AddHandler(new Db_Start().Init(this.server, this));
-            this.dispatcher.AddHandler(new Db_Shutdown().Init(this.server, this));
+            this.dispatcher.AddHandler(new Db_Start(this.server, this));
+            this.dispatcher.AddHandler(new Db_Shutdown(this.server, this));
 
-            this.dispatcher.AddHandler(new Db_InsertUserProfile().Init(this.server, this));
-            this.dispatcher.AddHandler(new Db_QueryUserProfile().Init(this.server, this));
-            this.dispatcher.AddHandler(new Db_SaveUserProfile().Init(this.server, this));
+            this.dispatcher.AddHandler(new Db_InsertUserProfile(this.server, this));
+            this.dispatcher.AddHandler(new Db_QueryUserProfile(this.server, this));
+            this.dispatcher.AddHandler(new Db_SaveUserProfile(this.server, this));
 
         }
     }

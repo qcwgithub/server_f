@@ -5,11 +5,11 @@ namespace Data
 {
     public class JsonUtils
     {
-        public static string stringify(object obj)
+        public static string stringify(object? obj)
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(obj);
         }
-        public static string stringifyIndent(object obj)
+        public static string stringifyIndent(object? obj)
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(obj, Newtonsoft.Json.Formatting.Indented);
         }

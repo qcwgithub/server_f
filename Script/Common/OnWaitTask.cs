@@ -6,6 +6,10 @@ namespace Script
     public class OnWaitTask<S> : Handler<S, MsgWaitTask, ResWaitTask>
         where S : Service
     {
+        public OnWaitTask(Server server, S service) : base(server, service)
+        {
+        }
+
         public override MsgType msgType => MsgType._WaitTask;
         public sealed override async Task<ECode> Handle(ProtocolClientData socket, MsgWaitTask msg, ResWaitTask res)
         {

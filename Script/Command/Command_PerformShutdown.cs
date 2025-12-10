@@ -7,6 +7,10 @@ namespace Script
 {
     public class Command_PerformShutdown : Handler<CommandService, MsgCommon, ResCommon>
     {
+        public Command_PerformShutdown(Server server, CommandService service) : base(server, service)
+        {
+        }
+
         public override MsgType msgType => MsgType._Command_PerformShutdown;
 
         public override async Task<ECode> Handle(ProtocolClientData socket, MsgCommon msg, ResCommon res)

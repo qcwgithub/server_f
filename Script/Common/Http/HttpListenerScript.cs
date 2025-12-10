@@ -5,6 +5,11 @@ namespace Script
 {
     public class HttpListenerScript : ServiceScript<Service>, IHttpListenerCallback
     {
+        public HttpListenerScript(Server server, Service service) : base(server, service)
+        {
+        }
+
+
         public void OnReceiveHttpRequest(HttpListenerContext context)
         {
             var msg = new MsgOnHttpRequest();

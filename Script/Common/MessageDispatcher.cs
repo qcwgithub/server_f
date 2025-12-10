@@ -4,6 +4,10 @@ namespace Script
 {
     public class MessageDispatcher : ServiceScript<Service>
     {
+        public MessageDispatcher(Server server, Service service) : base(server, service)
+        {
+        }
+
         Dictionary<MsgType, IHandler> handlers = new Dictionary<MsgType, IHandler>();
 
         ///////// handlers ///////////

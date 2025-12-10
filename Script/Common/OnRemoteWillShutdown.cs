@@ -8,6 +8,10 @@ namespace Script
     public class OnRemoteWillShutdown<S> : Handler<S, MsgRemoteWillShutdown, ResRemoteWillShutdown>
         where S : Service
     {
+        public OnRemoteWillShutdown(Server server, S service) : base(server, service)
+        {
+        }
+
         public override MsgType msgType => MsgType._RemoteWillShutdown;
 
         public override async Task<ECode> Handle(ProtocolClientData socket, MsgRemoteWillShutdown msg, ResRemoteWillShutdown res)

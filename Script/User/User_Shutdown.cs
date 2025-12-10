@@ -7,6 +7,10 @@ namespace Script
 {
     public class User_Shutdown : OnShutdown<UserService>
     {
+        public User_Shutdown(Server server, UserService service) : base(server, service)
+        {
+        }
+
         protected override async Task StopBusinesses()
         {
             this.service.logger.Info(nameof(StopBusinesses));

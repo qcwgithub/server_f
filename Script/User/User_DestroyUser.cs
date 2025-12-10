@@ -7,6 +7,11 @@ namespace Script
 {
     public class User_DestroyUser : UserHandler<MsgDestroyUser, ResDestroyUser>
     {
+        public User_DestroyUser(Server server, UserService service) : base(server, service)
+        {
+        }
+
+
         public override MsgType msgType => MsgType._User_DestroyUser;
 
         public override async Task<ECode> Handle(ProtocolClientData socket, MsgDestroyUser msg, ResDestroyUser res)

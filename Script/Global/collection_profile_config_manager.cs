@@ -5,6 +5,11 @@ using Script;
 public  class collection_profile_global : ServiceScript<GlobalService>
 {
     public const string COLLECTION = "profile_global";
+
+    public collection_profile_global(Server server, GlobalService service) : base(server, service)
+    {
+    }
+
     MongoClient mongoClient => this.server.data.mongoClient;
     string dbName => this.server.data.mongoDBConfig.dbData;
     

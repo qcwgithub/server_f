@@ -8,6 +8,11 @@ namespace Script
     public class OnSocketClose<S> : Handler<S, MsgSocketClose, ResSocketClose>
         where S : Service
     {
+        public OnSocketClose(Server server, S service) : base(server, service)
+        {
+        }
+
+
         public override MsgType msgType => MsgType._OnSocketClose;
 
         void LogServerDisconnect(ProtocolClientData socket)
