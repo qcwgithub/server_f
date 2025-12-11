@@ -16,10 +16,10 @@ namespace Data
             }
         }
 
-        public ProtocolClientData? socket;
-        public bool IsSocketConnected()
+        public IConnection? connection;
+        public bool IsConnected()
         {
-            return this.socket != null && this.socket.IsConnected();
+            return this.connection != null && this.connection.IsConnected();
         }
         
         MsgSimulatePrepareUserLogin? msgSimulatePrepareUserLogin;

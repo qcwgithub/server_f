@@ -14,7 +14,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._SaveProfileToFile;
 
-        public override async Task<ECode> Handle(ProtocolClientData socket, MsgSaveProfileToFile msg, ResSaveProfileToFile res)
+        public override async Task<ECode> Handle(IConnection connection, MsgSaveProfileToFile msg, ResSaveProfileToFile res)
         {
             Profile? profile = null;
             User? user = this.service.sd.GetUser(msg.userId);

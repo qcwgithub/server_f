@@ -13,7 +13,7 @@ namespace Script
 
 
         public override MsgType msgType => MsgType._User_SaveUser;
-        public override async Task<ECode> Handle(ProtocolClientData socket, MsgSaveUser msg, ResSaveUser res)
+        public override async Task<ECode> Handle(IConnection connection, MsgSaveUser msg, ResSaveUser res)
         {
             long userId = msg.userId;
 

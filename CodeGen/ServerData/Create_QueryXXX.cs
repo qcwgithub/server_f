@@ -39,7 +39,7 @@ public class Create_QueryXXX
                 ff.TabPushF("public override MsgType msgType => MsgType._{0}{1};\n", query.methodName, config.postfix);
                 ff.Push("\n");
 
-                ff.TabPushF("public override async Task<MyResponse> Handle(ProtocolClientData socket, object _msg)\n");
+                ff.TabPushF("public override async Task<MyResponse> Handle(IConnection connection, object _msg)\n");
                 ff.BlockStart();
                 {
                     ff.TabPushF("var msg = Utils.CastObject<Msg{0}>(_msg);\n", query.methodName);

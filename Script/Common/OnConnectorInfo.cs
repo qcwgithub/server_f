@@ -16,7 +16,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._ConnectorInfo;
 
-        public override async Task<ECode> Handle(ProtocolClientData socket, MsgConnectorInfo msg, ResConnectorInfo res)
+        public override async Task<ECode> Handle(IConnection connection, MsgConnectorInfo msg, ResConnectorInfo res)
         {
             ConnectorInfo info = msg.connectorInfo;
             string message = string.Format("{0} ServiceType.{1} serviceId {2} this.service.data.state {3}",
@@ -30,7 +30,7 @@ namespace Script
                 this.service.logger.Error(message);
             }
 
-            this.service.data.SetOtherServiceSocket(info.serviceType, info.serviceId, socket);
+            this.service.data.SetOtherServiceConnection(info.serviceType, info.serviceId, (ServiceConnection)connection);
 
             return ECode.Success;
         }

@@ -17,16 +17,16 @@ namespace Script
 
         public override MsgType msgType => MsgType._OnConnectComplete;
 
-        public override async Task<ECode> Handle(ProtocolClientData socket, MsgConnectorInfo msg, ResConnectorInfo res)
+        public override async Task<ECode> Handle(IConnection connection, MsgConnectorInfo msg, ResConnectorInfo res)
         {
-            this.logger.InfoFormat("{0} socket id: {1}, to: {2}", this.msgType, socket.GetSocketId(), socket.serviceTypeAndId.Value.ToString());
+            this.logger.InfoFormat("{0} connection id: {1}, to: {2}", this.msgType, connection.GetSocketId(), connection.serviceTypeAndId.Value.ToString());
 
             // 连上去之后立即向他报告是我的身份
             var msgInfo = new MsgConnectorInfo();
             msgInfo.connectorInfo = this.service.CreateConnectorInfo();
-            await socket.Request<MsgConnectorInfo, ResConnectorInfo>(MsgType._ConnectorInfo, msgInfo);
+            await connection.Request<MsgConnectorInfo, ResConnectorInfo>(MsgType._ConnectorInfo, msgInfo);
 
-            // var s = socket;
+            // var s = connection;
             // bool isClient = !msg.isServer;
             return ECode.Success;
         }

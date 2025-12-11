@@ -12,7 +12,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._SetGmFlag;
 
-        public override async Task<ECode> Handle(ProtocolClientData socket, MsgSetGmFlag msg, ResSetGmFlag res)
+        public override async Task<ECode> Handle(IConnection connection, MsgSetGmFlag msg, ResSetGmFlag res)
         {
             res.listUser = new List<long>();
             for (long i = msg.startUserId; i <= msg.endUserId; i++)

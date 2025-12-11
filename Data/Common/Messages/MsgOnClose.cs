@@ -1,10 +1,9 @@
-using System.Collections.Generic;
 using MessagePack;
 
 namespace Data
 {
     [MessagePackObject]
-    public class MsgSocketClose
+    public class MsgConnectionClose
     {
         [Key(0)]
         public bool isAcceptor;
@@ -12,7 +11,7 @@ namespace Data
     }
 
     [MessagePackObject]
-    public class ResSocketClose
+    public class ResConnectionClose
     {
         [Key(0)]
         public bool isAcceptor;

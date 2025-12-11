@@ -11,7 +11,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._GetPendingMessageList;
 
-        public override async Task<ECode> Handle(ProtocolClientData socket, MsgGetPendingMsgList msg, ResGetPendingMsgList res)
+        public override async Task<ECode> Handle(IConnection connection, MsgGetPendingMsgList msg, ResGetPendingMsgList res)
         {
             res.list = new List<int>();
             res.list.AddRange(this.service.data.busyList);

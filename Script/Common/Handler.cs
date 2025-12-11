@@ -31,15 +31,15 @@ namespace Script
             return bytes;
         }
 
-        public async Task<(ECode, object)> Handle(ProtocolClientData socket, object msg)
+        public async Task<(ECode, object)> Handle(IConnection connection, object msg)
         {
             Res res = new Res();
-            ECode e = await this.Handle(socket, (Msg)msg, res);
+            ECode e = await this.Handle(connection, (Msg)msg, res);
             return (e, res);
         }
 
-        public abstract Task<ECode> Handle(ProtocolClientData socket, Msg msg, Res res);
-        public virtual (ECode, object) PostHandle(ProtocolClientData socket, object _msg, ECode e, object res)
+        public abstract Task<ECode> Handle(IConnection connection, Msg msg, Res res);
+        public virtual (ECode, object) PostHandle(IConnection connection, object _msg, ECode e, object res)
         {
             return (e, res);
         }

@@ -8,7 +8,7 @@ namespace Data
         _Start = 1,
         _Shutdown = 2,
         _OnConnectComplete = 3,
-        _OnSocketClose = 4,
+        _OnConnectionClose = 4,
         _OnDisconnect = 5,
         _ReloadScript = 6,
         _CheckConnections = 7,

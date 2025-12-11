@@ -15,9 +15,9 @@ namespace Script
 
         public UserServiceScript usScript { get { return this.service.ss; } }
 
-        public User? GetUser(ProtocolClientData socket)
+        public User? GetUser(IConnection connection)
         {
-            object obj = this.service.tcpClientScript.GetUser(socket);
+            object obj = this.service.tcpClientScript.GetUser(connection);
             return (obj == null ? null : (User)obj);
         }
     }

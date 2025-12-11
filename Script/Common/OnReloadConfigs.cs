@@ -12,7 +12,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._ReloadConfigs;
 
-        public override async Task<ECode> Handle(ProtocolClientData socket, MsgReloadConfigs msg, ResReloadConfigs res)
+        public override async Task<ECode> Handle(IConnection connection, MsgReloadConfigs msg, ResReloadConfigs res)
         {
             string message = $"[{this.service.serviceId}]{this.msgType} all? {msg.all} files? {JsonUtils.stringify(msg.files)}";
             this.service.logger.Info(message);

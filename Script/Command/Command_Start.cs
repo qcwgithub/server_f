@@ -1,10 +1,4 @@
-using System.IO;
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Data;
-
 
 namespace Script
 {
@@ -15,7 +9,7 @@ namespace Script
         }
 
 
-        public override async Task<ECode> Handle(ProtocolClientData socket, MsgStart msg, ResStart res)
+        public override async Task<ECode> Handle(IConnection connection, MsgStart msg, ResStart res)
         {
             // this.service.SetState(ServiceState.Starting);
 
@@ -226,13 +220,13 @@ namespace Script
 
                 int serviceId = tai.serviceId;
                 ServiceConfig sc = this.service.data.current_resGetServiceConfigs.FindServiceConfig(tai.serviceType, tai.serviceId);
-                ProtocolClientData socket = this.service.GetOrConnectSocket(sc.serviceType, sc.serviceId, sc.inIp, sc.inPort);
+                IConnection connection = this.service.GetOrConnectConnection(sc.serviceType, sc.serviceId, sc.inIp, sc.inPort);
 
-                while (socket.IsConnecting())
+                while (connection.IsConnecting())
                 {
                     await Task.Delay(1);
                 }
-                if (!socket.IsConnected())
+                if (!connection.IsConnected())
                 {
                     throw new System.Exception("error connect to " + tai.ToString());
                 }
@@ -465,12 +459,12 @@ namespace Script
                 return ECode.Success;
             }
 
-            ProtocolClientData socket = this.service.GetOrConnectSocket(sc.serviceType, sc.serviceId, sc.inIp, sc.inPort);
-            while (socket.IsConnecting())
+            IConnection connection = this.service.GetOrConnectConnection(sc.serviceType, sc.serviceId, sc.inIp, sc.inPort);
+            while (connection.IsConnecting())
             {
                 await Task.Delay(1);
             }
-            if (!socket.IsConnected())
+            if (!connection.IsConnected())
             {
                 throw new System.Exception("error connect to " + usId.ToString());
             }

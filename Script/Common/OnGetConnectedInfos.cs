@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Data;
 
 namespace Script
@@ -12,20 +10,20 @@ namespace Script
         }
 
         public override MsgType msgType => MsgType._GetConnectedInfos;
-        public override async Task<ECode> Handle(ProtocolClientData socket, MsgGetConnectedInfos msg, ResGetConnectedInfos res)
+        public override async Task<ECode> Handle(IConnection connection, MsgGetConnectedInfos msg, ResGetConnectedInfos res)
         {
             ServiceData sd = this.service.data;
         
             res.connectedInfos = new List<ServiceTypeAndId>();
 
-            foreach (List<ProtocolClientData> list in sd.otherServiceSockets2)
+            foreach (List<ServiceConnection> list in sd.otherServiceConnections2)
             {
                 if (list == null)
                 {
                     continue;
                 }
 
-                foreach (ProtocolClientData soc in list)
+                foreach (ServiceConnection soc in list)
                 {
                     if (soc == null || soc.serviceTypeAndId == null || !soc.IsConnected())
                     {

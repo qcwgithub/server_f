@@ -1,6 +1,3 @@
-using System.Linq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Data;
 
 namespace Script
@@ -14,10 +11,11 @@ namespace Script
 
         public override MsgType msgType => MsgType._RemoteWillShutdown;
 
-        public override async Task<ECode> Handle(ProtocolClientData socket, MsgRemoteWillShutdown msg, ResRemoteWillShutdown res)
+        public override async Task<ECode> Handle(IConnection _connection, MsgRemoteWillShutdown msg, ResRemoteWillShutdown res)
         {
-            this.service.logger.InfoFormat("{0} {1}", this.msgType, socket.serviceTypeAndId == null ? "null" : socket.serviceTypeAndId.Value.ToString());
-            socket.remoteWillShutdown = true;
+            ServiceConnection connection = (ServiceConnection)_connection;
+            this.service.logger.InfoFormat("{0} {1}", this.msgType, connection.serviceTypeAndId == null ? "null" : connection.serviceTypeAndId.Value.ToString());
+            connection.remoteWillShutdown = true;
             return ECode.Success;
         }
     }

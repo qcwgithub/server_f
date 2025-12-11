@@ -55,7 +55,7 @@ namespace Script
             }
         }
 
-        public sealed override async Task<ECode> Handle(ProtocolClientData socket, MsgShutdown msg, ResShutdown res)
+        public sealed override async Task<ECode> Handle(IConnection connection, MsgShutdown msg, ResShutdown res)
         {
             this.service.logger.Info($"{this.msgType} force {msg.force}");
 

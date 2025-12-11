@@ -13,7 +13,7 @@ namespace Script
 
 
         public override MsgType msgType => MsgType._GetScriptVersion;
-        public override async Task<ECode> Handle(ProtocolClientData socket, MsgGetScriptVersion msg, ResGetScriptVersion res)
+        public override async Task<ECode> Handle(IConnection connection, MsgGetScriptVersion msg, ResGetScriptVersion res)
         {
             // if (this.server.data.state != ServerState.Started)
             // {

@@ -1,11 +1,9 @@
 
-using System.Collections;
-using System.Threading.Tasks;
 using Data;
 
 namespace Script
 {
-    public class OnSocketClose<S> : Handler<S, MsgSocketClose, ResSocketClose>
+    public class OnSocketClose<S> : Handler<S, MsgConnectionClose, ResConnectionClose>
         where S : Service
     {
         public OnSocketClose(Server server, S service) : base(server, service)
@@ -13,30 +11,30 @@ namespace Script
         }
 
 
-        public override MsgType msgType => MsgType._OnSocketClose;
+        public override MsgType msgType => MsgType._OnConnectionClose;
 
-        void LogServerDisconnect(ProtocolClientData socket)
+        void LogServerDisconnect(IConnection connection)
         {
             var self = this.service.data.serviceTypeAndId;
-            var remote = socket.serviceTypeAndId.Value;
+            var remote = connection.serviceTypeAndId.Value;
             if (this.service.data.state < ServiceState.ShuttingDown &&
-                !socket.remoteWillShutdown &&
-                socket.closeReason != ProtocolClientData.CloseReason.OnConnectComplete_false &&
+                !connection.remoteWillShutdown &&
+                connection.closeReason != ProtocolClientData.CloseReason.OnConnectComplete_false &&
                 self.serviceType.ShouldLogErrorWhenDisconnectFrom(remote.serviceType))
             {
-                this.service.logger.FatalFormat("SocketClose {0} reason {1}", remote, socket.closeReason);
+                this.service.logger.FatalFormat("SocketClose {0} reason {1}", remote, connection.closeReason);
             }
             else
             {
-                this.service.logger.InfoFormat("SocketClose {0} reason {1}", remote, socket.closeReason);
+                this.service.logger.InfoFormat("SocketClose {0} reason {1}", remote, connection.closeReason);
             }
         }
 
-        public override async Task<ECode> Handle(ProtocolClientData socket, MsgSocketClose msg, ResSocketClose res)
+        public override async Task<ECode> Handle(IConnection connection, MsgConnectionClose msg, ResConnectionClose res)
         {
-            if (socket.serviceTypeAndId != null)
+            if (connection.serviceTypeAndId != null)
             {
-                this.LogServerDisconnect(socket);
+                this.LogServerDisconnect(connection);
             }
 
             var sd = this.service.data;

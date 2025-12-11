@@ -55,12 +55,12 @@ namespace Data
 
         // CompleteDoctorKTaskTimeError = 62,
         // TestIdIsAllowedOnLocalhost = 63,
-        OldSocket = 64,
+        OldConnection = 64,
         MissionNotExplored = 65,
 
         NotEnoughMoney = 67,
         OldUser = 68,
-        SocketError = 69,
+        ConnectionError = 69,
 #if UNITY_2017_1_OR_NEWER
         NotConnected = 70, // 改为仅客户端使用
 #endif

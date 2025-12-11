@@ -13,7 +13,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._CheckConnections;
 
-        public override async Task<ECode> Handle(ProtocolClientData _socket, MsgCheckConnections msg, ResCheckConnections res)
+        public override async Task<ECode> Handle(IConnection connection, MsgCheckConnections msg, ResCheckConnections res)
         {
             ServiceData sd = this.service.data;
             if (sd.connectToServiceTypes.Count == 0)
@@ -30,7 +30,7 @@ namespace Script
                         return;
                     }
 
-                    this.service.GetOrConnectSocket(sc.serviceType, sc.serviceId, sc.inIp, sc.inPort);
+                    this.service.GetOrConnectConnection(sc.serviceType, sc.serviceId, sc.inIp, sc.inPort);
                 });
             }
 

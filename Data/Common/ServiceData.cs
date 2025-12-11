@@ -50,12 +50,12 @@ namespace Data
         public List<ServiceType> connectToServiceTypes = new List<ServiceType>();
 
         // 只存 Normal -> Normal 和 Group -> Group
-        public Dictionary<int, ProtocolClientData> otherServiceSockets = new Dictionary<int, ProtocolClientData>();
-        public List<ProtocolClientData>[] otherServiceSockets2 = new List<ProtocolClientData>[(int)ServiceType.Count];
-        public void SetOtherServiceSocket(ServiceType serviceType, int serviceId, ProtocolClientData tcpClientData)
+        public Dictionary<int, ServiceConnection> otherServiceConnections = new Dictionary<int, ServiceConnection>();
+        public List<ServiceConnection>[] otherServiceConnections2 = new List<ServiceConnection>[(int)ServiceType.Count];
+        public void SetOtherServiceConnection(ServiceType serviceType, int serviceId, ServiceConnection connection)
         {
             {
-                if (this.otherServiceSockets.TryGetValue(serviceId, out ProtocolClientData? old))
+                if (this.otherServiceConnections.TryGetValue(serviceId, out ServiceConnection? old))
                 {
                     if (old.IsConnected() || old.IsConnecting())
                     {
@@ -72,13 +72,13 @@ namespace Data
                 }
             }
 
-            this.otherServiceSockets[serviceId] = tcpClientData;
-            tcpClientData.serviceTypeAndId = new ServiceTypeAndId { serviceType = serviceType, serviceId = serviceId };
+            this.otherServiceConnections[serviceId] = connection;
+            connection.serviceTypeAndId = new ServiceTypeAndId { serviceType = serviceType, serviceId = serviceId };
 
-            var list = this.otherServiceSockets2[(int)serviceType];
+            var list = this.otherServiceConnections2[(int)serviceType];
             if (list == null)
             {
-                list = this.otherServiceSockets2[(int)serviceType] = new List<ProtocolClientData>();
+                list = this.otherServiceConnections2[(int)serviceType] = new List<ServiceConnection>();
             }
             else
             {
@@ -100,15 +100,15 @@ namespace Data
                 }
             }
 
-            if (list.IndexOf(tcpClientData) < 0)
+            if (list.IndexOf(connection) < 0)
             {
-                list.Add(tcpClientData);
+                list.Add(connection);
             }
         }
-        public ProtocolClientData? GetOtherServiceSocket(int serviceId)
+        public ServiceConnection? GetOtherServiceConnection(int serviceId)
         {
-            ProtocolClientData? socket;
-            return this.otherServiceSockets.TryGetValue(serviceId, out socket) ? socket : null;
+            ServiceConnection? connection;
+            return this.otherServiceConnections.TryGetValue(serviceId, out connection) ? connection : null;
         }
 
         // 有没有被动连接还活着，要去掉 Command
@@ -128,17 +128,17 @@ namespace Data
                     continue;
                 }
 
-                List<ProtocolClientData> sockets = this.otherServiceSockets2[(int)serviceType];
-                if (sockets == null || sockets.Count == 0)
+                List<ServiceConnection> connections = this.otherServiceConnections2[(int)serviceType];
+                if (connections == null || connections.Count == 0)
                 {
                     continue;
                 }
 
-                foreach (ProtocolClientData socket in sockets)
+                foreach (ServiceConnection connection in connections)
                 {
-                    if (socket.IsConnected() && socket.serviceTypeAndId != null)
+                    if (connection.IsConnected() && connection.serviceTypeAndId != null)
                     {
-                        list.Add(socket.serviceTypeAndId.Value);
+                        list.Add(connection.serviceTypeAndId.Value);
                     }
                 }
             }
@@ -156,8 +156,8 @@ namespace Data
                     continue;
                 }
 
-                List<ProtocolClientData> sockets = this.otherServiceSockets2[(int)serviceType];
-                if (sockets == null || sockets.Count == 0)
+                List<ServiceConnection> connections = this.otherServiceConnections2[(int)serviceType];
+                if (connections == null || connections.Count == 0)
                 {
                     continue;
                 }
@@ -165,12 +165,12 @@ namespace Data
                 int total = 0;
                 int finish = 0;
 
-                foreach (ProtocolClientData socket in sockets)
+                foreach (ServiceConnection connection in connections)
                 {
-                    if (socket.IsConnected())
+                    if (connection.IsConnected())
                     {
                         total++;
-                        socket.SendBytes(MsgType._RemoteWillShutdown, [], (e, segment) =>
+                        connection.SendBytes(MsgType._RemoteWillShutdown, [], (e, segment) =>
                         {
                             finish++;
                         },
@@ -183,20 +183,20 @@ namespace Data
                 }
 
                 List<int> serviceIds = new List<int>();
-                foreach (ProtocolClientData socket in sockets)
+                foreach (ServiceConnection connection in connections)
                 {
-                    serviceIds.Add(socket.serviceTypeAndId!.Value.serviceId);
+                    serviceIds.Add(connection.serviceTypeAndId!.Value.serviceId);
                 }
 
-                foreach (ProtocolClientData socket in sockets)
+                foreach (ServiceConnection connection in connections)
                 {
-                    socket.Close("manual close");
+                    connection.Close("manual close");
                 }
-                sockets.Clear();
+                connections.Clear();
 
                 foreach (int serviceId in serviceIds)
                 {
-                    this.otherServiceSockets.Remove(serviceId);
+                    this.otherServiceConnections.Remove(serviceId);
                 }
             }
         }
@@ -207,13 +207,13 @@ namespace Data
             // -----------------------------------------------------------
             int total = 0;
             int finish = 0;
-            foreach (var kv in this.otherServiceSockets)
+            foreach (var kv in this.otherServiceConnections)
             {
-                ProtocolClientData socket = kv.Value;
-                if (socket.IsConnected())
+                ServiceConnection connection = kv.Value;
+                if (connection.IsConnected())
                 {
                     total++;
-                    socket.SendBytes(MsgType._RemoteWillShutdown, [], (e, segment) =>
+                    connection.SendBytes(MsgType._RemoteWillShutdown, [], (e, segment) =>
                     {
                         finish++;
                     }, pTimeoutS: 5);
@@ -226,14 +226,14 @@ namespace Data
 
             // -----------------------------------------------------------
 
-            foreach (var kv in this.otherServiceSockets)
+            foreach (var kv in this.otherServiceConnections)
             {
-                ProtocolClientData socket = kv.Value;
-                socket.Close("manual close");
+                ServiceConnection connection = kv.Value;
+                connection.Close("manual close");
             }
-            this.otherServiceSockets.Clear();
+            this.otherServiceConnections.Clear();
 
-            foreach (var list in this.otherServiceSockets2)
+            foreach (var list in this.otherServiceConnections2)
             {
                 if (list != null)
                     list.Clear();

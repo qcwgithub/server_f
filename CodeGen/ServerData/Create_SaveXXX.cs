@@ -38,7 +38,7 @@ public class Create_SaveXXX
                 ff.TabPushF("public override MsgType msgType => MsgType._Save_{0}{1};\n", config.profileType, config.postfix);
                 ff.Push("\n");
 
-                ff.TabPushF("public override async Task<MyResponse> Handle(ProtocolClientData socket, object _msg)\n");
+                ff.TabPushF("public override async Task<MyResponse> Handle(IConnection connection, object _msg)\n");
                 ff.BlockStart();
                 {
                     ff.TabPushF("var msg = Utils.CastObject<MsgSave_{0}>(_msg);\n", config.profileType);

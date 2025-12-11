@@ -11,26 +11,26 @@ namespace Script
 
         public override MsgType msgType { get { return MsgType.UserLogin; } }
 
-        public static void HandleOldSocket(Service service, User user)
+        public static void HandleOldConnection(Service service, User user)
         {
-            ProtocolClientData? oldSocket = user.socket;
-            if (oldSocket == null)
+            IConnection? oldConnection = user.connection;
+            if (oldConnection == null)
             {
                 return;
             }
 
             // 情况1 同一个客户端意外地登录2次
             // 情况2 客户端A已经登录，B再登录
-            service.logger.InfoFormat("2 userId: {0}, ECode.OldSocket oldSocket: {1}, kick oldSocket.", user.userId, oldSocket.GetSocketId());
+            service.logger.InfoFormat("2 userId: {0}, ECode.OldConnection oldConnection: {1}, kick oldConnection.", user.userId, oldConnection.GetSocketId());
 
-            service.tcpClientScript.UnbindUser(oldSocket, user);
+            service.tcpClientScript.UnbindUser(oldConnection, user);
 
             // 给客户端发消息...
-            if (oldSocket.IsConnected())
+            if (oldConnection.IsConnected())
             {
                 var msgKick = new MsgKick();
                 msgKick.flags = LogoutFlags.CancelAutoLogin;
-                oldSocket.Send<MsgKick>(MsgType.Kick, msgKick);
+                oldConnection.Send<MsgKick>(MsgType.Kick, msgKick);
             }
         }
 
@@ -63,7 +63,7 @@ namespace Script
             }
         }
 
-        public override async Task<ECode> Handle(ProtocolClientData socket, MsgUserLogin msg, ResUserLogin res)
+        public override async Task<ECode> Handle(IConnection connection, MsgUserLogin msg, ResUserLogin res)
         {
             string message0 = string.Format("{0} userId {1} preCount {2}", this.msgType, msg.userId, this.usData.userDict.Count);
 
@@ -115,16 +115,16 @@ namespace Script
                 return ECode.DelayLogin;
             }
 
-            // 除了 PMPreparePlayerLogin，这里也需要对 oldSocket 做检测，因为客户端重连时不会经过 PMPreparePlayerLogin
-            var oldSocket = user.socket;
+            // 除了 PMPreparePlayerLogin，这里也需要对 oldConnection 做检测，因为客户端重连时不会经过 PMPreparePlayerLogin
+            var oldConnection = user.connection;
             bool kickOther = false;
-            if (user.socket != null)
+            if (user.connection != null)
             {
                 kickOther = true;
-                HandleOldSocket(this.service, user);
+                HandleOldConnection(this.service, user);
             }
 
-            var oldUser = this.GetUser(socket);
+            var oldUser = this.GetUser(connection);
             if (oldUser != null)
             {
                 // 这个分支都没走过
@@ -142,7 +142,7 @@ namespace Script
                 this.usScript.ClearDestroyTimer(user, true);
             }
 
-            this.service.tcpClientScript.BindUser(socket, user);
+            this.service.tcpClientScript.BindUser(connection, user);
 
             long nowS = TimeUtils.GetTimeS();
             user.onlineTimeS = nowS;

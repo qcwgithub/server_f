@@ -14,7 +14,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._User_DestroyUser;
 
-        public override async Task<ECode> Handle(ProtocolClientData socket, MsgDestroyUser msg, ResDestroyUser res)
+        public override async Task<ECode> Handle(IConnection connection, MsgDestroyUser msg, ResDestroyUser res)
         {
             long userId = msg.userId;
 
@@ -27,14 +27,14 @@ namespace Script
                 return ECode.UserNotExist;
             }
 
-            if (msg.msgKick != null && user.IsSocketConnected())
+            if (msg.msgKick != null && user.IsConnected())
             {
-                user.socket.Send<MsgKick>(MsgType.Kick, msg.msgKick);
+                user.connection.Send<MsgKick>(MsgType.Kick, msg.msgKick);
             }
 
-            if (user.socket != null)
+            if (user.connection != null)
             {
-                user.socket.Close("User_DestroyPlayer"); // PMOnDisconnect
+                user.connection.Close("User_DestroyPlayer"); // PMOnDisconnect
             }
 
             if (user.destroyTimer.IsAlive())

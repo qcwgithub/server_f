@@ -125,32 +125,32 @@ namespace Script
             this.dispatcher.OnFps(fps);
         }
 
-        public virtual ProtocolClientData GetOrConnectSocket(ServiceType to_serviceType, int to_serviceId, string inIp, int inPort)
+        public virtual IConnection GetOrConnectConnection(ServiceType to_serviceType, int to_serviceId, string inIp, int inPort)
         {
-            ProtocolClientData? socket;
-            if (!data.otherServiceSockets.TryGetValue(to_serviceId, out socket) || socket.IsClosed())
+            IConnection? connection;
+            if (!data.otherServiceConnections.TryGetValue(to_serviceId, out connection) || connection.IsClosed())
             {
-                socket = new TcpClientData();
-                ((TcpClientData)socket).ConnectorInit(this.data, inIp, inPort);
-                data.SetOtherServiceSocket(to_serviceType, to_serviceId, socket);
+                connection = new TcpClientData();
+                ((TcpClientData)connection).ConnectorInit(this.data, inIp, inPort);
+                data.SetOtherServiceConnection(to_serviceType, to_serviceId, connection);
             }
 
-            if (!socket.IsConnected() && !socket.IsConnecting())
+            if (!connection.IsConnected() && !connection.IsConnecting())
             {
                 // connect once
                 // this.server.logger.Info("call connect to " + serviceId + ", " + this.server.data.getInt("keepServerConnectionsing"));
-                socket.Connect();
+                connection.Connect();
             }
 
-            return socket;
+            return connection;
         }
 
         protected virtual async Task<ResGetServiceConfigs?> RequestServiceConfigs(string why)
         {
             var location = this.server.data.globalServiceLocation;
 
-            ProtocolClientData socket = this.GetOrConnectSocket(ServiceType.Global, location.serviceId, location.inIp, location.inPort);
-            if (socket == null || !socket.IsConnected())
+            IConnection connection = this.GetOrConnectConnection(ServiceType.Global, location.serviceId, location.inIp, location.inPort);
+            if (connection == null || !connection.IsConnected())
             {
                 return null;
             }
@@ -160,7 +160,7 @@ namespace Script
             msg.fromServiceId = this.data.serviceId;
             msg.why = why;
 
-            var r = await socket.Request<MsgGetServiceConfigs, ResGetServiceConfigs>(MsgType._Global_GetServiceConfigs, msg);
+            var r = await connection.Request<MsgGetServiceConfigs, ResGetServiceConfigs>(MsgType._Global_GetServiceConfigs, msg);
             if (r.e != ECode.Success)
             {
                 return null;

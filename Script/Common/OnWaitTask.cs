@@ -11,7 +11,7 @@ namespace Script
         }
 
         public override MsgType msgType => MsgType._WaitTask;
-        public sealed override async Task<ECode> Handle(ProtocolClientData socket, MsgWaitTask msg, ResWaitTask res)
+        public sealed override async Task<ECode> Handle(IConnection connection, MsgWaitTask msg, ResWaitTask res)
         {
             await msg.task;
             return ECode.Success;

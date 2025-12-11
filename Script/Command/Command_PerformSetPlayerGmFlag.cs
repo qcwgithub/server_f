@@ -14,7 +14,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._Command_PerformSetPlayerGmFlag;
 
-        public override async Task<ECode> Handle(ProtocolClientData socket, MsgCommon msg, ResCommon res)
+        public override async Task<ECode> Handle(IConnection connection, MsgCommon msg, ResCommon res)
         {
             long startId = msg.GetLong("startId");
             long endId = msg.GetLong("endId");

@@ -202,8 +202,7 @@ namespace Data
             }
             else
             {
-                this.callback.LogInfo(this, string.Format("TcpClientData.onConnectComplete, e.SocketError = {0} to: {1}",
-                    e.SocketError, this.serviceTypeAndId == null ? "null" : this.serviceTypeAndId.Value.ToString()));
+                
             }
         }
         #endregion

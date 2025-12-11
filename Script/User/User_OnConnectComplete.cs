@@ -9,24 +9,24 @@ namespace Script
         {
         }
 
-        public override async Task<ECode> Handle(ProtocolClientData socket, MsgConnectorInfo msg, ResConnectorInfo res)
+        public override async Task<ECode> Handle(IConnection connection, MsgConnectorInfo msg, ResConnectorInfo res)
         {
-            var e = await base.Handle(socket, msg, res);
+            var e = await base.Handle(connection, msg, res);
             if (e != ECode.Success)
             {
                 return e;
             }
 
-            if (socket.serviceTypeAndId == null)
+            if (connection.serviceTypeAndId == null)
             {
                 return e;
             }
 
-            // var serviceTypeAndId = (ServiceTypeAndId)socket.serviceTypeAndId;
+            // var serviceTypeAndId = (ServiceTypeAndId)connection.serviceTypeAndId;
 
             // if (serviceTypeAndId.serviceType == ServiceType.Stateless)
             // {
-            //     await this.service.SendPSInfoToAAA(false, socket);
+            //     await this.service.SendPSInfoToAAA(false, connection);
             // }
 
             return e;

@@ -18,7 +18,7 @@ namespace Script
             return MessagePackSerializer.Deserialize<T>(msg);
         }
 
-        public static async Task<MyResponse<Res>> Request<Msg, Res>(this ProtocolClientData socket, MsgType msgType, byte[] msgBytes) where Res : class
+        public static async Task<MyResponse<Res>> Request<Msg, Res>(this IConnection socket, MsgType msgType, byte[] msgBytes) where Res : class
         {
             var cs = new TaskCompletionSource<(ECode, ArraySegment<byte>)>();
 
@@ -38,18 +38,18 @@ namespace Script
             return new MyResponse<Res>(e, res);
         }
 
-        public static void Send(this ProtocolClientData socket, MsgType msgType, byte[] msgBytes)
+        public static void Send(this IConnection socket, MsgType msgType, byte[] msgBytes)
         {
             socket.SendBytes(msgType, msgBytes, null, pTimeoutS: null);
         }
 
-        public static async Task<MyResponse<Res>> Request<Msg, Res>(this ProtocolClientData socket, MsgType msgType, Msg msg) where Res : class
+        public static async Task<MyResponse<Res>> Request<Msg, Res>(this IConnection socket, MsgType msgType, Msg msg) where Res : class
         {
             byte[] msgBytes = Serialize<Msg>(msg);
             return await Request<Msg, Res>(socket, msgType, msgBytes);
         }
 
-        public static void Send<Msg>(this ProtocolClientData socket, MsgType msgType, Msg msg)
+        public static void Send<Msg>(this IConnection socket, MsgType msgType, Msg msg)
         {
             byte[] msgBytes = Serialize<Msg>(msg);
             Send(socket, msgType, msgBytes);

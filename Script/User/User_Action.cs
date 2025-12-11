@@ -16,7 +16,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._ServerAction;
 
-        public override async Task<ECode> Handle(ProtocolClientData socket, MsgPSAction msg, ResPSAction res)
+        public override async Task<ECode> Handle(IConnection connection, MsgPSAction msg, ResPSAction res)
         {
             this.logger.Info(this.msgType);
             UserServiceData usData = this.usData;

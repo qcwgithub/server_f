@@ -10,7 +10,7 @@ namespace Data
         // public CancellationTokenSource source;
     }
 
-    public abstract class ProtocolClientData
+    public abstract class ProtocolClientData : IConnection
     {
         public static MsgType MsgType_ClientStart
         {
@@ -59,12 +59,9 @@ namespace Data
         // when oppositeIsClient = false
         public bool oppositeIsService => !this.oppositeIsClient;
 
-        public ServiceTypeAndId? serviceTypeAndId;
-
         public abstract bool IsConnecting();
         public abstract bool IsConnected();
         public abstract bool IsClosed();
-        public bool remoteWillShutdown;
 
         public bool sending;
 

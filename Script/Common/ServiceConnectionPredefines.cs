@@ -19,13 +19,13 @@ namespace Script
         async Task<MyResponse<Res>> SendToService<Msg, Res>(ServiceType serviceType, MsgType type, Msg msg)
             where Res : class
         {
-            ProtocolClientData? socket = this.self.tcpClientScript.RandomOtherServiceSocket(serviceType);
-            if (socket == null)
+            IConnection? connection = this.self.tcpClientScript.RandomOtherServiceConnection(serviceType);
+            if (connection == null)
             {
                 return new MyResponse<Res>(ECode.Server_NotConnected, null);
             }
 
-            return await socket.Request<Msg, Res>(type, msg);
+            return await connection.Request<Msg, Res>(type, msg);
         }
 
         public async Task<MyResponse<Res>> Send<Msg, Res>(MsgType msgType, Msg msg)
@@ -74,13 +74,13 @@ namespace Script
         public async Task<MyResponse<Res>> Send<Msg, Res>(int serviceId, MsgType msgType, Msg msg)
             where Res : class
         {
-            ProtocolClientData? socket = this.self.data.GetOtherServiceSocket(serviceId);
-            if (socket == null || !socket.IsConnected())
+            IConnection? connection = this.self.data.GetOtherServiceConnection(serviceId);
+            if (connection == null || !connection.IsConnected())
             {
                 return new MyResponse<Res>(ECode.Server_NotConnected, null);
             }
 
-            return await socket.Request<Msg, Res>(msgType, msg);
+            return await connection.Request<Msg, Res>(msgType, msg);
         }
 
         public async Task<MyResponse<Res>> SendToAll<Msg, Res>(MsgType msgType, Msg msg) where Res : class
@@ -105,13 +105,13 @@ namespace Script
         public async Task<MyResponse<Res>> RequestToService<Msg, Res>(int serviceId, MsgType msgType, Msg msg)
             where Res : class, new()
         {
-            ProtocolClientData? socket = this.self.data.GetOtherServiceSocket(serviceId);
-            if (socket == null || !socket.IsConnected())
+            IConnection? connection = this.self.data.GetOtherServiceConnection(serviceId);
+            if (connection == null || !connection.IsConnected())
             {
                 return new MyResponse<Res>(ECode.Server_NotConnected, null);
             }
 
-            return await socket.Request<Msg, Res>(msgType, msg);
+            return await connection.Request<Msg, Res>(msgType, msg);
         }
     }
 

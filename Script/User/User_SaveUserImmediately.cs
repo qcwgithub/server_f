@@ -11,7 +11,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._User_SaveUserImmediately;
 
-        public override async Task<ECode> Handle(ProtocolClientData socket, MsgSaveUser msg, ResSaveUser res)
+        public override async Task<ECode> Handle(IConnection connection, MsgSaveUser msg, ResSaveUser res)
         {
             var r = await this.service.connectToSelf.Request<MsgSaveUser, ResSaveUser>(MsgType._User_SaveUser, msg);
             return r.e;

@@ -13,7 +13,7 @@ namespace Script
 
 
         public override MsgType msgType => MsgType._ReloadScript;
-        public override async Task<ECode> Handle(ProtocolClientData socket, MsgReloadScript msg, ResReloadScript res)
+        public override async Task<ECode> Handle(IConnection connection, MsgReloadScript msg, ResReloadScript res)
         {
             // if (this.server.data.state != ServerState.Started)
             // {

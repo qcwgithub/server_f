@@ -31,7 +31,7 @@ namespace Script
         }
 
         public List<MsgType> recentMsgTypes = new List<MsgType>();
-        protected virtual void BeforeHandle(ProtocolClientData socket, MsgType type, object msg)
+        protected virtual void BeforeHandle(IConnection connection, MsgType type, object msg)
         {
             if (this.recentMsgTypes.Count > 10000)
             {
@@ -52,7 +52,7 @@ namespace Script
             this.recentMsgTypes.Clear();
         }
 
-        protected virtual void BeforePostHandle(ProtocolClientData socket, MsgType type, object msg, ECode e, object res)
+        protected virtual void BeforePostHandle(IConnection connection, MsgType type, object msg, ECode e, object res)
         {
 
         }
@@ -77,7 +77,7 @@ namespace Script
             return string.Join(", ", list.Select(x => x.Item1.ToString() + "*" + x.Item2));
         }
 
-        public async Task<MyResponse<Res>> DispatchLocal<Msg, Res>(ProtocolClientData socket, MsgType msgType, Msg msg)
+        public async Task<MyResponse<Res>> DispatchLocal<Msg, Res>(IConnection connection, MsgType msgType, Msg msg)
             where Res : class
         {
             IHandler? handler = this.GetHandler(msgType);
@@ -87,11 +87,11 @@ namespace Script
                 return new MyResponse<Res>(ECode.Error, null);
             }
 
-            (ECode e, object res) = await this.DispatchImpl(socket, handler, msgType, msg);
+            (ECode e, object res) = await this.DispatchImpl(connection, handler, msgType, msg);
             return new MyResponse<Res>(e, (Res)res);
         }
 
-        public async Task<(ECode, byte[])> DispatchNetwork(ProtocolClientData socket, MsgType msgType, ArraySegment<byte> msgData)
+        public async Task<(ECode, byte[])> DispatchNetwork(IConnection connection, MsgType msgType, ArraySegment<byte> msgData)
         {
             IHandler? handler = this.GetHandler(msgType);
             if (handler == null)
@@ -101,13 +101,13 @@ namespace Script
             }
 
             object msg = handler.DeserializeMsg(msgData);
-            (ECode e, object res) = await this.DispatchImpl(socket, handler, msgType, msg);
+            (ECode e, object res) = await this.DispatchImpl(connection, handler, msgType, msg);
 
             byte[] resBytes = handler.SerializeRes(res);
             return (e, resBytes);
         }
 
-        async Task<(ECode, object)> DispatchImpl(ProtocolClientData socket, IHandler handler, MsgType type, object msg)
+        async Task<(ECode, object)> DispatchImpl(IConnection connection, IHandler handler, MsgType type, object msg)
         {
             if (this.service.detached)
             {
@@ -133,32 +133,32 @@ namespace Script
             }
             try
             {
-                if (socket != null && socket.msgProcessing != 0 && !type.CanParallel())
+                if (connection != null && connection.msgProcessing != 0 && !type.CanParallel())
                 {
                     // 消息处理中
                     e = ECode.MsgProcessing;
-                    this.service.logger.ErrorFormat("MsgType.{0} wait MsgType.{1}", type, (MsgType)socket.msgProcessing);
+                    this.service.logger.ErrorFormat("MsgType.{0} wait MsgType.{1}", type, (MsgType)connection.msgProcessing);
                 }
                 else
                 {
-                    if (socket != null && !type.CanParallel())
+                    if (connection != null && !type.CanParallel())
                     {
-                        socket.msgProcessing = (int)type;
+                        connection.msgProcessing = (int)type;
                     }
 
-                    this.BeforeHandle(socket, type, msg);
-                    (e, res) = await handler.Handle(socket, msg);
+                    this.BeforeHandle(connection, type, msg);
+                    (e, res) = await handler.Handle(connection, msg);
 
                     if (e != ECode.Success && type.LogErrorIfNotSuccess())
                     {
-                        if (socket.userId != 0)
+                        if (connection.userId != 0)
                         {
-                            this.service.logger.ErrorFormat("{0} playerId {1} ECode.{2}", type, socket.userId, e);
+                            this.service.logger.ErrorFormat("{0} playerId {1} ECode.{2}", type, connection.userId, e);
                         }
                         else
                         {
-                            // 已知 oldSocket 会走到这，不是错误
-                            this.service.logger.InfoFormat("{0} lastPlayerId {1} ECode.{2}", type, socket.lastUserId, e);
+                            // 已知 oldConnection 会走到这，不是错误
+                            this.service.logger.InfoFormat("{0} lastPlayerId {1} ECode.{2}", type, connection.lastUserId, e);
                         }
                     }
                 }
@@ -171,13 +171,13 @@ namespace Script
 
             try
             {
-                if (socket != null)
+                if (connection != null)
                 {
-                    socket.msgProcessing = 0;
+                    connection.msgProcessing = 0;
                 }
                 this.service.data.RemoveFromBusyList(busyIndex);
-                this.BeforePostHandle(socket, type, msg, e, res);
-                (e, res) = handler.PostHandle(socket, msg, e, res);
+                this.BeforePostHandle(connection, type, msg, e, res);
+                (e, res) = handler.PostHandle(connection, msg, e, res);
                 return (e, res);
             }
             catch (Exception ex)

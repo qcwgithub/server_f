@@ -163,7 +163,7 @@ namespace Script
             //    at MongoDB.Driver.MongoCollectionImpl`1.UsingImplicitSessionAsync[TResult](Func`2 funcAsync, CancellationToken cancellationToken)
             //    at collection_player.QueryById(Int32 playerId) in D:\Code\pkcastles_trunk\server\Script\DBPlayer\collection_player.cs:line 53
             //    at Script.DBQueryPlayerById.Handle(TcpClientData socket, Object _msg) in D:\Code\pkcastles_trunk\server\Script\DBPlayer\DBQueryPlayerById.cs:line 14
-            //    at Script.MessageDispatcher.Dispatch(ProtocolClientData socket, MsgType type, Object msg, Action`2 reply) in D:\Code\pkcastles_trunk\server\Script\Common\MessageDispatcher.cs:line 107
+            //    at Script.MessageDispatcher.Dispatch(IConnection connection, MsgType type, Object msg, Action`2 reply) in D:\Code\pkcastles_trunk\server\Script\Common\MessageDispatcher.cs:line 107
 
             ConventionPack conventionPack = new ConventionPack { new IgnoreExtraElementsConvention(true) };
             ConventionRegistry.Register("IgnoreExtraElements", conventionPack, type => true);

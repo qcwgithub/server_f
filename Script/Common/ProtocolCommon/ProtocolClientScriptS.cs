@@ -68,39 +68,39 @@ namespace Script
             }
         }
 
-        public async void OnConnectComplete(ProtocolClientData socket, bool success)
+        public async void OnConnectComplete(IConnection connection, bool success)
         {
             if (!success)
             {
-                socket.Close(ProtocolClientData.CloseReason.OnConnectComplete_false);
+                connection.Close(ProtocolClientData.CloseReason.OnConnectComplete_false);
                 return;
             }
 
             MyDebug.Assert(socket.serviceTypeAndId != null);
-            var serviceTypeAndId = socket.serviceTypeAndId.Value;
+            var serviceTypeAndId = connection.serviceTypeAndId.Value;
 
             var msg = new MsgOnConnectComplete();
             msg.to_serviceType = serviceTypeAndId.serviceType;
             msg.to_serviceId = serviceTypeAndId.serviceId;
-            await this.service.dispatcher.DispatchLocal<MsgOnConnectComplete, ResOnConnectComplete>(socket, MsgType._OnConnectComplete, msg);
+            await this.service.dispatcher.DispatchLocal<MsgOnConnectComplete, ResOnConnectComplete>(connection, MsgType._OnConnectComplete, msg);
         }
 
-        public async void OnCloseComplete(ProtocolClientData socket)
+        public async void OnCloseComplete(IConnection connection)
         {
-            var msg = new MsgSocketClose
+            var msg = new MsgConnectionClose
             {
-                isAcceptor = !socket.isConnector,
+                isAcceptor = !connection.isConnector,
                 // isServer = @this.connectedFromServer,
             };
-            await this.service.dispatcher.DispatchLocal<MsgSocketClose, ResSocketClose>(socket, MsgType._OnSocketClose, msg);
+            await this.service.dispatcher.DispatchLocal<MsgConnectionClose, ResConnectionClose>(connection, MsgType._OnConnectionClose, msg);
         }
 
         #region basic access
 
         public bool IsServiceConnected(int serviceId)
         {
-            ProtocolClientData? socket;
-            if (!this.service.data.otherServiceSockets.TryGetValue(serviceId, out socket) || !socket.IsConnected())
+            ServiceConnection? connection;
+            if (!this.service.data.otherServiceConnections.TryGetValue(serviceId, out connection) || !connection.IsConnected())
             {
                 return false;
             }
@@ -108,43 +108,11 @@ namespace Script
         }
         #endregion
 
-        #region bind user
-
-        public void BindUser(ProtocolClientData @this, User user)
-        {
-            if (!user.IsRealPrepareLogin(out MsgPrepareUserLogin? msgPreparePlayerLogin))
-            {
-                MyDebug.Assert(false);
-            }
-
-            user.socket = @this;
-            @this.user = user;
-            @this.userId = user.userId;
-            @this.user_version = msgPreparePlayerLogin!.version;
-            @this.lastUserId = user.userId;
-        }
-
-        public void UnbindUser(ProtocolClientData @this, User user)
-        {
-            user.socket = null;
-            @this.user = null;
-            @this.userId = 0;
-            @this.user_version = string.Empty;
-        }
-
-        public object? GetUser(ProtocolClientData @this)
-        {
-            return @this.user == null ? null : @this.user;
-        }
-
-
-        #endregion
-
         #region send
 
-        public ProtocolClientData? RandomOtherServiceSocket(ServiceType serviceType)
+        public ServiceConnection? RandomOtherServiceConnection(ServiceType serviceType)
         {
-            List<ProtocolClientData> list = this.service.data.otherServiceSockets2[(int)serviceType];
+            List<ServiceConnection> list = this.service.data.otherServiceConnections2[(int)serviceType];
             if (list == null || list.Count == 0)
             {
                 return null;
@@ -170,25 +138,25 @@ namespace Script
         public async Task<MyResponse<Res>> SendToAllService<Msg, Res>(ServiceType serviceType, MsgType type, Msg msg)
             where Res : class
         {
-            List<ProtocolClientData> list = this.service.data.otherServiceSockets2[(int)serviceType];
+            List<ServiceConnection> list = this.service.data.otherServiceConnections2[(int)serviceType];
             if (list == null || list.Count == 0)
             {
                 return new MyResponse<Res>(ECode.Server_NotConnected, null);
             }
 
-            ProtocolClientData[] copy = list.ToArray();
+            ServiceConnection[] copy = list.ToArray();
 
             byte[] bytes = this.server.messageSerializer.Serialize<Msg>(msg);
             MyResponse<Res>? r = null;
 
-            foreach (var socket in copy)
+            foreach (var connection in copy)
             {
-                if (socket != null && socket.IsConnected())
+                if (connection != null && connection.IsConnected())
                 {
-                    r = await socket.Request<Msg, Res>(type, bytes);
+                    r = await connection.Request<Msg, Res>(type, bytes);
                     if (r.e == ECode.Server_Timeout)
                     {
-                        this.service.logger.ErrorFormat("send {0} to {1} Timeout", type.ToString(), socket.serviceTypeAndId.Value.ToString());
+                        this.service.logger.ErrorFormat("send {0} to {1} Timeout", type.ToString(), connection.serviceTypeAndId.Value.ToString());
                     }
                 }
             }
@@ -210,25 +178,25 @@ namespace Script
         {
             var responses = new List<MyResponse<Res>>();
 
-            List<ProtocolClientData> list = this.service.data.otherServiceSockets2[(int)serviceType];
+            List<ServiceConnection> list = this.service.data.otherServiceConnections2[(int)serviceType];
             if (list == null || list.Count == 0)
             {
                 return responses;
             }
 
-            ProtocolClientData[] copy = list.ToArray();
+            ServiceConnection[] copy = list.ToArray();
 
             byte[] bytes = this.server.messageSerializer.Serialize<Msg>(msg);
 
-            foreach (var socket in copy)
+            foreach (var connection in copy)
             {
-                if (socket != null && socket.IsConnected())
+                if (connection != null && connection.IsConnected())
                 {
-                    var r = await socket.Request<Msg, Res>(type, bytes);
+                    var r = await connection.Request<Msg, Res>(type, bytes);
                     responses.Add(r);
                     if (r.e == ECode.Server_Timeout)
                     {
-                        this.service.logger.ErrorFormat("send {0} to {1} Timeout", type.ToString(), socket.serviceTypeAndId.Value.ToString());
+                        this.service.logger.ErrorFormat("send {0} to {1} Timeout", type.ToString(), connection.serviceTypeAndId.Value.ToString());
                     }
                 }
             }

@@ -11,9 +11,9 @@ namespace Script
         {
         }
 
-        public override async Task<ECode> Handle(ProtocolClientData socket, MsgReloadConfigs msg, ResReloadConfigs res)
+        public override async Task<ECode> Handle(IConnection connection, MsgReloadConfigs msg, ResReloadConfigs res)
         {
-            ECode e = await base.Handle(socket, msg, res);
+            ECode e = await base.Handle(connection, msg, res);
             if (e != ECode.Success)
             {
                 return e;

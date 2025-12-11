@@ -13,7 +13,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._User_PrepareUserLogin;
 
-        public override async Task<ECode> Handle(ProtocolClientData socket, MsgPrepareUserLogin msg, ResPrepareUserLogin res)
+        public override async Task<ECode> Handle(IConnection connection, MsgPrepareUserLogin msg, ResPrepareUserLogin res)
         {
             long userId = msg.userId;
 
@@ -38,10 +38,10 @@ namespace Script
                     return ECode.UserDestroying;
                 }
 
-                var oldSocket = user.socket;
-                if (user.socket != null)
+                var oldConnection = user.connection;
+                if (user.connection != null)
                 {
-                    User_UserLogin.HandleOldSocket(this.service, user);
+                    User_UserLogin.HandleOldConnection(this.service, user);
                 }
             }
 
