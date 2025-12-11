@@ -56,7 +56,7 @@ namespace Script
         string GetArg_Action()
         {
             var args = this.server.data.arguments;
-            string action;
+            string? action;
             if (!args.TryGetValue("action", out action))
             {
                 throw new Exception("missing action");

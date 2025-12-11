@@ -27,17 +27,17 @@ namespace Script
     }
     class CustomBsonSerializationProvider : IBsonSerializationProvider
     {
-        ConcurrentDictionary<Type, IBsonSerializer> cache = new ConcurrentDictionary<Type, IBsonSerializer>();
-        IBsonSerializer CacheAndReturn(Type type, IBsonSerializer serializer)
+        ConcurrentDictionary<Type, IBsonSerializer?> cache = new ConcurrentDictionary<Type, IBsonSerializer?>();
+        IBsonSerializer? CacheAndReturn(Type type, IBsonSerializer? serializer)
         {
             this.cache[type] = serializer;
             return serializer;
         }
 
         // 此函数会从另一个线程调用过来
-        public IBsonSerializer GetSerializer(Type type)
+        public IBsonSerializer? GetSerializer(Type type)
         {
-            if (this.cache.TryGetValue(type, out IBsonSerializer serializer))
+            if (this.cache.TryGetValue(type, out IBsonSerializer? serializer))
             {
                 return serializer;
             }
@@ -75,7 +75,7 @@ namespace Script
                 type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
             {
                 Type keyType = type.GetGenericArguments()[0];
-                IBsonSerializer keySerializer = null;
+                IBsonSerializer? keySerializer = null;
 
                 if (keyType == typeof(int))
                 {

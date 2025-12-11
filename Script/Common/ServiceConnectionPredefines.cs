@@ -19,7 +19,7 @@ namespace Script
         async Task<MyResponse<Res>> SendToService<Msg, Res>(ServiceType serviceType, MsgType type, Msg msg)
             where Res : class
         {
-            ProtocolClientData socket = this.self.tcpClientScript.RandomOtherServiceSocket(serviceType);
+            ProtocolClientData? socket = this.self.tcpClientScript.RandomOtherServiceSocket(serviceType);
             if (socket == null)
             {
                 return new MyResponse<Res>(ECode.Server_NotConnected, null);
