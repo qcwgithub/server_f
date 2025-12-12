@@ -52,8 +52,11 @@ namespace Data
         // 只存 Normal -> Normal 和 Group -> Group
         public Dictionary<int, ServiceConnection> otherServiceConnections = new Dictionary<int, ServiceConnection>();
         public List<ServiceConnection>[] otherServiceConnections2 = new List<ServiceConnection>[(int)ServiceType.Count];
-        public void SetOtherServiceConnection(ServiceType serviceType, int serviceId, ServiceConnection connection)
+        public void SaveOtherServiceConnection(ServiceConnection connection)
         {
+            ServiceType serviceType = connection.serviceTypeAndId.Value.serviceType;
+            int serviceId = connection.serviceTypeAndId.Value.serviceId;
+
             {
                 if (this.otherServiceConnections.TryGetValue(serviceId, out ServiceConnection? old))
                 {
@@ -73,7 +76,6 @@ namespace Data
             }
 
             this.otherServiceConnections[serviceId] = connection;
-            connection.serviceTypeAndId = new ServiceTypeAndId { serviceType = serviceType, serviceId = serviceId };
 
             var list = this.otherServiceConnections2[(int)serviceType];
             if (list == null)

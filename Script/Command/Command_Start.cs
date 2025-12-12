@@ -220,7 +220,7 @@ namespace Script
 
                 int serviceId = tai.serviceId;
                 ServiceConfig sc = this.service.data.current_resGetServiceConfigs.FindServiceConfig(tai.serviceType, tai.serviceId);
-                IConnection connection = this.service.GetOrConnectConnection(sc.serviceType, sc.serviceId, sc.inIp, sc.inPort);
+                IConnection connection = this.service.GetServiceConnectionOrConnect(sc.serviceType, sc.serviceId, sc.inIp, sc.inPort);
 
                 while (connection.IsConnecting())
                 {
@@ -459,7 +459,7 @@ namespace Script
                 return ECode.Success;
             }
 
-            IConnection connection = this.service.GetOrConnectConnection(sc.serviceType, sc.serviceId, sc.inIp, sc.inPort);
+            IConnection connection = this.service.GetServiceConnectionOrConnect(sc.serviceType, sc.serviceId, sc.inIp, sc.inPort);
             while (connection.IsConnecting())
             {
                 await Task.Delay(1);

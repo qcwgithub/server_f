@@ -1,14 +1,10 @@
-
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Data;
 
 namespace Script
 {
-    public class User_OnSocketClose : OnSocketClose<UserService>
+    public class User_OnConnectionClose : OnConnectionClose<UserService>
     {
-        public User_OnSocketClose(Server server, UserService service) : base(server, service)
+        public User_OnConnectionClose(Server server, UserService service) : base(server, service)
         {
         }
 
@@ -22,9 +18,9 @@ namespace Script
             //     return ECode.Success;
             // }
 
-            if (connection.oppositeIsClient)
+            if (connection is UserConnection userConnection)
             {
-                var user = (User?)this.service.tcpClientScript.GetUser(connection);
+                User? user = userConnection.GetUser();
                 if (user == null)
                 {
                     return ECode.Success;
@@ -34,7 +30,8 @@ namespace Script
 
                 if (user.connection != null)
                 {
-                    this.service.tcpClientScript.UnbindUser(user.connection, user);
+                    user.connection.UnbindUser();
+                    user.connection = null;
                 }
 
                 long nowS = TimeUtils.GetTimeS();

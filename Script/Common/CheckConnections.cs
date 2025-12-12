@@ -30,7 +30,7 @@ namespace Script
                         return;
                     }
 
-                    this.service.GetOrConnectConnection(sc.serviceType, sc.serviceId, sc.inIp, sc.inPort);
+                    this.service.GetServiceConnectionOrConnect(sc.serviceType, sc.serviceId, sc.inIp, sc.inPort);
                 });
             }
 

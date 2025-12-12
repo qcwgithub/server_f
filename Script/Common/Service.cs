@@ -40,7 +40,7 @@ namespace Script
             this.dispatcher.AddHandler(new OnConnectorInfo<S>(this.server, (S)this));
             this.dispatcher.AddHandler(new OnResGetServiceConfigs<S>(this.server, (S)this));
             this.dispatcher.AddHandler(new OnGetConnectedInfos<S>(this.server, (S)this));
-            this.dispatcher.AddHandler(new OnSocketClose<S>(this.server, (S)this));
+            this.dispatcher.AddHandler(new OnConnectionClose<S>(this.server, (S)this));
             this.dispatcher.AddHandler(new OnReloadScript<S>(this.server, (S)this));
             this.dispatcher.AddHandler(new OnReloadConfigs<S>(this.server, (S)this));
             this.dispatcher.AddHandler(new OnGetReloadConfigOptions<S>(this.server, (S)this));
@@ -125,14 +125,15 @@ namespace Script
             this.dispatcher.OnFps(fps);
         }
 
-        public virtual IConnection GetOrConnectConnection(ServiceType to_serviceType, int to_serviceId, string inIp, int inPort)
+        public virtual ServiceConnection GetServiceConnectionOrConnect(ServiceType to_serviceType, int to_serviceId, string inIp, int inPort)
         {
-            IConnection? connection;
+            ServiceConnection? connection;
             if (!data.otherServiceConnections.TryGetValue(to_serviceId, out connection) || connection.IsClosed())
             {
-                connection = new TcpClientData();
-                ((TcpClientData)connection).ConnectorInit(this.data, inIp, inPort);
-                data.SetOtherServiceConnection(to_serviceType, to_serviceId, connection);
+                ProtocolClientData socket = this.tcpClientScript.CreateConnector(this.data, inIp, inPort);
+
+                connection = new ServiceConnection(to_serviceType, to_serviceId, socket);
+                data.SaveOtherServiceConnection(connection);
             }
 
             if (!connection.IsConnected() && !connection.IsConnecting())
@@ -149,7 +150,7 @@ namespace Script
         {
             var location = this.server.data.globalServiceLocation;
 
-            IConnection connection = this.GetOrConnectConnection(ServiceType.Global, location.serviceId, location.inIp, location.inPort);
+            IConnection connection = this.GetServiceConnectionOrConnect(ServiceType.Global, location.serviceId, location.inIp, location.inPort);
             if (connection == null || !connection.IsConnected())
             {
                 return null;

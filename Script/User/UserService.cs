@@ -41,7 +41,7 @@ namespace Script
             this.dispatcher.AddHandler(new User_Action(this.server, this));
             this.dispatcher.AddHandler(new User_SaveProfileToFile(this.server, this));
             this.dispatcher.AddHandler(new User_DestroyUser(this.server, this));
-            this.dispatcher.AddHandler(new User_OnSocketClose(this.server, this));
+            this.dispatcher.AddHandler(new User_OnConnectionClose(this.server, this));
             this.dispatcher.AddHandler(new User_SaveUser(this.server, this));
             this.dispatcher.AddHandler(new User_SaveUserImmediately(this.server, this));
             this.dispatcher.AddHandler(new User_SetGmFlag(this.server, this));

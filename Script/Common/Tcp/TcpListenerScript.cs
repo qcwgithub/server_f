@@ -85,6 +85,9 @@ namespace Script
 
             tcpClientData.AcceptorInit(this.service.data, socket, tcpListener.isForClient);
 
+            var serviceConnection = new ServiceConnection(tcpClientData);
+            tcpClientData.customData = serviceConnection;
+
             // var msg = new MsgOnConnect { isAcceptor = tcpClientData.isAcceptor };
             // this.service.RawDispatch(tcpClientData, MsgType._OnSocketConnect, msg, null);
 

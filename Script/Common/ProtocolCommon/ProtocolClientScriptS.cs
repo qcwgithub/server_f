@@ -9,6 +9,13 @@ namespace Script
         {
         }
 
+        public ProtocolClientData CreateConnector(IProtocolClientCallbackProvider callbackProvider, string ip, int port)
+        {
+            var socket = new TcpClientData();
+            socket.ConnectorInit(callbackProvider, ip, port);
+            return socket;
+        }
+
         public IMessagePacker GetMessagePacker()
         {
             return this.server.messagePacker;
@@ -16,26 +23,12 @@ namespace Script
 
         public void LogError(ProtocolClientData data, string str)
         {
-            if (data.userId > 0)
-            {
-                this.service.logger.Error($"userId ({data.userId}) version ({data.user_version}) {str}");
-            }
-            else
-            {
-                this.service.logger.Error(str);
-            }
+            this.service.logger.Error(str);
         }
 
         public void LogError(ProtocolClientData data, string str, Exception ex)
         {
-            if (data.userId > 0)
-            {
-                this.service.logger.Error($"userId ({data.userId}) version ({data.user_version}) {str}", ex);
-            }
-            else
-            {
-                this.service.logger.Error(str, ex);
-            }
+            this.service.logger.Error(str, ex);
         }
 
         public void LogInfo(ProtocolClientData data, string str)
@@ -61,37 +54,39 @@ namespace Script
 
         public async void DispatchNetwork(ProtocolClientData data, int seq, MsgType msgType, ArraySegment<byte> msgBytes, Action<ECode, byte[]>? reply)
         {
-            (ECode e, byte[] resBytes) = await this.service.dispatcher.DispatchNetwork(data, msgType, msgBytes);
+            var connection = (ServiceConnection)data.customData;
+
+            (ECode e, byte[] resBytes) = await this.service.dispatcher.DispatchNetwork(connection, msgType, msgBytes);
             if (reply != null)
             {
                 reply(e, resBytes);
             }
         }
 
-        public async void OnConnectComplete(IConnection connection, bool success)
+        public async void OnConnectComplete(ProtocolClientData data, bool success)
         {
             if (!success)
             {
-                connection.Close(ProtocolClientData.CloseReason.OnConnectComplete_false);
+                data.Close(ProtocolClientData.CloseReason.OnConnectComplete_false);
                 return;
             }
 
-            MyDebug.Assert(socket.serviceTypeAndId != null);
-            var serviceTypeAndId = connection.serviceTypeAndId.Value;
+            var connection = (ServiceConnection)data.customData;
 
             var msg = new MsgOnConnectComplete();
-            msg.to_serviceType = serviceTypeAndId.serviceType;
-            msg.to_serviceId = serviceTypeAndId.serviceId;
             await this.service.dispatcher.DispatchLocal<MsgOnConnectComplete, ResOnConnectComplete>(connection, MsgType._OnConnectComplete, msg);
         }
 
-        public async void OnCloseComplete(IConnection connection)
+        public async void OnCloseComplete(ProtocolClientData data)
         {
-            var msg = new MsgConnectionClose
+            if (data.customData == null)
             {
-                isAcceptor = !connection.isConnector,
-                // isServer = @this.connectedFromServer,
-            };
+                return;
+            }
+
+            var connection = (ServiceConnection)data.customData;
+
+            var msg = new MsgConnectionClose();
             await this.service.dispatcher.DispatchLocal<MsgConnectionClose, ResConnectionClose>(connection, MsgType._OnConnectionClose, msg);
         }
 

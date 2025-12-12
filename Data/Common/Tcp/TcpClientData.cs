@@ -67,7 +67,6 @@ namespace Data
             this.connected = false;
             this.sending = false;
             this.closed = false;
-            this.remoteWillShutdown = false;
         }
 
         public void AcceptorInit(IProtocolClientCallbackProvider callbackProvider, Socket socket, bool connectedFromClient)
@@ -90,7 +89,6 @@ namespace Data
             this.connected = true;
             this.sending = false;
             this.closed = false;
-            this.remoteWillShutdown = false;
 
             this.PerformRecv();
             this.PerformSend();

@@ -131,19 +131,21 @@ namespace Script
                 this.service.data.lastErrorBusyCount = this.service.data.busyCount;
                 this.service.logger.ErrorFormat("busyCount {0} detail: {1}", this.service.data.busyCount, this.FormatBusyList(this.service.data.busyList));
             }
+            
+            var userConnection = connection as UserConnection;
             try
             {
-                if (connection != null && connection.msgProcessing != 0 && !type.CanParallel())
+                if (userConnection != null && userConnection.msgProcessing != 0 && !type.CanParallel())
                 {
                     // 消息处理中
                     e = ECode.MsgProcessing;
-                    this.service.logger.ErrorFormat("MsgType.{0} wait MsgType.{1}", type, (MsgType)connection.msgProcessing);
+                    this.service.logger.ErrorFormat("MsgType.{0} wait MsgType.{1}", type, userConnection.msgProcessing);
                 }
                 else
                 {
-                    if (connection != null && !type.CanParallel())
+                    if (userConnection != null && !type.CanParallel())
                     {
-                        connection.msgProcessing = (int)type;
+                        userConnection.msgProcessing = type;
                     }
 
                     this.BeforeHandle(connection, type, msg);
@@ -151,14 +153,22 @@ namespace Script
 
                     if (e != ECode.Success && type.LogErrorIfNotSuccess())
                     {
-                        if (connection.userId != 0)
+                        if (userConnection != null)
                         {
-                            this.service.logger.ErrorFormat("{0} playerId {1} ECode.{2}", type, connection.userId, e);
+                            if (userConnection.userId != 0)
+                            {
+                                this.service.logger.ErrorFormat("{0} playerId {1} ECode.{2}", type, userConnection.userId, e);
+                            }
+                            else
+                            {
+                                // 已知 oldConnection 会走到这，不是错误
+                                this.service.logger.InfoFormat("{0} lastUserId {1} ECode.{2}", type, userConnection.lastUserId, e);   
+                            }
                         }
                         else
                         {
                             // 已知 oldConnection 会走到这，不是错误
-                            this.service.logger.InfoFormat("{0} lastPlayerId {1} ECode.{2}", type, connection.lastUserId, e);
+                            this.service.logger.InfoFormat("{0} ECode.{1}", type, e);   
                         }
                     }
                 }
@@ -171,9 +181,9 @@ namespace Script
 
             try
             {
-                if (connection != null)
+                if (userConnection != null)
                 {
-                    connection.msgProcessing = 0;
+                    userConnection.msgProcessing = 0;
                 }
                 this.service.data.RemoveFromBusyList(busyIndex);
                 this.BeforePostHandle(connection, type, msg, e, res);

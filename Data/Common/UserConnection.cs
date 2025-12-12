@@ -2,61 +2,78 @@ namespace Data
 {
     public class UserConnection : IConnection
     {
-        void IConnection.Close(string reason)
+        public int GetConnectionId()
         {
             throw new NotImplementedException();
         }
 
-        void IConnection.Connect()
+        public void Connect()
         {
             throw new NotImplementedException();
         }
 
-        int IConnection.GetConnectionId()
+        public bool IsConnecting()
         {
             throw new NotImplementedException();
         }
 
-        bool IConnection.IsClosed()
+        public bool IsConnected()
+        {
+            throw new NotImplementedException();
+        }
+    
+        public void Close(string reason)
         {
             throw new NotImplementedException();
         }
 
-        bool IConnection.IsConnected()
+        public bool IsClosed()
         {
             throw new NotImplementedException();
         }
 
-        bool IConnection.IsConnecting()
+        public string? closeReason
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public void SendBytes(MsgType msgType, byte[] msg, Action<ECode, ArraySegment<byte>>? cb, int? pTimeoutS)
         {
             throw new NotImplementedException();
         }
 
-        public void BindUser(IConnection connection, User user)
+        public User? user;
+        public long userId;
+        public string? user_version;
+        public long lastUserId;
+        public MsgType msgProcessing;
+
+        public void BindUser(User user)
         {
             if (!user.IsRealPrepareLogin(out MsgPrepareUserLogin? msgPreparePlayerLogin))
             {
                 MyDebug.Assert(false);
             }
 
-            user.connection = connection;
-            connection.user = user;
-            connection.userId = user.userId;
-            connection.user_version = msgPreparePlayerLogin!.version;
-            connection.lastUserId = user.userId;
+            this.user = user;
+            this.userId = user.userId;
+            this.user_version = msgPreparePlayerLogin!.version;
+            this.lastUserId = user.userId;
         }
 
-        public void UnbindUser(IConnection connection, User user)
+        public void UnbindUser()
         {
-            user.connection = null;
-            connection.user = null;
-            connection.userId = 0;
-            connection.user_version = string.Empty;
+            this.user = null;
+            this.userId = 0;
+            this.user_version = string.Empty;
         }
 
-        public object? GetUser(IConnection connetion)
+        public User? GetUser()
         {
-            return connetion.user == null ? null : connetion.user;
+            return this.user;
         }
     }
 }

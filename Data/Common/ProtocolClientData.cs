@@ -10,7 +10,7 @@ namespace Data
         // public CancellationTokenSource source;
     }
 
-    public abstract class ProtocolClientData : IConnection
+    public abstract class ProtocolClientData
     {
         public static MsgType MsgType_ClientStart
         {
@@ -53,11 +53,7 @@ namespace Data
         public int socketId;
         public int GetSocketId() => this.socketId;
 
-        // when isAcceptor == true
         public bool oppositeIsClient;
-
-        // when oppositeIsClient = false
-        public bool oppositeIsService => !this.oppositeIsClient;
 
         public abstract bool IsConnecting();
         public abstract bool IsConnected();
@@ -65,14 +61,8 @@ namespace Data
 
         public bool sending;
 
+        public object? customData; // UserConnection etc.
 
-        // when isConnectedFromClient == true
-        public object? user;
-        public long userId;
-        public string? user_version;
-        public long lastUserId;
-
-        public int msgProcessing;
         public Dictionary<int, stWaitingResponse> waitingResponseDict = new Dictionary<int, stWaitingResponse>();
 
         public abstract System.Net.EndPoint RemoteEndPoint { get; }

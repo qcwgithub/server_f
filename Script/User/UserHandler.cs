@@ -17,8 +17,12 @@ namespace Script
 
         public User? GetUser(IConnection connection)
         {
-            object obj = this.service.tcpClientScript.GetUser(connection);
-            return (obj == null ? null : (User)obj);
+            if (connection is UserConnection userConnection)
+            {
+                return userConnection.GetUser();
+            }
+
+            return null;
         }
     }
 }

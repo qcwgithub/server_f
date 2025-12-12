@@ -13,7 +13,7 @@ namespace Script
 
         public static void HandleOldConnection(Service service, User user)
         {
-            IConnection? oldConnection = user.connection;
+            UserConnection? oldConnection = user.connection;
             if (oldConnection == null)
             {
                 return;
@@ -21,9 +21,10 @@ namespace Script
 
             // 情况1 同一个客户端意外地登录2次
             // 情况2 客户端A已经登录，B再登录
-            service.logger.InfoFormat("2 userId: {0}, ECode.OldConnection oldConnection: {1}, kick oldConnection.", user.userId, oldConnection.GetSocketId());
+            service.logger.InfoFormat("2 userId: {0}, ECode.OldConnection oldConnectionId: {1}, kick oldConnection.", user.userId, oldConnection.GetConnectionId());
 
-            service.tcpClientScript.UnbindUser(oldConnection, user);
+            user.connection = null;
+            oldConnection.UnbindUser();
 
             // 给客户端发消息...
             if (oldConnection.IsConnected())
@@ -65,6 +66,8 @@ namespace Script
 
         public override async Task<ECode> Handle(IConnection connection, MsgUserLogin msg, ResUserLogin res)
         {
+            var userConnection = (UserConnection)connection;
+
             string message0 = string.Format("{0} userId {1} preCount {2}", this.msgType, msg.userId, this.usData.userDict.Count);
 
             if (this.service.data.state != ServiceState.Started)
@@ -124,7 +127,7 @@ namespace Script
                 HandleOldConnection(this.service, user);
             }
 
-            var oldUser = this.GetUser(connection);
+            var oldUser = this.GetUser(userConnection);
             if (oldUser != null)
             {
                 // 这个分支都没走过
@@ -142,7 +145,8 @@ namespace Script
                 this.usScript.ClearDestroyTimer(user, true);
             }
 
-            this.service.tcpClientScript.BindUser(connection, user);
+            user.connection = userConnection;
+            userConnection.BindUser(user);
 
             long nowS = TimeUtils.GetTimeS();
             user.onlineTimeS = nowS;

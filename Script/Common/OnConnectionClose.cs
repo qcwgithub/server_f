@@ -3,17 +3,17 @@ using Data;
 
 namespace Script
 {
-    public class OnSocketClose<S> : Handler<S, MsgConnectionClose, ResConnectionClose>
+    public class OnConnectionClose<S> : Handler<S, MsgConnectionClose, ResConnectionClose>
         where S : Service
     {
-        public OnSocketClose(Server server, S service) : base(server, service)
+        public OnConnectionClose(Server server, S service) : base(server, service)
         {
         }
 
 
         public override MsgType msgType => MsgType._OnConnectionClose;
 
-        void LogServerDisconnect(IConnection connection)
+        void LogServerDisconnect(ServiceConnection connection)
         {
             var self = this.service.data.serviceTypeAndId;
             var remote = connection.serviceTypeAndId.Value;
@@ -32,9 +32,10 @@ namespace Script
 
         public override async Task<ECode> Handle(IConnection connection, MsgConnectionClose msg, ResConnectionClose res)
         {
-            if (connection.serviceTypeAndId != null)
+            var serviceConnection = connection as ServiceConnection;
+            if (serviceConnection != null)
             {
-                this.LogServerDisconnect(connection);
+                this.LogServerDisconnect(serviceConnection);
             }
 
             var sd = this.service.data;

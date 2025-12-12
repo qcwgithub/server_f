@@ -30,7 +30,10 @@ namespace Script
                 this.service.logger.Error(message);
             }
 
-            this.service.data.SetOtherServiceConnection(info.serviceType, info.serviceId, (ServiceConnection)connection);
+            var serviceConnection = (ServiceConnection)connection;
+            serviceConnection.serviceTypeAndId = new ServiceTypeAndId { serviceType = info.serviceType, serviceId = info.serviceId };
+
+            this.service.data.SaveOtherServiceConnection(serviceConnection);
 
             return ECode.Success;
         }

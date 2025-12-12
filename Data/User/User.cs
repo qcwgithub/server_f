@@ -16,7 +16,7 @@ namespace Data
             }
         }
 
-        public IConnection? connection;
+        public UserConnection? connection;
         public bool IsConnected()
         {
             return this.connection != null && this.connection.IsConnected();

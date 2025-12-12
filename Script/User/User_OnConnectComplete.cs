@@ -17,7 +17,8 @@ namespace Script
                 return e;
             }
 
-            if (connection.serviceTypeAndId == null)
+            var serviceConnection = (ServiceConnection)connection;
+            if (serviceConnection.serviceTypeAndId == null)
             {
                 return e;
             }
