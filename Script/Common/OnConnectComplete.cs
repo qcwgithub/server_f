@@ -28,8 +28,6 @@ namespace Script
             msgInfo.connectorInfo = this.service.CreateConnectorInfo();
             await connection.Request<MsgConnectorInfo, ResConnectorInfo>(MsgType._ConnectorInfo, msgInfo);
 
-            // var s = connection;
-            // bool isClient = !msg.isServer;
             return ECode.Success;
         }
     }
