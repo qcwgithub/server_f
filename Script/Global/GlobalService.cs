@@ -73,14 +73,14 @@ namespace Script
 
         async Task InitProfileGlobal()
         {
-            var sd = this.globalServiceData;
+            // var sd = this.globalServiceData;
 
-            sd.profileGlobal = await this.collection_profil_global.Query_ProfileGlobal_all();
-            if (sd.profileGlobal == null)
-            {
-                sd.profileGlobal = new ProfileGlobal();
-                await this.collection_profil_global.Save(sd.profileGlobal);
-            }
+            // sd.profileGlobal = await this.collection_profil_global.Query_ProfileGlobal_all();
+            // if (sd.profileGlobal == null)
+            // {
+            //     sd.profileGlobal = new ProfileGlobal();
+            //     await this.collection_profil_global.Save(sd.profileGlobal);
+            // }
         }
     }
 }

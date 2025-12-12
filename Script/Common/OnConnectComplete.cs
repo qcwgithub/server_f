@@ -7,7 +7,7 @@ using Data;
 namespace Script
 {
     // 连接其他服务器成功
-    public class OnConnectComplete<S> : Handler<S, MsgConnectorInfo, ResConnectorInfo>
+    public class OnConnectComplete<S> : Handler<S, MsgOnConnectComplete, ResOnConnectComplete>
         where S : Service
     {
         public OnConnectComplete(Server server, S service) : base(server, service)
@@ -17,7 +17,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._OnConnectComplete;
 
-        public override async Task<ECode> Handle(IConnection connection, MsgConnectorInfo msg, ResConnectorInfo res)
+        public override async Task<ECode> Handle(IConnection connection, MsgOnConnectComplete msg, ResOnConnectComplete res)
         {
             var serviceConnection = (ServiceConnection)connection;
 

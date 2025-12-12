@@ -36,7 +36,7 @@ namespace Data
         public readonly bool loggerNameWithServer;
 
         public readonly Dictionary<int, ServiceData> serviceDatas;
-        public List<ServiceTypeAndId> serviceTypeAndIds => this.serviceTypeAndIds;
+        public readonly List<ServiceTypeAndId> serviceTypeAndIds;
         public readonly TimerSData timerSData;
         public Random random = new Random();
 
@@ -153,20 +153,18 @@ namespace Data
                 return;
             }
 
-            List<ServiceTypeAndId> serviceTypeAndIds;
-
             if (servicesStr == "all")
             {
                 List<ServiceConfig> list = ori_allServiceConfigs;
 
-                serviceTypeAndIds = list
+                this.serviceTypeAndIds = list
                     .Select(sc => sc.Tai())
                     .Where(tai => !tai.serviceType.IsCommand())
                     .ToList();
             }
             else
             {
-                serviceTypeAndIds = servicesStr
+                this.serviceTypeAndIds = servicesStr
                     .Split(',')
                     .Select(k => ServiceTypeAndId.FromString(k))
                     .Distinct()
@@ -189,8 +187,8 @@ namespace Data
                 loggerNamesToAdd = new List<string>();
                 releaseModelLogToConsole = new List<bool>();
 
-                loggerNamesToAdd.AddRange(serviceTypeAndIds.Select(tai => tai.ToString()));
-                releaseModelLogToConsole.AddRange(serviceTypeAndIds.Select(tai => tai.serviceType.ReleaseModeLogToConsole()));
+                loggerNamesToAdd.AddRange(this.serviceTypeAndIds.Select(tai => tai.ToString()));
+                releaseModelLogToConsole.AddRange(this.serviceTypeAndIds.Select(tai => tai.serviceType.ReleaseModeLogToConsole()));
             }
 
             this.log4netCreation = new Log4netCreation();
@@ -207,7 +205,7 @@ namespace Data
             this.InitShutdownServiceOrder();
 
             this.serviceDatas = new Dictionary<int, ServiceData>();
-            foreach (ServiceTypeAndId typeAndId in serviceTypeAndIds)
+            foreach (ServiceTypeAndId typeAndId in this.serviceTypeAndIds)
             {
                 ServiceData sd = CreateServiceData(typeAndId);
                 this.serviceDatas.Add(typeAndId.serviceId, sd);

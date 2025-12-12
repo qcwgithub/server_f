@@ -1,10 +1,6 @@
-using System.Collections.Generic;
-using System;
-using System.Linq;
-
 namespace Data
 {
-    public abstract class ServerConfig
+    public class ServerConfig
     {
         public string purpose;
         ////
@@ -103,7 +99,7 @@ namespace Data
             public string mongoDBConn;
             public string dbData;
 
-            public void Init()
+            public void Init(ServerConfig serverConfig)
             {
                 if (string.IsNullOrEmpty(this.mongoDBConn))
                 {
@@ -116,6 +112,8 @@ namespace Data
                     Program.LogStartError("string.IsNullOrEmpty(this.dbData)");
                     return;
                 }
+
+                this.dbData = this.dbData.Replace("{purpose}", serverConfig.purpose);
 
                 if (this.dbData.Contains('{'))
                 {
@@ -131,7 +129,7 @@ namespace Data
             this.generalConfig.Init(this);
             this.feiShuConfig.Init();
             this.redisConfig.Init();
-            this.mongoDBConfig.Init();
+            this.mongoDBConfig.Init(this);
         }
     }
 }

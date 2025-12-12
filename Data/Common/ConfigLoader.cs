@@ -76,15 +76,9 @@ namespace Data
 
         public ServerConfig LoadServerConfig()
         {
-            string file = $"./{ServerConfigDir}/ServerConfig.json";
-            if (File.Exists(file))
-            {
-                ServerConfig serverConfig = this.LoadInServerConfigJson<ServerConfig>("ServerConfig.json");
-                serverConfig.Init();
-                return serverConfig;
-            }
-
-            return null;
+            ServerConfig serverConfig = this.LoadInServerConfigJson<ServerConfig>("ServerConfig.json");
+            serverConfig.Init();
+            return serverConfig;
         }
 
         public const string GMAccountConfigFile = "config/GMAccount.csv";
@@ -214,7 +208,7 @@ namespace Data
 
                 config.outIp = helper.ReadString(nameof(config.outIp));
                 config.outPort = helper.ReadInt(nameof(config.outPort));
-                    
+
                 allServiceConfigs.Add(config);
             }
 

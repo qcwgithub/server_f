@@ -1,0 +1,6 @@
+serviceTypeAndId,inIp,inPort,outIp,outPort
+#,,,GAAA | Player,GAAA | Player
+Command4,localhost,3021,,
+User5,localhost,3022,,
+Db6,localhost,3023,,
+Global7,localhost,3024,,

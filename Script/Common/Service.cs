@@ -6,27 +6,34 @@ namespace Script
     {
         public readonly Server server;
         public readonly int serviceId;
+        public readonly ServiceData data;
+
+        public readonly ConnectToSelf connectToSelf;
+
         public readonly TcpListenerScript tcpListenerScript;
         public readonly ProtocolClientScriptS tcpClientScript;
         public readonly HttpListenerScript httpListenerScript;
         public readonly WebSocketListenerScript webSocketListenerScript;
+
         public readonly MessageDispatcher dispatcher;
-        public readonly ConnectToSelf connectToSelf;
+        
         public readonly Dictionary<ServiceType, ConnectToOtherService> connectToOtherServiceDict;
 
         public Service(Server server, int serviceId)
         {
             this.server = server;
             this.serviceId = serviceId;
+            this.data = this.server.data.serviceDatas[this.serviceId];
 
             this.connectToSelf = new ConnectToSelf(this);
 
             this.tcpListenerScript = new TcpListenerScript(this.server, this);
-            this.tcpClientScript = new ProtocolClientScriptS(this.server, this); ;
+            this.tcpClientScript = new ProtocolClientScriptS(this.server, this);
             this.httpListenerScript = new HttpListenerScript(this.server, this);
             this.webSocketListenerScript = new WebSocketListenerScript(this.server, this);
 
             this.dispatcher = new MessageDispatcher(this.server, this);
+
             this.connectToOtherServiceDict = new Dictionary<ServiceType, ConnectToOtherService>();
         }
 
@@ -56,7 +63,6 @@ namespace Script
             this.dispatcher.AddHandler(new OnViewMongoDumpList<S>(this.server, (S)this));
         }
 
-        public ServiceData data { get; private set; }
         public log4net.ILog logger => this.data.logger;
         protected void AddConnectToOtherService(ConnectToOtherService connectToOtherService)
         {
@@ -64,8 +70,6 @@ namespace Script
         }
         public virtual void Attach()
         {
-            this.data = this.server.data.serviceDatas[this.serviceId];
-
             this.data.tcpClientCallback = this.tcpClientScript;
             this.data.tcpListenerCallback = this.tcpListenerScript;
             this.data.httpListenerCallback = this.httpListenerScript;
@@ -116,7 +120,7 @@ namespace Script
             // 这个不需要unload，等着被换掉
             // this.baseData.scriptProxy = null;
             Console.WriteLine("**** {0}.Detached, V{1}", this.data.serviceTypeAndId.ToString(), this.server.GetScriptDllVersion());
-            this.data = null;
+            // this.data = null;
             this.detached = true;
         }
 

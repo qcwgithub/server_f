@@ -1,0 +1,37 @@
+{
+	"purpose": "test",
+	"generalConfig": {
+		"logDir": "{current}/Logs",
+		"allowClientGM": true,
+		"needCheckClientVersion": false,
+		"allowChannels": [
+			"uuid"
+		]
+	},
+	"networkConfig": {
+		"protocolsForClient": [
+			"wss",
+			"ws",
+			"tcp"
+		]
+	},
+	"redisConfig": {
+		"redisConn": "localhost",
+		"db": 1,
+		"requireMinVersion": "3.0"
+	},
+	"mongoDBConfig": {
+		"mongoDBConn": "mongodb://localhost:27017",
+		"dbData": "{purpose}_user_data"
+	},
+	"feiShuConfig": {
+		"fatal_limitTimeS": 0,
+		"fatal_limitCount": 0,
+		"fatal_webhook": "https://open.feishu.cn/open-apis/bot/v2/hook/48ef32b1-f9d4-49ec-aa5d-14d1585ed27f",
+		"error_limitTimeS": 0,
+		"error_limitCount": 0,
+		"error_webhook": "https://open.feishu.cn/open-apis/bot/v2/hook/f35f8f15-f4c6-4ed7-942e-1856a12fb6ae",
+		"event_enabled": false,
+		"event_webhook": "https://open.feishu.cn/open-apis/bot/v2/hook/d2e74e84-b0e0-4f21-a7e8-8a1fbbd99b45"
+	}
+}
