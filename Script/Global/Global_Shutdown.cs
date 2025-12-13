@@ -1,6 +1,3 @@
-using System.Threading.Tasks;
-using Data;
-
 namespace Script
 {
     public class Global_Shutdown : OnShutdown<GlobalService>
@@ -11,7 +8,7 @@ namespace Script
 
         protected override async Task StopBusinesses()
         {
-            var sd = this.service.globalServiceData;
+            var sd = this.service.sd;
             OnShutdown<Service>.s_ClearTimer(this.server, ref sd.timer_tick_Loop);
         }
     }

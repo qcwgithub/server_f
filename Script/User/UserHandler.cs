@@ -11,18 +11,8 @@ namespace Script
         }
 
 
-        public UserServiceData usData { get { return this.service.sd; } }
+        public UserServiceData sd { get { return this.service.sd; } }
 
         public UserServiceScript usScript { get { return this.service.ss; } }
-
-        public User? GetUser(IConnection connection)
-        {
-            if (connection is UserConnection userConnection)
-            {
-                return userConnection.GetUser();
-            }
-
-            return null;
-        }
     }
 }

@@ -19,44 +19,44 @@ namespace Script
         public override async Task<ECode> Handle(IConnection connection, MsgPSAction msg, ResPSAction res)
         {
             this.logger.Info(this.msgType);
-            UserServiceData usData = this.usData;
+            var sd = this.service.sd;
 
             if (msg.allowNewUser != null)
             {
-                bool pre = usData.allowNewUser;
+                bool pre = sd.allowNewUser;
                 bool curr = msg.allowNewUser.Value;
 
                 this.logger.InfoFormat("allowNewUser {0} -> {1}", pre, curr);
 
                 if (pre != curr)
                 {
-                    usData.allowNewUser = curr;
+                    sd.allowNewUser = curr;
                 }
             }
 
             if (msg.destroyTimeoutS != null)
             {
-                int pre = usData.destroyTimeoutS;
+                int pre = sd.destroyTimeoutS;
                 int curr = msg.destroyTimeoutS.Value;
 
                 this.logger.InfoFormat("destroyTimeoutS {0} -> {1}", pre, curr);
 
                 if (pre != curr)
                 {
-                    usData.destroyTimeoutS = curr;
+                    sd.destroyTimeoutS = curr;
                 }
             }
 
             if (msg.saveIntervalS != null)
             {
-                int pre = usData.saveIntervalS;
+                int pre = sd.saveIntervalS;
                 int curr = msg.saveIntervalS.Value;
 
                 this.logger.InfoFormat("saveIntervalS {0} -> {1}", pre, curr);
 
                 if (pre != curr)
                 {
-                    usData.saveIntervalS = curr;
+                    sd.saveIntervalS = curr;
                 }
             }
 

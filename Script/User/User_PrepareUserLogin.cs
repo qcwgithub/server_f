@@ -28,7 +28,7 @@ namespace Script
                 return ECode.Error;
             }
 
-            User? user = this.usData.GetUser(userId);
+            User? user = this.sd.GetUser(userId);
             if (user != null)
             {
                 if (user.destroying)

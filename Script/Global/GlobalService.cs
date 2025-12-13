@@ -1,13 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Data;
+
 namespace Script
 {
     public class GlobalService : Service
     {
-        public GlobalServiceData globalServiceData
+        public GlobalServiceData sd
         {
             get
             {
@@ -44,7 +41,7 @@ namespace Script
 
         public void FillResGetServiceConfigs(ResGetServiceConfigs res)
         {
-            var sd = this.globalServiceData;
+            var sd = this.sd;
 
             res.purpose = this.server.data.serverConfig.purpose;
             res.majorVersion = this.server.GetScriptDllVersion().Major;

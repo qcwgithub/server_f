@@ -8,7 +8,6 @@ namespace Script
         {
         }
 
-
         public override MsgType msgType { get { return MsgType.UserLogin; } }
 
         public static void HandleOldConnection(Service service, User user)
@@ -68,7 +67,7 @@ namespace Script
         {
             var userConnection = (UserConnection)connection;
 
-            string message0 = string.Format("{0} userId {1} preCount {2}", this.msgType, msg.userId, this.usData.userDict.Count);
+            string message0 = string.Format("{0} userId {1} preCount {2}", this.msgType, msg.userId, this.sd.userDict.Count);
 
             if (this.service.data.state != ServiceState.Started)
             {
@@ -84,7 +83,7 @@ namespace Script
                 return ECode.InvalidParam;
             }
 
-            User? user = this.usData.GetUser(userId);
+            User? user = this.sd.GetUser(userId);
             if (user == null)
             {
                 this.logger.Info(message0 + ": user == null, should go to AAA");
@@ -127,7 +126,7 @@ namespace Script
                 HandleOldConnection(this.service, user);
             }
 
-            var oldUser = this.GetUser(userConnection);
+            User? oldUser = userConnection.GetUser();
             if (oldUser != null)
             {
                 // 这个分支都没走过

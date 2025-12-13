@@ -18,11 +18,11 @@ namespace Script
             return MessagePackSerializer.Deserialize<T>(msg);
         }
 
-        public static async Task<MyResponse<Res>> Request<Msg, Res>(this IConnection socket, MsgType msgType, byte[] msgBytes) where Res : class
+        public static async Task<MyResponse<Res>> Request<Msg, Res>(this IConnection connection, MsgType msgType, byte[] msgBytes) where Res : class
         {
             var cs = new TaskCompletionSource<(ECode, ArraySegment<byte>)>();
 
-            socket.SendBytes(msgType, msgBytes, (e, segment) =>
+            connection.SendBytes(msgType, msgBytes, (e, segment) =>
             {
                 bool success = cs.TrySetResult((e, segment));
                 if (!success)
@@ -38,21 +38,21 @@ namespace Script
             return new MyResponse<Res>(e, res);
         }
 
-        public static void Send(this IConnection socket, MsgType msgType, byte[] msgBytes)
+        public static void Send(this IConnection connection, MsgType msgType, byte[] msgBytes)
         {
-            socket.SendBytes(msgType, msgBytes, null, pTimeoutS: null);
+            connection.SendBytes(msgType, msgBytes, null, pTimeoutS: null);
         }
 
-        public static async Task<MyResponse<Res>> Request<Msg, Res>(this IConnection socket, MsgType msgType, Msg msg) where Res : class
+        public static async Task<MyResponse<Res>> Request<Msg, Res>(this IConnection connection, MsgType msgType, Msg msg) where Res : class
         {
             byte[] msgBytes = Serialize<Msg>(msg);
-            return await Request<Msg, Res>(socket, msgType, msgBytes);
+            return await Request<Msg, Res>(connection, msgType, msgBytes);
         }
 
-        public static void Send<Msg>(this IConnection socket, MsgType msgType, Msg msg)
+        public static void Send<Msg>(this IConnection connection, MsgType msgType, Msg msg)
         {
             byte[] msgBytes = Serialize<Msg>(msg);
-            Send(socket, msgType, msgBytes);
+            Send(connection, msgType, msgBytes);
         }
 
         public static T CastObject<T>(object msg)

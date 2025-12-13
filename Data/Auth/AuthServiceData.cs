@@ -1,35 +1,36 @@
 namespace Data
 {
-    public sealed class GatewayServiceData : ServiceData
+    public class AuthServiceData : ServiceData
     {
         public static readonly List<ServiceType> s_connectToServiceIds = new List<ServiceType>
         {
-            ServiceType.Db,
             ServiceType.Global,
-            ServiceType.User,
         };
 
-        public GatewayServiceData(ServiceTypeAndId serviceTypeAndId)
+        public readonly SnowflakeData userIdSnowflakeData;
+
+        public AuthServiceData(ServiceTypeAndId serviceTypeAndId)
             : base(serviceTypeAndId, s_connectToServiceIds)
         {
-            this.LoadConfigs();
+            this.LoadConfigs(false);
+            
+            this.userIdSnowflakeData = new SnowflakeData();
         }
 
-        void LoadConfigs()
+        public void LoadConfigs(bool isReload)
         {
-            
+
         }
 
         public override void ReloadConfigs(bool all, List<string> files)
         {
-            // this.configLoader.Reset_playerSpecialProfiles();
             if (all)
             {
-                this.LoadConfigs();
+                this.LoadConfigs(true);
             }
             else
             {
-                
+
             }
         }
 

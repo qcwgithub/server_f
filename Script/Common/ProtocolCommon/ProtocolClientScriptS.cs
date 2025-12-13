@@ -56,14 +56,14 @@ namespace Script
         {
             var connection = (ServiceConnection)data.customData;
 
-            (ECode e, byte[] resBytes) = await this.service.dispatcher.DispatchNetwork(connection, msgType, msgBytes);
+            (ECode e, byte[] resBytes) = await this.service.dispatcher.Dispatch(connection, msgType, msgBytes);
             if (reply != null)
             {
                 reply(e, resBytes);
             }
         }
 
-        public async void OnConnectComplete(ProtocolClientData data, bool success)
+        public void OnConnectComplete(ProtocolClientData data, bool success)
         {
             if (!success)
             {
@@ -71,13 +71,19 @@ namespace Script
                 return;
             }
 
+            if (data.customData == null)
+            {
+                MyDebug.Assert(false, "data.customData == null");
+                return;
+            }
+
             var connection = (ServiceConnection)data.customData;
 
             var msg = new MsgOnConnectComplete();
-            await this.service.dispatcher.DispatchLocal<MsgOnConnectComplete, ResOnConnectComplete>(connection, MsgType._OnConnectComplete, msg);
+            this.service.dispatcher.Dispatch<MsgOnConnectComplete, ResOnConnectComplete>(connection, MsgType._OnConnectComplete, msg).Forget();
         }
 
-        public async void OnCloseComplete(ProtocolClientData data)
+        public void OnCloseComplete(ProtocolClientData data)
         {
             if (data.customData == null)
             {
@@ -87,7 +93,7 @@ namespace Script
             var connection = (ServiceConnection)data.customData;
 
             var msg = new MsgConnectionClose();
-            await this.service.dispatcher.DispatchLocal<MsgConnectionClose, ResConnectionClose>(connection, MsgType._OnConnectionClose, msg);
+            this.service.dispatcher.Dispatch<MsgConnectionClose, ResConnectionClose>(connection, MsgType._OnConnectionClose, msg).Forget();
         }
 
         #region basic access

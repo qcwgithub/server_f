@@ -16,9 +16,21 @@ namespace Data
         public ServiceType serviceType => this.serviceTypeAndId.serviceType;
         public int serviceId => this.serviceTypeAndId.serviceId;
         public readonly ServiceTypeAndId serviceTypeAndId;
+        public readonly LocalConnection localConnection;
+        public ServiceState state = ServiceState.Initing;
+
+        public ServiceData(ServiceTypeAndId serviceTypeAndId, List<ServiceType> connectToServiceIds)
+        {
+            this.serviceTypeAndId = serviceTypeAndId;
+            this.localConnection = new LocalConnection();
+
+            this.logger = ServerData.instance.log4netCreation.GetLogger(this.serviceTypeAndId.ToString());
+
+            this.connectToServiceTypes.AddRange(connectToServiceIds);
+        }
+
         public int errorCount = 0;
         public int defaultDateTime = 0;
-        public ServiceState state = ServiceState.Initing;
         public int msgSeq = 1;
         public int socketId = 90000;
 
@@ -409,15 +421,6 @@ namespace Data
             {
                 return this.current_resGetServiceConfigs.allServiceConfigs;
             }
-        }
-
-        public ServiceData(ServiceTypeAndId serviceTypeAndId, List<ServiceType> connectToServiceIds)
-        {
-            this.serviceTypeAndId = serviceTypeAndId;
-
-            this.logger = ServerData.instance.log4netCreation.GetLogger(this.serviceTypeAndId.ToString());
-
-            this.connectToServiceTypes.AddRange(connectToServiceIds);
         }
 
         public virtual void ReloadConfigs(bool all, List<string> files)

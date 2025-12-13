@@ -14,7 +14,7 @@ namespace Data
         _CheckConnections = 7,
         _ServerAction = 8,
 
-        // _GetSummary = 9,
+        _Auth_UserLogin = 9,
         _AskForStart = 10,
         // _AAA_QueryAccountInfo = 11,
         _Login_ReloadServerLists = 12,

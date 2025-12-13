@@ -14,7 +14,7 @@ namespace Script
 
         public static void Forget(this Task task, Service service)
         {
-            service.dispatcher.DispatchLocal<MsgWaitTask, ResWaitTask>(null, MsgType._WaitTask, new MsgWaitTask { task = task });
+            service.dispatcher.Dispatch<MsgWaitTask, ResWaitTask>(service.data.localConnection, MsgType._WaitTask, new MsgWaitTask { task = task });
         }
     }
 }

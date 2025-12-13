@@ -77,7 +77,7 @@ namespace Script
             return string.Join(", ", list.Select(x => x.Item1.ToString() + "*" + x.Item2));
         }
 
-        public async Task<MyResponse<Res>> DispatchLocal<Msg, Res>(IConnection connection, MsgType msgType, Msg msg)
+        public async Task<MyResponse<Res>> Dispatch<Msg, Res>(IConnection connection, MsgType msgType, Msg msg)
             where Res : class
         {
             IHandler? handler = this.GetHandler(msgType);
@@ -91,7 +91,7 @@ namespace Script
             return new MyResponse<Res>(e, (Res)res);
         }
 
-        public async Task<(ECode, byte[])> DispatchNetwork(IConnection connection, MsgType msgType, ArraySegment<byte> msgData)
+        public async Task<(ECode, byte[])> Dispatch(IConnection connection, MsgType msgType, ArraySegment<byte> msgData)
         {
             IHandler? handler = this.GetHandler(msgType);
             if (handler == null)

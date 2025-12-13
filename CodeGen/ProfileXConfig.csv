@@ -1,1 +1,6 @@
-type,type2,type3,type4,type5,name,ensureEx,math,createFromHelper,comment
+type,type2,type3,type4,type5,name,createFromHelper
+@AccountInfo,,,,,,
+string_,,,,,platform,
+string_,,,,,channel,
+string_,,,,,channelUserId,
+list_,long_,,,,userIds,

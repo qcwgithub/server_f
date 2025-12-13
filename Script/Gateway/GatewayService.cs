@@ -4,7 +4,7 @@ namespace Script
 {
     public class GatewayService : Service
     {
-        public GatewayServiceData gatewayServiceData
+        public GatewayServiceData sd
         {
             get
             {
@@ -21,6 +21,9 @@ namespace Script
         {
             base.Attach();
             base.AddHandler<GatewayService>();
+
+            this.dispatcher.AddHandler(new Gateway_Start(this.server, this));
+            this.dispatcher.AddHandler(new Gateway_Shutdown(this.server, this));
         }
     }
 }

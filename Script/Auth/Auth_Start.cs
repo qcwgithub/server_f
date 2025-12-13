@@ -2,9 +2,9 @@ using Data;
 
 namespace Script
 {
-    public class Global_Start : OnStart<GlobalService>
+    public class Auth_Start : OnStart<AuthService>
     {
-        public Global_Start(Server server, GlobalService service) : base(server, service)
+        public Auth_Start(Server server, AuthService service) : base(server, service)
         {
         }
 

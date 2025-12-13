@@ -156,7 +156,7 @@ namespace Script
 
             foreach (var service in this.services)
             {
-                service.dispatcher.DispatchLocal<MsgStart, ResStart>(null, MsgType._Start, new MsgStart());
+                service.dispatcher.Dispatch<MsgStart, ResStart>(service.data.localConnection, MsgType._Start, new MsgStart()).Forget();
             }
         }
 
@@ -238,7 +238,7 @@ namespace Script
             {
                 if (service.serviceId == serviceId)
                 {
-                    service.dispatcher.DispatchLocal<object, object>(null, msgType, msg);
+                    service.dispatcher.Dispatch<object, object>(service.data.localConnection, msgType, msg);
                     found = true;
                     break;
                 }

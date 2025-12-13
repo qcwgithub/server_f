@@ -17,7 +17,7 @@ namespace Script
         {
             long userId = msg.userId;
 
-            var player = this.usData.GetUser(userId);
+            var player = this.sd.GetUser(userId);
             if (player == null)
             {
                 this.logger.ErrorFormat("{0} place: {1}, userId: {2}, user == null!!", this.msgType, msg.place, userId);

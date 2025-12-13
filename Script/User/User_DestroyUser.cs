@@ -16,11 +16,12 @@ namespace Script
 
         public override async Task<ECode> Handle(IConnection connection, MsgDestroyUser msg, ResDestroyUser res)
         {
+            var sd = this.service.sd;
             long userId = msg.userId;
 
-            this.service.logger.InfoFormat("{0} place: {1}, userId: {2}, preCount: {3}", this.msgType, msg.place, userId, this.usData.userDict.Count);
+            this.service.logger.InfoFormat("{0} place: {1}, userId: {2}, preCount: {3}", this.msgType, msg.place, userId, sd.userDict.Count);
 
-            User? user = this.usData.GetUser(userId);
+            User? user = sd.GetUser(userId);
             if (user == null)
             {
                 logger.InfoFormat("{0} user not exist, userId: {1}", this.msgType, userId);
@@ -59,7 +60,7 @@ namespace Script
                 return r.e;
             }
 
-            this.usData.userDict.Remove(userId);
+            sd.userDict.Remove(userId);
             // this.server.playerPSRedis.DeletePSId(userId);
 
             return ECode.Success;
