@@ -31,4 +31,5 @@ public class ProfileConfig
     public bool ensureEx;
     public bool math;
     public bool createFromHelper;
+    public bool forRedis;
 }

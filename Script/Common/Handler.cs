@@ -39,9 +39,15 @@ namespace Script
         }
 
         public abstract Task<ECode> Handle(IConnection connection, Msg msg, Res res);
-        public virtual (ECode, object) PostHandle(IConnection connection, object _msg, ECode e, object res)
+        public virtual (ECode, object) PostHandle(IConnection connection, object msg, ECode e, object res)
         {
+            this.PostHandle(connection, (Msg)msg, e, (Res)res);
             return (e, res);
+        }
+
+        public virtual void PostHandle(IConnection connection, Msg msg, ECode e, Res res)
+        {
+
         }
 
         protected async Task OnErrorExit(ECode e)

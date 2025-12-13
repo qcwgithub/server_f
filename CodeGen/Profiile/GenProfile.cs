@@ -48,6 +48,12 @@ public class GenProfile
             var fieldConfig = profileConfig.fields[i];
 
             f.PushTab().Push(string.Format("[Key({0})]", i)).PushLine();
+
+            if (fieldConfig.name == "isPlaceholder")
+            {
+                f.PushTab().Push("[MongoDB.Bson.Serialization.Attributes.BsonIgnore]").PushLine();
+            }
+
             f.PushTab().Push("public ").Push(fieldConfig.typeInfo.name).Push(" ").Push(fieldConfig.name).Push(";");
 
             if (!string.IsNullOrEmpty(fieldConfig.comment))
@@ -56,6 +62,12 @@ public class GenProfile
             }
 
             f.Push("\n");
+
+            if (fieldConfig.name == "isPlaceholder")
+            {
+                f.PushTab().Push("public bool IsPlaceholder() => this.isPlaceholder == 1;").PushLine();
+                f.PushTab().Push("public void SetIsPlaceholder() => this.isPlaceholder = 1;").PushLine();
+            }
         }
     }
     public static void GenEnsures(FileFormatter f, ProfileConfig profileConfig)

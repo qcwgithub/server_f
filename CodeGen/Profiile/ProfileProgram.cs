@@ -73,9 +73,9 @@ public class ProfileProgram
             new Mark { startMark = "#region autoSave", text = Gen_table_player.Save(fields) },
         }); */
 
-        ReplaceFile("Script/Db/collections/collection_user.cs", new Mark[]
+        ReplaceFile("Script/Db/collections/collection_user_profile.cs", new Mark[]
         {
-            new Mark { startMark = "#region autoSave", text = Gen_collection_player.Save(fields) },
+            new Mark { startMark = "#region autoSave", text = Gen_collection_user_profile.Save(fields) },
         });
     }
 
@@ -166,28 +166,44 @@ public class ProfileProgram
 
                 s = helper.ReadString("createFromHelper");
                 profileConfig.createFromHelper = s == "1" || s == "true";
+
+                s = helper.ReadString("forRedis");
+                profileConfig.forRedis = s == "1" || s == "true";
+
+                if (profileConfig.forRedis)
+                {
+                    var c = new ProfileFieldConfig();
+
+                    var list1 = new List<string>();
+                    list1.Add("int_");
+                    int i1 = 0;
+                    c.typeInfo = ReadTypeInfo(list1, ref i1);
+
+                    c.name = "isPlaceholder";
+
+                    profileConfig.fields.Add(c);
+                }
+
                 continue;
             }
+            else
+            {
+                var c = new ProfileFieldConfig();
 
-            var c = new ProfileFieldConfig();
+                var list1 = new List<string>();
+                list1.Add(helper.ReadString("type"));
+                list1.Add(helper.ReadString("type2"));
+                list1.Add(helper.ReadString("type3"));
+                list1.Add(helper.ReadString("type4"));
+                list1.Add(helper.ReadString("type5"));
+                int i1 = 0;
+                c.typeInfo = ReadTypeInfo(list1, ref i1);
 
-            var list1 = new List<string>();
-            list1.Add(helper.ReadString("type"));
-            list1.Add(helper.ReadString("type2"));
-            list1.Add(helper.ReadString("type3"));
-            list1.Add(helper.ReadString("type4"));
-            list1.Add(helper.ReadString("type5"));
-            int i1 = 0;
-            c.typeInfo = ReadTypeInfo(list1, ref i1);
+                c.name = helper.ReadString("name");
+                c.comment = helper.ReadString("comment");
 
-            c.name = helper.ReadString("name");
-            c.comment = helper.ReadString("comment");
-
-            // c.dataManagement = helper.ReadEnum<DataManagement>("dataManagement");
-            // c.defaultValueExp = helper.ReadString("defaultValueExp");
-            // c.sql = helper.ReadString("sql");
-
-            profileConfig.fields.Add(c);
+                profileConfig.fields.Add(c);
+            }
         }
 
         for (int i = 0; i < list.Count; i++)

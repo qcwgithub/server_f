@@ -4,7 +4,7 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 
-public class Gen_collection_player
+public class Gen_collection_user_profile
 {
     public static string Save(List<ProfileFieldConfig> configs)
     {

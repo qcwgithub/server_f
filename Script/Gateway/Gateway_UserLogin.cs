@@ -1,3 +1,5 @@
+using System.Net;
+using System.Net.Sockets;
 using Data;
 
 namespace Script
@@ -13,7 +15,36 @@ namespace Script
         public override async Task<ECode> Handle(IConnection connection, MsgUserLogin msg, ResUserLogin res)
         {
             var gatewayUserConnection = (GatewayUserConnection)connection;
+
+            if (msg.dict == null)
+            {
+                msg.dict = new Dictionary<string, string>();
+            }
+
+            (AddressFamily family, string ip) = this.GetIp(gatewayUserConnection.socket);
+            msg.dict["$addressFamily"] = family.ToString();
+            msg.dict["$ip"] = ip;
+
             return ECode.Success;
+        }
+
+        (AddressFamily, string) GetIp(ProtocolClientData socket)
+        {
+            EndPoint endPoint = socket.RemoteEndPoint;
+            AddressFamily addressFamily = AddressFamily.Unknown;
+            string ip = string.Empty;
+            if (endPoint != null)
+            {
+                addressFamily = endPoint.AddressFamily;
+
+                IPEndPoint ipEndPoint = endPoint as IPEndPoint;
+                if (ipEndPoint != null)
+                {
+                    ip = ipEndPoint.Address.MapToIPv4().ToString();
+                }
+            }
+
+            return (addressFamily, ip);
         }
     }
 }

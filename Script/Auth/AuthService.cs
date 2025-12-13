@@ -13,10 +13,12 @@ namespace Script
         }
 
         public readonly UserIdSnowflakeScript userIdSnowflakeScript;
+        public readonly ChannelUuid channelUuid;
 
         public AuthService(Server server, int serviceId) : base(server, serviceId)
         {
             this.userIdSnowflakeScript = new UserIdSnowflakeScript(this.server, this);
+            this.channelUuid = new ChannelUuid(this.server, this);
         }
 
         public override void Attach()

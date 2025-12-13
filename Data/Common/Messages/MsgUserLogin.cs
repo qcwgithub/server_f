@@ -7,32 +7,23 @@ namespace Data
     public class MsgUserLogin
     {
         [Key(0)]
-        public bool isReconnect;
-
+        public string version;
         [Key(1)]
-        public long userId;
-
+        public string platform;
         [Key(2)]
-        public string token;
-
+        public string channel;
         [Key(3)]
-        public string language;
-
+        public string channelUserId;
         [Key(4)]
-        public long timeMs; // 客户端时间
-    }
-
-    [MessagePackObject]
-    public class ServerTimeInfo
-    {
-        [Key(0)]
-        public int refreshClock;
-        [Key(1)]
-        public long timeMs;
-        [Key(2)]
-        public int timezoneOffset;
-        [Key(3)]
-        public int debugTimeOffsetS;
+        public string verifyData;
+        [Key(5)]
+        public long userId;
+        [Key(6)]
+        public string token;
+        [Key(7)]
+        public string deviceUid;
+        [Key(8)]
+        public Dictionary<string, string> dict;
     }
 
     [MessagePackObject]
