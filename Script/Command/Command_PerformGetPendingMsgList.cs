@@ -18,7 +18,7 @@ namespace Script
             int serviceId = (int)msg.GetLong("serviceId");
 
             var msg2 = new MsgGetPendingMsgList();
-            var r = await this.service.connectToSameServerType.RequestToService<MsgGetPendingMsgList, ResGetPendingMsgList>(serviceId, MsgType._GetPendingMessageList, msg2);
+            var r = await this.service.connectToSameServerType.Request<MsgGetPendingMsgList, ResGetPendingMsgList>(serviceId, MsgType._GetPendingMessageList, msg2);
             if (r.e != ECode.Success)
             {
                 return r.e;

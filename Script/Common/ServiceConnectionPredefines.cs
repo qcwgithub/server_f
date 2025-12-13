@@ -16,7 +16,7 @@ namespace Script
             MyDebug.Assert(self.data.connectToServiceTypes.Contains(to));
         }
 
-        async Task<MyResponse<Res>> SendToService<Msg, Res>(ServiceType serviceType, MsgType type, Msg msg)
+        async Task<MyResponse<Res>> Request<Msg, Res>(ServiceType serviceType, MsgType type, Msg msg)
             where Res : class
         {
             IConnection? connection = this.self.tcpClientScript.RandomOtherServiceConnection(serviceType);
@@ -28,10 +28,10 @@ namespace Script
             return await connection.Request<Msg, Res>(type, msg);
         }
 
-        public async Task<MyResponse<Res>> Send<Msg, Res>(MsgType msgType, Msg msg)
+        public async Task<MyResponse<Res>> Request<Msg, Res>(MsgType msgType, Msg msg)
             where Res : class
         {
-            return await this.SendToService<Msg, Res>(this.to, msgType, msg);
+            return await this.Request<Msg, Res>(this.to, msgType, msg);
         }
     }
 
@@ -102,7 +102,7 @@ namespace Script
             this.self = self;
         }
 
-        public async Task<MyResponse<Res>> RequestToService<Msg, Res>(int serviceId, MsgType msgType, Msg msg)
+        public async Task<MyResponse<Res>> Request<Msg, Res>(int serviceId, MsgType msgType, Msg msg)
             where Res : class, new()
         {
             IConnection? connection = this.self.data.GetOtherServiceConnection(serviceId);

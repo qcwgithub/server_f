@@ -74,9 +74,13 @@ public class Create_XXXProxy
                 //     // ff.TabPushF("this.infoRedis = new {0}Redis(scriptEntry);\n", config.profileType);
                 // }
                 // ff.BlockEnd();
+                ff.TabPush("//// AUTO CREATED ////\n");
+                ff.TabPushF("public {0}Proxy(Server server) : base(server)\n", config.profileType);
+                ff.BlockStart();
+                ff.BlockEnd();
+                ff.Push("\n");
 
                 ff.TabPushF("#region override\n");
-
 
                 ff.Push("\n");
                 ff.TabPush("//// AUTO CREATED ////\n");
@@ -85,7 +89,7 @@ public class Create_XXXProxy
                 ff.BlockStart();
                 {
                     // ff.TabPushF("return this.infoRedis.GetDb();\n");
-                    ff.TabPushF("return this.server.baseServerData.redis_db;\n", config.redisDb);
+                    ff.TabPushF("return this.server.data.redis_db;\n", config.redisDb);
                 }
                 ff.BlockEnd();
 
@@ -185,7 +189,7 @@ public class Create_XXXProxy
                 ff.Push("\n");
                 ff.TabPush("//// AUTO CREATED ////\n");
                 string jjjj = config.keyParamToString(true, true, string.Empty, true, true, true);
-                ff.TabPushF("protected override async Task<(ECode, {0})> LoadFromDB(IConnectToDBService connectToDBService{1}{2})\n",
+                ff.TabPushF("protected override async Task<(ECode, {0})> LoadFromDB(ConnectToDbService connectToDbService{1}{2})\n",
                     config.profileType,
                     jjjj.Length > 0 ? ", " : "",
                     jjjj);
@@ -199,17 +203,17 @@ public class Create_XXXProxy
                         ff.TabPushF("msgDb.{0} = {0};\n", p.Substring(p.LastIndexOf(' ') + 1));
                     }
 
-                    ff.TabPushF("MyResponse r = await connectToDBService.SendAsync(MsgType._{0}{1}, msgDb);\n",
+                    ff.TabPushF("var r = await connectToDbService.Request<Msg{0}, Res{0}>(MsgType._{0}{1}, msgDb);\n",
                         query.methodName,
                         config.postfix);
-                    ff.TabPushF("if (r.err != ECode.Success)\n");
+                    ff.TabPushF("if (r.e != ECode.Success)\n");
                     ff.BlockStart();
                     {
-                        ff.TabPushF("return (r.err, null);\n");
+                        ff.TabPushF("return (r.e, null);\n");
                     }
                     ff.BlockEnd();
                     ff.Push("\n");
-                    ff.TabPushF("var res = r.CastRes<Res{0}>().result;\n", query.methodName);
+                    ff.TabPushF("var res = r.res.result;\n");
 
                     if (!config.createPlaceholderWhenNull)
                     {

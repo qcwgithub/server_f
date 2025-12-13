@@ -154,7 +154,7 @@ public class Create_DBXXService_var
                     config.postfix,
                     CodeGen.Program.FirstCharacterToLowercase(config.profileType));
 
-                obj.entryVarDict[config.dbName].create.TabPushF("this.{0}Proxy{1} = new {2}Proxy{1}().Init(this);\n",
+                obj.entryVarDict[config.dbName].create.TabPushF("this.{0}Proxy{1} = new {2}Proxy{1}(this);\n",
                     CodeGen.Program.FirstCharacterToLowercase(config.profileType),
                     config.postfix,
                     config.profileType);

@@ -300,7 +300,7 @@ namespace Script
                 }
 
                 var msg = new MsgGetServiceState();
-                var r = await connectToOtherService.Send<MsgGetServiceState, ResGetServiceState>(MsgType._GetServiceState, msg);
+                var r = await connectToOtherService.Request<MsgGetServiceState, ResGetServiceState>(MsgType._GetServiceState, msg);
                 if (r.e != ECode.Success)
                 {
                     await Task.Delay(100);

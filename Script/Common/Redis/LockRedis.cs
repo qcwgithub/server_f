@@ -12,6 +12,11 @@ namespace Script
     */
     public class LockRedis : ServerScript
     {
+        public LockRedis(Server server) : base(server)
+        {
+            
+        }
+
         public IDatabase GetDb()
         {
             return this.server.data.redis_db;

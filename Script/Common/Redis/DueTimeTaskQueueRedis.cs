@@ -7,7 +7,7 @@ using StackExchange.Redis;
 
 namespace Script
 {
-    public class DueTimeTaskQueueRedis: ServerScript
+    public class DueTimeTaskQueueRedis : ServerScript
     {
         Func<int, string> key_taskQueue;
         public static int[] QUEUES = new int[]
@@ -54,7 +54,7 @@ namespace Script
             return Math.Abs(hash) % 10;
         }
 
-        public DueTimeTaskQueueRedis(Func<int, string> key_taskQueue)
+        public DueTimeTaskQueueRedis(Server server, Func<int, string> key_taskQueue) : base(server)
         {
             this.key_taskQueue = key_taskQueue;
         }

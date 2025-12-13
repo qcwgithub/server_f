@@ -10,12 +10,17 @@ namespace Script
     //// AUTO CREATED ////
     public sealed class AccountInfoProxy : DataProxy<AccountInfo, string, string>
     {
+        //// AUTO CREATED ////
+        public AccountInfoProxy(Server server) : base(server)
+        {
+        }
+
         #region override
 
         //// AUTO CREATED ////
         protected override IDatabase GetDb()
         {
-            return this.server.baseServerData.redis_db;
+            return this.server.data.redis_db;
         }
 
         //// AUTO CREATED ////
@@ -59,18 +64,18 @@ namespace Script
         }
 
         //// AUTO CREATED ////
-        protected override async Task<(ECode, AccountInfo)> LoadFromDB(IConnectToDBService connectToDBService, string channel, string channelUserId)
+        protected override async Task<(ECode, AccountInfo)> LoadFromDB(ConnectToDbService connectToDbService, string channel, string channelUserId)
         {
             var msgDb = new MsgQuery_AccountInfo_by_channel_channelUserId();
             msgDb.channel = channel;
             msgDb.channelUserId = channelUserId;
-            MyResponse r = await connectToDBService.SendAsync(MsgType._Query_AccountInfo_by_channel_channelUserId, msgDb);
-            if (r.err != ECode.Success)
+            var r = await connectToDbService.Request<MsgQuery_AccountInfo_by_channel_channelUserId, ResQuery_AccountInfo_by_channel_channelUserId>(MsgType._Query_AccountInfo_by_channel_channelUserId, msgDb);
+            if (r.e != ECode.Success)
             {
-                return (r.err, null);
+                return (r.e, null);
             }
 
-            var res = r.CastRes<ResQuery_AccountInfo_by_channel_channelUserId>().result;
+            var res = r.res.result;
             return (ECode.Success, res);
         }
 
@@ -83,14 +88,14 @@ namespace Script
 
         /////////////////////////////////////////// PUBLIC ///////////////////////////////////////////
         //// AUTO CREATED ////
-        public async Task<AccountInfo> Get(ConnectToDbServiceService connectToDbServiceService, string channel, string channelUserId)
+        public async Task<AccountInfo> Get(ConnectToDbService connectToDbService, string channel, string channelUserId)
         {
             if (string.IsNullOrEmpty(channel) && string.IsNullOrEmpty(channelUserId))
             {
                 MyDebug.Assert(false);
                 return null;
             }
-            var info = await base.InternalGet(connectToDbServiceService, channel, channelUserId);
+            var info = await base.InternalGet(connectToDbService, channel, channelUserId);
             if (info != null)
             {
                 MyDebug.Assert(info.channel == channel);

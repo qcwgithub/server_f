@@ -293,7 +293,7 @@ namespace Script
                                 msgReload.files = new List<string>();
                                 msgReload.files.AddRange(array);
                             }
-                            var r = await this.service.connectToSameServerType.RequestToService<MsgReloadConfigs, ResReloadConfigs>(serviceId, MsgType._ReloadConfigs, msgReload);
+                            var r = await this.service.connectToSameServerType.Request<MsgReloadConfigs, ResReloadConfigs>(serviceId, MsgType._ReloadConfigs, msgReload);
                             e = r.e;
                         }
                         break;
@@ -302,7 +302,7 @@ namespace Script
                         {
                             var msgGet = new MsgGetReloadConfigOptions();
                             ResGetReloadConfigOptions resGet;
-                            var r = await this.service.connectToSameServerType.RequestToService<MsgGetReloadConfigOptions, ResGetReloadConfigOptions>(serviceId, MsgType._GetReloadConfigOptions, msgGet);
+                            var r = await this.service.connectToSameServerType.Request<MsgGetReloadConfigOptions, ResGetReloadConfigOptions>(serviceId, MsgType._GetReloadConfigOptions, msgGet);
                             e = r.e;
 
                             if (e == ECode.Success)
@@ -319,7 +319,7 @@ namespace Script
                     case "gc":
                         {
                             var msgGc = new MsgGC();
-                            var r = await this.service.connectToSameServerType.RequestToService<MsgGC, ResGC>(serviceId, MsgType._GC, msgGc);
+                            var r = await this.service.connectToSameServerType.Request<MsgGC, ResGC>(serviceId, MsgType._GC, msgGc);
                             e = r.e;
                         }
                         break;
@@ -345,7 +345,7 @@ namespace Script
                                 msg.saveIntervalS = i;
                             }
 
-                            var r = await this.service.connectToSameServerType.RequestToService<MsgPSAction, ResPSAction>(serviceId, MsgType._ServerAction, msg);
+                            var r = await this.service.connectToSameServerType.Request<MsgPSAction, ResPSAction>(serviceId, MsgType._ServerAction, msg);
                             e = r.e;
                         }
                         break;
@@ -407,7 +407,7 @@ namespace Script
                     case "showUserCount":
                         {
                             var msg2 = new MsgGetUserCount();
-                            var r = await this.service.connectToSameServerType.RequestToService<MsgGetUserCount, ResGetUserCount>(serviceId, MsgType._GetPlayerCount, msg2);
+                            var r = await this.service.connectToSameServerType.Request<MsgGetUserCount, ResGetUserCount>(serviceId, MsgType._GetPlayerCount, msg2);
                             e = r.e;
 
                             if (e == ECode.Success)

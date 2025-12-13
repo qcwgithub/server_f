@@ -55,7 +55,7 @@ namespace Script
             return Math.Abs(hash) % 10;
         }
 
-        public PersistenceTaskQueueRedis(Func<int, string> key_taskQueueList, Func<int, string> key_taskQueueSortedSet)
+        public PersistenceTaskQueueRedis(Server server, Func<int, string> key_taskQueueList, Func<int, string> key_taskQueueSortedSet) : base(server)
         {
             this.key_taskQueueList = key_taskQueueList;
             this.key_taskQueueSortedSet = key_taskQueueSortedSet;

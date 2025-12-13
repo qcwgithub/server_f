@@ -89,7 +89,7 @@ namespace Script
                 msgDb.profile_debug = Profile.Ensure(null);
                 msgDb.profile_debug.DeepCopyFrom(curr);
 #endif
-                var r = await this.service.connectToDbService.Send<MsgSaveUserProfile, ResSaveUserProfile>(MsgType._Db_SaveUserProfile, msgDb);
+                var r = await this.service.connectToDbService.Request<MsgSaveUserProfile, ResSaveUserProfile>(MsgType._Db_SaveUserProfile, msgDb);
                 if (r.e != ECode.Success)
                 {
                     this.service.logger.ErrorFormat("_Db_SaveUser error: {0}, userId: {1}", r.e, userId);

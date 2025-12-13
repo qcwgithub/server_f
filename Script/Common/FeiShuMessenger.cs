@@ -10,6 +10,11 @@ namespace Script
     // https://open.feishu.cn/document/client-docs/bot-v3/add-custom-bot
     public class FeiShuMessenger : ServerScript
     {
+        public FeiShuMessenger(Server server) : base(server)
+        {
+            
+        }
+
         async Task<string> Post(string url, string jsonData)
         {
             HttpClient httpClient = this.server.data.httpClient;

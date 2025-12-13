@@ -7,7 +7,7 @@ namespace Script
     {
         string key_taskQueueOwners;
 
-        public TaskQueueOwnersRedis(string key_taskQueueOwners)
+        public TaskQueueOwnersRedis(Server server, string key_taskQueueOwners) : base(server)
         {
             this.key_taskQueueOwners = key_taskQueueOwners;
         }

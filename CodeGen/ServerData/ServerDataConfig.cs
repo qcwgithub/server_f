@@ -89,7 +89,7 @@ public class ServerDataConfig
                 {
                     server_var = "server",
                     server_path = "Script/Common/Server.cs",
-                    serviceType = "DbService",
+                    serviceType = "Db",
                     serviceClassName = "DbService",
                     scriptFolder = "Db",
                     scriptOnStart = "Db_Start",

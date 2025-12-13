@@ -19,7 +19,7 @@ namespace Script
         TaskQueueOwnersRedis taskQueueOwnersRedis;
         public PersistenceTaskQueueHandler_Base(Server server, S service) : base(server, service)
         {
-            this.taskQueueOwnersRedis = new TaskQueueOwnersRedis(this.key_PersistenceTaskQueueOwners).Init(server);
+            this.taskQueueOwnersRedis = new TaskQueueOwnersRedis(server, this.key_PersistenceTaskQueueOwners);
         }
 
         TaskQueueOwnersAssignmentInput input;

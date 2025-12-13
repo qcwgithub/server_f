@@ -4,16 +4,11 @@ namespace Script
 {
     public abstract class ServerScript
     {
-        public Server server { get; set; }
-    }
+        public readonly Server server;
 
-    public static class ServerScriptExt
-    {
-        public static SELF Init<SELF>(this SELF self, Server server)
-            where SELF : ServerScript
+        public ServerScript(Server server)
         {
-            self.server = server;
-            return self;
+            this.server = server;
         }
     }
 }

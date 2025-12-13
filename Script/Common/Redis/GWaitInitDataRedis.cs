@@ -7,6 +7,11 @@ namespace Script
     // 等待某个 key 存在
     public abstract class GWaitInitDataRedis : ServerScript
     {
+        public GWaitInitDataRedis(Server server) : base(server)
+        {
+            
+        }
+
         public abstract IDatabase GetDb();
         protected abstract string waitKey { get; }
 

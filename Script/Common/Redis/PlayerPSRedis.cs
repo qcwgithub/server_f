@@ -14,6 +14,11 @@ namespace Script
     */
     public class PlayerPSRedis: ServerScript
     {
+        public PlayerPSRedis(Server server) : base(server)
+        {
+            
+        }
+
         public IDatabase GetDb()
         {
             return this.server.data.redis_db;

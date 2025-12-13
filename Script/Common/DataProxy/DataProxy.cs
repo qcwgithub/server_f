@@ -15,6 +15,11 @@ namespace Script
     // 2 不是全部加载到 redis 的，只有用到的时候才会加载，超时了就从 redis 消失了
     public abstract partial class DataProxy<DataType, P1, P2> : ServerScript where DataType : class, ICanBePlaceholder
     {
+        public DataProxy(Server server) : base(server)
+        {
+            
+        }
+
         protected abstract IDatabase GetDb();
         protected abstract stDirtyElement DirtyElement(P1 p1, P2 p2);
         protected abstract RedisKey Key(P1 p1, P2 p2);

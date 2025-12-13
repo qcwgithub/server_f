@@ -31,10 +31,10 @@ namespace Script
             this.messageSerializer = new BinaryMessageSerializer();
             this.messagePacker = new BinaryMessagePacker();
 
-            this.timerScript = new TimerScript().Init(this);
-            this.lockRedis = new LockRedis().Init(this);
-            this.feiShuMessenger = new FeiShuMessenger().Init(this);
-            this.persistence_taskQueueRedis = new PersistenceTaskQueueRedis(DbKey.PersistenceTaskQueueList, DbKey.PersistenceTaskQueueSortedSet);
+            this.timerScript = new TimerScript(this);
+            this.lockRedis = new LockRedis(this);
+            this.feiShuMessenger = new FeiShuMessenger(this);
+            this.persistence_taskQueueRedis = new PersistenceTaskQueueRedis(this, DbKey.PersistenceTaskQueueList, DbKey.PersistenceTaskQueueSortedSet);
         }
 
         int seq;
@@ -106,7 +106,7 @@ namespace Script
 
             #region auto_proxy_var_create
 
-            this.accountInfoProxy = new AccountInfoProxy().Init(this);
+            this.accountInfoProxy = new AccountInfoProxy(this);
 
             #endregion auto_proxy_var_create
 

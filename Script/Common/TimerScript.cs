@@ -5,6 +5,11 @@ namespace Script
     // 存放在内存的定时器，精度：秒
     public class TimerScript : ServerScript
     {
+        public TimerScript(Server server) : base(server)
+        {
+            
+        }
+
         public TimerSData timerSData => this.server.data.timerSData;
         
         public Data.ITimer SetTimer(int serviceId, int timeoutS, MsgType msgType, object msg)
