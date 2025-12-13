@@ -132,17 +132,17 @@ public class Create_DBXXService_var
         if (config.createCollectionCs)
         {
             obj.varDecl.TabPushF("public {0}{1} {0}{1};\n", config.fileName, config.postfix);
-            obj.varCreate.TabPushF("this.{0}{1} = new {0}{1}().Init({2}, this);\n", config.fileName, config.postfix, config.dbFilesConfig.server_var);
+            obj.varCreate.TabPushF("this.{0}{1} = new {0}{1}({2}, this);\n", config.fileName, config.postfix, config.dbFilesConfig.server_var);
         }
 
         foreach (var save in config.save)
         {
-            obj.handlerCreate.TabPushF("this.dispatcher.AddHandler(new Save_{0}{1}().Init({2}, this));\n", config.profileType, config.postfix, config.dbFilesConfig.server_var);
+            obj.handlerCreate.TabPushF("this.dispatcher.AddHandler(new Save_{0}{1}({2}, this));\n", config.profileType, config.postfix, config.dbFilesConfig.server_var);
         }
 
         foreach (var query in config.query)
         {
-            obj.handlerCreate.TabPushF("this.dispatcher.AddHandler(new {0}{1}().Init({2}, this));\n", query.methodName, config.postfix, config.dbFilesConfig.server_var);
+            obj.handlerCreate.TabPushF("this.dispatcher.AddHandler(new {0}{1}({2}, this));\n", query.methodName, config.postfix, config.dbFilesConfig.server_var);
         }
 
         if (config.createProxy)

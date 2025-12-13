@@ -44,27 +44,26 @@ namespace Script
         public int serviceId;
 
         // 下线超过 1 分钟，所管理的 taskQueue 会被其他人抢走
-        public int offlineTimeS;
+        public long offlineTimeS;
     }
 
-    public static class DatabaseKey
+    public static class DbKey
     {
-        public static string TakeLockControl() => "dbPlayer:takeLockControl";
-        public static string LockedHash() => "dbPlayer:lockedHash";
-        public static string LockPrefix() => "lock:dbPlayer";
+        public static string TakeLockControl() => "db:takeLockControl";
+        public static string LockedHash() => "db:lockedHash";
+        public static string LockPrefix() => "lock:db";
         public static class LockKey
         {
-            public static string DBPlayerInit() => LockPrefix() + ":init";
             public static string AssignPersistenceTaskQueueOwners() => LockPrefix() + ":assignPersistenceTaskQueueOwners";
         }
 
         // list of stDirtyElementWithTime.sToString()
-        public static string PersistenceTaskQueueList(int queue) => "dbPlayer:persistenceTaskQueueList:" + queue;
+        public static string PersistenceTaskQueueList(int queue) => "db:persistenceTaskQueueList:" + queue;
         // member = stDirtyElement
-        public static string PersistenceTaskQueueSortedSet(int queue) => "dbPlayer:persistenceTaskQueueSortedSet:" + queue;
+        public static string PersistenceTaskQueueSortedSet(int queue) => "db:persistenceTaskQueueSortedSet:" + queue;
 
         // hash of (taskQueue -> TaskQueueOwner)
-        public static string PersistenceTaskQueueOwners() => "dbPlayer:persistenceTaskQueueOwners";
+        public static string PersistenceTaskQueueOwners() => "db:persistenceTaskQueueOwners";
     }
 
     public static class AccountKey

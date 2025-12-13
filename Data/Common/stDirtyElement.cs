@@ -21,6 +21,11 @@ namespace Data
 
         #region auto_create
 
+        public static stDirtyElement Create_AccountInfo(string channel, string channelUserId)
+        {
+            return new stDirtyElement { e = DirtyElementType.AccountInfo, s1 = channel, s2 = channelUserId };
+        }
+
         #endregion auto_create
 
         public const char SPLITER = '@';
@@ -30,6 +35,9 @@ namespace Data
             switch (this.e)
             {
                 #region auto_toString
+
+                case DirtyElementType.AccountInfo:
+                    return string.Join(SPLITER, this.e, this.s1, this.s2);
 
 
                 #endregion auto_toString
@@ -56,6 +64,14 @@ namespace Data
             switch (self.e)
             {
                 #region auto_fromString
+
+                case DirtyElementType.AccountInfo:
+                    {
+                        int index2 = str.IndexOf(SPLITER, index + 1);
+                        self.s1 = str.Substring(index + 1, index2 - index - 1);
+                        self.s2 = str.Substring(index2 + 1);
+                    }
+                    break;
 
 
                 #endregion auto_fromString

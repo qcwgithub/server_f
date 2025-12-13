@@ -11,9 +11,9 @@ namespace Script
 
         protected override async Task StopBusinesses()
         {
-            this.ClearTimer(ref this.service.databaseServiceData.timer_persistence_taskQueueHandler_Loop);
+            this.ClearTimer(ref this.service.sd.timer_persistence_taskQueueHandler_Loop);
 
-            DbServiceData sd = this.service.databaseServiceData;
+            DbServiceData sd = this.service.sd;
             while (sd.persistenceHandling)
             {
                 await Task.Delay(10);

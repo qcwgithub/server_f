@@ -6,7 +6,7 @@ public class Create_collection_xxx
     {
         string content = GetContent(config);
 
-        string path = $"Script/{config.dbFilesConfig.scriptFolder}/{config.fileName}{config.postfix}.cs";
+        string path = $"Script/{config.dbFilesConfig.scriptFolder}/collections/{config.fileName}{config.postfix}.cs";
 
         Directory.CreateDirectory(Path.GetDirectoryName(path));
         File.WriteAllText(path, content);
@@ -29,18 +29,24 @@ public class Create_collection_xxx
         ff.Push("\n");
         ff.TabPush("//// AUTO CREATED ////\n");
         // ff.TabPush("public ", config.partial ? "partial " : "", "class ", config.className, config.postfix, " : IServiceScript<NormalServer, DBPlayerService>\n");
-        ff.TabPushF("public {0} class {1}{2} : ServiceScript<{3}, {4}>\n",
+        ff.TabPushF("public {0} class {1}{2} : ServiceScript<{3}>\n",
             config.partial ? "partial " : "",
             config.className, config.postfix,
-            config.dbFilesConfig.server_class, config.dbFilesConfig.serviceClassName);
+            config.dbFilesConfig.serviceClassName);
 
         ff.BlockStart();
         {
             ff.TabPush("public const string COLLECTION = \"", config.collectionName, config.postfix, "\";\n");
             // ff.TabPushF("public {0} server {{ get; set; }}\n", config.dbFilesConfig.server_class);
             // ff.TabPushF("public {0} service {{ get; set; }}\n", config.dbFilesConfig.serviceClassName);
-            ff.TabPush("MongoClient mongoClient => this.server.serverData.mongoClient;\n");
-            ff.TabPush("string dbName => this.server.serverData.mongoDBConfig.", config.dbCodeName, ";\n");
+            ff.TabPush("MongoClient mongoClient => this.server.data.mongoClient;\n");
+            ff.TabPush("string dbName => this.server.data.mongoDBConfig.", config.dbCodeName, ";\n");
+
+            ff.Push("\n");
+            ff.TabPush("//// AUTO CREATED ////\n");
+            ff.TabPushF("public {0}{1}(Server server, {2} service) : base(server, service)\n", config.className, config.postfix, config.dbFilesConfig.serviceClassName);
+            ff.BlockStart();
+            ff.BlockEnd();
 
             ff.Push("\n");
             ff.TabPush("//// AUTO CREATED ////\n");

@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using Microsoft.VisualBasic;
 
 public class Create_SaveXXX
 {
@@ -32,16 +33,20 @@ public class Create_SaveXXX
         ff.BlockStart();
         {
             ff.TabPush("//// AUTO CREATED ////\n");
-            ff.TabPushF("public sealed class Save_{0}{1} : Handler<{2}, {3}>\n", config.profileType, config.postfix, config.dbFilesConfig.server_class, config.dbFilesConfig.serviceClassName);
+            ff.TabPushF("public sealed class Save_{0}{1} : Handler<{2}, MsgSave_{0}, ResSave_{0}>\n", config.profileType, config.postfix, config.dbFilesConfig.serviceClassName);
             ff.BlockStart();
             {
                 ff.TabPushF("public override MsgType msgType => MsgType._Save_{0}{1};\n", config.profileType, config.postfix);
                 ff.Push("\n");
+                
+                ff.TabPushF("public Save_{0}{1}(Server server, {2} service) : base(server, service)\n", config.profileType, config.postfix, config.dbFilesConfig.serviceClassName);
+                ff.BlockStart();
+                ff.BlockEnd();
+                ff.Push("\n");
 
-                ff.TabPushF("public override async Task<MyResponse> Handle(IConnection connection, object _msg)\n");
+                ff.TabPushF("public override async Task<ECode> Handle(IConnection connection, MsgSave_{0} msg, ResSave_{0} res)\n", config.profileType);
                 ff.BlockStart();
                 {
-                    ff.TabPushF("var msg = Utils.CastObject<MsgSave_{0}>(_msg);\n", config.profileType);
                     if (save.field == null)
                         ff.TabPushF("this.service.logger.InfoFormat(\"{{0}}\", this.msgType);\n");
                     else if (save.field2 == null)
@@ -58,8 +63,7 @@ public class Create_SaveXXX
                     }
                     ff.BlockEnd();
                     ff.Push("\n");
-                    ff.TabPushF("var res = new ResSave_{0}();\n", config.profileType);
-                    ff.TabPush("return new MyResponse(ECode.Success, res);\n");
+                    ff.TabPush("return ECode.Success;\n");
                 }
                 ff.BlockEnd();
             }

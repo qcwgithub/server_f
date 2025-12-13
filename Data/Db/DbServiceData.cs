@@ -1,6 +1,3 @@
-using log4net;
-using System.Collections.Generic;
-
 namespace Data
 {
     public class DbServiceData : ServiceData
@@ -11,11 +8,10 @@ namespace Data
         };
         public LockControllerData lockControllerData;
         public ITimer timer_persistence_taskQueueHandler_Loop;
-        public int persistence_lastAssignTaskQueueOwnersTimeS;
+        public long persistence_lastAssignTaskQueueOwnersTimeS;
         public List<int> persistence_ownTaskQueues;
         public bool persistenceHandling;
-        public DbServiceData(ServiceTypeAndId serviceTypeAndId)
-            : base(serviceTypeAndId, s_connectToServiceIds)
+        public DbServiceData(ServiceTypeAndId serviceTypeAndId) : base(serviceTypeAndId, s_connectToServiceIds)
         {
             this.lockControllerData = new LockControllerData();
             this.persistence_lastAssignTaskQueueOwnersTimeS = 0;

@@ -21,7 +21,8 @@ namespace Data
         // ToString 会存在 redis 中，不能随意改名
 
         #region auto_enum
-        
+
+        AccountInfo,
 
         #endregion auto_enum
     }

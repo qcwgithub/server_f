@@ -33,17 +33,20 @@ public class Create_QueryXXX
         {
             ff.TabPush("//// AUTO CREATED ////\n");
             
-            ff.TabPushF("public sealed class {0}{1} : Handler<{2}, {3}>\n", query.methodName, config.postfix, config.dbFilesConfig.server_class, config.dbFilesConfig.serviceClassName);
+            ff.TabPushF("public sealed class {0}{1} : Handler<{2}, Msg{0}, Res{0}>\n", query.methodName, config.postfix, config.dbFilesConfig.serviceClassName);
             ff.BlockStart();
             {
                 ff.TabPushF("public override MsgType msgType => MsgType._{0}{1};\n", query.methodName, config.postfix);
                 ff.Push("\n");
+                
+                ff.TabPushF("public {0}{1}(Server server, {2} service) : base(server, service)\n", query.methodName, config.postfix, config.dbFilesConfig.serviceClassName);
+                ff.BlockStart();
+                ff.BlockEnd();
+                ff.Push("\n");
 
-                ff.TabPushF("public override async Task<MyResponse> Handle(IConnection connection, object _msg)\n");
+                ff.TabPushF("public override async Task<ECode> Handle(IConnection connection, Msg{0} msg, Res{0} res)\n", query.methodName);
                 ff.BlockStart();
                 {
-                    ff.TabPushF("var msg = Utils.CastObject<Msg{0}>(_msg);\n", query.methodName);
-
                     if (query.methodParamExps.Length == 0)
                         ff.TabPushF("// this.service.logger.InfoFormat(\"{{0}}\", this.msgType);\n");
                     else
@@ -59,9 +62,9 @@ public class Create_QueryXXX
                         string.Join(", ", query.methodParamExps.Select(_ => "msg." + _.Substring(_.LastIndexOf(' ') + 1))));
 
                     ff.Push("\n");
-                    ff.TabPushF("var res = new Res{0}();\n", query.methodName);
+                    // ff.TabPushF("var res = new Res{0}();\n", query.methodName);
                     ff.TabPushF("res.result = result;\n");
-                    ff.TabPush("return new MyResponse(ECode.Success, res);\n");
+                    ff.TabPush("return ECode.Success;\n");
                 }
                 ff.BlockEnd();
             }

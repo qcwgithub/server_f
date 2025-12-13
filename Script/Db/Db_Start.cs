@@ -13,12 +13,14 @@ namespace Script
         {
             #region auto_callCreateIndex
 
+            await this.service.collection_account_info.CreateIndex();
+
             #endregion auto_callCreateIndex
 
             this.service.logger.Error("NEED RESTORE HERE");
             // await this.service.collection_user_profile.CreateIndex();
 
-            var sd = this.service.databaseServiceData;
+            var sd = this.service.sd;
             sd.timer_persistence_taskQueueHandler_Loop = this.server.timerScript.SetTimer(this.service.serviceId, 0, MsgType._PersistenceTaskQueueHandler_Loop, null);
             return ECode.Success;
         }

@@ -290,7 +290,5 @@ public class ServerDataProgram
 
         Create_PersistenceTask_XXX.Create(list);
         Create_CallCreateIndex.Create(list);
-
-        Create_XXXId.Create(copyConfigDict);
     }
 }

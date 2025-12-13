@@ -4,7 +4,6 @@ using System.Linq;
 
 public class DbFilesConfig
 {
-    public string server_class;
     public string server_var;
     public string server_path;
     public string serviceType;//DBPlayer,DBAccount
@@ -58,7 +57,7 @@ public class ServerDataConfig
     {
         get
         {
-            if (dbName == c_dbPlayer || dbName == c_dbGroup)
+            if (dbName == c_dbPlayer)
             {
                 return "dbData";
             }
@@ -71,11 +70,9 @@ public class ServerDataConfig
 
     //
     public const string c_dbPlayer = "dbPlayer";
-    public const string c_dbGroup = "dbGroup";
     public static readonly List<string> c_dbNames = new List<string>
     {
         c_dbPlayer,
-        c_dbGroup,
     };
 
     public static Dictionary<string, DbFilesConfig> s_dbFilesConfigDict;
@@ -90,30 +87,15 @@ public class ServerDataConfig
 
                 s_dbFilesConfigDict[c_dbPlayer] = new DbFilesConfig
                 {
-                    server_class = "NormalServer",
                     server_var = "server",
-                    server_path = "Script/NormalServer.cs",
-                    serviceType = "DBPlayer",
-                    serviceClassName = "DBPlayerService",
-                    scriptFolder = "DBPlayer",
-                    scriptOnStart = "DBPlayer_Start",
+                    server_path = "Script/Common/Server.cs",
+                    serviceType = "DbService",
+                    serviceClassName = "DbService",
+                    scriptFolder = "Db",
+                    scriptOnStart = "Db_Start",
                     PersistenceTaskQueueHandler_class = "PersistenceTaskQueueHandler",
-                    PersistenceTaskQueueHandler_path = "Script/DBPlayer/PersistenceTask/PersistenceTaskQueueHandler.cs",
-                    PersistenceTaskQueueHandler_path2 = (profileType, postfix) => $"Script/DBPlayer/PersistenceTask/PersistenceTaskQueueHandler.{profileType}{postfix}.cs",
-                };
-
-                s_dbFilesConfigDict[c_dbGroup] = new DbFilesConfig
-                {
-                    server_class = "GroupServer",
-                    server_var = "server",
-                    server_path = "Script/GroupServer.cs",
-                    serviceType = "DBGroup",
-                    serviceClassName = "DBGroupService",
-                    scriptFolder = "DBGroup",
-                    scriptOnStart = "DBGroup_Start",
-                    PersistenceTaskQueueHandler_class = "DBGroup_PersistenceTaskQueueHandler",
-                    PersistenceTaskQueueHandler_path = "Script/DBGroup/PersistenceTask/DBGroup_PersistenceTaskQueueHandler.cs",
-                    PersistenceTaskQueueHandler_path2 = (profileType, postfix) => $"Script/DBGroup/PersistenceTask/DBGroup_PersistenceTaskQueueHandler.{profileType}{postfix}.cs",
+                    PersistenceTaskQueueHandler_path = "Script/Db/PersistenceTask/PersistenceTaskQueueHandler.cs",
+                    PersistenceTaskQueueHandler_path2 = (profileType, postfix) => $"Script/Db/PersistenceTask/PersistenceTaskQueueHandler.{profileType}{postfix}.cs",
                 };
             }
             return s_dbFilesConfigDict[this.dbName];

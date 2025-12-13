@@ -24,6 +24,7 @@ namespace Script
         // public abstract PersistenceTaskQueueRedis persistence_taskQueueRedis { get; }
         public readonly IMessageSerializer messageSerializer;
         public readonly IMessagePacker messagePacker;
+        public readonly PersistenceTaskQueueRedis persistence_taskQueueRedis;
 
         public Server()
         {
@@ -33,6 +34,7 @@ namespace Script
             this.timerScript = new TimerScript().Init(this);
             this.lockRedis = new LockRedis().Init(this);
             this.feiShuMessenger = new FeiShuMessenger().Init(this);
+            this.persistence_taskQueueRedis = new PersistenceTaskQueueRedis(DbKey.PersistenceTaskQueueList, DbKey.PersistenceTaskQueueSortedSet);
         }
 
         int seq;
@@ -68,6 +70,17 @@ namespace Script
             return version;
         }
 
+        #region auto_proxy_var_decl
+
+        public AccountInfoProxy accountInfoProxy { get; private set; }
+
+        #endregion auto_proxy_var_decl
+
+        #region auto_proxy_copy_get_var
+
+
+        #endregion auto_proxy_copy_get_var
+
         public async void Attach(Dictionary<string, string> args, ServerData data, int seq)
         {
             this.seq = seq;
@@ -89,8 +102,13 @@ namespace Script
                 }
             }
 
-
             this.data.timerSData.SetTimerCallback(this.OnTimer);
+
+            #region auto_proxy_var_create
+
+            this.accountInfoProxy = new AccountInfoProxy().Init(this);
+
+            #endregion auto_proxy_var_create
 
             this.CreateServices();
             this.AttachServices();

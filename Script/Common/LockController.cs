@@ -280,7 +280,7 @@ namespace Script
             }
         }
 
-        public void DetectLockTooLong(string msgType, int startS, int lockTimeS)
+        public void DetectLockTooLong(string msgType, long startS, int lockTimeS)
         {
             long useS = TimeUtils.GetTimeS() - startS;
             long per = useS * 100 / lockTimeS;
@@ -294,7 +294,7 @@ namespace Script
             // }
         }
 
-        public void DetectLockTooLong(MsgType msgType, int startS, int lockTimeS)
+        public void DetectLockTooLong(MsgType msgType, long startS, int lockTimeS)
         {
             this.DetectLockTooLong(msgType.ToString(), startS, lockTimeS);
         }
