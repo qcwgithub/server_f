@@ -30,7 +30,7 @@ public class Create_PersistenceTask_XXX
 
         foreach (var config in list)
         {
-            if (!config.createPersistence)
+            if (!config.cacheType.IsCreatePersistence())
             {
                 continue;
             }
@@ -235,7 +235,7 @@ public class Create_PersistenceTask_XXX
 
                     ff.Push("\n");
 
-                    if (config.createProxy)
+                    if (config.cacheType.IsCreateProxy())
                     {
                         string getProxy;
                         if (config.copy != null)

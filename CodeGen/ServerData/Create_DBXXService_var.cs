@@ -145,7 +145,7 @@ public class Create_DBXXService_var
             obj.handlerCreate.TabPushF("this.dispatcher.AddHandler(new {0}{1}({2}, this));\n", query.methodName, config.postfix, config.dbFilesConfig.server_var);
         }
 
-        if (config.createProxy)
+        if (config.cacheType.IsCreateProxy())
         {
             if (config.copy == null)
             {

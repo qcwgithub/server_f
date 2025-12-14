@@ -13,58 +13,12 @@ public partial class collection_user_info
         return collection;
     }
 
-    public async Task<UserInfo> Query(long userId)
-    {
-        var collection = this.GetCollection();
-
-        var filter = Builders<UserInfo>.Filter.Eq(nameof(UserInfo.userId), userId);
-        var find = await collection.FindAsync(filter);
-        UserInfo info = await find.FirstOrDefaultAsync();
-        return info;
-    }
-
-    public async Task<Dictionary<long, UserInfo>> Iterate_dictOf_Info_by_userId(long start_userId, long end_userId)
-    {
-        var collection = this.GetCollection();
-        MyDebug.Assert(start_userId < end_userId);
-        var gte = Builders<UserInfo>.Filter.Gte(nameof(UserInfo.userId), start_userId);
-        var lt = Builders<UserInfo>.Filter.Lt(nameof(UserInfo.userId), end_userId);
-        var filter = Builders<UserInfo>.Filter.And(gte, lt);
-        var find = collection.Find(filter)
-            .Limit(1000);
-
-        var result = await find.ToListAsync();
-        var dict = new Dictionary<long, UserInfo>();
-        foreach (var doc in result)
-        {
-            dict[doc.userId] = doc;
-        }
-        return dict;
-    }
-
     public async Task Insert(UserInfo info)
     {
         var info_Db = XInfoHelper_Db.Copy_Class<UserInfo_Db, UserInfo>(info);
 
         var collection_Db = this.GetCollection_Db();
         await collection_Db.InsertOneAsync(info_Db);
-    }
-
-    public async Task<List<long>> RegularSearchByName(string searchText)
-    {
-        var collection_Db = this.GetCollection_Db();
-
-        // "i" 表示忽略大小写
-        var filter = Builders<UserInfo_Db>.Filter.Regex(nameof(UserInfo_Db.userName), new BsonRegularExpression(searchText, "i"));
-        var projection = Builders<UserInfo_Db>.Projection.Include(nameof(UserInfo_Db.userId));
-        var find = collection_Db
-            .Find(filter)
-            .Limit(100)
-            .Project(projection);
-
-        var result = await find.ToListAsync();
-        List<long> userIds = result.Select(r => (long)r[nameof(UserInfo_Db.userId)]).ToList();
-        return userIds;
     }
 
     public async Task<ECode> Save(long userId, UserInfoNullable infoNullable)

@@ -24,7 +24,7 @@ namespace Script
                 return ECode.UserNotExist;
             }
 
-            var msgDb = new MsgSaveUserInfo
+            var msgDb = new MsgSave_UserInfo
             {
                 userId = userId,
                 userInfoNullable = new UserInfoNullable()
@@ -89,7 +89,7 @@ namespace Script
                 msgDb.userInfo_debug = UserInfo.Ensure(null);
                 msgDb.userInfo_debug.DeepCopyFrom(curr);
 #endif
-                var r = await this.service.connectToDbService.Request<MsgSaveUserInfo, ResSaveUserInfo>(MsgType._Db_SaveUserInfo, msgDb);
+                var r = await this.service.connectToDbService.Request<MsgSave_UserInfo, ResSave_UserInfo>(MsgType._Save_UserInfo, msgDb);
                 if (r.e != ECode.Success)
                 {
                     this.service.logger.ErrorFormat("_Db_SaveUser error: {0}, userId: {1}", r.e, userId);

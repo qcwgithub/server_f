@@ -66,7 +66,7 @@ public class XInfoProgram
             new Mark { startMark = "#region auto", text = Gen_X_SaveX.Do(fields) }
         });
 
-        ReplaceFile($"Script/Db/collections/collection_{x_lower}_info.cs", new Mark[]
+        ReplaceFile($"Script/Db/collections/collection_{x_lower}_info.manual.cs", new Mark[]
         {
             new Mark { startMark = "#region autoSave", text = Gen_collection_x_info.Save(xinfoConfig) },
         });

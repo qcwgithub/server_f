@@ -215,8 +215,6 @@ public class ServerDataConfig
         return sb.ToString();
     }
 
-    public bool createPersistence;
-    public bool createProxy;
     public int loadUseQueryIndex;
     public bool proxyIsPartial;
     public bool createPlaceholderWhenNull;
@@ -271,5 +269,7 @@ public class ServerDataConfig
             }
         }
     }
+
+    public CacheType cacheType;
 }
 

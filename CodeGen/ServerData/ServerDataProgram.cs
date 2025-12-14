@@ -245,8 +245,6 @@ public class ServerDataProgram
                         throw new NotImplementedException();
                     }
 
-                    c.createPersistence = helper.ReadString(nameof(c.createPersistence)) == "1";
-                    c.createProxy = helper.ReadString(nameof(c.createProxy)) == "1";
                     c.loadUseQueryIndex = helper.ReadInt(nameof(c.loadUseQueryIndex));
                     c.proxyIsPartial = helper.ReadString(nameof(c.proxyIsPartial)) == "1";
                     c.createPlaceholderWhenNull = helper.ReadString(nameof(c.createPlaceholderWhenNull)) == "1";
@@ -258,6 +256,8 @@ public class ServerDataProgram
                     {
                         c.copy = new ServerDataConfig.Copy { index = i, config = copyConfig };
                     }
+
+                    c.cacheType = helper.ReadEnum<CacheType>("cacheType");
                 }
                 list.Add(c);
             }
@@ -267,11 +267,11 @@ public class ServerDataProgram
         {
             if (c.createCollectionCs)
             {
-                Create_collection_xxx.Create(c);
-                Create_MsgQuery_XXX.Create(c);
-                Create_MsgSave_XXX.Create(c);
-                Create_QueryXXX.Create(c);
-                Create_SaveXXX.Create(c);
+                Create_collection_x_info.Create(c);
+                Create_MsgQuery_XInfo.Create(c);
+                Create_MsgSave_XInfo.Create(c);
+                Create_Query_XInfo.Create(c);
+                Create_Save_XInfo.Create(c);
             }
         }
         Create_DBXXService_var.Create(list);
@@ -282,9 +282,9 @@ public class ServerDataProgram
             //     Create_XXXRedis.Create(c);
             // }
 
-            if (c.createProxy)
+            if (c.cacheType.IsCreateProxy())
             {
-                Create_XXXProxy.Create(c);
+                Create_XInfo_Proxy.Create(c);
             }
         }
 

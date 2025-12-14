@@ -2,15 +2,15 @@ using Data;
 
 namespace Script
 {
-    public class Db_SaveUserInfo : Handler<DbService, MsgSaveUserInfo, ResSaveUserInfo>
+    public class Save_UserInfo : Handler<DbService, MsgSave_UserInfo, ResSave_UserInfo>
     {
-        public Db_SaveUserInfo(Server server, DbService service) : base(server, service)
+        public Save_UserInfo(Server server, DbService service) : base(server, service)
         {
         }
 
 
-        public override MsgType msgType => MsgType._Db_SaveUserInfo;
-        public override async Task<ECode> Handle(IConnection connection, MsgSaveUserInfo msg, ResSaveUserInfo res)
+        public override MsgType msgType => MsgType._Save_UserInfo;
+        public override async Task<ECode> Handle(IConnection connection, MsgSave_UserInfo msg, ResSave_UserInfo res)
         {
             this.service.logger.InfoFormat("{0} userIdId:{1}", this.msgType, msg.userId);
             //MyResponse r = await this.service.table_player.Save(msg.playerId, msg.userInfoNullable);
@@ -18,7 +18,7 @@ namespace Script
             ECode e = await this.service.collection_user_info.Save(msg.userId, msg.userInfoNullable);
 
 #if DEBUG
-            UserInfo info_check = await this.service.collection_user_info.Query(msg.userId);
+            UserInfo info_check = await this.service.collection_user_info.Query_UserInfo_by_userId(msg.userId);
             info_check.Ensure();
             if (!msg.userInfo_debug!.IsDifferent(info_check))
             {
