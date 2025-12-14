@@ -4,7 +4,7 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 
-public class GenXInfoNullable
+public class Gen_XInfoNullable
 {
     public static string Do(List<XInfoFieldConfig> configs)
     {

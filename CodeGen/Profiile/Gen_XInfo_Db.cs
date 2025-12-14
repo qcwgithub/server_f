@@ -4,7 +4,7 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 
-public class GenXInfo_Db
+public class Gen_XInfo_Db
 {
     public static string Do(XInfoConfig xinfoConfig)
     {

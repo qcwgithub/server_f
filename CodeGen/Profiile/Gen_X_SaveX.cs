@@ -4,7 +4,7 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 
-public class GenSaveXInfo
+public class Gen_X_SaveX
 {
     public static string Do(List<XInfoFieldConfig> configs)
     {

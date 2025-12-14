@@ -46,34 +46,27 @@ public class XInfoProgram
         File.WriteAllText(file, content);
     }
 
-    static void DoUserInfoStuff(XInfoConfig xinfoConfig)
+    static void DoXInfoStuff(XInfoConfig xinfoConfig)
     {
+        string x = xinfoConfig.name.Substring(0, xinfoConfig.name.IndexOf("Info"));
+        string x_lower = x.ToLower();
+
         List<XInfoFieldConfig> fields = xinfoConfig.fields;
-        ReplaceFile("Data/Common/UserInfoNullable.cs", new Mark[]
+        ReplaceFile($"Data/Common/{xinfoConfig.name}Nullable.cs", new Mark[]
         {
-            new Mark { startMark = "#region auto", text = GenXInfoNullable.Do(fields) }
+            new Mark { startMark = "#region auto", text = Gen_XInfoNullable.Do(fields) }
         });
-        ReplaceFile("Data/Common/UserInfo_Db.cs", new Mark[]
+        ReplaceFile($"Data/Common/{xinfoConfig.name}_Db.cs", new Mark[]
         {
-            new Mark { startMark = "#region auto", text = GenXInfo_Db.Do(xinfoConfig) }
-        });
-
-        ReplaceFile("Script/User/User_SaveUser.cs", new Mark[]
-        {
-            new Mark { startMark = "#region auto", text = GenSaveXInfo.Do(fields) }
+            new Mark { startMark = "#region auto", text = Gen_XInfo_Db.Do(xinfoConfig) }
         });
 
-        /* ReplaceFile("Script/DBPlayer/table_player.cs", new Mark[]
+        ReplaceFile($"Script/{x}/{x}_Save{x}.cs", new Mark[]
         {
-            new Mark { startMark = "#region autoVerifyCount", text = Gen_table_player.VerifyColumn_Count(fields) },
-            new Mark { startMark = "#region autoVerifyColumn", text = Gen_table_player.VerifyColumn(fields) },
-            new Mark { startMark = "#region autoDecode", text = Gen_table_player.Decode(fields) },
-            new Mark { startMark = "#region autoInsertNames", text = Gen_table_player.Insert_Names(fields) },
-            new Mark { startMark = "#region autoInsertValues", text = Gen_table_player.Insert_Values(fields) },
-            new Mark { startMark = "#region autoSave", text = Gen_table_player.Save(fields) },
-        }); */
+            new Mark { startMark = "#region auto", text = Gen_X_SaveX.Do(fields) }
+        });
 
-        ReplaceFile("Script/Db/collections/collection_user_info.cs", new Mark[]
+        ReplaceFile($"Script/Db/collections/collection_{x_lower}_info.cs", new Mark[]
         {
             new Mark { startMark = "#region autoSave", text = Gen_collection_x_info.Save(xinfoConfig) },
         });
@@ -197,15 +190,14 @@ namespace Data
 
             ReplaceFile("Data/Common/" + xinfoConfig.name + "_Db.cs", new Mark[]
             {
-                new Mark { startMark = "#region auto", text = GenXInfo_Db.Do(xinfoConfig) },
+                new Mark { startMark = "#region auto", text = Gen_XInfo_Db.Do(xinfoConfig) },
             });
 
             if (xinfoConfig.name == "UserInfo")
             {
-                DoUserInfoStuff(xinfoConfig);
+                DoXInfoStuff(xinfoConfig);
             }
         }
-
     }
 
     public static void Do()
