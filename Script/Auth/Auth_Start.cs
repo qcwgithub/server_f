@@ -10,6 +10,13 @@ namespace Script
 
         protected override async Task<ECode> Handle2()
         {
+            long workerId = 0; // TODO
+            ECode e = await this.service.userIdSnowflakeScript.InitUserIdSnowflakeData(workerId);
+            if (e != ECode.Success)
+            {
+                return e;
+            }
+
             return ECode.Success;
         }
     }

@@ -44,6 +44,22 @@ public partial  class collection_user_info : ServiceScript<DbService>
         var result = await find.FirstOrDefaultAsync();
         return result;
     }
+
+    //// AUTO CREATED ////
+    public async Task<long> Query_UserInfo_maxOf_userId()
+    {
+        var collection = this.GetCollection();
+        var filter = Builders<UserInfo>.Filter.Gt(nameof(UserInfo.userId), 0);
+        var projection = Builders<UserInfo>.Projection.Include(nameof(UserInfo.userId));
+        var find = collection.Find(filter)
+            .SortByDescending(x => x.userId)
+            .Skip(0)
+            .Limit(1)
+            .Project(projection);
+
+        var result = await find.ToListAsync();
+        return result.Count > 0 ? (long)result[0][nameof(UserInfo.userId)] : default(long);
+    }
 }
 
 //// AUTO CREATED ////

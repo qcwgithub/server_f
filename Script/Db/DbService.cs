@@ -46,6 +46,7 @@ namespace Script
             #region auto_handler_create
 
             this.dispatcher.AddHandler(new Query_UserInfo_by_userId(server, this));
+            this.dispatcher.AddHandler(new Query_UserInfo_maxOf_userId(server, this));
             this.dispatcher.AddHandler(new Save_AccountInfo(server, this));
             this.dispatcher.AddHandler(new Query_AccountInfo_by_channel_channelUserId(server, this));
             this.dispatcher.AddHandler(new Query_AccountInfo_by_channelUserId(server, this));

@@ -12,11 +12,19 @@ namespace Script
             }
         }
 
+        public readonly ConnectToDbService connectToDbService;
+        public readonly ConnectToGlobalService connectToGlobalService;
+        public readonly ConnectToGatewayService connectToGatewayService;
         public readonly UserIdSnowflakeScript userIdSnowflakeScript;
         public readonly ChannelUuid channelUuid;
 
         public AuthService(Server server, int serviceId) : base(server, serviceId)
         {
+            //
+            this.AddConnectToOtherService(this.connectToDbService = new ConnectToDbService(this));
+            this.AddConnectToOtherService(this.connectToGlobalService = new ConnectToGlobalService(this));
+            this.AddConnectToOtherService(this.connectToGatewayService = new ConnectToGatewayService(this));
+
             this.userIdSnowflakeScript = new UserIdSnowflakeScript(this.server, this);
             this.channelUuid = new ChannelUuid(this.server, this);
         }

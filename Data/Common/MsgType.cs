@@ -123,6 +123,7 @@ namespace Data
         _Query_AccountInfo_by_channel_channelUserId = 2002,
         _Query_listOf_AccountInfo_byElementOf_userIds = 2003,
         _Save_AccountInfo = 2004,
+        _Query_UserInfo_maxOf_userId = 2005,
         #endregion ?!
 
         ClientStart = 10000,
