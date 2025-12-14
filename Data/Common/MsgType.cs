@@ -68,7 +68,7 @@ namespace Data
         #endregion
         _Query_UserInfo_by_userId = 202,
         _Save_UserInfo = 203,
-        _Db_InsertUserInfo = 204,
+        _Insert_UserInfo = 204,
     
         _GetPlayerCount = 509,
         _User_DestroyUser = 601,

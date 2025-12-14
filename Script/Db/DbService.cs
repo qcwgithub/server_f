@@ -57,7 +57,7 @@ namespace Script
             this.dispatcher.AddHandler(new Db_Start(this.server, this));
             this.dispatcher.AddHandler(new Db_Shutdown(this.server, this));
 
-            this.dispatcher.AddHandler(new Db_InsertUserInfo(this.server, this));
+            this.dispatcher.AddHandler(new Insert_UserInfo(this.server, this));
             this.dispatcher.AddHandler(new Save_UserInfo(this.server, this));
         }
     }

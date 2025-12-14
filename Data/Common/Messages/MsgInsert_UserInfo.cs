@@ -3,14 +3,14 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class MsgInsertUserInfo
+    public class MsgInsert_UserInfo
     {
         [Key(0)]
         public UserInfo userInfo;
     }
 
     [MessagePackObject]
-    public class ResInsertUserInfo
+    public class ResInsert_UserInfo
     {
 
     }
