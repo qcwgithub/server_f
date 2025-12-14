@@ -68,7 +68,7 @@ namespace Data
         public abstract System.Net.EndPoint RemoteEndPoint { get; }
         #endregion
 
-        public static string s_identity = "pkcastles";
+        public static string s_identity = "SceneHub";
         protected byte[]? SendIdentity()
         {
             if (s_identity.Length == 0)

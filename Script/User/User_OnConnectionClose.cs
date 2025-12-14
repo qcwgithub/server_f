@@ -8,7 +8,6 @@ namespace Script
         {
         }
 
-
         public override async Task<ECode> Handle(IConnection connection, MsgConnectionClose msg, ResConnectionClose res)
         {
             await base.Handle(connection, msg);

@@ -20,15 +20,10 @@ namespace Script
             this.service.logger.Info(str);
         }
 
-        /////////////////////// connect ///////////////////////////
-
-        public string UrlForServer(string host, int port)
+        protected virtual IConnection CreateConnection(TcpClientData tcpClientData)
         {
-            var url = //"http://" + 
-            host + ":" + port;
-            //url += "?sign=" + ServerConst.SERVER_SIGN;
-            //url += "&purpose=" + this.server.purpose;
-            return url;
+            var serviceConnection = new ServiceConnection(tcpClientData);
+            return serviceConnection;
         }
 
         public void OnAcceptComplete(TcpListenerData tcpListener, SocketAsyncEventArgs e)
@@ -43,8 +38,8 @@ namespace Script
             Socket socket = e.AcceptSocket;
             socket.NoDelay = true;
 
-            var serviceConnection = new ServiceConnection(tcpClientData);
-            tcpClientData.customData = serviceConnection;
+            var connection = this.CreateConnection(tcpClientData);
+            tcpClientData.customData = connection;
 
             tcpClientData.AcceptorInit(this.service.data, socket, tcpListener.isForClient);
         }

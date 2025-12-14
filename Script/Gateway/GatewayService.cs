@@ -13,10 +13,12 @@ namespace Script
         }
 
         public readonly ConnectToAuthService connectToAuthService;
+        public readonly UserServiceManager userServiceManager;
 
         public GatewayService(Server server, int serviceId) : base(server, serviceId)
         {
             this.connectToAuthService = new ConnectToAuthService(this);
+            this.userServiceManager = new UserServiceManager(this.server, this);
         }
         
         public override void Attach()
