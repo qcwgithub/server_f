@@ -3,17 +3,19 @@ using MessagePack;
 
 namespace Data
 {
+    //// AUTO CREATED ////
     [MessagePackObject]
-    public class MsgQueryUserInfo
+    public sealed class MsgQuery_UserInfo_by_userId
     {
         [Key(0)]
         public long userId;
     }
-
+    
+    //// AUTO CREATED ////
     [MessagePackObject]
-    public class ResQueryUserInfo
+    public sealed class ResQuery_UserInfo_by_userId
     {
         [Key(0)]
-        public UserInfo? userInfo;
+        public UserInfo result;
     }
 }

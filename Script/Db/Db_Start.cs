@@ -13,6 +13,7 @@ namespace Script
         {
             #region auto_callCreateIndex
 
+            await this.service.collection_user_info.CreateIndex();
             await this.service.collection_account_info.CreateIndex();
 
             #endregion auto_callCreateIndex

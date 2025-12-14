@@ -123,9 +123,9 @@ public class XInfoProgram
                 s = helper.ReadString("createFromHelper");
                 xinfoConfig.createFromHelper = s == "1" || s == "true";
 
-                xinfoConfig.cache = helper.ReadString("cache");;
+                xinfoConfig.cacheType = helper.ReadEnum<CacheType>("cacheType");;
 
-                if (xinfoConfig.cache == "redis")
+                if (xinfoConfig.cacheType == CacheType.Redis)
                 {
                     var c = new XInfoFieldConfig();
 

@@ -66,7 +66,7 @@ namespace Data
         _Global_Tick_Loop = 67,
 
         #endregion
-        _Db_QueryUserInfo = 202,
+        _Query_UserInfo_by_userId = 202,
         _Db_SaveUserInfo = 203,
         _Db_InsertUserInfo = 204,
     

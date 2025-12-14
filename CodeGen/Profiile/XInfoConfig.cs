@@ -27,5 +27,5 @@ public class XInfoConfig
     public bool ensureEx;
     public bool math;
     public bool createFromHelper;
-    public string cache; // memory or redis
+    public CacheType cacheType;
 }

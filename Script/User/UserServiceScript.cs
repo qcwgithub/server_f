@@ -17,17 +17,17 @@ namespace Script
 
         public async Task<(ECode, UserInfo?)> QueryUserInfo(long userId)
         {
-            var msgDb = new MsgQueryUserInfo();
+            var msgDb = new MsgQuery_UserInfo_by_userId();
             msgDb.userId = userId;
 
-            var r = await this.service.connectToDbService.Request<MsgQueryUserInfo, ResQueryUserInfo>(MsgType._Db_QueryUserInfo, msgDb);
+            var r = await this.service.connectToDbService.Request<MsgQuery_UserInfo_by_userId, ResQuery_UserInfo_by_userId>(MsgType._Query_UserInfo_by_userId, msgDb);
             if (r.e != ECode.Success)
             {
                 this.service.logger.Error($"QueryUserInfo({userId}) r.err {r.e}");
                 return (r.e, null);
             }
 
-            UserInfo? userInfo = r.res.userInfo;
+            UserInfo? userInfo = r.res.result;
             if (userInfo != null)
             {
                 if (userInfo.userId != userId)
