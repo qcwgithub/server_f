@@ -12,9 +12,11 @@ namespace Script
             }
         }
 
+        public readonly ConnectToAuthService connectToAuthService;
+
         public GatewayService(Server server, int serviceId) : base(server, serviceId)
         {
-            
+            this.connectToAuthService = new ConnectToAuthService(this);
         }
         
         public override void Attach()

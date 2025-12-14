@@ -7,6 +7,7 @@ namespace Data
         User,
         Global,
         Command,
+        Auth,
         Count,
     }
 

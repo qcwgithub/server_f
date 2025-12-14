@@ -51,6 +51,14 @@ namespace Script
         }
     }
 
+    public class ConnectToAuthService : ConnectToOtherService
+    {
+        public ConnectToAuthService(Service self) : base(self, ServiceType.Auth)
+        {
+
+        }
+    }
+
     public class ConnectToGatewayService : ConnectToOtherService
     {
         public ConnectToGatewayService(Service self) : base(self, ServiceType.Gateway)
