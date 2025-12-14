@@ -148,7 +148,7 @@ namespace Script
             // Normally, if no matching member is found, an exception will be thrown.
 
             // 如果没有下面2句，会报错：
-            // System.FormatException: Element '_id' does not match any field or property of class Data.Profile.
+            // System.FormatException: Element '_id' does not match any field or property of class Data.UserInfo.
             //    at MongoDB.Bson.Serialization.BsonClassMapSerializer`1.DeserializeClass(BsonDeserializationContext context)
             //    at MongoDB.Bson.Serialization.BsonClassMapSerializer`1.Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
             //    at MongoDB.Bson.Serialization.IBsonSerializerExtensions.Deserialize[TValue](IBsonSerializer`1 serializer, BsonDeserializationContext context)

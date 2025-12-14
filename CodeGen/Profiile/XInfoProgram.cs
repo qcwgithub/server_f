@@ -9,7 +9,7 @@ public class Mark
     public string text;
 }
 
-public class ProfileProgram
+public class XInfoProgram
 {
     public static string ReplaceText(string content, string startMark, string endMark, string text)
     {
@@ -46,21 +46,21 @@ public class ProfileProgram
         File.WriteAllText(file, content);
     }
 
-    static void DoUserInfoStuff(ProfileConfig profileConfig)
+    static void DoUserInfoStuff(XInfoConfig profileConfig)
     {
-        List<ProfileFieldConfig> fields = profileConfig.fields;
+        List<XInfoFieldConfig> fields = profileConfig.fields;
         ReplaceFile("Data/Common/UserInfoNullable.cs", new Mark[]
         {
-            new Mark { startMark = "#region auto", text = GenProfileNullable.Do(fields) }
+            new Mark { startMark = "#region auto", text = GenXInfoNullable.Do(fields) }
         });
         ReplaceFile("Data/Common/UserInfo_Db.cs", new Mark[]
         {
-            new Mark { startMark = "#region auto", text = GenProfile_Db.Do(profileConfig) }
+            new Mark { startMark = "#region auto", text = GenXInfo_Db.Do(profileConfig) }
         });
 
         ReplaceFile("Script/User/User_SaveUser.cs", new Mark[]
         {
-            new Mark { startMark = "#region auto", text = GenPMSavePlayer.Do(fields) }
+            new Mark { startMark = "#region auto", text = GenSaveXInfo.Do(fields) }
         });
 
         /* ReplaceFile("Script/DBPlayer/table_player.cs", new Mark[]
@@ -75,7 +75,7 @@ public class ProfileProgram
 
         ReplaceFile("Script/Db/collections/collection_user_info.cs", new Mark[]
         {
-            new Mark { startMark = "#region autoSave", text = Gen_collection_xxx_info.Save(profileConfig) },
+            new Mark { startMark = "#region autoSave", text = Gen_collection_x_info.Save(profileConfig) },
         });
     }
 
@@ -103,8 +103,8 @@ public class ProfileProgram
     {
         Script.CsvHelper helper = Script.CsvUtils.Parse(CodeGen.Program.ReadAllText("CodeGen/ProfileXConfig.csv"));
 
-        ProfileConfig profileConfig = null;
-        List<ProfileConfig> list = new List<ProfileConfig>();
+        XInfoConfig profileConfig = null;
+        List<XInfoConfig> list = new List<XInfoConfig>();
         while (helper.ReadRow())
         {
             string firstCol = helper.ReadString("type");
@@ -116,10 +116,10 @@ public class ProfileProgram
             if (firstCol.StartsWith("@"))
             {
                 // start a new class
-                profileConfig = new ProfileConfig();
+                profileConfig = new XInfoConfig();
                 list.Add(profileConfig);
                 profileConfig.name = firstCol.Substring(1);
-                profileConfig.fields = new List<ProfileFieldConfig>();
+                profileConfig.fields = new List<XInfoFieldConfig>();
 
                 string s = helper.ReadString("ensureEx");
                 profileConfig.ensureEx = s == "1" || s == "true";
@@ -134,7 +134,7 @@ public class ProfileProgram
 
                 if (profileConfig.cache == "redis")
                 {
-                    var c = new ProfileFieldConfig();
+                    var c = new XInfoFieldConfig();
 
                     var list1 = new List<string>();
                     list1.Add("int_");
@@ -150,7 +150,7 @@ public class ProfileProgram
             }
             else
             {
-                var c = new ProfileFieldConfig();
+                var c = new XInfoFieldConfig();
 
                 var list1 = new List<string>();
                 list1.Add(helper.ReadString("type"));
@@ -192,12 +192,12 @@ namespace Data
 
             ReplaceFile("Data/Common/" + profileConfig.name + ".cs", new Mark[]
             {
-                new Mark { startMark = "#region auto", text = GenProfile.Gen(profileConfig) },
+                new Mark { startMark = "#region auto", text = GenXInfo.Gen(profileConfig) },
             });
 
             ReplaceFile("Data/Common/" + profileConfig.name + "_Db.cs", new Mark[]
             {
-                new Mark { startMark = "#region auto", text = GenProfile_Db.Do(profileConfig) },
+                new Mark { startMark = "#region auto", text = GenXInfo_Db.Do(profileConfig) },
             });
 
             if (profileConfig.name == "UserInfo")

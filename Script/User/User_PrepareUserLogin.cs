@@ -58,7 +58,7 @@ namespace Script
 
                 if (userInfo == null)
                 {
-                    logger.Info($"user profile {userId} not exist, create a new one!");
+                    logger.Info($"user info {userId} not exist, create a new one!");
 
                     userInfo = this.service.ss.NewUserInfo(userId);
                     e = await this.service.ss.InsertUserInfo(userInfo);
@@ -98,8 +98,8 @@ namespace Script
             user.lastUserInfo.DeepCopyFrom(user.userInfo);
 
             // qiucw
-            // 这句会修改profile，必须放在 lastProfile.DeepCopyFrom 后面
-            // this.gameScripts.CallInit(player);
+            // 这句会修改 userInfo，必须放在 lastUserInfo.DeepCopyFrom 后面
+            // this.gameScripts.CallInit(user);
         }
 
         // 正式登录、模拟登录共用

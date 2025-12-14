@@ -13,11 +13,9 @@ namespace Script
         }
 
         public readonly Global_OnReladConfigs global_OnReladConfigs;
-        public readonly collection_profile_global collection_profil_global;
 
         public GlobalService(Server server, int serviceId) : base(server, serviceId)
         {
-            this.collection_profil_global = new collection_profile_global(this.server, this);
             this.global_OnReladConfigs = new Global_OnReladConfigs(this.server, this);
         }
 
@@ -52,8 +50,6 @@ namespace Script
 
         public override async Task<ECode> InitServiceConfigsUntilSuccess()
         {
-            await this.InitProfileGlobal();
-
             var res = new ResGetServiceConfigs();
             this.FillResGetServiceConfigs(res);
 
@@ -66,18 +62,6 @@ namespace Script
             this.data.serviceConfig = myServiceConfig!;
 
             return ECode.Success;
-        }
-
-        async Task InitProfileGlobal()
-        {
-            // var sd = this.globalServiceData;
-
-            // sd.profileGlobal = await this.collection_profil_global.Query_ProfileGlobal_all();
-            // if (sd.profileGlobal == null)
-            // {
-            //     sd.profileGlobal = new ProfileGlobal();
-            //     await this.collection_profil_global.Save(sd.profileGlobal);
-            // }
         }
     }
 }

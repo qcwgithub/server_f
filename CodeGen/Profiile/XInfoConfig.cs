@@ -11,7 +11,7 @@ public class FieldTypeInfo
     public string nameDb;
 }
 
-public class ProfileFieldConfig
+public class XInfoFieldConfig
 {
     public FieldTypeInfo typeInfo;
 
@@ -23,11 +23,11 @@ public class ProfileFieldConfig
     public string defaultValueExp;
 }
 
-public class ProfileConfig
+public class XInfoConfig
 {
     public string name;
     public bool addLastDiffField;
-    public List<ProfileFieldConfig> fields;
+    public List<XInfoFieldConfig> fields;
     public bool ensureEx;
     public bool math;
     public bool createFromHelper;

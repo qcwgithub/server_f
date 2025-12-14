@@ -39,7 +39,7 @@ namespace Script
             this.dispatcher.AddHandler(new User_OnReloadConfigs(this.server, this), true);
             this.dispatcher.AddHandler(new User_OnConnectComplete(this.server, this), true);
             this.dispatcher.AddHandler(new User_Action(this.server, this));
-            this.dispatcher.AddHandler(new User_SaveProfileToFile(this.server, this));
+            this.dispatcher.AddHandler(new User_SaveUserInfoToFile(this.server, this));
             this.dispatcher.AddHandler(new User_DestroyUser(this.server, this));
             this.dispatcher.AddHandler(new User_OnConnectionClose(this.server, this), true);
             this.dispatcher.AddHandler(new User_SaveUser(this.server, this));

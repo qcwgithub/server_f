@@ -22,25 +22,25 @@ namespace Data
         {
             bool empty = true;
 
-            this.userId = ProfileHelper_Db.Copy_long(other.userId);
+            this.userId = XInfoHelper_Db.Copy_long(other.userId);
             if (this.userId != null)
             {
                 empty = false;
             }
 
-            this.userName = ProfileHelper_Db.Copy_string(other.userName);
+            this.userName = XInfoHelper_Db.Copy_string(other.userName);
             if (this.userName != null)
             {
                 empty = false;
             }
 
-            this.createTimeS = ProfileHelper_Db.Copy_long(other.createTimeS);
+            this.createTimeS = XInfoHelper_Db.Copy_long(other.createTimeS);
             if (this.createTimeS != null)
             {
                 empty = false;
             }
 
-            this.lastLoginTimeS = ProfileHelper_Db.Copy_long(other.lastLoginTimeS);
+            this.lastLoginTimeS = XInfoHelper_Db.Copy_long(other.lastLoginTimeS);
             if (this.lastLoginTimeS != null)
             {
                 empty = false;

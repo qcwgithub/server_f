@@ -564,11 +564,11 @@ public static class FieldTypeExt
                         case FieldType.string_:
                         case FieldType.float_:
                         case FieldType.bigint_:
-                            f.Push("{0} = ProfileHelper_Db.Copy_ListValue({1});\n".Format(accessThis, accessOther));
+                            f.Push("{0} = XInfoHelper_Db.Copy_ListValue({1});\n".Format(accessThis, accessOther));
                             break;
 
                         case FieldType.class_:
-                            f.Push("{0} = ProfileHelper_Db.Copy_ListClass<{2}, {3}>({1});\n".Format(accessThis, accessOther, typeInfo.subInfos[0].nameDb, typeInfo.subInfos[0].name));
+                            f.Push("{0} = XInfoHelper_Db.Copy_ListClass<{2}, {3}>({1});\n".Format(accessThis, accessOther, typeInfo.subInfos[0].nameDb, typeInfo.subInfos[0].name));
                             break;
 
                         case FieldType.list_:
@@ -591,7 +591,7 @@ public static class FieldTypeExt
                         case FieldType.string_:
                         case FieldType.float_:
                         case FieldType.bigint_:
-                            f.Push("{0} = ProfileHelper_Db.Copy_HashSetValue({1});\n".Format(accessThis, accessOther));
+                            f.Push("{0} = XInfoHelper_Db.Copy_HashSetValue({1});\n".Format(accessThis, accessOther));
                             break;
 
                         case FieldType.class_: // 不允许 HashSet<Class>
@@ -615,16 +615,16 @@ public static class FieldTypeExt
                         case FieldType.float_:
                         case FieldType.string_:
                         case FieldType.bigint_:
-                            f.Push("{0} = ProfileHelper_Db.Copy_DictValue({1});\n".Format(accessThis, accessOther));
+                            f.Push("{0} = XInfoHelper_Db.Copy_DictValue({1});\n".Format(accessThis, accessOther));
                             break;
 
                         case FieldType.class_:
-                            f.Push("{0} = ProfileHelper_Db.Copy_DictClass<{2}, {3}, {4}>({1});\n".Format(accessThis, accessOther, typeInfo.subInfos[0].name, typeInfo.subInfos[1].nameDb, typeInfo.subInfos[1].name));
+                            f.Push("{0} = XInfoHelper_Db.Copy_DictClass<{2}, {3}, {4}>({1});\n".Format(accessThis, accessOther, typeInfo.subInfos[0].name, typeInfo.subInfos[1].nameDb, typeInfo.subInfos[1].name));
                             break;
 
                         case FieldType.list_:
                         case FieldType.dictionary_:
-                            f.Push("{0} = ProfileHelper_Db.????({1});\n".Format(accessThis, accessOther));
+                            f.Push("{0} = XInfoHelper_Db.????({1});\n".Format(accessThis, accessOther));
                             break;
 
                         default:
@@ -634,39 +634,39 @@ public static class FieldTypeExt
                 break;
 
             case FieldType.class_:
-                f.Push("{0} = ProfileHelper_Db.Copy_Class<{2}, {3}>({1});\n".Format(accessThis, accessOther, typeInfo.nameDb, typeInfo.name));
+                f.Push("{0} = XInfoHelper_Db.Copy_Class<{2}, {3}>({1});\n".Format(accessThis, accessOther, typeInfo.nameDb, typeInfo.name));
                 break;
 
             case FieldType.enum_:
                 {
                     canCompareNull = false;
-                    f.Push("{0} = ProfileHelper_Db.Copy_Enum({1});\n".Format(accessThis, accessOther));
+                    f.Push("{0} = XInfoHelper_Db.Copy_Enum({1});\n".Format(accessThis, accessOther));
                 }
                 break;
 
             case FieldType.int_:
-                f.Push("{0} = ProfileHelper_Db.Copy_int({1}{2});\n".Format(accessThis, accessOther, accessOther_appendValueIfPrimitive ? ".Value" : string.Empty));
+                f.Push("{0} = XInfoHelper_Db.Copy_int({1}{2});\n".Format(accessThis, accessOther, accessOther_appendValueIfPrimitive ? ".Value" : string.Empty));
                 break;
 
             case FieldType.long_:
             case FieldType.longid_:
-                f.Push("{0} = ProfileHelper_Db.Copy_long({1}{2});\n".Format(accessThis, accessOther, accessOther_appendValueIfPrimitive ? ".Value" : string.Empty));
+                f.Push("{0} = XInfoHelper_Db.Copy_long({1}{2});\n".Format(accessThis, accessOther, accessOther_appendValueIfPrimitive ? ".Value" : string.Empty));
                 break;
 
             case FieldType.bigint_:
-                f.Push("{0} = ProfileHelper_Db.Copy_BigInteger({1}{2});\n".Format(accessThis, accessOther, accessOther_appendValueIfPrimitive ? ".Value" : string.Empty));
+                f.Push("{0} = XInfoHelper_Db.Copy_BigInteger({1}{2});\n".Format(accessThis, accessOther, accessOther_appendValueIfPrimitive ? ".Value" : string.Empty));
                 break;
 
             case FieldType.float_:
-                f.Push("{0} = ProfileHelper_Db.Copy_float({1}{2});\n".Format(accessThis, accessOther, accessOther_appendValueIfPrimitive ? ".Value" : string.Empty));
+                f.Push("{0} = XInfoHelper_Db.Copy_float({1}{2});\n".Format(accessThis, accessOther, accessOther_appendValueIfPrimitive ? ".Value" : string.Empty));
                 break;
 
             case FieldType.bool_:
-                f.Push("{0} = ProfileHelper_Db.Copy_bool({1}{2});\n".Format(accessThis, accessOther, accessOther_appendValueIfPrimitive ? ".Value" : string.Empty));
+                f.Push("{0} = XInfoHelper_Db.Copy_bool({1}{2});\n".Format(accessThis, accessOther, accessOther_appendValueIfPrimitive ? ".Value" : string.Empty));
                 break;
 
             case FieldType.string_:
-                f.Push("{0} = ProfileHelper_Db.Copy_string({1});\n".Format(accessThis, accessOther));
+                f.Push("{0} = XInfoHelper_Db.Copy_string({1});\n".Format(accessThis, accessOther));
                 break;
 
             default:

@@ -37,7 +37,6 @@ namespace Data
         _GetServiceState = 29,
         _WebGM_HandleBody = 30,
         _AAA_SimulatePlayerLogin = 31,
-        _AAA_LoadProfileFromMongoDB = 32,
         _AAA_IsPlayerOnline = 33,
         _GAAA_QueryAccountInfo = 34,
         _GAAA_SimulatePlayerLogin = 35,
@@ -73,7 +72,7 @@ namespace Data
     
         _GetPlayerCount = 509,
         _User_DestroyUser = 601,
-        _PlayerS_GetPlayerProfile = 602,
+
         _User_PrepareUserLogin = 603,
         _PSSimulatePreparePlayerLogin = 604,
         _User_SaveUser = 605,
@@ -98,7 +97,7 @@ namespace Data
         _PlayerS_RetractItemByGM = 624,
         
         _Command_PerformReloadScript = 901,
-        _Command_PerformSaveProfileToFile = 902,
+        _Command_PerformSaveUserInfoToFile = 902,
         _Command_PerformShowScriptVersion = 903,
         _Command_PerformGetPendingMsgList = 904,
         _Command_PerformShutdown = 905,
@@ -114,7 +113,7 @@ namespace Data
         _BS_RunBattle = 1007,
         _BS_CreateInheritedCastleData = 1008,
         // _PayGetNotifyUri = 1009,
-        _SaveProfileToFile = 1010,
+        _SaveUserInfoToFile = 1010,
         _SetGmFlag = 1011,
         _CheckAlive = 1012,
 

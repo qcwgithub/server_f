@@ -80,7 +80,7 @@ public class Create_DBXXService_var
 
             var copyGetVar = entryVarDict[config0.dbName].copyGetVar;
 
-            copyGetVar.TabPushF("public I{0}Proxy {1}Proxy(int id)\n", config0.profileType, CodeGen.Program.FirstCharacterToLowercase(config0.profileType));
+            copyGetVar.TabPushF("public I{0}Proxy {1}Proxy(int id)\n", config0.xinfoType, CodeGen.Program.FirstCharacterToLowercase(config0.xinfoType));
             copyGetVar.BlockStart();
             {
                 for (int j = 0; j < config0.copy.config.count; j++)
@@ -88,7 +88,7 @@ public class Create_DBXXService_var
                     copyGetVar.TabPushF("if (id == {0}.Id_{1})\n", config0.copy.config.name, j + 1);
                     copyGetVar.BlockStart();
                     {
-                        copyGetVar.TabPushF("return this._{0}Proxy{1};\n", CodeGen.Program.FirstCharacterToLowercase(configs[i + j].profileType), configs[i + j].postfix);
+                        copyGetVar.TabPushF("return this._{0}Proxy{1};\n", CodeGen.Program.FirstCharacterToLowercase(configs[i + j].xinfoType), configs[i + j].postfix);
                     }
                     copyGetVar.BlockEnd();
                 }
@@ -107,7 +107,7 @@ public class Create_DBXXService_var
 
         foreach (var _ in list)
         {
-            ProfileProgram.ReplaceFile(_.path, new Mark[]
+            XInfoProgram.ReplaceFile(_.path, new Mark[]
             {
                 new Mark { startMark = "#region auto_collection_var_decl", text = _.varDecl.GetString() },
                 new Mark { startMark = "#region auto_collection_var_create", text = _.varCreate.GetString() },
@@ -118,7 +118,7 @@ public class Create_DBXXService_var
         foreach (string dbName in ServerDataConfig.c_dbNames)
         {
             var entryVar = entryVarDict[dbName];
-            ProfileProgram.ReplaceFile(ServerDataConfig.s_dbFilesConfigDict[dbName].server_path, new Mark[]
+            XInfoProgram.ReplaceFile(ServerDataConfig.s_dbFilesConfigDict[dbName].server_path, new Mark[]
             {
                 new Mark{ startMark = "#region auto_proxy_var_decl", text = entryVar.decl.GetString() },
                 new Mark{ startMark = "#region auto_proxy_copy_get_var", text = entryVar.copyGetVar.GetString() },
@@ -137,7 +137,7 @@ public class Create_DBXXService_var
 
         foreach (var save in config.save)
         {
-            obj.handlerCreate.TabPushF("this.dispatcher.AddHandler(new Save_{0}{1}({2}, this));\n", config.profileType, config.postfix, config.dbFilesConfig.server_var);
+            obj.handlerCreate.TabPushF("this.dispatcher.AddHandler(new Save_{0}{1}({2}, this));\n", config.xinfoType, config.postfix, config.dbFilesConfig.server_var);
         }
 
         foreach (var query in config.query)
@@ -150,26 +150,26 @@ public class Create_DBXXService_var
             if (config.copy == null)
             {
                 obj.entryVarDict[config.dbName].decl.TabPushF("public {0}Proxy{1} {2}Proxy{1} {{ get; private set; }}\n",
-                    config.profileType,
+                    config.xinfoType,
                     config.postfix,
-                    CodeGen.Program.FirstCharacterToLowercase(config.profileType));
+                    CodeGen.Program.FirstCharacterToLowercase(config.xinfoType));
 
                 obj.entryVarDict[config.dbName].create.TabPushF("this.{0}Proxy{1} = new {2}Proxy{1}(this);\n",
-                    CodeGen.Program.FirstCharacterToLowercase(config.profileType),
+                    CodeGen.Program.FirstCharacterToLowercase(config.xinfoType),
                     config.postfix,
-                    config.profileType);
+                    config.xinfoType);
             }
             else
             {
                 obj.entryVarDict[config.dbName].decl.TabPushF("private {0}Proxy{1} _{2}Proxy{1};\n",
-                    config.profileType,
+                    config.xinfoType,
                     config.postfix,
-                    CodeGen.Program.FirstCharacterToLowercase(config.profileType));
+                    CodeGen.Program.FirstCharacterToLowercase(config.xinfoType));
 
                 obj.entryVarDict[config.dbName].create.TabPushF("this._{0}Proxy{1} = new {2}Proxy{1}().Init(this);\n",
-                    CodeGen.Program.FirstCharacterToLowercase(config.profileType),
+                    CodeGen.Program.FirstCharacterToLowercase(config.xinfoType),
                     config.postfix,
-                    config.profileType);
+                    config.xinfoType);
             }
         }
     }

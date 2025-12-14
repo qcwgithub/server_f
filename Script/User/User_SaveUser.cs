@@ -29,7 +29,7 @@ namespace Script
                 userId = userId,
                 userInfoNullable = new UserInfoNullable()
             };
-            var profileNullable = msgDb.userInfoNullable;
+            var infoNullable = msgDb.userInfoNullable;
 
             List<string>? buffer = null;
             UserInfo last = player.lastUserInfo;
@@ -39,28 +39,28 @@ namespace Script
 
             if (last.userId != curr.userId)
             {
-                profileNullable.userId = curr.userId;
+                infoNullable.userId = curr.userId;
                 last.userId = curr.userId;
                 if (buffer == null) buffer = new List<string>();
                 buffer.Add("userId");
             }
             if (last.userName != curr.userName)
             {
-                profileNullable.userName = curr.userName;
+                infoNullable.userName = curr.userName;
                 last.userName = curr.userName;
                 if (buffer == null) buffer = new List<string>();
                 buffer.Add("userName");
             }
             if (last.createTimeS != curr.createTimeS)
             {
-                profileNullable.createTimeS = curr.createTimeS;
+                infoNullable.createTimeS = curr.createTimeS;
                 last.createTimeS = curr.createTimeS;
                 if (buffer == null) buffer = new List<string>();
                 buffer.Add("createTimeS");
             }
             if (last.lastLoginTimeS != curr.lastLoginTimeS)
             {
-                profileNullable.lastLoginTimeS = curr.lastLoginTimeS;
+                infoNullable.lastLoginTimeS = curr.lastLoginTimeS;
                 last.lastLoginTimeS = curr.lastLoginTimeS;
                 if (buffer == null) buffer = new List<string>();
                 buffer.Add("lastLoginTimeS");
@@ -68,7 +68,7 @@ namespace Script
 
             #endregion auto
 
-            // player.lastProfile = curr; // 先假设一定成功吧
+            // player.lastUserInfo = curr; // 先假设一定成功吧
             if (last.IsDifferent(curr))
             {
                 this.service.logger.Error("last.IsDifferent(curr)!!!");

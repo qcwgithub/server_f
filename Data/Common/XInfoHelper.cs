@@ -2,7 +2,7 @@ using Data;
 using System;
 using System.Collections.Generic;
 
-public static class ProfileHelper
+public static class XInfoHelper
 {
     public static void DeepCopyFrom_ListValue<T>(this List<T> self, List<T> other)
     {

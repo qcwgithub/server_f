@@ -19,11 +19,11 @@ public class Create_XXXRedis
         ff.BlockStart();
         {
             ff.TabPush("//// AUTO CREATED ////\n");
-            ff.TabPushF("public sealed class {0}Redis : IEntryScript<ScriptEntry>\n", config.profileType);
+            ff.TabPushF("public sealed class {0}Redis : IEntryScript<ScriptEntry>\n", config.xinfoType);
             ff.BlockStart();
             {
                 ff.TabPushF("public ScriptEntry scriptEntry {{ get; private set; }}\n");
-                ff.TabPushF("public {0}Redis(ScriptEntry scriptEntry)\n", config.profileType);
+                ff.TabPushF("public {0}Redis(ScriptEntry scriptEntry)\n", config.xinfoType);
                 ff.BlockStart();
                 {
                     ff.TabPushF("this.scriptEntry = scriptEntry;\n");
@@ -50,16 +50,16 @@ public class Create_XXXRedis
 
                 ff.Push("\n");
                 ff.TabPush("//// AUTO CREATED ////\n");
-                ff.TabPushF("public async Task<{0}> Get({1})\n", config.profileType, config.keyParamToString(true, true, string.Empty, true, true, true));
+                ff.TabPushF("public async Task<{0}> Get({1})\n", config.xinfoType, config.keyParamToString(true, true, string.Empty, true, true, true));
                 ff.BlockStart();
                 {
-                    ff.TabPushF("return await RedisUtils.GetAsJson<{0}>(this.GetDb(), this.Key({1}));\n", config.profileType, config.keyParamToString(false, true, string.Empty, false, false, false));
+                    ff.TabPushF("return await RedisUtils.GetAsJson<{0}>(this.GetDb(), this.Key({1}));\n", config.xinfoType, config.keyParamToString(false, true, string.Empty, false, false, false));
                 }
                 ff.BlockEnd();
 
                 ff.Push("\n");
                 ff.TabPush("//// AUTO CREATED ////\n");
-                ff.TabPushF("public async Task Save({0} info, TimeSpan? expiry)\n", config.profileType);
+                ff.TabPushF("public async Task Save({0} info, TimeSpan? expiry)\n", config.xinfoType);
                 ff.BlockStart();
                 {
                     ff.TabPushF("await RedisUtils.SaveAsJson(this.GetDb(), this.Key({0}), info, expiry);\n", string.Join(", ", config.keyParam.Select(_ => "info." + _.name)));
@@ -72,7 +72,7 @@ public class Create_XXXRedis
 
         string dir = "Script/Common/Redis/";
         Directory.CreateDirectory(dir);
-        string path = dir + config.profileType + "Redis.cs";
+        string path = dir + config.xinfoType + "Redis.cs";
         File.WriteAllText(path, ff.GetString());
     }
 }

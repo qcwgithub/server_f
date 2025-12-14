@@ -4,11 +4,11 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 
-public class Gen_collection_xxx_info
+public class Gen_collection_x_info
 {
-    public static string Save(ProfileConfig profileConfig)
+    public static string Save(XInfoConfig profileConfig)
     {
-        List<ProfileFieldConfig> fields = profileConfig.fields;
+        List<XInfoFieldConfig> fields = profileConfig.fields;
 
 
         var f = new FileFormatter();

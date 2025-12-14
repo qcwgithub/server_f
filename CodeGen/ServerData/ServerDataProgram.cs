@@ -21,10 +21,10 @@ public class ServerDataProgram
             return str;
         }
     }
-    static string ReadType(string content, ref int index, int endIndex, string profileType, out string modifier)
+    static string ReadType(string content, ref int index, int endIndex, string xinfoType, out string modifier)
     {
         string s = Read(content, ref index, endIndex);
-        s = (s == "*" ? profileType : s);
+        s = (s == "*" ? xinfoType : s);
         int i = s.IndexOf('!');
         modifier = null;
         if (i >= 0)
@@ -35,7 +35,7 @@ public class ServerDataProgram
         return s;
     }
 
-    static ServerDataConfig.Query SolveQuery(string content, int startIndex, int endIndex, string profileType)
+    static ServerDataConfig.Query SolveQuery(string content, int startIndex, int endIndex, string xinfoType)
     {
         var query = new ServerDataConfig.Query();
 
@@ -49,7 +49,7 @@ public class ServerDataProgram
                 break;
             default:
                 query.condField = new ServerDataConfig.Field();
-                query.condField.type = ReadType(content, ref index, endIndex, profileType, out query.condField.typeModifier);
+                query.condField.type = ReadType(content, ref index, endIndex, xinfoType, out query.condField.typeModifier);
                 query.condField.name = Read(content, ref index, endIndex);
                 break;
         }
@@ -57,7 +57,7 @@ public class ServerDataProgram
         {
             case "eq2":
                 query.condField2 = new ServerDataConfig.Field();
-                query.condField2.type = ReadType(content, ref index, endIndex, profileType, out query.condField2.typeModifier);
+                query.condField2.type = ReadType(content, ref index, endIndex, xinfoType, out query.condField2.typeModifier);
                 query.condField2.name = Read(content, ref index, endIndex);
                 break;
         }
@@ -65,7 +65,7 @@ public class ServerDataProgram
         // output
         query.output = Read(content, ref index, endIndex);
         query.outputField1 = new ServerDataConfig.Field();
-        query.outputField1.type = ReadType(content, ref index, endIndex, profileType, out query.outputField1.typeModifier);
+        query.outputField1.type = ReadType(content, ref index, endIndex, xinfoType, out query.outputField1.typeModifier);
         query.outputField1.name = Read(content, ref index, endIndex);
 
         switch (query.output)
@@ -73,7 +73,7 @@ public class ServerDataProgram
             case "dict":
             case "dict2":
                 query.outputField2 = new ServerDataConfig.Field();
-                query.outputField2.type = ReadType(content, ref index, endIndex, profileType, out query.outputField2.typeModifier);
+                query.outputField2.type = ReadType(content, ref index, endIndex, xinfoType, out query.outputField2.typeModifier);
                 query.outputField2.name = Read(content, ref index, endIndex);
                 break;
         }
@@ -82,7 +82,7 @@ public class ServerDataProgram
         {
             case "dict2":
                 query.outputField3 = new ServerDataConfig.Field();
-                query.outputField3.type = ReadType(content, ref index, endIndex, profileType, out query.outputField3.typeModifier);
+                query.outputField3.type = ReadType(content, ref index, endIndex, xinfoType, out query.outputField3.typeModifier);
                 query.outputField3.name = Read(content, ref index, endIndex);
                 break;
         }
@@ -90,25 +90,25 @@ public class ServerDataProgram
         return query;
     }
 
-    static ServerDataConfig.Field SolveField(string content, int startIndex, int endIndex, string profileType)
+    static ServerDataConfig.Field SolveField(string content, int startIndex, int endIndex, string xinfoType)
     {
         int index = startIndex;
         var f = new ServerDataConfig.Field();
-        f.type = ReadType(content, ref index, endIndex, profileType, out f.typeModifier);
+        f.type = ReadType(content, ref index, endIndex, xinfoType, out f.typeModifier);
         f.name = Read(content, ref index, endIndex);
         return f;
     }
 
-    static ServerDataConfig.Field SolveField(string content, ref int startIndex, int endIndex, string profileType)
+    static ServerDataConfig.Field SolveField(string content, ref int startIndex, int endIndex, string xinfoType)
     {
         ref int index = ref startIndex;
         var f = new ServerDataConfig.Field();
-        f.type = ReadType(content, ref index, endIndex, profileType, out f.typeModifier);
+        f.type = ReadType(content, ref index, endIndex, xinfoType, out f.typeModifier);
         f.name = Read(content, ref index, endIndex);
         return f;
     }
 
-    static ServerDataConfig.Save SolveSave(string content, int startIndex, int endIndex, string profileType)
+    static ServerDataConfig.Save SolveSave(string content, int startIndex, int endIndex, string xinfoType)
     {
         int index = startIndex;
 
@@ -120,11 +120,11 @@ public class ServerDataProgram
             case "singleton":
                 break;
             case "eq2":
-                save.field = SolveField(content, ref index, endIndex, profileType);
-                save.field2 = SolveField(content, ref index, endIndex, profileType);
+                save.field = SolveField(content, ref index, endIndex, xinfoType);
+                save.field2 = SolveField(content, ref index, endIndex, xinfoType);
                 break;
             default:
-                save.field = SolveField(content, index, endIndex, profileType);
+                save.field = SolveField(content, index, endIndex, xinfoType);
                 break;
         }
 
@@ -207,16 +207,16 @@ public class ServerDataProgram
             {
                 var c = new ServerDataConfig();
 
-                string s = helper.ReadString(nameof(c.profileType));
+                string s = helper.ReadString(nameof(c.xinfoType));
                 string[] ss = s.Split('/');
                 if (ss.Length == 1)
                 {
-                    c.profileType = s;
+                    c.xinfoType = s;
                 }
                 else if (ss.Length == 2)
                 {
-                    c.originalProfileType = ss[0];
-                    c.profileType = ss[1];
+                    c.originalXInfoType = ss[0];
+                    c.xinfoType = ss[1];
                 }
                 else
                 {
@@ -234,12 +234,12 @@ public class ServerDataProgram
                     c.dbName = helper.ReadString(nameof(c.dbName));
 
                     c.index = IterateArrayInCell<ServerDataConfig.Index>(helper.ReadString(nameof(c.index)), SolveIndex);
-                    c.query = IterateArrayInCell<ServerDataConfig.Query>(helper.ReadString(nameof(c.query)), (cell, startIndex, endIndex) => SolveQuery(cell, startIndex, endIndex, c.profileType));
-                    c.save = IterateArrayInCell<ServerDataConfig.Save>(helper.ReadString(nameof(c.save)), (cell, startIndex, endIndex) => SolveSave(cell, startIndex, endIndex, c.profileType));
+                    c.query = IterateArrayInCell<ServerDataConfig.Query>(helper.ReadString(nameof(c.query)), (cell, startIndex, endIndex) => SolveQuery(cell, startIndex, endIndex, c.xinfoType));
+                    c.save = IterateArrayInCell<ServerDataConfig.Save>(helper.ReadString(nameof(c.save)), (cell, startIndex, endIndex) => SolveSave(cell, startIndex, endIndex, c.xinfoType));
 
                     c.redisDb = helper.ReadString(nameof(c.redisDb));
                     c.keyFunc = helper.ReadString(nameof(c.keyFunc));
-                    c.keyParam = IterateArrayInCell<ServerDataConfig.Field>(helper.ReadString(nameof(c.keyParam)), (cell, startIndex, endIndex) => SolveField(cell, startIndex, endIndex, c.profileType));
+                    c.keyParam = IterateArrayInCell<ServerDataConfig.Field>(helper.ReadString(nameof(c.keyParam)), (cell, startIndex, endIndex) => SolveField(cell, startIndex, endIndex, c.xinfoType));
                     if (c.keyParam.Count > 2)
                     {
                         throw new NotImplementedException();

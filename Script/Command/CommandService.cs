@@ -32,7 +32,7 @@ namespace Script
 
             this.dispatcher.AddHandler(new Command_PerformGetPendingMsgList(this.server, this));
             this.dispatcher.AddHandler(new Command_PerformReloadScript(this.server, this));
-            this.dispatcher.AddHandler(new Command_PerformSaveProfileToFile(this.server, this));
+            this.dispatcher.AddHandler(new Command_PerformSaveUserInfoToFile(this.server, this));
             this.dispatcher.AddHandler(new Command_PerformShowScriptVersion(this.server, this));
             this.dispatcher.AddHandler(new Command_PerformShutdown(this.server, this));
             this.dispatcher.AddHandler(new Monitor_PerformKick(this.server, this));

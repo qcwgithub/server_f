@@ -368,7 +368,7 @@ namespace Script
                         }
                         break;
 
-                    // case "saveUserProfileToFile": // 即使不在线也行的方法
+                    // case "saveUserInfoToFile": // 即使不在线也行的方法
                     //     {
                     //         long playerId = this.GetArg_UserId();
                     //         if (playerId == 0)
@@ -378,7 +378,7 @@ namespace Script
                     //         }
 
                     //         var msgX = new MsgLoadPlayerNewestInfos();
-                    //         msgX.what = LoadUserNewestWhat.Profile;
+                    //         msgX.what = LoadUserNewestWhat.UserInfo;
                     //         msgX.playerIds = new List<long> { playerId };
 
                     //         r = await this.service.connectToSameServerType.SendToServiceAsync(serviceId, MsgType._PlayerS_LoadPlayerNewestInfos, msgX);
@@ -392,13 +392,13 @@ namespace Script
                     //             }
                     //             else
                     //             {
-                    //                 string json = JsonUtils.stringify(res.newestInfos[0].profile);
+                    //                 string json = JsonUtils.stringify(res.newestInfos[0].userInfo);
                     //                 int zoneId = longidext.DecodeServerId(playerId);
                     //                 long rid = playerId % longidext.N;
-                    //                 string fileName = $"profile{zoneId}_{rid}.json";
+                    //                 string fileName = $"user_info_{zoneId}_{rid}.json";
                     //                 File.WriteAllText(fileName, json);
 
-                    //                 this.service.logger.Info("save profile to file ok, file name: " + fileName);
+                    //                 this.service.logger.Info("save user info to file ok, file name: " + fileName);
                     //             }
                     //         }
                     //     }
@@ -479,9 +479,9 @@ namespace Script
                         e = r.e;
                     }
                     break;
-                case "saveProfileToFile":
+                case "saveUserInfoToFile":
                     {
-                        var r = await this.service.connectToSelf.Request<MsgCommon, ResCommon>(MsgType._Command_PerformSaveProfileToFile,
+                        var r = await this.service.connectToSelf.Request<MsgCommon, ResCommon>(MsgType._Command_PerformSaveUserInfoToFile,
                             new MsgCommon().SetLong("serviceId", usId).SetLong("playerId", userId));
                         e = r.e;
                     }

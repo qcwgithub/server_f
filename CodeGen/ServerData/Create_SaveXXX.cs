@@ -13,7 +13,7 @@ public class Create_SaveXXX
         foreach (var save in config.save)
         {
             string content = Create1(config, save);
-            string path = string.Format("{0}Save_{1}{2}.cs", dir, config.profileType, config.postfix);
+            string path = string.Format("{0}Save_{1}{2}.cs", dir, config.xinfoType, config.postfix);
             File.WriteAllText(path, content);
         }
     }
@@ -33,18 +33,18 @@ public class Create_SaveXXX
         ff.BlockStart();
         {
             ff.TabPush("//// AUTO CREATED ////\n");
-            ff.TabPushF("public sealed class Save_{0}{1} : Handler<{2}, MsgSave_{0}, ResSave_{0}>\n", config.profileType, config.postfix, config.dbFilesConfig.serviceClassName);
+            ff.TabPushF("public sealed class Save_{0}{1} : Handler<{2}, MsgSave_{0}, ResSave_{0}>\n", config.xinfoType, config.postfix, config.dbFilesConfig.serviceClassName);
             ff.BlockStart();
             {
-                ff.TabPushF("public override MsgType msgType => MsgType._Save_{0}{1};\n", config.profileType, config.postfix);
+                ff.TabPushF("public override MsgType msgType => MsgType._Save_{0}{1};\n", config.xinfoType, config.postfix);
                 ff.Push("\n");
                 
-                ff.TabPushF("public Save_{0}{1}(Server server, {2} service) : base(server, service)\n", config.profileType, config.postfix, config.dbFilesConfig.serviceClassName);
+                ff.TabPushF("public Save_{0}{1}(Server server, {2} service) : base(server, service)\n", config.xinfoType, config.postfix, config.dbFilesConfig.serviceClassName);
                 ff.BlockStart();
                 ff.BlockEnd();
                 ff.Push("\n");
 
-                ff.TabPushF("public override async Task<ECode> Handle(IConnection connection, MsgSave_{0} msg, ResSave_{0} res)\n", config.profileType);
+                ff.TabPushF("public override async Task<ECode> Handle(IConnection connection, MsgSave_{0} msg, ResSave_{0} res)\n", config.xinfoType);
                 ff.BlockStart();
                 {
                     if (save.field == null)

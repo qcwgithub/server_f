@@ -22,7 +22,6 @@ namespace Data
 
         public override void ReloadConfigs(bool all, List<string> files)
         {
-            // this.configLoader.Reset_playerSpecialProfiles();
             if (all)
             {
                 this.LoadConfigs();

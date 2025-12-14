@@ -58,8 +58,8 @@ namespace Script
             this.dispatcher.AddHandler(new Db_Shutdown(this.server, this));
 
             this.dispatcher.AddHandler(new Db_InsertUserInfo(this.server, this));
-            this.dispatcher.AddHandler(new Db_QueryUserProfile(this.server, this));
-            this.dispatcher.AddHandler(new Db_SaveUserProfile(this.server, this));
+            this.dispatcher.AddHandler(new Db_QueryUserInfo(this.server, this));
+            this.dispatcher.AddHandler(new Db_SaveUserInfo(this.server, this));
         }
     }
 }

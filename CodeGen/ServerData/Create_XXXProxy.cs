@@ -44,38 +44,38 @@ public class Create_XXXProxy
             if (config.copy != null && config.copy.index == 0)
             {
                 ff.TabPush("//// AUTO CREATED ////\n");
-                ff.TabPushF("public interface I{0}Proxy\n", config.profileType);
+                ff.TabPushF("public interface I{0}Proxy\n", config.xinfoType);
                 ff.BlockStart();
                 {
-                    ff.TabPushF("Task<{0}> OnlyForSave_GetFromRedis({1});\n", config.profileType, config.keyParamToString(true, true, string.Empty, false, false, false));
-                    ff.TabPushF("Task<{0}> Get({1});\n", config.profileType, config.keyParamToString(true, true, string.Empty, false, false, false));
-                    ff.TabPushF("Task Save({0} info);\n", config.profileType);
+                    ff.TabPushF("Task<{0}> OnlyForSave_GetFromRedis({1});\n", config.xinfoType, config.keyParamToString(true, true, string.Empty, false, false, false));
+                    ff.TabPushF("Task<{0}> Get({1});\n", config.xinfoType, config.keyParamToString(true, true, string.Empty, false, false, false));
+                    ff.TabPushF("Task Save({0} info);\n", config.xinfoType);
                 }
                 ff.BlockEnd();
                 ff.Push("\n");
             }
 
             ff.TabPush("//// AUTO CREATED ////\n");
-            ff.TabPushF("public {2} class {0}Proxy{3} : DataProxy<{0}, {1}>", config.profileType, config.keyParamToString(true, false, string.Empty, true, false, false),
+            ff.TabPushF("public {2} class {0}Proxy{3} : DataProxy<{0}, {1}>", config.xinfoType, config.keyParamToString(true, false, string.Empty, true, false, false),
                 config.proxyIsPartial ? "partial" : "sealed", config.postfix);
             if (config.copy != null)
             {
-                ff.Push($", I{config.profileType}Proxy");
+                ff.Push($", I{config.xinfoType}Proxy");
             }
             ff.Push("\n");
             ff.BlockStart();
             {
-                // // ff.TabPushF("{0}Redis infoRedis;\n", config.profileType);
+                // // ff.TabPushF("{0}Redis infoRedis;\n", config.xinfoType);
                 // ff.TabPush("//// AUTO CREATED ////\n");
-                // ff.TabPushF("public {0}Proxy{1}(BaseServer baseServer) : base(baseServer)\n", config.profileType, config.postfix);
+                // ff.TabPushF("public {0}Proxy{1}(BaseServer baseServer) : base(baseServer)\n", config.xinfoType, config.postfix);
                 // ff.BlockStart();
                 // {
                 //     // ff.TabPushF("this.scriptEntry = scriptEntry;\n");
-                //     // ff.TabPushF("this.infoRedis = new {0}Redis(scriptEntry);\n", config.profileType);
+                //     // ff.TabPushF("this.infoRedis = new {0}Redis(scriptEntry);\n", config.xinfoType);
                 // }
                 // ff.BlockEnd();
                 ff.TabPush("//// AUTO CREATED ////\n");
-                ff.TabPushF("public {0}Proxy(Server server) : base(server)\n", config.profileType);
+                ff.TabPushF("public {0}Proxy(Server server) : base(server)\n", config.xinfoType);
                 ff.BlockStart();
                 ff.BlockEnd();
                 ff.Push("\n");
@@ -98,7 +98,7 @@ public class Create_XXXProxy
                 ff.TabPushF("protected override stDirtyElement DirtyElement({0})\n", config.keyParamToString(true, true, string.Empty, true, true, true));
                 ff.BlockStart();
                 {
-                    ff.TabPushF("return stDirtyElement.Create_{0}{1}({2});\n", config.profileType, config.postfix, config.keyParamToString(false, true, string.Empty, false, false, false));
+                    ff.TabPushF("return stDirtyElement.Create_{0}{1}({2});\n", config.xinfoType, config.postfix, config.keyParamToString(false, true, string.Empty, false, false, false));
                 }
                 ff.BlockEnd();
 
@@ -125,15 +125,15 @@ public class Create_XXXProxy
 
                 // ff.Push("\n");
                 // ff.TabPush("//// AUTO CREATED ////\n");
-                // ff.TabPushF("protected override async Task<{0}> GetFromRedis({1})\n", config.profileType, config.keyParamToString(true, true, string.Empty, true, true, true));
+                // ff.TabPushF("protected override async Task<{0}> GetFromRedis({1})\n", config.xinfoType, config.keyParamToString(true, true, string.Empty, true, true, true));
                 // ff.BlockStart();
                 // {
-                // ff.TabPushF("{0} info = await this.infoRedis.Get({1});\n", config.profileType, config.keyParamToString(false, true, string.Empty, false, false, false));
+                // ff.TabPushF("{0} info = await this.infoRedis.Get({1});\n", config.xinfoType, config.keyParamToString(false, true, string.Empty, false, false, false));
                 // ff.TabPushF("return info;\n");
                 // switch (config.valueFormat)
                 // {
                 // case "json":
-                // ff.TabPushF("return await RedisUtils.GetAsJson<{0}>(this.GetDb(), this.Key({1}));\n", config.profileType, config.keyParamToString(false, true, string.Empty, false, false, false));
+                // ff.TabPushF("return await RedisUtils.GetAsJson<{0}>(this.GetDb(), this.Key({1}));\n", config.xinfoType, config.keyParamToString(false, true, string.Empty, false, false, false));
                 // break;
                 // default:
                 // throw new NotImplementedException();
@@ -143,7 +143,7 @@ public class Create_XXXProxy
 
                 ff.Push("\n");
                 ff.TabPush("//// AUTO CREATED ////\n");
-                ff.TabPushF("public Task<{0}> OnlyForSave_GetFromRedis({1})\n", config.profileType, config.keyParamToString(true, true, string.Empty, false, false, false));
+                ff.TabPushF("public Task<{0}> OnlyForSave_GetFromRedis({1})\n", config.xinfoType, config.keyParamToString(true, true, string.Empty, false, false, false));
                 ff.BlockStart();
                 {
                     ff.TabPushF("return this.GetFromRedis({0});\n", config.keyParamToString(false, true, string.Empty, false, false, true));
@@ -153,13 +153,13 @@ public class Create_XXXProxy
 
                 ff.Push("\n");
                 ff.TabPush("//// AUTO CREATED ////\n");
-                ff.TabPushF("protected override {0} CreatePlaceholder({1})\n", config.profileType, config.keyParamToString(true, true, string.Empty, true, true, true));
+                ff.TabPushF("protected override {0} CreatePlaceholder({1})\n", config.xinfoType, config.keyParamToString(true, true, string.Empty, true, true, true));
                 var query = config.query[config.loadUseQueryIndex];
                 ff.BlockStart();
                 {
                     if (config.createPlaceholderWhenNull)
                     {
-                        ff.TabPushF("var placeholder = new {0}();\n", config.profileType);
+                        ff.TabPushF("var placeholder = new {0}();\n", config.xinfoType);
                         foreach (var p in query.methodParamExps)
                         {
                             ff.TabPushF("placeholder.{0} = {0};\n", p.Substring(p.LastIndexOf(' ') + 1));
@@ -181,7 +181,7 @@ public class Create_XXXProxy
                 ff.TabPushF("protected override string GetLockKeyForLoadFromDBToRedis({0})\n", config.keyParamToString(true, true, string.Empty, true, true, true));
                 ff.BlockStart();
                 {
-                    ff.TabPushF("return LockKey.LoadDataFromDBToRedis.{0}({1});\n", config.profileType, config.InsertRedisKeyParam(config.keyParamToString(false, true, string.Empty, false, false, false)));
+                    ff.TabPushF("return LockKey.LoadDataFromDBToRedis.{0}({1});\n", config.xinfoType, config.InsertRedisKeyParam(config.keyParamToString(false, true, string.Empty, false, false, false)));
                 }
                 ff.BlockEnd();
 
@@ -190,7 +190,7 @@ public class Create_XXXProxy
                 ff.TabPush("//// AUTO CREATED ////\n");
                 string jjjj = config.keyParamToString(true, true, string.Empty, true, true, true);
                 ff.TabPushF("protected override async Task<(ECode, {0})> LoadFromDB(ConnectToDbService connectToDbService{1}{2})\n",
-                    config.profileType,
+                    config.xinfoType,
                     jjjj.Length > 0 ? ", " : "",
                     jjjj);
                 ff.BlockStart();
@@ -220,7 +220,7 @@ public class Create_XXXProxy
                         ff.TabPushF("if (res == null)\n");
                         ff.BlockStart();
                         {
-                            ff.TabPushF("res = new {0}().CreateDefaultForRedis({1});\n", config.profileType, config.keyParamToString(false, true, string.Empty, false, false, false));
+                            ff.TabPushF("res = new {0}().CreateDefaultForRedis({1});\n", config.xinfoType, config.keyParamToString(false, true, string.Empty, false, false, false));
                         }
                         ff.BlockEnd();
                     }
@@ -259,7 +259,7 @@ public class Create_XXXProxy
                             throw new Exception("Not handled TaskQueueHash." + config.taskQueueHash);
                     }
 
-                    ff.TabPushF("return PersistenceTaskQueueRedis.GetQueue({0}.ToTaskQueueHash({1}));\n", config.profileType, p);
+                    ff.TabPushF("return PersistenceTaskQueueRedis.GetQueue({0}.ToTaskQueueHash({1}));\n", config.xinfoType, p);
                 }
                 ff.BlockEnd();
                 // ff.Push("\n");
@@ -273,7 +273,7 @@ public class Create_XXXProxy
 
                 // ff.Push("\n");
                 // ff.TabPush("//// AUTO CREATED ////\n");
-                // ff.TabPushF("protected override async Task<ECode> SaveToDB({0} info)\n", config.profileType, config.keyParamToString(true, true, string.Empty, true, true, true));
+                // ff.TabPushF("protected override async Task<ECode> SaveToDB({0} info)\n", config.xinfoType, config.keyParamToString(true, true, string.Empty, true, true, true));
                 // ff.BlockStart();
                 // {
                 //     Create_PersistenceOnSave_XXX.SaveToDB2(config, ff);
@@ -282,7 +282,7 @@ public class Create_XXXProxy
 
                 // ff.Push("\n");
                 // ff.TabPush("//// AUTO CREATED ////\n");
-                // ff.TabPushF("protected override async Task SaveToRedis({0}, {1} info, TimeSpan? expiry)\n", config.keyParamToString(true, true, string.Empty, true, true, false), config.profileType);
+                // ff.TabPushF("protected override async Task SaveToRedis({0}, {1} info, TimeSpan? expiry)\n", config.keyParamToString(true, true, string.Empty, true, true, false), config.xinfoType);
                 // ff.BlockStart();
                 // {
                 //     // ff.TabPushF("await this.infoRedis.Save(info, expiry);\n");
@@ -305,7 +305,7 @@ public class Create_XXXProxy
 
                 string ssss = config.keyParamToString(true, true, string.Empty, false, false, false);
                 ff.TabPushF("public async Task<{0}> Get(ConnectTo{1}Service connectTo{1}Service{2}{3})\n",
-                    config.profileType,
+                    config.xinfoType,
                     config.dbFilesConfig.serviceType,
                     ssss.Length > 0 ? ", " : "",
                     ssss);
@@ -384,7 +384,7 @@ public class Create_XXXProxy
                 ff.Push("\n");
 
                 ff.TabPush("//// AUTO CREATED ////\n");
-                ff.TabPushF("public async Task Save({0} info)\n", config.profileType);
+                ff.TabPushF("public async Task Save({0} info)\n", config.xinfoType);
                 ff.BlockStart();
                 {
                     // MyDebug.Assert(info.unionId > 0);
@@ -396,10 +396,10 @@ public class Create_XXXProxy
                 // {
                 //     ff.Push("\n");
                 //     ff.TabPush("//// AUTO CREATED ////\n");
-                //     ff.TabPushF("public async Task<List<{0}>> GetMany(List<{1}> idList)\n", config.profileType, config.keyParam[0].type);
+                //     ff.TabPushF("public async Task<List<{0}>> GetMany(List<{1}> idList)\n", config.xinfoType, config.keyParam[0].type);
                 //     ff.BlockStart();
                 //     {
-                //         ff.TabPushF("Task<{0}>[] tasks = new Task<{0}>[idList.Count];\n", config.profileType);
+                //         ff.TabPushF("Task<{0}>[] tasks = new Task<{0}>[idList.Count];\n", config.xinfoType);
                 //         ff.TabPushF("for (int i = 0; i < idList.Count; i++)\n");
                 //         ff.BlockStart();
                 //         {
@@ -409,7 +409,7 @@ public class Create_XXXProxy
                 //         ff.TabPushF("await Task.WhenAll(tasks);\n");
 
                 //         ff.Push("\n");
-                //         ff.TabPushF("var retList = new List<{0}>();\n", config.profileType);
+                //         ff.TabPushF("var retList = new List<{0}>();\n", config.xinfoType);
                 //         ff.TabPushF("foreach (var task in tasks)\n");
                 //         ff.BlockStart();
                 //         {
@@ -427,7 +427,7 @@ public class Create_XXXProxy
 
         string dir = "Script/Common/DataProxy/";
         Directory.CreateDirectory(dir);
-        string path = dir + config.profileType + "Proxy" + config.postfix + ".cs";
+        string path = dir + config.xinfoType + "Proxy" + config.postfix + ".cs";
         File.WriteAllText(path, ff.GetString());
     }
 }

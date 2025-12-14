@@ -4,9 +4,9 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 
-public class GenPMSavePlayer
+public class GenSaveXInfo
 {
-    public static string Do(List<ProfileFieldConfig> configs)
+    public static string Do(List<XInfoFieldConfig> configs)
     {
         var f = new FileFormatter();
 
@@ -25,7 +25,7 @@ public class GenPMSavePlayer
                     config.typeInfo.ToIsDifferent(accessThis, accessOther)));
                 f.BlockStart();
                 {
-                    f.TabPush("profileNullable.{0} = {1};\n".Format(config.name, accessOther));
+                    f.TabPush("infoNullable.{0} = {1};\n".Format(config.name, accessOther));
                     f.TabPush(config.typeInfo.ToDeepCopyFrom(accessThis, accessOther), ";\n");
                     f.TabPush("if (buffer == null) buffer = new List<string>();\n");
                     f.TabPush("buffer.Add(\"{0}\");\n".Format(config.name));

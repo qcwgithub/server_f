@@ -18,13 +18,13 @@ public class DbFilesConfig
 
 public class ServerDataConfig
 {
-    public string originalProfileType;
-    public string profileType;
-    public string profileType_dbPostfix
+    public string originalXInfoType;
+    public string xinfoType;
+    public string xinfoType_dbPostfix
     {
         get
         {
-            return this.profileType + this.dbPostfix;
+            return this.xinfoType + this.dbPostfix;
         }
     }
     public string dbPostfix
@@ -36,12 +36,12 @@ public class ServerDataConfig
     }
     public void PushUsingOriginal(FileFormatter ff)
     {
-        if (!string.IsNullOrEmpty(this.originalProfileType))
+        if (!string.IsNullOrEmpty(this.originalXInfoType))
         {
-            ff.TabPushF("using {0} = Data.{1};\n", this.profileType, this.originalProfileType);
+            ff.TabPushF("using {0} = Data.{1};\n", this.xinfoType, this.originalXInfoType);
             if (this.unsetEmptyField)
             {
-                ff.TabPushF("using {0}_Db = Data.{1}_Db;\n", this.profileType, this.originalProfileType);
+                ff.TabPushF("using {0}_Db = Data.{1}_Db;\n", this.xinfoType, this.originalXInfoType);
             }
             ff.TabPush("\n");
         }
@@ -95,7 +95,7 @@ public class ServerDataConfig
                     scriptOnStart = "Db_Start",
                     PersistenceTaskQueueHandler_class = "PersistenceTaskQueueHandler",
                     PersistenceTaskQueueHandler_path = "Script/Db/PersistenceTask/PersistenceTaskQueueHandler.cs",
-                    PersistenceTaskQueueHandler_path2 = (profileType, postfix) => $"Script/Db/PersistenceTask/PersistenceTaskQueueHandler.{profileType}{postfix}.cs",
+                    PersistenceTaskQueueHandler_path2 = (xinfoType, postfix) => $"Script/Db/PersistenceTask/PersistenceTaskQueueHandler.{xinfoType}{postfix}.cs",
                 };
             }
             return s_dbFilesConfigDict[this.dbName];

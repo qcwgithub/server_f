@@ -2,9 +2,9 @@ using Data;
 
 namespace Script
 {
-    public class Db_SaveUserProfile : Handler<DbService, MsgSaveUserInfo, ResSaveUserInfo>
+    public class Db_SaveUserInfo : Handler<DbService, MsgSaveUserInfo, ResSaveUserInfo>
     {
-        public Db_SaveUserProfile(Server server, DbService service) : base(server, service)
+        public Db_SaveUserInfo(Server server, DbService service) : base(server, service)
         {
         }
 
@@ -13,7 +13,7 @@ namespace Script
         public override async Task<ECode> Handle(IConnection connection, MsgSaveUserInfo msg, ResSaveUserInfo res)
         {
             this.service.logger.InfoFormat("{0} userIdId:{1}", this.msgType, msg.userId);
-            //MyResponse r = await this.service.table_player.Save(msg.playerId, msg.profileNullable);
+            //MyResponse r = await this.service.table_player.Save(msg.playerId, msg.userInfoNullable);
 
             ECode e = await this.service.collection_user_info.Save(msg.userId, msg.userInfoNullable);
 

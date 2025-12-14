@@ -1,16 +1,7 @@
-using System;
-using System.IO;
-using System.Text;
-using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
-
-// Profile.cs
-// ProfileXX.cs
 // 共用
-public class GenProfile
+public class GenXInfo
 {
-    public static string Gen(ProfileConfig profileConfig)
+    public static string Gen(XInfoConfig profileConfig)
     {
         var f = new FileFormatter();
 
@@ -40,7 +31,7 @@ public class GenProfile
         return str;
     }
 
-    public static void GenFields(FileFormatter f, ProfileConfig profileConfig)
+    public static void GenFields(FileFormatter f, XInfoConfig profileConfig)
     {
         // char alpha = (char)0;
         for (int i = 0; i < profileConfig.fields.Count; i++)
@@ -70,7 +61,7 @@ public class GenProfile
             }
         }
     }
-    public static void GenEnsures(FileFormatter f, ProfileConfig profileConfig)
+    public static void GenEnsures(FileFormatter f, XInfoConfig profileConfig)
     {
         // static Ensure
         f.PushTab().Push("public static ", profileConfig.name, " Ensure(", profileConfig.name, "? p)\n");
@@ -113,7 +104,7 @@ public class GenProfile
         f.PushTab().Push("}\n");
     }
 
-    public static void GenIsDifferent_DeepCopyFrom(FileFormatter f, ProfileConfig profileConfig)
+    public static void GenIsDifferent_DeepCopyFrom(FileFormatter f, XInfoConfig profileConfig)
     {
         // if (profileConfig.addLastDiffField)
         // {
@@ -182,7 +173,7 @@ public class GenProfile
         "Get_1_0",
         "Set_1_1"
     };
-    public static void GenMath(FileFormatter f, ProfileConfig profileConfig)
+    public static void GenMath(FileFormatter f, XInfoConfig profileConfig)
     {
         if (profileConfig.fields.Count == 0)
         {
@@ -263,7 +254,7 @@ public class GenProfile
                     f.AddTab(1);
                 }
 
-                foreach (ProfileFieldConfig fieldConfig in profileConfig.fields)
+                foreach (XInfoFieldConfig fieldConfig in profileConfig.fields)
                 {
                     if (singleField)
                     {
@@ -332,7 +323,7 @@ public class GenProfile
         }
     }
 
-    public static void GenCreateFromHelper(FileFormatter f, ProfileConfig profileConfig)
+    public static void GenCreateFromHelper(FileFormatter f, XInfoConfig profileConfig)
     {
         f.PushTab().Push("public static ", profileConfig.name, " Create(CsvHelper helper)\n");
         f.PushTab().Push("{\n");
@@ -341,7 +332,7 @@ public class GenProfile
         f.PushTab().Push("var self = Ensure(null);\n");
         f.Push("\n");
 
-        foreach (ProfileFieldConfig fieldConfig in profileConfig.fields)
+        foreach (XInfoFieldConfig fieldConfig in profileConfig.fields)
         {
             f.PushTab().Push("self.", fieldConfig.name, " = helper.", fieldConfig.typeInfo.HelperRead(), "(\"", fieldConfig.name, "\");\n");
         }

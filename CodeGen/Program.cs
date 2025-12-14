@@ -174,17 +174,10 @@ namespace CodeGen
                 ServerDataProgram.Do();
             }
 
-            if (action.Contains("profile"))
+            if (action.Contains("xinfo"))
             {
-                Console.Write(">>>> Gen Profile...");
-                ProfileProgram.Do();
-                Console.WriteLine("Done");
-            }
-
-            if (action.Contains("sql"))
-            {
-                Console.Write(">>>> Gen Sql...");
-                // ProfileProgram.Do();
+                Console.Write(">>>> Gen XInfo...");
+                XInfoProgram.Do();
                 Console.WriteLine("Done");
             }
 

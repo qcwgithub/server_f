@@ -2,9 +2,9 @@ using Data;
 
 namespace Script
 {
-    public class Db_QueryUserProfile : Handler<DbService, MsgQueryUserInfo, ResQueryUserInfo>
+    public class Db_QueryUserInfo : Handler<DbService, MsgQueryUserInfo, ResQueryUserInfo>
     {
-        public Db_QueryUserProfile(Server server, DbService service) : base(server, service)
+        public Db_QueryUserInfo(Server server, DbService service) : base(server, service)
         {
         }
 

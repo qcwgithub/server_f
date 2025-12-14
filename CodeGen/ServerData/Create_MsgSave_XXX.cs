@@ -11,7 +11,7 @@ public class Create_MsgSave_XXX
         {
             string content = Create1(config, query);
 
-            string path = string.Format("{0}MsgSave_{1}.cs", dir, config.profileType);
+            string path = string.Format("{0}MsgSave_{1}.cs", dir, config.xinfoType);
             File.WriteAllText(path, content);
         }
     }
@@ -32,18 +32,18 @@ public class Create_MsgSave_XXX
 
             ff.TabPush("//// AUTO CREATED ////\n");
             ff.TabPush("[MessagePackObject]\n");
-            ff.TabPush(string.Format("public sealed class MsgSave_{0}\n", config.profileType));
+            ff.TabPush(string.Format("public sealed class MsgSave_{0}\n", config.xinfoType));
             ff.BlockStart();
             {
                 ff.TabPush("[Key(0)]\n");
-                ff.TabPushF("public {0} info;\n", config.profileType);
+                ff.TabPushF("public {0} info;\n", config.xinfoType);
             }
             ff.BlockEnd();
 
             ff.TabPush("\n");
             ff.TabPush("//// AUTO CREATED ////\n");
             ff.TabPush("[MessagePackObject]\n");
-            ff.TabPush(string.Format("public sealed class ResSave_{0}\n", config.profileType));
+            ff.TabPush(string.Format("public sealed class ResSave_{0}\n", config.xinfoType));
             ff.BlockStart();
             {
 

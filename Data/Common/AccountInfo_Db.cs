@@ -36,67 +36,67 @@ namespace Data
         {
             bool empty = true;
 
-            this.isPlaceholder = ProfileHelper_Db.Copy_int(other.isPlaceholder);
+            this.isPlaceholder = XInfoHelper_Db.Copy_int(other.isPlaceholder);
             if (this.isPlaceholder != null)
             {
                 empty = false;
             }
 
-            this.platform = ProfileHelper_Db.Copy_string(other.platform);
+            this.platform = XInfoHelper_Db.Copy_string(other.platform);
             if (this.platform != null)
             {
                 empty = false;
             }
 
-            this.channel = ProfileHelper_Db.Copy_string(other.channel);
+            this.channel = XInfoHelper_Db.Copy_string(other.channel);
             if (this.channel != null)
             {
                 empty = false;
             }
 
-            this.channelUserId = ProfileHelper_Db.Copy_string(other.channelUserId);
+            this.channelUserId = XInfoHelper_Db.Copy_string(other.channelUserId);
             if (this.channelUserId != null)
             {
                 empty = false;
             }
 
-            this.userIds = ProfileHelper_Db.Copy_ListValue(other.userIds);
+            this.userIds = XInfoHelper_Db.Copy_ListValue(other.userIds);
             if (this.userIds != null)
             {
                 empty = false;
             }
 
-            this.createTimeS = ProfileHelper_Db.Copy_long(other.createTimeS);
+            this.createTimeS = XInfoHelper_Db.Copy_long(other.createTimeS);
             if (this.createTimeS != null)
             {
                 empty = false;
             }
 
-            this.block = ProfileHelper_Db.Copy_bool(other.block);
+            this.block = XInfoHelper_Db.Copy_bool(other.block);
             if (this.block != null)
             {
                 empty = false;
             }
 
-            this.unblockTime = ProfileHelper_Db.Copy_long(other.unblockTime);
+            this.unblockTime = XInfoHelper_Db.Copy_long(other.unblockTime);
             if (this.unblockTime != null)
             {
                 empty = false;
             }
 
-            this.blockPrompt = ProfileHelper_Db.Copy_string(other.blockPrompt);
+            this.blockPrompt = XInfoHelper_Db.Copy_string(other.blockPrompt);
             if (this.blockPrompt != null)
             {
                 empty = false;
             }
 
-            this.blockOrUnblockReason = ProfileHelper_Db.Copy_string(other.blockOrUnblockReason);
+            this.blockOrUnblockReason = XInfoHelper_Db.Copy_string(other.blockOrUnblockReason);
             if (this.blockOrUnblockReason != null)
             {
                 empty = false;
             }
 
-            this.lastLoginUserId = ProfileHelper_Db.Copy_long(other.lastLoginUserId);
+            this.lastLoginUserId = XInfoHelper_Db.Copy_long(other.lastLoginUserId);
             if (this.lastLoginUserId != null)
             {
                 empty = false;

@@ -50,12 +50,12 @@ public class Create_collection_xxx
 
             ff.Push("\n");
             ff.TabPush("//// AUTO CREATED ////\n");
-            ff.TabPush("public IMongoCollection<", config.profileType, "> GetCollection()\n");
+            ff.TabPush("public IMongoCollection<", config.xinfoType, "> GetCollection()\n");
             ff.BlockStart();
             {
                 ff.TabPush("// It’s ok if the database doesn’t yet exist. It will be created upon first use.\n");
                 ff.TabPush("IMongoDatabase database = this.mongoClient.GetDatabase(this.dbName);\n");
-                ff.TabPush("IMongoCollection<", config.profileType, "> collection = database.GetCollection<", config.profileType, ">(COLLECTION);\n");
+                ff.TabPush("IMongoCollection<", config.xinfoType, "> collection = database.GetCollection<", config.xinfoType, ">(COLLECTION);\n");
                 ff.TabPush("return collection;\n");
             }
             ff.BlockEnd();
@@ -64,12 +64,12 @@ public class Create_collection_xxx
             {
                 ff.Push("\n");
                 ff.TabPush("//// AUTO CREATED ////\n");
-                ff.TabPush("public IMongoCollection<", config.profileType_dbPostfix, "> GetCollection_Db()\n");
+                ff.TabPush("public IMongoCollection<", config.xinfoType_dbPostfix, "> GetCollection_Db()\n");
                 ff.BlockStart();
                 {
                     ff.TabPush("// It’s ok if the database doesn’t yet exist. It will be created upon first use.\n");
                     ff.TabPush("IMongoDatabase database = this.mongoClient.GetDatabase(this.dbName);\n");
-                    ff.TabPush("IMongoCollection<", config.profileType_dbPostfix, "> collection = database.GetCollection<", config.profileType_dbPostfix, ">(COLLECTION);\n");
+                    ff.TabPush("IMongoCollection<", config.xinfoType_dbPostfix, "> collection = database.GetCollection<", config.xinfoType_dbPostfix, ">(COLLECTION);\n");
                     ff.TabPush("return collection;\n");
                 }
                 ff.BlockEnd();
@@ -87,10 +87,10 @@ public class Create_collection_xxx
                         if (!string.IsNullOrEmpty(item.fieldName2))
                         {
                             ff.TabPushF("await MongoHelper.CreateIndex(this.mongoClient, this.dbName, COLLECTION, new List<string> {{ nameof({0}.{1}), nameof({0}.{2}) }}, true, {3}, this.service.logger);\n",
-                                config.profileType, item.fieldName, item.fieldName2, item.isUnique ? "true" : "false");
+                                config.xinfoType, item.fieldName, item.fieldName2, item.isUnique ? "true" : "false");
                         }
                         else
-                            ff.TabPush("await MongoHelper.CreateIndex(this.mongoClient, this.dbName, COLLECTION, nameof(", config.profileType, ".", item.fieldName, "), true, ", item.isUnique ? "true" : "false", ", this.service.logger);\n");
+                            ff.TabPush("await MongoHelper.CreateIndex(this.mongoClient, this.dbName, COLLECTION, nameof(", config.xinfoType, ".", item.fieldName, "), true, ", item.isUnique ? "true" : "false", ", this.service.logger);\n");
                     }
                 }
                 ff.BlockEnd();
@@ -113,8 +113,8 @@ public class Create_collection_xxx
                 {
                     case "one":
                         {
-                            methodNamePrefix = p + "_" + config.profileType;
-                            if (query.outputField1.type != config.profileType)
+                            methodNamePrefix = p + "_" + config.xinfoType;
+                            if (query.outputField1.type != config.xinfoType)
                             {
                                 methodNamePrefix += "_" + query.outputField1.name;
                             }
@@ -123,8 +123,8 @@ public class Create_collection_xxx
 
                     case "list":
                         {
-                            methodNamePrefix = p + "_listOf_" + config.profileType;
-                            if (query.outputField1.type != config.profileType)
+                            methodNamePrefix = p + "_listOf_" + config.xinfoType;
+                            if (query.outputField1.type != config.xinfoType)
                             {
                                 methodNamePrefix += "_" + query.outputField1.name;
                             }
@@ -133,14 +133,14 @@ public class Create_collection_xxx
 
                     case "dict":
                         {
-                            methodNamePrefix = p + "_dictOf_" + config.profileType;
+                            methodNamePrefix = p + "_dictOf_" + config.xinfoType;
                             methodNamePrefix += "_" + query.outputField1.name + "_" + query.outputField2.name;
                         }
                         break;
 
                     case "dict2":
                         {
-                            methodNamePrefix = p + "_dictOf_" + config.profileType;
+                            methodNamePrefix = p + "_dictOf_" + config.xinfoType;
                             methodNamePrefix += "_" + query.outputField1.name + "_" + query.outputField2.name + "_" + query.outputField3.name;
                         }
                         break;
@@ -180,11 +180,11 @@ public class Create_collection_xxx
                         };
                         break;
                     case "max":
-                        query.methodName = string.Format("Query_{0}_maxOf_{1}", config.profileType, query.condField.name);
+                        query.methodName = string.Format("Query_{0}_maxOf_{1}", config.xinfoType, query.condField.name);
                         query.methodParamExps = new string[0];
                         break;
                     case "max_by_serverId":
-                        query.methodName = string.Format("Query_{0}_maxOf_{1}_by_serverId", config.profileType, query.condField.name);
+                        query.methodName = string.Format("Query_{0}_maxOf_{1}_by_serverId", config.xinfoType, query.condField.name);
                         query.methodParamExps = new string[] { "int serverId" };
                         break;
                     case "iter":
@@ -228,7 +228,7 @@ public class Create_collection_xxx
                         query.returnExp = string.Format("Dictionary<{0}, {1}>", query.outputField1.type, query.outputField2.type);
                         break;
                     case "dict2":
-                        query.returnExp = string.Format("Dictionary<{0}, {1}_{2}_{3}>", query.outputField1.type, config.profileType, query.outputField2.name, query.outputField3.name);
+                        query.returnExp = string.Format("Dictionary<{0}, {1}_{2}_{3}>", query.outputField1.type, config.xinfoType, query.outputField2.name, query.outputField3.name);
                         break;
 
                     default:
@@ -245,59 +245,59 @@ public class Create_collection_xxx
                     switch (query.cond)
                     {
                         case "eq":
-                            ff.TabPush(string.Format("var filter = Builders<{0}>.Filter.Eq(nameof({0}.{1}), {1});\n", config.profileType, query.condField.name));
+                            ff.TabPush(string.Format("var filter = Builders<{0}>.Filter.Eq(nameof({0}.{1}), {1});\n", config.xinfoType, query.condField.name));
                             break;
                         case "eq2":
-                            ff.TabPushF("var eq1 = Builders<{0}>.Filter.Eq(nameof({0}.{1}), {1});\n", config.profileType, query.condField.name);
-                            ff.TabPushF("var eq2 = Builders<{0}>.Filter.Eq(nameof({0}.{1}), {1});\n", config.profileType, query.condField2.name);
-                            ff.TabPushF("var filter = Builders<{0}>.Filter.And(eq1, eq2);\n", config.profileType);
+                            ff.TabPushF("var eq1 = Builders<{0}>.Filter.Eq(nameof({0}.{1}), {1});\n", config.xinfoType, query.condField.name);
+                            ff.TabPushF("var eq2 = Builders<{0}>.Filter.Eq(nameof({0}.{1}), {1});\n", config.xinfoType, query.condField2.name);
+                            ff.TabPushF("var filter = Builders<{0}>.Filter.And(eq1, eq2);\n", config.xinfoType);
                             break;
                         // case "gte":
-                        // ff.TabPush(string.Format("var filter = Builders<{0}>.Filter.Gte(nameof({0}.{1}), {1});\n", config.profileType, query.condField.name));
+                        // ff.TabPush(string.Format("var filter = Builders<{0}>.Filter.Gte(nameof({0}.{1}), {1});\n", config.xinfoType, query.condField.name));
                         // break;
                         case "all":
-                            ff.TabPush(string.Format("var filter = Builders<{0}>.Filter.Empty;\n", config.profileType));
+                            ff.TabPush(string.Format("var filter = Builders<{0}>.Filter.Empty;\n", config.xinfoType));
                             break;
 
                         case "in":
-                            ff.TabPush(string.Format("var filter = Builders<{0}>.Filter.In(nameof({0}.{1}), {1}List);\n", config.profileType, query.condField.name));
+                            ff.TabPush(string.Format("var filter = Builders<{0}>.Filter.In(nameof({0}.{1}), {1}List);\n", config.xinfoType, query.condField.name));
                             break;
 
                         case "range":
-                            ff.TabPush(string.Format("var gte = Builders<{0}>.Filter.Gte(nameof({0}.{1}), min_{1});\n", config.profileType, query.condField.name));
-                            ff.TabPush(string.Format("var lte = Builders<{0}>.Filter.Lte(nameof({0}.{1}), max_{1});\n", config.profileType, query.condField.name));
-                            ff.TabPush(string.Format("var filter = Builders<{0}>.Filter.And(gte, lte);\n", config.profileType));
+                            ff.TabPush(string.Format("var gte = Builders<{0}>.Filter.Gte(nameof({0}.{1}), min_{1});\n", config.xinfoType, query.condField.name));
+                            ff.TabPush(string.Format("var lte = Builders<{0}>.Filter.Lte(nameof({0}.{1}), max_{1});\n", config.xinfoType, query.condField.name));
+                            ff.TabPush(string.Format("var filter = Builders<{0}>.Filter.And(gte, lte);\n", config.xinfoType));
                             break;
 
                         case "max":
-                            ff.TabPush(string.Format("var filter = Builders<{0}>.Filter.Gt(nameof({0}.{1}), 0);\n", config.profileType, query.condField.name));
+                            ff.TabPush(string.Format("var filter = Builders<{0}>.Filter.Gt(nameof({0}.{1}), 0);\n", config.xinfoType, query.condField.name));
                             break;
 
                         case "max_by_serverId":
                             {
-                                ff.TabPush(string.Format("var gte = Builders<{0}>.Filter.Gte(nameof({0}.{1}), serverId * longidext.N);\n", config.profileType, query.condField.name));
-                                ff.TabPush(string.Format("var lt = Builders<{0}>.Filter.Lt(nameof({0}.{1}), (serverId + 1) * longidext.N);\n", config.profileType, query.condField.name));
-                                ff.TabPushF("var filter = Builders<{0}>.Filter.And(gte, lt);\n", config.profileType);
+                                ff.TabPush(string.Format("var gte = Builders<{0}>.Filter.Gte(nameof({0}.{1}), serverId * longidext.N);\n", config.xinfoType, query.condField.name));
+                                ff.TabPush(string.Format("var lt = Builders<{0}>.Filter.Lt(nameof({0}.{1}), (serverId + 1) * longidext.N);\n", config.xinfoType, query.condField.name));
+                                ff.TabPushF("var filter = Builders<{0}>.Filter.And(gte, lt);\n", config.xinfoType);
                             }
                             break;
 
                         case "iter":
                             ff.TabPushF("MyDebug.Assert(start_{0} < end_{0});\n", query.condField.name);
-                            ff.TabPushF("var gte = Builders<{0}>.Filter.Gte(nameof({0}.{1}), start_{1});\n", config.profileType, query.condField.name);
-                            ff.TabPushF("var lt = Builders<{0}>.Filter.Lt(nameof({0}.{1}), end_{1});\n", config.profileType, query.condField.name);
-                            ff.TabPushF("var filter = Builders<{0}>.Filter.And(gte, lt);\n", config.profileType, query.condField.name);
+                            ff.TabPushF("var gte = Builders<{0}>.Filter.Gte(nameof({0}.{1}), start_{1});\n", config.xinfoType, query.condField.name);
+                            ff.TabPushF("var lt = Builders<{0}>.Filter.Lt(nameof({0}.{1}), end_{1});\n", config.xinfoType, query.condField.name);
+                            ff.TabPushF("var filter = Builders<{0}>.Filter.And(gte, lt);\n", config.xinfoType, query.condField.name);
                             break;
 
                         case "iter_nd":
                             ff.TabPushF("MyDebug.Assert(start_{0} < end_{0});\n", query.condField.name);
-                            ff.TabPushF("var gte = Builders<{0}>.Filter.Gte(nameof({0}.{1}), start_{1});\n", config.profileType, query.condField.name);
-                            ff.TabPushF("var lt = Builders<{0}>.Filter.Lt(nameof({0}.{1}), end_{1});\n", config.profileType, query.condField.name);
-                            ff.TabPushF("var nd = Builders<{0}>.Filter.Ne(nameof({0}.{1}), {2});\n", config.profileType, "deleted", "true");
-                            ff.TabPushF("var filter = Builders<{0}>.Filter.And(gte, lt, nd);\n", config.profileType);
+                            ff.TabPushF("var gte = Builders<{0}>.Filter.Gte(nameof({0}.{1}), start_{1});\n", config.xinfoType, query.condField.name);
+                            ff.TabPushF("var lt = Builders<{0}>.Filter.Lt(nameof({0}.{1}), end_{1});\n", config.xinfoType, query.condField.name);
+                            ff.TabPushF("var nd = Builders<{0}>.Filter.Ne(nameof({0}.{1}), {2});\n", config.xinfoType, "deleted", "true");
+                            ff.TabPushF("var filter = Builders<{0}>.Filter.And(gte, lt, nd);\n", config.xinfoType);
                             break;
 
                         case "ele":
-                            ff.TabPush(string.Format("var filter = Builders<{0}>.Filter.Eq(nameof({0}.{1}), ele_{1});\n", config.profileType, query.condField.name));
+                            ff.TabPush(string.Format("var filter = Builders<{0}>.Filter.Eq(nameof({0}.{1}), ele_{1});\n", config.xinfoType, query.condField.name));
                             break;
 
                         default:
@@ -309,31 +309,31 @@ public class Create_collection_xxx
                         case "one":
                         case "list":
                             {
-                                if (query.outputField1.type != config.profileType)
+                                if (query.outputField1.type != config.xinfoType)
                                 {
                                     hasProjection = true;
-                                    ff.TabPush(string.Format("var projection = Builders<{0}>.Projection.Include(nameof({0}.{1}));\n", config.profileType, query.outputField1.name));
+                                    ff.TabPush(string.Format("var projection = Builders<{0}>.Projection.Include(nameof({0}.{1}));\n", config.xinfoType, query.outputField1.name));
                                 }
                             }
                             break;
 
                         case "dict":
-                            if (query.outputField2.type != config.profileType)
+                            if (query.outputField2.type != config.xinfoType)
                             {
                                 hasProjection = true;
-                                ff.TabPush(string.Format("var projection = Builders<{0}>.Projection.Include(nameof({0}.{1})).Include(nameof({0}.{2}));\n", config.profileType, query.outputField1.name, query.outputField2.name));
+                                ff.TabPush(string.Format("var projection = Builders<{0}>.Projection.Include(nameof({0}.{1})).Include(nameof({0}.{2}));\n", config.xinfoType, query.outputField1.name, query.outputField2.name));
                             }
                             break;
 
                         case "dict2":
-                            if (query.outputField2.type == config.profileType || query.outputField2.type == config.profileType)
+                            if (query.outputField2.type == config.xinfoType || query.outputField2.type == config.xinfoType)
                             {
                                 throw new NotImplementedException();
                             }
 
                             hasProjection = true;
                             ff.TabPush(string.Format("var projection = Builders<{0}>.Projection.Include(nameof({0}.{1})).Include(nameof({0}.{2})).Include(nameof({0}.{3}));\n",
-                                config.profileType, query.outputField1.name, query.outputField2.name, query.outputField3.name));
+                                config.xinfoType, query.outputField1.name, query.outputField2.name, query.outputField3.name));
                             break;
 
                         default:
@@ -394,7 +394,7 @@ public class Create_collection_xxx
                     switch (query.output)
                     {
                         case "one":
-                            if (query.outputField1.type == config.profileType)
+                            if (query.outputField1.type == config.xinfoType)
                             {
                                 if (!isToList)
                                 {
@@ -402,7 +402,7 @@ public class Create_collection_xxx
                                 }
                                 else
                                 {
-                                    ff.TabPush(string.Format("return result.Count > 0 ? result[0] : default({0});\n", config.profileType));
+                                    ff.TabPush(string.Format("return result.Count > 0 ? result[0] : default({0});\n", config.xinfoType));
                                 }
                             }
                             else
@@ -410,25 +410,25 @@ public class Create_collection_xxx
                                 if (!isToList)
                                 {
                                     ff.TabPush(string.Format("return result != null ? ({0})result[nameof({1}.{2})] : default({0});\n",
-                                        query.outputField1.type, config.profileType, query.outputField1.name));
+                                        query.outputField1.type, config.xinfoType, query.outputField1.name));
                                 }
                                 else
                                 {
                                     ff.TabPush(string.Format("return result.Count > 0 ? ({0})result[0][nameof({1}.{2})] : default({0});\n",
-                                        query.outputField1.type, config.profileType, query.outputField1.name));
+                                        query.outputField1.type, config.xinfoType, query.outputField1.name));
                                 }
                             }
                             break;
 
                         case "list":
-                            if (query.outputField1.type == config.profileType)
+                            if (query.outputField1.type == config.xinfoType)
                             {
                                 ff.TabPush("return result;\n");
                             }
                             else
                             {
                                 ff.TabPush(string.Format("return result.Select(_ => ({0})_[nameof({1}.{2})]).ToList();\n",
-                                    query.outputField1.type, config.profileType, query.outputField1.name));
+                                    query.outputField1.type, config.xinfoType, query.outputField1.name));
                             }
                             break;
 
@@ -437,14 +437,14 @@ public class Create_collection_xxx
                                 query.outputField1.type, query.outputField2.type));
                             ff.TabPush("foreach (var item in result)\n");
                             ff.BlockStart();
-                            if (query.outputField2.type == config.profileType)
+                            if (query.outputField2.type == config.xinfoType)
                             {
                                 ff.TabPush(string.Format("dict[item.{0}] = item;\n", query.outputField1.name));
                             }
                             else
                             {
                                 ff.TabPush(string.Format("dict[({0})item[nameof({1}.{2})]] = ({3})item[nameof({1}.{4})];\n",
-                                    query.outputField1.type, config.profileType, query.outputField1.name,
+                                    query.outputField1.type, config.xinfoType, query.outputField1.name,
                                     query.outputField2.type, query.outputField2.name));
                             }
                             ff.BlockEnd();
@@ -453,15 +453,15 @@ public class Create_collection_xxx
 
                         case "dict2":
                             ff.TabPush(string.Format("var dict = new Dictionary<{0}, {1}_{2}_{3}>();\n",
-                                query.outputField1.type, config.profileType, query.outputField2.name, query.outputField3.name));
+                                query.outputField1.type, config.xinfoType, query.outputField2.name, query.outputField3.name));
                             ff.TabPush("foreach (var item in result)\n");
                             ff.BlockStart();
-                            ff.TabPushF("{0} {2} = ({0})item[nameof({1}.{2})];\n", query.outputField1.type, config.profileType, query.outputField1.name);
-                            ff.TabPushF("{0} {2} = ({0})item[nameof({1}.{2})];\n", query.outputField2.type, config.profileType, query.outputField2.name);
-                            ff.TabPushF("{0} {2} = ({0})item[nameof({1}.{2})];\n", query.outputField3.type, config.profileType, query.outputField3.name);
+                            ff.TabPushF("{0} {2} = ({0})item[nameof({1}.{2})];\n", query.outputField1.type, config.xinfoType, query.outputField1.name);
+                            ff.TabPushF("{0} {2} = ({0})item[nameof({1}.{2})];\n", query.outputField2.type, config.xinfoType, query.outputField2.name);
+                            ff.TabPushF("{0} {2} = ({0})item[nameof({1}.{2})];\n", query.outputField3.type, config.xinfoType, query.outputField3.name);
 
                             ff.TabPushF("dict[{0}] = new {3}_{1}_{2} {{ {1} = {1}, {2} = {2} }};\n",
-                                query.outputField1.name, query.outputField2.name, query.outputField3.name, config.profileType);
+                                query.outputField1.name, query.outputField2.name, query.outputField3.name, config.xinfoType);
                             ff.BlockEnd();
                             ff.TabPush("return dict;\n");
                             break;
@@ -479,7 +479,7 @@ public class Create_collection_xxx
 
                 ff.Push("\n");
                 ff.TabPush("//// AUTO CREATED ////\n");
-                ff.TabPushF("public async Task<ECode> {0}({1} info)\n", item.methodName, config.profileType);
+                ff.TabPushF("public async Task<ECode> {0}({1} info)\n", item.methodName, config.xinfoType);
                 ff.BlockStart();
                 {
                     ff.TabPushF("var collection = this.GetCollection{0}();\n", config.dbPostfix);
@@ -509,22 +509,22 @@ public class Create_collection_xxx
 
                     if (eq2)
                     {
-                        ff.TabPushF("var eq1 = Builders<{0}>.Filter.Eq(nameof({0}.{1}), info.{1});\n", config.profileType_dbPostfix, item.field.name);
-                        ff.TabPushF("var eq2 = Builders<{0}>.Filter.Eq(nameof({0}.{1}), info.{1});\n", config.profileType_dbPostfix, item.field2.name);
-                        ff.TabPushF("var filter = Builders<{0}>.Filter.And(eq1, eq2);\n", config.profileType_dbPostfix);
+                        ff.TabPushF("var eq1 = Builders<{0}>.Filter.Eq(nameof({0}.{1}), info.{1});\n", config.xinfoType_dbPostfix, item.field.name);
+                        ff.TabPushF("var eq2 = Builders<{0}>.Filter.Eq(nameof({0}.{1}), info.{1});\n", config.xinfoType_dbPostfix, item.field2.name);
+                        ff.TabPushF("var filter = Builders<{0}>.Filter.And(eq1, eq2);\n", config.xinfoType_dbPostfix);
                     }
                     else if (string.IsNullOrEmpty(op))
                     {
-                        ff.TabPush(string.Format("var filter = Builders<{0}>.Filter.Empty;\n", config.profileType_dbPostfix));
+                        ff.TabPush(string.Format("var filter = Builders<{0}>.Filter.Empty;\n", config.xinfoType_dbPostfix));
                     }
                     else
                     {
                         ff.TabPush(string.Format("var filter = Builders<{0}>.Filter.{2}(nameof({0}.{1}), info.{1});\n",
-                            config.profileType_dbPostfix, item.field.name, op));
+                            config.xinfoType_dbPostfix, item.field.name, op));
                     }
                     if (config.unsetEmptyField)
                     {
-                        ff.TabPush("var info_Db = ProfileHelper_Db.Copy_Class<{0}, {1}>(info);\n".Format(config.profileType_dbPostfix, config.profileType));
+                        ff.TabPush("var info_Db = XInfoHelper_Db.Copy_Class<{0}, {1}>(info);\n".Format(config.xinfoType_dbPostfix, config.xinfoType));
                         ff.TabPush("await collection.ReplaceOneAsync(filter, info_Db, new ReplaceOptions { IsUpsert = true });\n");
                     }
                     else

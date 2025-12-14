@@ -32,7 +32,7 @@ public class Create_CallCreateIndex
 
         foreach (var _ in list)
         {
-            ProfileProgram.ReplaceFile(_.path, new Mark[]
+            XInfoProgram.ReplaceFile(_.path, new Mark[]
             {
                 new Mark { startMark = "#region auto_callCreateIndex", text = _.ff.GetString() },
             });

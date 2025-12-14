@@ -79,7 +79,7 @@ public class collection_user_info : ServiceScript<DbService>
 
     public async Task Insert(UserInfo info)
     {
-        var info_Db = ProfileHelper_Db.Copy_Class<UserInfo_Db, UserInfo>(info);
+        var info_Db = XInfoHelper_Db.Copy_Class<UserInfo_Db, UserInfo>(info);
 
         var collection_Db = this.GetCollection_Db();
         await collection_Db.InsertOneAsync(info_Db);
@@ -113,7 +113,7 @@ public class collection_user_info : ServiceScript<DbService>
 
         if (infoNullable.userId != null)
         {
-            var userId_Db = ProfileHelper_Db.Copy_long(infoNullable.userId.Value);
+            var userId_Db = XInfoHelper_Db.Copy_long(infoNullable.userId.Value);
             var upd = userId_Db != null
                 ? Builders<UserInfo_Db>.Update.Set(nameof(UserInfo_Db.userId), userId_Db)
                 : Builders<UserInfo_Db>.Update.Unset(nameof(UserInfo_Db.userId));
@@ -122,7 +122,7 @@ public class collection_user_info : ServiceScript<DbService>
 
         if (infoNullable.userName != null)
         {
-            var userName_Db = ProfileHelper_Db.Copy_string(infoNullable.userName);
+            var userName_Db = XInfoHelper_Db.Copy_string(infoNullable.userName);
             var upd = userName_Db != null
                 ? Builders<UserInfo_Db>.Update.Set(nameof(UserInfo_Db.userName), userName_Db)
                 : Builders<UserInfo_Db>.Update.Unset(nameof(UserInfo_Db.userName));
@@ -131,7 +131,7 @@ public class collection_user_info : ServiceScript<DbService>
 
         if (infoNullable.createTimeS != null)
         {
-            var createTimeS_Db = ProfileHelper_Db.Copy_long(infoNullable.createTimeS.Value);
+            var createTimeS_Db = XInfoHelper_Db.Copy_long(infoNullable.createTimeS.Value);
             var upd = createTimeS_Db != null
                 ? Builders<UserInfo_Db>.Update.Set(nameof(UserInfo_Db.createTimeS), createTimeS_Db)
                 : Builders<UserInfo_Db>.Update.Unset(nameof(UserInfo_Db.createTimeS));
@@ -140,12 +140,13 @@ public class collection_user_info : ServiceScript<DbService>
 
         if (infoNullable.lastLoginTimeS != null)
         {
-            var lastLoginTimeS_Db = ProfileHelper_Db.Copy_long(infoNullable.lastLoginTimeS.Value);
+            var lastLoginTimeS_Db = XInfoHelper_Db.Copy_long(infoNullable.lastLoginTimeS.Value);
             var upd = lastLoginTimeS_Db != null
                 ? Builders<UserInfo_Db>.Update.Set(nameof(UserInfo_Db.lastLoginTimeS), lastLoginTimeS_Db)
                 : Builders<UserInfo_Db>.Update.Unset(nameof(UserInfo_Db.lastLoginTimeS));
             updList.Add(upd);
         }
+
 
         #endregion autoSave
 
