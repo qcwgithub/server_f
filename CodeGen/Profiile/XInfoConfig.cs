@@ -17,10 +17,6 @@ public class XInfoFieldConfig
 
     public string name;
     public string comment;
-
-    // 以下只对 Profile.cs 有意义
-    // public DataManagement dataManagement;
-    public string defaultValueExp;
 }
 
 public class XInfoConfig

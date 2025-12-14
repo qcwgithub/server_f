@@ -24,7 +24,7 @@ namespace Script
             var r = await this.service.connectToSameServerType.Request<MsgSaveUserInfoToFile, ResSaveUserInfoToFile>(serviceId, MsgType._SaveUserInfoToFile, msg2);
             if (r.e == ECode.Success)
             {
-                this.service.logger.Info("save profile to file ok, file name: " + r.res.fileName);
+                this.service.logger.Info("save user info to file ok, file name: " + r.res.fileName);
             }
             return r.e;
         }

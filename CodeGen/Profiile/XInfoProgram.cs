@@ -46,16 +46,16 @@ public class XInfoProgram
         File.WriteAllText(file, content);
     }
 
-    static void DoUserInfoStuff(XInfoConfig profileConfig)
+    static void DoUserInfoStuff(XInfoConfig xinfoConfig)
     {
-        List<XInfoFieldConfig> fields = profileConfig.fields;
+        List<XInfoFieldConfig> fields = xinfoConfig.fields;
         ReplaceFile("Data/Common/UserInfoNullable.cs", new Mark[]
         {
             new Mark { startMark = "#region auto", text = GenXInfoNullable.Do(fields) }
         });
         ReplaceFile("Data/Common/UserInfo_Db.cs", new Mark[]
         {
-            new Mark { startMark = "#region auto", text = GenXInfo_Db.Do(profileConfig) }
+            new Mark { startMark = "#region auto", text = GenXInfo_Db.Do(xinfoConfig) }
         });
 
         ReplaceFile("Script/User/User_SaveUser.cs", new Mark[]
@@ -75,7 +75,7 @@ public class XInfoProgram
 
         ReplaceFile("Script/Db/collections/collection_user_info.cs", new Mark[]
         {
-            new Mark { startMark = "#region autoSave", text = Gen_collection_x_info.Save(profileConfig) },
+            new Mark { startMark = "#region autoSave", text = Gen_collection_x_info.Save(xinfoConfig) },
         });
     }
 
@@ -101,9 +101,9 @@ public class XInfoProgram
 
     static void Do2()
     {
-        Script.CsvHelper helper = Script.CsvUtils.Parse(CodeGen.Program.ReadAllText("CodeGen/ProfileXConfig.csv"));
+        Script.CsvHelper helper = Script.CsvUtils.Parse(CodeGen.Program.ReadAllText("CodeGen/XInfoConfig.csv"));
 
-        XInfoConfig profileConfig = null;
+        XInfoConfig xinfoConfig = null;
         List<XInfoConfig> list = new List<XInfoConfig>();
         while (helper.ReadRow())
         {
@@ -116,23 +116,23 @@ public class XInfoProgram
             if (firstCol.StartsWith("@"))
             {
                 // start a new class
-                profileConfig = new XInfoConfig();
-                list.Add(profileConfig);
-                profileConfig.name = firstCol.Substring(1);
-                profileConfig.fields = new List<XInfoFieldConfig>();
+                xinfoConfig = new XInfoConfig();
+                list.Add(xinfoConfig);
+                xinfoConfig.name = firstCol.Substring(1);
+                xinfoConfig.fields = new List<XInfoFieldConfig>();
 
                 string s = helper.ReadString("ensureEx");
-                profileConfig.ensureEx = s == "1" || s == "true";
+                xinfoConfig.ensureEx = s == "1" || s == "true";
 
                 s = helper.ReadString("math");
-                profileConfig.math = s == "1" || s == "true";
+                xinfoConfig.math = s == "1" || s == "true";
 
                 s = helper.ReadString("createFromHelper");
-                profileConfig.createFromHelper = s == "1" || s == "true";
+                xinfoConfig.createFromHelper = s == "1" || s == "true";
 
-                profileConfig.cache = helper.ReadString("cache");;
+                xinfoConfig.cache = helper.ReadString("cache");;
 
-                if (profileConfig.cache == "redis")
+                if (xinfoConfig.cache == "redis")
                 {
                     var c = new XInfoFieldConfig();
 
@@ -143,7 +143,7 @@ public class XInfoProgram
 
                     c.name = "isPlaceholder";
 
-                    profileConfig.fields.Add(c);
+                    xinfoConfig.fields.Add(c);
                 }
 
                 continue;
@@ -164,13 +164,13 @@ public class XInfoProgram
                 c.name = helper.ReadString("name");
                 c.comment = helper.ReadString("comment");
 
-                profileConfig.fields.Add(c);
+                xinfoConfig.fields.Add(c);
             }
         }
 
         for (int i = 0; i < list.Count; i++)
         {
-            profileConfig = list[i];
+            xinfoConfig = list[i];
 
             string text = @"using System.Collections.Generic;
 using MessagePack;
@@ -185,24 +185,24 @@ namespace Data
         #endregion auto
     }}
 }}";
-            File.WriteAllText("Data/Common/" + profileConfig.name + "_Db.cs", string.Format(text, profileConfig.name));
+            File.WriteAllText("Data/Common/" + xinfoConfig.name + "_Db.cs", string.Format(text, xinfoConfig.name));
 
 
             // File.Copy("Data/Common/" + config.name + ".cs", "Data/Common/SCCommonData/" + config.name + "Nullable.cs", true);
 
-            ReplaceFile("Data/Common/" + profileConfig.name + ".cs", new Mark[]
+            ReplaceFile("Data/Common/" + xinfoConfig.name + ".cs", new Mark[]
             {
-                new Mark { startMark = "#region auto", text = GenXInfo.Gen(profileConfig) },
+                new Mark { startMark = "#region auto", text = GenXInfo.Gen(xinfoConfig) },
             });
 
-            ReplaceFile("Data/Common/" + profileConfig.name + "_Db.cs", new Mark[]
+            ReplaceFile("Data/Common/" + xinfoConfig.name + "_Db.cs", new Mark[]
             {
-                new Mark { startMark = "#region auto", text = GenXInfo_Db.Do(profileConfig) },
+                new Mark { startMark = "#region auto", text = GenXInfo_Db.Do(xinfoConfig) },
             });
 
-            if (profileConfig.name == "UserInfo")
+            if (xinfoConfig.name == "UserInfo")
             {
-                DoUserInfoStuff(profileConfig);
+                DoUserInfoStuff(xinfoConfig);
             }
         }
 

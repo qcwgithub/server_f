@@ -1,0 +1,17 @@
+type,type2,type3,type4,type5,name,createFromHelper,cache
+@AccountInfo,,,,,,,redis
+string_,,,,,platform,,
+string_,,,,,channel,,
+string_,,,,,channelUserId,,
+list_,long_,,,,userIds,,
+long_,,,,,createTimeS,,
+bool_,,,,,block,,
+long_,,,,,unblockTime,,
+string_,,,,,blockPrompt,,
+string_,,,,,blockOrUnblockReason,,
+long_,,,,,lastLoginUserId,,
+@UserInfo,,,,,,,memory
+long_,,,,,userId,,
+string_,,,,,userName,,
+long_,,,,,createTimeS,,
+long_,,,,,lastLoginTimeS,,

@@ -6,9 +6,9 @@ using System.Collections.Generic;
 
 public class Gen_collection_x_info
 {
-    public static string Save(XInfoConfig profileConfig)
+    public static string Save(XInfoConfig xinfoConfig)
     {
-        List<XInfoFieldConfig> fields = profileConfig.fields;
+        List<XInfoFieldConfig> fields = xinfoConfig.fields;
 
 
         var f = new FileFormatter();
@@ -28,8 +28,8 @@ public class Gen_collection_x_info
                 f.TabPush("var upd = {0}_Db != null\n".Format(config.name));
                 f.AddTab(1);
                 {
-                    f.TabPush("? Builders<{1}_Db>.Update.Set(nameof({1}_Db.{0}), {0}_Db)\n".Format(config.name, profileConfig.name));
-                    f.TabPush(": Builders<{1}_Db>.Update.Unset(nameof({1}_Db.{0}));\n".Format(config.name, profileConfig.name));
+                    f.TabPush("? Builders<{1}_Db>.Update.Set(nameof({1}_Db.{0}), {0}_Db)\n".Format(config.name, xinfoConfig.name));
+                    f.TabPush(": Builders<{1}_Db>.Update.Unset(nameof({1}_Db.{0}));\n".Format(config.name, xinfoConfig.name));
                 }
                 f.AddTab(-1);
 

@@ -6,15 +6,15 @@ using System.Collections.Generic;
 
 public class GenXInfo_Db
 {
-    public static string Do(XInfoConfig profileConfig)
+    public static string Do(XInfoConfig xinfoConfig)
     {
         var f = new FileFormatter();
 
         f.AddTab(2);
         // char alpha = (char)0;
-        for (int i = 0; i < profileConfig.fields.Count; i++)
+        for (int i = 0; i < xinfoConfig.fields.Count; i++)
         {
-            var config = profileConfig.fields[i];
+            var config = xinfoConfig.fields[i];
             // if (config.dataManagement == DataManagement.server ||
             //     config.dataManagement == DataManagement.server_client)
             {
@@ -25,21 +25,21 @@ public class GenXInfo_Db
         }
 
         // f.Push("\n");
-        // GenAllDefaults(f, profileConfig);
+        // GenAllDefaults(f, xinfoConfig);
 
         // f.Push("\n");
-        // MakeDefaultsNull(f, profileConfig);
+        // MakeDefaultsNull(f, xinfoConfig);
 
         f.Push("\n");
-        Gen_DeepCopyFrom_Db(f, profileConfig);
+        Gen_DeepCopyFrom_Db(f, xinfoConfig);
 
         string str = f.GetString();
         return str;
     }
 
-    // public static void GenAllDefaults(FileFormatter f, ProfileConfig profileConfig)
+    // public static void GenAllDefaults(FileFormatter f, XInfoConfig xinfoConfig)
     // {
-    //     // if (profileConfig.addLastDiffField)
+    //     // if (xinfoConfig.addLastDiffField)
     //     // {
     //     //     f.PushTab().Push("[IgnoreMember]\n");
     //     //     f.PushTab().Push("public string lastDiffField;\n");
@@ -50,9 +50,9 @@ public class GenXInfo_Db
     //     f.PushTab().Push("{\n");
     //     f.AddTab(1);
 
-    //     for (int i = 0; i < profileConfig.fields.Count; i++)
+    //     for (int i = 0; i < xinfoConfig.fields.Count; i++)
     //     {
-    //         var config = profileConfig.fields[i];
+    //         var config = xinfoConfig.fields[i];
 
     //         f.TabPush("if ({0})\n".Format(config.typeInfo.IsDefault("this." + config.name, false)));
     //         f.BlockStart();
@@ -69,9 +69,9 @@ public class GenXInfo_Db
     //     f.Push("\n");
     // }
 
-    // public static void MakeDefaultsNull(FileFormatter f, ProfileConfig profileConfig)
+    // public static void MakeDefaultsNull(FileFormatter f, XInfoConfig xinfoConfig)
     // {
-    //     // if (profileConfig.addLastDiffField)
+    //     // if (xinfoConfig.addLastDiffField)
     //     // {
     //     //     f.PushTab().Push("[IgnoreMember]\n");
     //     //     f.PushTab().Push("public string lastDiffField;\n");
@@ -82,9 +82,9 @@ public class GenXInfo_Db
     //     f.PushTab().Push("{\n");
     //     f.AddTab(1);
 
-    //     for (int i = 0; i < profileConfig.fields.Count; i++)
+    //     for (int i = 0; i < xinfoConfig.fields.Count; i++)
     //     {
-    //         var config = profileConfig.fields[i];
+    //         var config = xinfoConfig.fields[i];
     //         f.TabPush("if ({0})\n".Format(config.typeInfo.IsDefault("this." + config.name, true)));
     //         f.BlockStart();
     //         {
@@ -104,18 +104,18 @@ public class GenXInfo_Db
     //     f.Push("\n");
     // }
 
-    public static void Gen_DeepCopyFrom_Db(FileFormatter f, XInfoConfig profileConfig)
+    public static void Gen_DeepCopyFrom_Db(FileFormatter f, XInfoConfig xinfoConfig)
     {
-        f.PushTab().Push("public bool DeepCopyFrom(", profileConfig.name, " other)\n");
+        f.PushTab().Push("public bool DeepCopyFrom(", xinfoConfig.name, " other)\n");
         f.PushTab().Push("{\n");
         f.AddTab(1);
 
         f.TabPush("bool empty = true;\n\n");
 
         List<string> temp = new List<string>();
-        for (int i = 0; i < profileConfig.fields.Count; i++)
+        for (int i = 0; i < xinfoConfig.fields.Count; i++)
         {
-            var config = profileConfig.fields[i];
+            var config = xinfoConfig.fields[i];
             f.PushTab();
             f.PushCopy_Db(config.typeInfo, "this." + config.name, "other." + config.name, false, out bool canCompareNull);
             if (canCompareNull)
@@ -128,7 +128,7 @@ public class GenXInfo_Db
             {
                 f.BlockEnd();
             }
-            // f.TabPush("this.{0} = ProfileHelper_Db.Copy(other.{0});\n".Format(config.name));
+            // f.TabPush("this.{0} = XInfoHelper_Db.Copy(other.{0});\n".Format(config.name));
             f.Push("\n");
         }
         f.TabPush("return !empty;\n");

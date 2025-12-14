@@ -1,42 +1,42 @@
 // 共用
 public class GenXInfo
 {
-    public static string Gen(XInfoConfig profileConfig)
+    public static string Gen(XInfoConfig xinfoConfig)
     {
         var f = new FileFormatter();
 
         f.AddTab(2);
 
-        GenFields(f, profileConfig);
+        GenFields(f, xinfoConfig);
 
         f.Push("\n");
-        GenEnsures(f, profileConfig);
+        GenEnsures(f, xinfoConfig);
 
         f.Push("\n");
-        GenIsDifferent_DeepCopyFrom(f, profileConfig);
+        GenIsDifferent_DeepCopyFrom(f, xinfoConfig);
 
-        if (profileConfig.math)
+        if (xinfoConfig.math)
         {
             f.Push("\n");
-            GenMath(f, profileConfig);
+            GenMath(f, xinfoConfig);
         }
 
-        if (profileConfig.createFromHelper)
+        if (xinfoConfig.createFromHelper)
         {
             f.Push("\n");
-            GenCreateFromHelper(f, profileConfig);
+            GenCreateFromHelper(f, xinfoConfig);
         }
 
         string str = f.GetString();
         return str;
     }
 
-    public static void GenFields(FileFormatter f, XInfoConfig profileConfig)
+    public static void GenFields(FileFormatter f, XInfoConfig xinfoConfig)
     {
         // char alpha = (char)0;
-        for (int i = 0; i < profileConfig.fields.Count; i++)
+        for (int i = 0; i < xinfoConfig.fields.Count; i++)
         {
-            var fieldConfig = profileConfig.fields[i];
+            var fieldConfig = xinfoConfig.fields[i];
 
             f.PushTab().Push(string.Format("[Key({0})]", i)).PushLine();
 
@@ -61,10 +61,10 @@ public class GenXInfo
             }
         }
     }
-    public static void GenEnsures(FileFormatter f, XInfoConfig profileConfig)
+    public static void GenEnsures(FileFormatter f, XInfoConfig xinfoConfig)
     {
         // static Ensure
-        f.PushTab().Push("public static ", profileConfig.name, " Ensure(", profileConfig.name, "? p)\n");
+        f.PushTab().Push("public static ", xinfoConfig.name, " Ensure(", xinfoConfig.name, "? p)\n");
         f.PushTab().Push("{\n");
         f.AddTab(1);
         {
@@ -72,7 +72,7 @@ public class GenXInfo
             f.PushTab().Push("{\n");
             f.AddTab(1);
             {
-                f.PushTab().Push("p = new ", profileConfig.name, "();\n");
+                f.PushTab().Push("p = new ", xinfoConfig.name, "();\n");
             }
             f.AddTab(-1);
             f.PushTab().Push("}\n");
@@ -88,13 +88,13 @@ public class GenXInfo
         f.PushTab().Push("{\n");
         f.AddTab(1);
         {
-            for (int i = 0; i < profileConfig.fields.Count; i++)
+            for (int i = 0; i < xinfoConfig.fields.Count; i++)
             {
-                var config = profileConfig.fields[i];
+                var config = xinfoConfig.fields[i];
                 f.PushEnsure(config.typeInfo, "this." + config.name, "this." + config.name);
             }
 
-            if (profileConfig.ensureEx)
+            if (xinfoConfig.ensureEx)
             {
                 f.TabPush("\n");
                 f.TabPush("this.EnsureEx();\n");
@@ -104,28 +104,28 @@ public class GenXInfo
         f.PushTab().Push("}\n");
     }
 
-    public static void GenIsDifferent_DeepCopyFrom(FileFormatter f, XInfoConfig profileConfig)
+    public static void GenIsDifferent_DeepCopyFrom(FileFormatter f, XInfoConfig xinfoConfig)
     {
-        // if (profileConfig.addLastDiffField)
+        // if (xinfoConfig.addLastDiffField)
         // {
         //     f.PushTab().Push("[IgnoreMember]\n");
         //     f.PushTab().Push("public string lastDiffField;\n");
         // }
 
-        f.PushTab().Push("public bool IsDifferent(", profileConfig.name, " other)\n");//, List<string> tracker = null", ")\n");
+        f.PushTab().Push("public bool IsDifferent(", xinfoConfig.name, " other)\n");//, List<string> tracker = null", ")\n");
 
         f.PushTab().Push("{\n");
         f.AddTab(1);
 
-        for (int i = 0; i < profileConfig.fields.Count; i++)
+        for (int i = 0; i < xinfoConfig.fields.Count; i++)
         {
-            var config = profileConfig.fields[i];
+            var config = xinfoConfig.fields[i];
 
             f.TabPush("if ({0})\n".Format(
                 config.typeInfo.ToIsDifferent("this." + config.name, "other." + config.name)));
             f.BlockStart();
             {
-                // if (profileConfig.addLastDiffField)
+                // if (xinfoConfig.addLastDiffField)
                 //     f.TabPush("this.lastDiffField = \"", config.name, "\";\n");
 
                 f.TabPush("return true;\n");
@@ -140,13 +140,13 @@ public class GenXInfo
         f.Push("\n");
 
         //-------------------------------------------------
-        f.PushTab().Push("public void DeepCopyFrom(", profileConfig.name, " other)\n");
+        f.PushTab().Push("public void DeepCopyFrom(", xinfoConfig.name, " other)\n");
         f.PushTab().Push("{\n");
         f.AddTab(1);
 
-        for (int i = 0; i < profileConfig.fields.Count; i++)
+        for (int i = 0; i < xinfoConfig.fields.Count; i++)
         {
-            var config = profileConfig.fields[i];
+            var config = xinfoConfig.fields[i];
             f.TabPush(config.typeInfo.ToDeepCopyFrom("this." + config.name, "other." + config.name), ";\n");
         }
 
@@ -173,23 +173,23 @@ public class GenXInfo
         "Get_1_0",
         "Set_1_1"
     };
-    public static void GenMath(FileFormatter f, XInfoConfig profileConfig)
+    public static void GenMath(FileFormatter f, XInfoConfig xinfoConfig)
     {
-        if (profileConfig.fields.Count == 0)
+        if (xinfoConfig.fields.Count == 0)
         {
             return;
         }
 
-        FieldTypeInfo typeInfo0 = profileConfig.fields[0].typeInfo;
+        FieldTypeInfo typeInfo0 = xinfoConfig.fields[0].typeInfo;
         if (!typeInfo0.type.SupportsMath())
         {
             return;
         }
 
         bool allSame = true;
-        for (int j = 1; j < profileConfig.fields.Count; j++)
+        for (int j = 1; j < xinfoConfig.fields.Count; j++)
         {
-            FieldTypeInfo typeInfoj = profileConfig.fields[j].typeInfo;
+            FieldTypeInfo typeInfoj = xinfoConfig.fields[j].typeInfo;
             if (typeInfoj.type != typeInfo0.type)
             {
                 allSame = false;
@@ -240,7 +240,7 @@ public class GenXInfo
             }
             else if (allInput)
             {
-                f.Push(profileConfig.name, " other");
+                f.Push(xinfoConfig.name, " other");
             }
             f.Push(")\n");
 
@@ -254,7 +254,7 @@ public class GenXInfo
                     f.AddTab(1);
                 }
 
-                foreach (XInfoFieldConfig fieldConfig in profileConfig.fields)
+                foreach (XInfoFieldConfig fieldConfig in xinfoConfig.fields)
                 {
                     if (singleField)
                     {
@@ -303,7 +303,7 @@ public class GenXInfo
                     f.PushTab().Push("default:\n");
                     f.AddTab(1);
 
-                    f.PushTab().Push("throw new Exception($\"field not exist: ", profileConfig.name, ".{name}\");\n");
+                    f.PushTab().Push("throw new Exception($\"field not exist: ", xinfoConfig.name, ".{name}\");\n");
                     f.AddTab(-1);
                 }
 
@@ -323,16 +323,16 @@ public class GenXInfo
         }
     }
 
-    public static void GenCreateFromHelper(FileFormatter f, XInfoConfig profileConfig)
+    public static void GenCreateFromHelper(FileFormatter f, XInfoConfig xinfoConfig)
     {
-        f.PushTab().Push("public static ", profileConfig.name, " Create(CsvHelper helper)\n");
+        f.PushTab().Push("public static ", xinfoConfig.name, " Create(CsvHelper helper)\n");
         f.PushTab().Push("{\n");
         f.AddTab(1);
 
         f.PushTab().Push("var self = Ensure(null);\n");
         f.Push("\n");
 
-        foreach (XInfoFieldConfig fieldConfig in profileConfig.fields)
+        foreach (XInfoFieldConfig fieldConfig in xinfoConfig.fields)
         {
             f.PushTab().Push("self.", fieldConfig.name, " = helper.", fieldConfig.typeInfo.HelperRead(), "(\"", fieldConfig.name, "\");\n");
         }
