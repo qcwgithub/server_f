@@ -15,57 +15,57 @@ namespace Script
 
         public log4net.ILog logger { get { return this.service.logger; } }
 
-        public async Task<(ECode, Profile?)> QueryUserProfile(long userId)
+        public async Task<(ECode, UserInfo?)> QueryUserInfo(long userId)
         {
-            var msgDb = new MsgQueryUserProfile();
+            var msgDb = new MsgQueryUserInfo();
             msgDb.userId = userId;
 
-            var r = await this.service.connectToDbService.Request<MsgQueryUserProfile, ResQueryUserProfile>(MsgType._Db_QueryUserProfile, msgDb);
+            var r = await this.service.connectToDbService.Request<MsgQueryUserInfo, ResQueryUserInfo>(MsgType._Db_QueryUserInfo, msgDb);
             if (r.e != ECode.Success)
             {
-                this.service.logger.Error($"QueryUserProfile({userId}) r.err {r.e}");
+                this.service.logger.Error($"QueryUserInfo({userId}) r.err {r.e}");
                 return (r.e, null);
             }
 
-            Profile? profile = r.res.profile;
-            if (profile != null)
+            UserInfo? userInfo = r.res.userInfo;
+            if (userInfo != null)
             {
-                if (profile.userId != userId)
+                if (userInfo.userId != userId)
                 {
-                    this.service.logger.Error($"QueryUserProfile({userId}) different profile.userId {profile.userId}");
+                    this.service.logger.Error($"QueryUserUserInfo({userId}) different userInfo.userId {userInfo.userId}");
                     return (ECode.Error, null);
                 }
 
-                profile.Ensure();
+                userInfo.Ensure();
             }
 
-            return (ECode.Success, profile);
+            return (ECode.Success, userInfo);
         }
 
-        public async Task<ECode> InsertUserProfile(Profile profile)
+        public async Task<ECode> InsertUserInfo(UserInfo userInfo)
         {
-            var msgDb = new MsgInsertUserProfile();
-            msgDb.profile = profile;
+            var msgDb = new MsgInsertUserInfo();
+            msgDb.userInfo = userInfo;
 
-            var r = await this.service.connectToDbService.Request<MsgInsertUserProfile, ResInsertUserProfile>(MsgType._Db_InsertUserProfile, msgDb);
+            var r = await this.service.connectToDbService.Request<MsgInsertUserInfo, ResInsertUserInfo>(MsgType._Db_InsertUserInfo, msgDb);
             if (r.e != ECode.Success)
             {
-                this.service.logger.Error($"InsertUserProfile({profile.userId}) r.e {r.e}");
+                this.service.logger.Error($"InsertUserInfo({userInfo.userId}) r.e {r.e}");
                 return r.e;
             }
 
             return ECode.Success;
         }
 
-        public Profile NewProfile(long userId)
+        public UserInfo NewUserInfo(long userId)
         {
-            Profile profile = Profile.Ensure(null);
-            profile.userId = userId;
+            UserInfo userInfo = UserInfo.Ensure(null);
+            userInfo.userId = userId;
 
             long nowS = TimeUtils.GetTimeS();
-            profile.createTimeS = nowS;
-            profile.lastLoginTimeS = nowS;
-            return profile;
+            userInfo.createTimeS = nowS;
+            userInfo.lastLoginTimeS = nowS;
+            return userInfo;
         }
 
         public void SetDestroyTimer(User user, string place)

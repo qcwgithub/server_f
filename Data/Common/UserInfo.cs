@@ -1,10 +1,9 @@
 using MessagePack;
-using System.Collections.Generic;
 
 namespace Data
 {
     [MessagePackObject]
-    public class Profile : IIsDifferent<Profile>
+    public class UserInfo
     {
         #region auto
 
@@ -17,11 +16,11 @@ namespace Data
         [Key(3)]
         public long lastLoginTimeS;
 
-        public static Profile Ensure(Profile? p)
+        public static UserInfo Ensure(UserInfo? p)
         {
             if (p == null)
             {
-                p = new Profile();
+                p = new UserInfo();
             }
             p.Ensure();
             return p;
@@ -35,7 +34,7 @@ namespace Data
             }
         }
 
-        public bool IsDifferent(Profile other)
+        public bool IsDifferent(UserInfo other)
         {
             if (this.userId != other.userId)
             {
@@ -56,7 +55,7 @@ namespace Data
             return false;
         }
 
-        public void DeepCopyFrom(Profile other)
+        public void DeepCopyFrom(UserInfo other)
         {
             this.userId = other.userId;
             this.userName = other.userName;

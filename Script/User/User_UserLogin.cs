@@ -158,9 +158,9 @@ namespace Script
             // int aaaId=
             // var locAAA = this.server.GetKnownLoc(ServerConst.AAA_ID);
             res.userId = userId;
-            res.profile = user.profile;
+            res.userInfo = user.userInfo;
             res.kickOther = kickOther;
-            user.profile.lastLoginTimeS = nowS;
+            user.userInfo.lastLoginTimeS = nowS;
             return ECode.Success;
         }
     }

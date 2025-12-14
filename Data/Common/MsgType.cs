@@ -67,9 +67,9 @@ namespace Data
         _Global_Tick_Loop = 67,
 
         #endregion
-        _Db_QueryUserProfile = 202,
-        _Db_SaveUserProfile = 203,
-        _Db_InsertUserProfile = 204,
+        _Db_QueryUserInfo = 202,
+        _Db_SaveUserInfo = 203,
+        _Db_InsertUserInfo = 204,
     
         _GetPlayerCount = 509,
         _User_DestroyUser = 601,

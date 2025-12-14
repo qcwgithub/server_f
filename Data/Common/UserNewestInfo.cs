@@ -9,7 +9,7 @@ namespace Data
     public enum LoadUserNewestWhat
     {
         None = 0,
-        Profile = 1, // Command 使用
+        UserInfo = 1, // Command 使用
     }
 
     [MessagePackObject]
@@ -18,7 +18,7 @@ namespace Data
         [Key(0)]
         public long userId;
         [Key(1)]
-        public Profile? profile;
+        public UserInfo? userInfo;
 
         public static UserNewestInfo Create(long userId)
         {

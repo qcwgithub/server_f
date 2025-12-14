@@ -24,16 +24,16 @@ namespace Script
                 return ECode.UserNotExist;
             }
 
-            var msgDb = new MsgSaveUserProfile
+            var msgDb = new MsgSaveUserInfo
             {
                 userId = userId,
-                profileNullable = new ProfileNullable()
+                userInfoNullable = new UserInfoNullable()
             };
-            var profileNullable = msgDb.profileNullable;
+            var profileNullable = msgDb.userInfoNullable;
 
             List<string>? buffer = null;
-            Profile last = player.lastProfile;
-            Profile curr = player.profile;
+            UserInfo last = player.lastUserInfo;
+            UserInfo curr = player.userInfo;
 
             #region auto
 
@@ -86,10 +86,10 @@ namespace Script
             if (buffer != null)
             {
 #if DEBUG
-                msgDb.profile_debug = Profile.Ensure(null);
-                msgDb.profile_debug.DeepCopyFrom(curr);
+                msgDb.userInfo_debug = UserInfo.Ensure(null);
+                msgDb.userInfo_debug.DeepCopyFrom(curr);
 #endif
-                var r = await this.service.connectToDbService.Request<MsgSaveUserProfile, ResSaveUserProfile>(MsgType._Db_SaveUserProfile, msgDb);
+                var r = await this.service.connectToDbService.Request<MsgSaveUserInfo, ResSaveUserInfo>(MsgType._Db_SaveUserInfo, msgDb);
                 if (r.e != ECode.Success)
                 {
                     this.service.logger.ErrorFormat("_Db_SaveUser error: {0}, userId: {1}", r.e, userId);

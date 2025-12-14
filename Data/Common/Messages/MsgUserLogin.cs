@@ -32,7 +32,7 @@ namespace Data
         [Key(0)]
         public long userId;
         [Key(1)]
-        public Profile profile;
+        public UserInfo userInfo;
         [Key(2)]
         public bool kickOther; // 顶号
         [Key(3)]

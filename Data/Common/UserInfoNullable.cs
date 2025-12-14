@@ -4,7 +4,7 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class ProfileNullable
+    public class UserInfoNullable
     {
         #region auto
 

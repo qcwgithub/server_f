@@ -14,14 +14,14 @@ namespace Script
 
         public readonly LockController lockController;
         public readonly ConnectToGlobalService connectToGlobalService;
-        public readonly collection_user_profile collection_user_profile;
+        public readonly collection_user_info collection_user_info;
 
         public DbService(Server server, int serviceId) : base(server, serviceId)
         {
             this.lockController = new LockController(this.server, this, this.sd.lockControllerData, DbKey.TakeLockControl(), DbKey.LockedHash(), DbKey.LockPrefix());
 
             this.AddConnectToOtherService(this.connectToGlobalService = new ConnectToGlobalService(this));
-            this.collection_user_profile = new collection_user_profile(this.server, this);
+            this.collection_user_info = new collection_user_info(this.server, this);
         }
 
         #region auto_collection_var_decl
@@ -57,7 +57,7 @@ namespace Script
             this.dispatcher.AddHandler(new Db_Start(this.server, this));
             this.dispatcher.AddHandler(new Db_Shutdown(this.server, this));
 
-            this.dispatcher.AddHandler(new Db_InsertUserProfile(this.server, this));
+            this.dispatcher.AddHandler(new Db_InsertUserInfo(this.server, this));
             this.dispatcher.AddHandler(new Db_QueryUserProfile(this.server, this));
             this.dispatcher.AddHandler(new Db_SaveUserProfile(this.server, this));
         }

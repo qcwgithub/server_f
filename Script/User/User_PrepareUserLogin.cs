@@ -48,20 +48,20 @@ namespace Script
             if (user == null)
             {
                 ECode e;
-                Profile? profile;
+                UserInfo? userInfo;
 
-                (e, profile) = await this.service.ss.QueryUserProfile(userId);
+                (e, userInfo) = await this.service.ss.QueryUserInfo(userId);
                 if (e != ECode.Success)
                 {
                     return e;
                 }
 
-                if (profile == null)
+                if (userInfo == null)
                 {
                     logger.Info($"user profile {userId} not exist, create a new one!");
 
-                    profile = this.service.ss.NewProfile(userId);
-                    e = await this.service.ss.InsertUserProfile(profile);
+                    userInfo = this.service.ss.NewUserInfo(userId);
+                    e = await this.service.ss.InsertUserInfo(userInfo);
                     if (e != ECode.Success)
                     {
                         return e;
@@ -69,7 +69,7 @@ namespace Script
 
                 }
 
-                user = new User(profile);
+                user = new User(userInfo);
                 this.AddPlayerToDict(user);
 
                 // 这里不再加东西了，要加得加到 AddPlayerToDict 里
@@ -94,8 +94,8 @@ namespace Script
             this.service.sd.userDict.Add(user.userId, user);
 
             // 有值就不能再赋值了，不然玩家上线下线就错了
-            user.lastProfile = Profile.Ensure(null);
-            user.lastProfile.DeepCopyFrom(user.profile);
+            user.lastUserInfo = UserInfo.Ensure(null);
+            user.lastUserInfo.DeepCopyFrom(user.userInfo);
 
             // qiucw
             // 这句会修改profile，必须放在 lastProfile.DeepCopyFrom 后面

@@ -2,17 +2,17 @@ namespace Data
 {
     public sealed class User
     {
-        public readonly Profile profile;
-        public User(Profile profile)
+        public readonly UserInfo userInfo;
+        public User(UserInfo userInfo)
         {
-            this.profile = profile;
+            this.userInfo = userInfo;
         }
 
         public long userId
         {
             get
             {
-                return this.profile.userId;
+                return this.userInfo.userId;
             }
         }
 
@@ -51,7 +51,7 @@ namespace Data
         public ITimer? saveTimer;
 
         //// 2 ////
-        public Profile? lastProfile;
+        public UserInfo? lastUserInfo;
 
         public bool isGm = false;
 

@@ -1,10 +1,11 @@
-using MessagePack;
-using MongoDB.Bson.Serialization.Attributes;
 using System.Collections.Generic;
+using MessagePack;
+using System.Numerics;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Data
 {
-    public class Profile_Db : IIsDifferent_Db<Profile>
+    public class UserInfo_Db : IIsDifferent_Db<UserInfo>
     {
         #region auto
 
@@ -17,7 +18,7 @@ namespace Data
         [BsonIgnoreIfNull]
         public long? lastLoginTimeS;
 
-        public bool DeepCopyFrom(Profile other)
+        public bool DeepCopyFrom(UserInfo other)
         {
             bool empty = true;
 
