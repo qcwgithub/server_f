@@ -11,57 +11,61 @@ namespace Script
         }
 
         public const int STAMP_BITS = 41;
-        public const int WORKER_ID_BITS = 13;
-        public const int INC_BITS = 10;
+        public const int WORKER_ID_BITS = 10;
+        public const int SEQ_BITS = 12;
 
-        public static readonly long MAX_STAMP = (1 << STAMP_BITS) - 1;
-        public static readonly long MAX_WORKER_ID = (1 << WORKER_ID_BITS) - 1;
-        public static readonly long MAX_INC = (1 << INC_BITS) - 1;
+        public const long MIN_STAMP = 1;
+        public const long MAX_STAMP = (1 << STAMP_BITS) - 1;
 
-        // 1 41 13 10
-        public static long Encode(long stamp, long workerId, long inc)
+        public const long MIN_WORKER_ID = 0;
+        public const long MAX_WORKER_ID = (1 << WORKER_ID_BITS) - 1;
+
+        public const long MIN_SEQ = 0;
+        public const long MAX_SEQ = (1 << SEQ_BITS) - 1;
+
+        public static long Encode(long stamp, long workerId, long seq)
         {
-            long id = (stamp << (WORKER_ID_BITS + INC_BITS)) + (workerId << INC_BITS) + inc;
+            long id = (stamp << (WORKER_ID_BITS + SEQ_BITS)) + (workerId << SEQ_BITS) + seq;
 
 #if DEBUG
             MyDebug.Assert(Decode(id, out long s, out long w, out long i));
             MyDebug.Assert(s == stamp);
             MyDebug.Assert(w == workerId);
-            MyDebug.Assert(i == inc);
+            MyDebug.Assert(i == seq);
 #endif
 
             return id;
         }
 
-        public static bool Decode(long id, out long stamp, out long workerId, out long inc)
+        public static bool Decode(long id, out long stamp, out long workerId, out long seq)
         {
             if (id < 0)
             {
-                stamp = 0;
-                workerId = 0;
-                inc = 0;
+                stamp = default;
+                workerId = default;
+                seq = default;
                 return false;
             }
 
-            stamp = (id >> (WORKER_ID_BITS + INC_BITS));
-            id -= (stamp << (WORKER_ID_BITS + INC_BITS));
+            stamp = (id >> (WORKER_ID_BITS + SEQ_BITS));
+            id -= (stamp << (WORKER_ID_BITS + SEQ_BITS));
 
-            workerId = (id >> INC_BITS);
-            id -= (workerId << INC_BITS);
+            workerId = (id >> SEQ_BITS);
+            id -= (workerId << SEQ_BITS);
 
-            inc = id;
+            seq = id;
 
-            if (stamp <= 0)
+            if (stamp < MIN_STAMP)
             {
                 return false;
             }
 
-            if (workerId < 0)
+            if (workerId < MIN_WORKER_ID)
             {
                 return false;
             }
 
-            if (inc < 0)
+            if (seq < MIN_SEQ)
             {
                 return false;
             }
@@ -69,63 +73,87 @@ namespace Script
             return true;
         }
 
-        protected void InitSnowflakeData(long stamp, long workerId)
+        protected bool InitSnowflakeData(long stamp, long workerId)
         {
-            if (stamp <= 0 || stamp > MAX_STAMP)
+            if (stamp < MIN_STAMP || stamp > MAX_STAMP)
             {
-                throw new Exception("stamp <= 0 || stamp > MAX_STAMP");
+                this.service.logger.Error("stamp < MIN_STAMP || stamp > MAX_STAMP");
+                return false;
             }
 
-            if (workerId <= 0 || workerId > MAX_WORKER_ID)
+            if (workerId < MIN_WORKER_ID || workerId > MAX_WORKER_ID)
             {
-                throw new Exception("workerId <= 0 || workerId > MAX_WORKER_ID");
+                this.service.logger.Error("workerId < MIN_WORKER_ID || workerId > MAX_WORKER_ID");
+                return false;
             }
 
             this.snowflakeData.stamp = stamp;
             this.snowflakeData.workerId = workerId;
+            return true;
+        }
+
+        long baseStamp = 0;
+        protected long NowSnowflakeStamp()
+        {
+            if (this.baseStamp == 0)
+            {
+                DateTime baseDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+                this.baseStamp = TimeUtils.DateTimeToMilliseconds(baseDate);
+            }
+
+            long now = TimeUtils.GetTime();
+            return now - baseStamp;
         }
 
         protected long NextId()
         {
             SnowflakeData d = this.snowflakeData;
-            if (d.stamp == 0)
+            if (d.stamp < MIN_STAMP)
             {
-                throw new Exception("d.stamp == 0");
+                throw new Exception("d.stamp < MIN_STAMP");
+            }
+            if (d.workerId < MIN_WORKER_ID)
+            {
+                throw new Exception("d.workerId < MIN_WORKER_ID");
+            }
+            if (d.seq < MIN_SEQ)
+            {
+                throw new Exception("d.seq < MIN_SEQ");
             }
 
-            long stamp = TimeUtils.GetTime();
+            long stamp = this.NowSnowflakeStamp();
             if (d.stamp < stamp)
             {
                 d.stamp = stamp;
-                d.inc = 0;
-                return Encode(d.stamp, d.workerId, d.inc);
+                d.seq = MIN_SEQ;
+                return Encode(d.stamp, d.workerId, d.seq);
             }
             else if (d.stamp == stamp)
             {
-                d.inc++;
-                if (d.inc < MAX_INC)
+                d.seq++;
+                if (d.seq < MAX_SEQ)
                 {
-                    return Encode(d.stamp, d.workerId, d.inc);
+                    return Encode(d.stamp, d.workerId, d.seq);
                 }
                 else
                 {
                     d.stamp++;
-                    d.inc = 0;
-                    return Encode(d.stamp, d.workerId, d.inc);
+                    d.seq = MIN_SEQ;
+                    return Encode(d.stamp, d.workerId, d.seq);
                 }
             }
             else // d.stamp > stamp
             {
-                if (d.inc < MAX_INC - 1)
+                if (d.seq < MAX_SEQ - 1)
                 {
-                    d.inc++;
-                    return Encode(d.stamp, d.workerId, d.inc);
+                    d.seq++;
+                    return Encode(d.stamp, d.workerId, d.seq);
                 }
                 else
                 {
                     d.stamp++;
-                    d.inc = 0;
-                    return Encode(d.stamp, d.workerId, d.inc);
+                    d.seq = MIN_SEQ;
+                    return Encode(d.stamp, d.workerId, d.seq);
                 }
             }
         }

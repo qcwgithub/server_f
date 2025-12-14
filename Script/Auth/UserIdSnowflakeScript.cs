@@ -20,18 +20,21 @@ namespace Script
             }
 
             long maxUserId = r.res.result;
-            if (!Decode(maxUserId, out long preStamp, out long preWorkerId, out long preInc))
+            if (!Decode(maxUserId, out long preStamp, out long preWorkerId, out long preSeq))
             {
                 return ECode.Error;
             }
 
-            long stamp = TimeUtils.GetTime();
+            long stamp = this.NowSnowflakeStamp();
             if (stamp < preStamp)
             {
                 return ECode.Error;
             }
 
-            base.InitSnowflakeData(stamp, workerId);
+            if (!base.InitSnowflakeData(stamp, workerId))
+            {
+                return ECode.Error;
+            }
 
             return ECode.Success;
         }

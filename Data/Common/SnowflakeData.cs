@@ -4,6 +4,6 @@ namespace Data
     {
         public long workerId;
         public long stamp;
-        public long inc;
+        public long seq;
     }
 }

@@ -13,12 +13,15 @@ namespace Data
         public string inIp;
         [Key(3)]
         public int inPort;
-        // GAAA | Player
+        // Gatewaay
         [Key(4)]
         public string outIp;
-        // GAAA | Player
+        // Gateway
         [Key(5)]
         public int outPort;
+        // Auth
+        [Key(6)]
+        public long userIdSnowflakeWorkerId;
 
         public ServiceTypeAndId Tai()
         {

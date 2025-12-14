@@ -10,8 +10,16 @@ namespace Script
 
         protected override async Task<ECode> Handle2()
         {
-            long workerId = 0; // TODO
-            ECode e = await this.service.userIdSnowflakeScript.InitUserIdSnowflakeData(workerId);
+            var sd = this.service.sd;
+            var serviceConfig = sd.serviceConfig;
+
+            if (serviceConfig.userIdSnowflakeWorkerId < SnowflakeScript<Service>.MIN_WORKER_ID)
+            {
+                this.service.logger.Error("serviceConfig.userIdSnowflakeWorkerId < SnowflakeScript.MIN_WORKER_ID");
+                return ECode.ServiceConfigError;
+            }
+
+            ECode e = await this.service.userIdSnowflakeScript.InitUserIdSnowflakeData(serviceConfig.userIdSnowflakeWorkerId);
             if (e != ECode.Success)
             {
                 return e;
