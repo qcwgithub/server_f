@@ -10,8 +10,16 @@ namespace Script
 
         public readonly ConnectToSelf connectToSelf;
 
-        public readonly TcpListenerScript tcpListenerScript;
-        public readonly ProtocolClientScriptS tcpClientScript;
+        public readonly TcpListenerScript tcpListenerScriptForS;
+        public readonly TcpListenerScript tcpListenerScriptForC;
+
+        public readonly ProtocolClientScriptForS protocolClientScriptForS;
+        public readonly ProtocolClientScript protocolClientScriptForC;
+        protected virtual ProtocolClientScript CreateProtocolClientScriptForC()
+        {
+            return null;
+        }
+
         public readonly HttpListenerScript httpListenerScript;
         public readonly WebSocketListenerScript webSocketListenerScript;
 
@@ -27,8 +35,12 @@ namespace Script
 
             this.connectToSelf = new ConnectToSelf(this);
 
-            this.tcpListenerScript = new TcpListenerScript(this.server, this);
-            this.tcpClientScript = new ProtocolClientScriptS(this.server, this);
+            this.tcpListenerScriptForS = new TcpListenerScript(this.server, this);
+            this.tcpListenerScriptForC = new TcpListenerScript(this.server, this);
+
+            this.protocolClientScriptForS = new ProtocolClientScriptForS(this.server, this);
+            this.protocolClientScriptForC = this.CreateProtocolClientScriptForC();
+
             this.httpListenerScript = new HttpListenerScript(this.server, this);
             this.webSocketListenerScript = new WebSocketListenerScript(this.server, this);
 
@@ -70,8 +82,12 @@ namespace Script
         }
         public virtual void Attach()
         {
-            this.data.tcpClientCallback = this.tcpClientScript;
-            this.data.tcpListenerCallback = this.tcpListenerScript;
+            this.data.protocolClientCallbackForS = this.protocolClientScriptForS;
+            this.data.protocolClientCallbackForC = this.protocolClientScriptForC;
+
+            this.data.tcpListenerCallbackForS = this.tcpListenerScriptForS;
+            this.data.tcpListenerCallbackForC = this.tcpListenerScriptForC;
+
             this.data.httpListenerCallback = this.httpListenerScript;
             this.data.webSocketListenerCallback = this.webSocketListenerScript;
         }
@@ -94,14 +110,25 @@ namespace Script
                 await Task.Delay(1000);
             }
 
-            if (this.data.tcpClientCallback == this.tcpClientScript)
+            if (this.data.protocolClientCallbackForS == this.protocolClientScriptForS)
             {
-                this.data.tcpClientCallback = null;
+                this.data.protocolClientCallbackForS = null;
             }
-            if (this.data.tcpListenerCallback == this.tcpListenerScript)
+
+            if (this.data.protocolClientCallbackForC == this.protocolClientScriptForC)
             {
-                this.data.tcpListenerCallback = null;
+                this.data.protocolClientCallbackForC = null;
             }
+
+            if (this.data.tcpListenerCallbackForS == this.tcpListenerScriptForS)
+            {
+                this.data.tcpListenerCallbackForS = null;
+            }
+            if (this.data.tcpListenerCallbackForC == this.tcpListenerScriptForC)
+            {
+                this.data.tcpListenerCallbackForC = null;
+            }
+
             if (this.data.httpListenerCallback == this.httpListenerScript)
             {
                 this.data.httpListenerCallback = null;
@@ -134,7 +161,7 @@ namespace Script
             ServiceConnection? connection;
             if (!data.otherServiceConnections.TryGetValue(to_serviceId, out connection) || connection.IsClosed())
             {
-                ProtocolClientData socket = this.tcpClientScript.CreateConnector(this.data, inIp, inPort);
+                ProtocolClientData socket = this.protocolClientScriptForS.CreateConnector(this.data, inIp, inPort);
 
                 connection = new ServiceConnection(to_serviceType, to_serviceId, socket);
                 data.SaveOtherServiceConnection(connection);

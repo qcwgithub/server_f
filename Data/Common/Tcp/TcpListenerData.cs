@@ -10,14 +10,11 @@ namespace Data
     {
         public bool isForClient;
         public ITcpListenerCallbackProvider callbackProvider;
-        public ITcpListenerCallback callback => this.callbackProvider.GetTcpListenerCallback();
+        public ITcpListenerCallback callback => this.callbackProvider.GetTcpListenerCallback(this);
         public Socket socket;
         public bool closed;
         public SocketAsyncEventArgs listenSocketArg;
         public bool accepting = false;
-
-        // public TcpClientData connectorData;
-        // public TcpClientData acceptorData;
 
         // 此函数是多线程，因此必须放在 Data
         public void _onComplete(object sender, SocketAsyncEventArgs e)
@@ -99,7 +96,7 @@ namespace Data
                 return;
             }
 
-            ITcpListenerCallback callback = this.callbackProvider.GetTcpListenerCallback();
+            ITcpListenerCallback callback = this.callbackProvider.GetTcpListenerCallback(this);
 
             try
             {

@@ -42,7 +42,7 @@ namespace Data
         }
 
         public IProtocolClientCallbackProvider? callbackProvider;
-        public IProtocolClientCallback? callback => this.callbackProvider?.GetProtocolClientCallback();
+        public IProtocolClientCallback? callback => this.callbackProvider?.GetProtocolClientCallback(this);
 
         #region variables
         public bool isConnector;

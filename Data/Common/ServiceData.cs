@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using log4net;
+using MongoDB.Driver;
 
 namespace Data
 {
@@ -38,12 +39,20 @@ namespace Data
         public ILog logger;
 
         // tcp listener
-        public ITcpListenerCallback? tcpListenerCallback;
-        public ITcpListenerCallback? GetTcpListenerCallback() => this.tcpListenerCallback;
+        public ITcpListenerCallback? tcpListenerCallbackForS;
+        public ITcpListenerCallback? tcpListenerCallbackForC;
+        public ITcpListenerCallback? GetTcpListenerCallback(TcpListenerData tcpListenerData)
+        {
+            return tcpListenerData.isForClient ? this.tcpListenerCallbackForC : this.tcpListenerCallbackForS;
+        }
 
         // tcp client callback
-        public IProtocolClientCallback? tcpClientCallback;
-        public IProtocolClientCallback? GetProtocolClientCallback() => this.tcpClientCallback;
+        public IProtocolClientCallback? protocolClientCallbackForS;
+        public IProtocolClientCallback? protocolClientCallbackForC;
+        public IProtocolClientCallback? GetProtocolClientCallback(ProtocolClientData protocolClientData)
+        {
+            return protocolClientData.oppositeIsClient ? this.protocolClientCallbackForC : this.protocolClientCallbackForS;
+        }
 
         public TcpListenerData? tcpListenerForServer;
         public TcpListenerData? tcpListenerForClient;

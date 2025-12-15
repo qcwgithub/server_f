@@ -19,7 +19,7 @@ namespace Script
         async Task<MyResponse<Res>> Request<Msg, Res>(ServiceType serviceType, MsgType type, Msg msg)
             where Res : class
         {
-            IConnection? connection = this.self.tcpClientScript.RandomOtherServiceConnection(serviceType);
+            IConnection? connection = this.self.protocolClientScriptForS.RandomOtherServiceConnection(serviceType);
             if (connection == null)
             {
                 return new MyResponse<Res>(ECode.Server_NotConnected, null);
@@ -93,12 +93,12 @@ namespace Script
 
         public async Task<MyResponse<Res>> SendToAll<Msg, Res>(MsgType msgType, Msg msg) where Res : class
         {
-            return await this.self.tcpClientScript.SendToAllService<Msg, Res>(ServiceType.User, msgType, msg);
+            return await this.self.protocolClientScriptForS.SendToAllService<Msg, Res>(ServiceType.User, msgType, msg);
         }
 
         public async Task<List<MyResponse<Res>>> SendToAll2<Msg, Res>(MsgType msgType, Msg msg) where Res : class
         {
-            return await this.self.tcpClientScript.SendToAllServiceAsync2<Msg, Res>(ServiceType.User, msgType, msg);
+            return await this.self.protocolClientScriptForS.SendToAllServiceAsync2<Msg, Res>(ServiceType.User, msgType, msg);
         }
     }
 

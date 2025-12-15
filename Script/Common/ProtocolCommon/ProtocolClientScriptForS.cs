@@ -1,11 +1,10 @@
 using Data;
-using DnsClient.Protocol;
 
 namespace Script
 {
-    public class ProtocolClientScriptS : ServiceScript<Service>, IProtocolClientCallback
+    public class ProtocolClientScriptForS : ProtocolClientScript
     {
-        public ProtocolClientScriptS(Server server, Service service) : base(server, service)
+        public ProtocolClientScriptForS(Server server, Service service) : base(server, service)
         {
         }
 
@@ -16,43 +15,7 @@ namespace Script
             return socket;
         }
 
-        public IMessagePacker GetMessagePacker()
-        {
-            return this.server.messagePacker;
-        }
-
-        public void LogError(ProtocolClientData data, string str)
-        {
-            this.service.logger.Error(str);
-        }
-
-        public void LogError(ProtocolClientData data, string str, Exception ex)
-        {
-            this.service.logger.Error(str, ex);
-        }
-
-        public void LogInfo(ProtocolClientData data, string str)
-        {
-            this.service.logger.Info(str);
-        }
-
-        public int nextSocketId
-        {
-            get
-            {
-                return this.service.data.socketId++;
-            }
-        }
-
-        public int nextMsgSeq
-        {
-            get
-            {
-                return this.service.data.msgSeq++;
-            }
-        }
-
-        public async void DispatchNetwork(ProtocolClientData data, int seq, MsgType msgType, ArraySegment<byte> msgBytes, Action<ECode, byte[]>? reply)
+        public override async void DispatchNetwork(ProtocolClientData data, int seq, MsgType msgType, ArraySegment<byte> msgBytes, Action<ECode, byte[]>? reply)
         {
             var connection = (ServiceConnection)data.customData;
 
@@ -63,7 +26,7 @@ namespace Script
             }
         }
 
-        public void OnConnectComplete(ProtocolClientData data, bool success)
+        public override void OnConnectComplete(ProtocolClientData data, bool success)
         {
             if (!success)
             {
@@ -83,7 +46,7 @@ namespace Script
             this.service.dispatcher.Dispatch<MsgOnConnectComplete, ResOnConnectComplete>(connection, MsgType._OnConnectComplete, msg).Forget();
         }
 
-        public void OnCloseComplete(ProtocolClientData data)
+        public override void OnCloseComplete(ProtocolClientData data)
         {
             if (data.customData == null)
             {
@@ -96,8 +59,6 @@ namespace Script
             this.service.dispatcher.Dispatch<MsgConnectionClose, ResConnectionClose>(connection, MsgType._OnConnectionClose, msg).Forget();
         }
 
-        #region basic access
-
         public bool IsServiceConnected(int serviceId)
         {
             ServiceConnection? connection;
@@ -107,9 +68,6 @@ namespace Script
             }
             return true;
         }
-        #endregion
-
-        #region send
 
         public ServiceConnection? RandomOtherServiceConnection(ServiceType serviceType)
         {
@@ -204,7 +162,5 @@ namespace Script
 
             return responses;
         }
-
-        #endregion
     }
 }
