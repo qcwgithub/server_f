@@ -9,7 +9,7 @@ namespace Script
             
         }
 
-        public ECode Auth(MsgUserLogin msg)
+        public ECode VeryfyAccount(MsgUserLogin msg)
         {
             return ECode.Success;
         }

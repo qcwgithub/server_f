@@ -33,7 +33,7 @@ namespace Script
             switch (msg.channel)
             {
                 case MyChannels.uuid:
-                    e = this.service.channelUuid.Auth(msg);
+                    e = this.service.channelUuid.VeryfyAccount(msg);
                     break;
             }
 
@@ -50,7 +50,48 @@ namespace Script
                 return ECode.RedisLockFail;
             }
 
+            AccountInfo accountInfo = await this.server.accountInfoProxy.Get(this.service.connectToDbService, msg.channel, msg.channelUserId);
+            if (accountInfo != null)
+            {
+                if (this.IsBlocked(accountInfo))
+                {
+                    return ECode.Blocked;
+                }
+            }
+            else
+            {
+                accountInfo = this.NewAccountInfo(msg);
+                await this.server.accountInfoProxy.Save(accountInfo);
+            }
+
+            long userId;
+            if (accountInfo.userIds.Count == 0)
+            {
+                userId = this.service.userIdSnowflakeScript.NextUserId();
+                accountInfo.userIds.Add(userId);
+            }
+            else
+            {
+                userId = accountInfo.userIds[0];
+            }
+
+            res.userId = userId;
             return ECode.Success;
+        }
+
+        bool IsBlocked(AccountInfo accountInfo)
+        {
+            long nowS = TimeUtils.GetTimeS();
+            if (accountInfo.block && (accountInfo.unblockTime == -1 || accountInfo.unblockTime >= nowS))
+            {
+                this.service.logger.InfoFormat("{0} channel {1} channelUserId {2} blocked! leftTimeS {3}",
+                    this.msgType,
+                    accountInfo.channel, accountInfo.channelUserId,
+                    accountInfo.unblockTime == -1 ? -1 : accountInfo.unblockTime - nowS);
+
+                return true;
+            }
+            return false;
         }
 
         public AccountInfo NewAccountInfo(MsgUserLogin msg)
