@@ -2,13 +2,13 @@ using Data;
 
 namespace Script
 {
-    public class AuthService : Service
+    public class UserManagerService : Service
     {
-        public AuthServiceData sd
+        public UserManagerServiceData sd
         {
             get
             {
-                return (AuthServiceData)this.data;
+                return (UserManagerServiceData)this.data;
             }
         }
 
@@ -18,7 +18,7 @@ namespace Script
         public readonly UserIdSnowflakeScript userIdSnowflakeScript;
         public readonly ChannelUuid channelUuid;
 
-        public AuthService(Server server, int serviceId) : base(server, serviceId)
+        public UserManagerService(Server server, int serviceId) : base(server, serviceId)
         {
             //
             this.AddConnectToOtherService(this.connectToDbService = new ConnectToDbService(this));
@@ -32,10 +32,10 @@ namespace Script
         public override void Attach()
         {
             base.Attach();
-            base.AddHandler<AuthService>();
+            base.AddHandler<UserManagerService>();
 
-            this.dispatcher.AddHandler(new Auth_Start(this.server, this));
-            this.dispatcher.AddHandler(new Auth_Shutdown(this.server, this));
+            this.dispatcher.AddHandler(new UserManager_Start(this.server, this));
+            this.dispatcher.AddHandler(new UserManager_Shutdown(this.server, this));
         }
     }
 }

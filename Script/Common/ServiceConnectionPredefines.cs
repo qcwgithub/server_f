@@ -51,9 +51,9 @@ namespace Script
         }
     }
 
-    public class ConnectToAuthService : ConnectToOtherService
+    public class ConnectToUserManagerService : ConnectToOtherService
     {
-        public ConnectToAuthService(Service self) : base(self, ServiceType.Auth)
+        public ConnectToUserManagerService(Service self) : base(self, ServiceType.UserManager)
         {
 
         }

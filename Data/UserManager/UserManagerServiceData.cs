@@ -1,6 +1,6 @@
 namespace Data
 {
-    public class AuthServiceData : ServiceData
+    public class UserManagerServiceData : ServiceData
     {
         public static readonly List<ServiceType> s_connectToServiceIds = new List<ServiceType>
         {
@@ -9,7 +9,7 @@ namespace Data
 
         public readonly SnowflakeData userIdSnowflakeData;
 
-        public AuthServiceData(ServiceTypeAndId serviceTypeAndId)
+        public UserManagerServiceData(ServiceTypeAndId serviceTypeAndId)
             : base(serviceTypeAndId, s_connectToServiceIds)
         {
             this.LoadConfigs(false);

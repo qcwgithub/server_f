@@ -12,7 +12,7 @@ namespace Script
             }
         }
 
-        public readonly ConnectToAuthService connectToAuthService;
+        public readonly ConnectToUserManagerService connectToUserManagerService;
         public readonly UserServiceManager userServiceManager;
         protected override TcpListenerScript CreateTcpListenerScriptForC()
         {
@@ -24,7 +24,7 @@ namespace Script
         }
         public GatewayService(Server server, int serviceId) : base(server, serviceId)
         {
-            this.connectToAuthService = new ConnectToAuthService(this);
+            this.connectToUserManagerService = new ConnectToUserManagerService(this);
             this.userServiceManager = new UserServiceManager(this.server, this);
         }
         

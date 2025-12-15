@@ -7,7 +7,7 @@ namespace Data
         User,
         Global,
         Command,
-        Auth,
+        UserManager,
         Count,
     }
 

@@ -2,9 +2,9 @@ using Data;
 
 namespace Script
 {
-    public class Auth_Start : OnStart<AuthService>
+    public class UserManager_Start : OnStart<UserManagerService>
     {
-        public Auth_Start(Server server, AuthService service) : base(server, service)
+        public UserManager_Start(Server server, UserManagerService service) : base(server, service)
         {
         }
 

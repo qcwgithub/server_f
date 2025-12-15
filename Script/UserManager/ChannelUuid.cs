@@ -2,9 +2,9 @@ using Data;
 
 namespace Script
 {
-    public class ChannelUuid : ServiceScript<AuthService>
+    public class ChannelUuid : ServiceScript<UserManagerService>
     {
-        public ChannelUuid(Server server, AuthService service) : base(server, service)
+        public ChannelUuid(Server server, UserManagerService service) : base(server, service)
         {
             
         }

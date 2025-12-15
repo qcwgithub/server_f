@@ -2,9 +2,9 @@ using Data;
 
 namespace Script
 {
-    public class UserIdSnowflakeScript : SnowflakeScript<AuthService>
+    public class UserIdSnowflakeScript : SnowflakeScript<UserManagerService>
     {
-        public UserIdSnowflakeScript(Server server, AuthService service) : base(server, service, service.sd.userIdSnowflakeData)
+        public UserIdSnowflakeScript(Server server, UserManagerService service) : base(server, service, service.sd.userIdSnowflakeData)
         {
         }
 

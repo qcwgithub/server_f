@@ -19,7 +19,7 @@ namespace Data
         // Gateway
         [Key(5)]
         public int outPort;
-        // Auth
+        // UserManager
         [Key(6)]
         public long userIdSnowflakeWorkerId;
 
