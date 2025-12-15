@@ -14,14 +14,14 @@ namespace Script
 
         public override async Task<ECode> Handle(IConnection connection, MsgUserLogin msg, ResUserLogin res)
         {
-            var gatewayUserConnection = (GatewayUserConnection)connection;
+            var clientConnection = (GatewayClientConnection)connection;
 
             if (msg.dict == null)
             {
                 msg.dict = new Dictionary<string, string>();
             }
 
-            (AddressFamily family, string ip) = this.GetIp(gatewayUserConnection.socket);
+            (AddressFamily family, string ip) = this.GetIp(clientConnection.socket);
             msg.dict["$addressFamily"] = family.ToString();
             msg.dict["$ip"] = ip;
 

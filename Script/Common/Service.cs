@@ -28,6 +28,10 @@ namespace Script
         public readonly WebSocketListenerScript webSocketListenerScript;
 
         public readonly MessageDispatcher dispatcher;
+        protected virtual MessageDispatcher CreateMessageDispatcher()
+        {
+            return new MessageDispatcher(this.server, this);
+        }
         
         public readonly Dictionary<ServiceType, ConnectToOtherService> connectToOtherServiceDict;
 
@@ -48,7 +52,7 @@ namespace Script
             this.httpListenerScript = new HttpListenerScript(this.server, this);
             this.webSocketListenerScript = new WebSocketListenerScript(this.server, this);
 
-            this.dispatcher = new MessageDispatcher(this.server, this);
+            this.dispatcher = this.CreateMessageDispatcher();
 
             this.connectToOtherServiceDict = new Dictionary<ServiceType, ConnectToOtherService>();
         }

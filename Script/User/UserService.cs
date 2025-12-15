@@ -17,6 +17,11 @@ namespace Script
         public readonly ConnectToGlobalService connectToGlobalService;
         public readonly ConnectToGatewayService connectToGatewayService;
 
+        protected override MessageDispatcher CreateMessageDispatcher()
+        {
+            return new UserServiceMessageDispatcher(this.server, this);
+        }
+
         public readonly UserServiceScript ss;
 
         public UserService(Server server, int serviceId) : base(server, serviceId)

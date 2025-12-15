@@ -31,7 +31,7 @@ namespace Script
         }
 
         public List<MsgType> recentMsgTypes = new List<MsgType>();
-        protected virtual void BeforeHandle(IConnection connection, MsgType type, object msg)
+        protected virtual ECode BeforeHandle(IConnection connection, MsgType type, object msg)
         {
             if (this.recentMsgTypes.Count > 10000)
             {
@@ -39,6 +39,17 @@ namespace Script
                 this.recentMsgTypes.Clear();
             }
             this.recentMsgTypes.Add(type);
+
+            return ECode.Success;
+        }
+
+        protected virtual void AfterHandle(IConnection connection, MsgType type, object msg, ECode e, object res)
+        {
+            if (e != ECode.Success && type.LogErrorIfNotSuccess())
+            {
+                // 已知 oldConnection 会走到这，不是错误
+                this.service.logger.InfoFormat("{0} ECode.{1}", type, e);
+            }
         }
 
         public virtual void OnFps(int fps)
@@ -50,11 +61,6 @@ namespace Script
             }
 
             this.recentMsgTypes.Clear();
-        }
-
-        protected virtual void BeforePostHandle(IConnection connection, MsgType type, object msg, ECode e, object res)
-        {
-
         }
 
         string FormatBusyList(List<int> busyList)
@@ -107,7 +113,17 @@ namespace Script
             return (e, resBytes);
         }
 
-        async Task<(ECode, object)> DispatchImpl(IConnection connection, IHandler handler, MsgType type, object msg)
+        protected virtual void BeforePostHandle(IConnection connection, MsgType type, object msg, ECode e, object res)
+        {
+
+        }
+
+        protected virtual void AfterPostHandle(IConnection connection, MsgType type, object msg, ECode e, object res)
+        {
+
+        }
+
+        protected virtual async Task<(ECode, object)> DispatchImpl(IConnection connection, IHandler handler, MsgType type, object msg)
         {
             if (this.service.detached)
             {
@@ -131,47 +147,12 @@ namespace Script
                 this.service.data.lastErrorBusyCount = this.service.data.busyCount;
                 this.service.logger.ErrorFormat("busyCount {0} detail: {1}", this.service.data.busyCount, this.FormatBusyList(this.service.data.busyList));
             }
-            
-            var userConnection = connection as UserConnection;
+
             try
             {
-                if (userConnection != null && userConnection.msgProcessing != 0 && !type.CanParallel())
-                {
-                    // 消息处理中
-                    e = ECode.MsgProcessing;
-                    this.service.logger.ErrorFormat("MsgType.{0} wait MsgType.{1}", type, userConnection.msgProcessing);
-                }
-                else
-                {
-                    if (userConnection != null && !type.CanParallel())
-                    {
-                        userConnection.msgProcessing = type;
-                    }
-
-                    this.BeforeHandle(connection, type, msg);
-                    (e, res) = await handler.Handle(connection, msg);
-
-                    if (e != ECode.Success && type.LogErrorIfNotSuccess())
-                    {
-                        if (userConnection != null)
-                        {
-                            if (userConnection.userId != 0)
-                            {
-                                this.service.logger.ErrorFormat("{0} playerId {1} ECode.{2}", type, userConnection.userId, e);
-                            }
-                            else
-                            {
-                                // 已知 oldConnection 会走到这，不是错误
-                                this.service.logger.InfoFormat("{0} lastUserId {1} ECode.{2}", type, userConnection.lastUserId, e);   
-                            }
-                        }
-                        else
-                        {
-                            // 已知 oldConnection 会走到这，不是错误
-                            this.service.logger.InfoFormat("{0} ECode.{1}", type, e);   
-                        }
-                    }
-                }
+                this.BeforeHandle(connection, type, msg);
+                (e, res) = await handler.Handle(connection, msg);
+                this.AfterHandle(connection, type, msg, e, res);
             }
             catch (Exception ex)
             {
@@ -181,13 +162,10 @@ namespace Script
 
             try
             {
-                if (userConnection != null)
-                {
-                    userConnection.msgProcessing = 0;
-                }
                 this.service.data.RemoveFromBusyList(busyIndex);
                 this.BeforePostHandle(connection, type, msg, e, res);
                 (e, res) = handler.PostHandle(connection, msg, e, res);
+                this.AfterPostHandle(connection, type, msg, e, res);
                 return (e, res);
             }
             catch (Exception ex)
