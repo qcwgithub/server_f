@@ -14,6 +14,10 @@ namespace Script
 
         public readonly ConnectToAuthService connectToAuthService;
         public readonly UserServiceManager userServiceManager;
+        protected override TcpListenerScript CreateTcpListenerScriptForC()
+        {
+            return new GatewayTcpListenerScriptForC(this.server, this);
+        }
         protected override ProtocolClientScript CreateProtocolClientScriptForC()
         {
             return new GatewayProtocolClientScriptForC(this.server, this);
@@ -31,16 +35,6 @@ namespace Script
 
             this.dispatcher.AddHandler(new Gateway_Start(this.server, this));
             this.dispatcher.AddHandler(new Gateway_Shutdown(this.server, this));
-        }
-
-        public override async Task Detach()
-        {
-            if (this.data.protocolClientCallbackForC == this.protocolClientScriptForC)
-            {
-                this.data.protocolClientCallbackForC = null;
-            }
-
-            await base.Detach();
         }
     }
 }

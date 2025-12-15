@@ -1,6 +1,6 @@
 namespace Data
 {
-    public interface IProtocolClientCallback
+    public interface IProtocolClientCallback : IDataCallback
     {
         IMessagePacker GetMessagePacker();
 
@@ -17,7 +17,7 @@ namespace Data
         void DispatchNetwork(ProtocolClientData data, int seq, MsgType msgType, ArraySegment<byte> msg, Action<ECode, byte[]>? cb);
     }
 
-    public interface IProtocolClientCallbackProvider
+    public interface IProtocolClientCallbackProvider : IDataCallbackProvider
     {
         IProtocolClientCallback? GetProtocolClientCallback(ProtocolClientData protocolClientData);
     }

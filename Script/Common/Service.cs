@@ -12,6 +12,10 @@ namespace Script
 
         public readonly TcpListenerScript tcpListenerScriptForS;
         public readonly TcpListenerScript tcpListenerScriptForC;
+        protected virtual TcpListenerScript CreateTcpListenerScriptForC()
+        {
+            return null;
+        }
 
         public readonly ProtocolClientScriptForS protocolClientScriptForS;
         public readonly ProtocolClientScript protocolClientScriptForC;
@@ -35,8 +39,8 @@ namespace Script
 
             this.connectToSelf = new ConnectToSelf(this);
 
-            this.tcpListenerScriptForS = new TcpListenerScript(this.server, this);
-            this.tcpListenerScriptForC = new TcpListenerScript(this.server, this);
+            this.tcpListenerScriptForS = new TcpListenerScriptForS(this.server, this);
+            this.tcpListenerScriptForC = this.CreateTcpListenerScriptForC();
 
             this.protocolClientScriptForS = new ProtocolClientScriptForS(this.server, this);
             this.protocolClientScriptForC = this.CreateProtocolClientScriptForC();
@@ -114,7 +118,6 @@ namespace Script
             {
                 this.data.protocolClientCallbackForS = null;
             }
-
             if (this.data.protocolClientCallbackForC == this.protocolClientScriptForC)
             {
                 this.data.protocolClientCallbackForC = null;
