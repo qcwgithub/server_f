@@ -19,7 +19,7 @@ namespace Script
 
         protected override MessageDispatcher CreateMessageDispatcher()
         {
-            return new UserServiceMessageDispatcher(this.server, this);
+            return new UserMessageDispatcher(this.server, this);
         }
 
         public readonly UserServiceScript ss;

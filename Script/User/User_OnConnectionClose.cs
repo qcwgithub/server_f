@@ -12,11 +12,6 @@ namespace Script
         {
             await base.Handle(connection, msg);
 
-            // if (msg.isServer)
-            // {
-            //     return ECode.Success;
-            // }
-
             if (connection is UserConnection userConnection)
             {
                 User? user = userConnection.GetUser();

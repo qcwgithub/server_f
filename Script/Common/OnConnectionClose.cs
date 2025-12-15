@@ -32,20 +32,19 @@ namespace Script
 
         public override async Task<ECode> Handle(IConnection connection, MsgConnectionClose msg, ResConnectionClose res)
         {
-            var serviceConnection = connection as ServiceConnection;
-            if (serviceConnection != null)
+            if (connection is ServiceConnection serviceConnection)
             {
                 this.LogServerDisconnect(serviceConnection);
-            }
 
-            var sd = this.service.data;
-            if (sd.state < ServiceState.ShuttingDown &&
-                sd.markedShutdown &&
-                sd.GetPassivelyConnections().Count == 0 &&
-                !sd.timer_shutdown.IsAlive())
-            {
-                sd.timer_shutdown = this.server.timerScript.SetTimer(this.service.serviceId, 0, MsgType._Shutdown, new MsgShutdown { force = false });
-                this.service.logger.Info("0 passive connections, shutdown in 0 second...");
+                var sd = this.service.data;
+                if (sd.state < ServiceState.ShuttingDown &&
+                    sd.markedShutdown &&
+                    sd.GetPassivelyConnections().Count == 0 &&
+                    !sd.timer_shutdown.IsAlive())
+                {
+                    sd.timer_shutdown = this.server.timerScript.SetTimer(this.service.serviceId, 0, MsgType._Shutdown, new MsgShutdown { force = false });
+                    this.service.logger.Info("0 passive connections, shutdown in 0 second...");
+                }
             }
 
             return ECode.Success;

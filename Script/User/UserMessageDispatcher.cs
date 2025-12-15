@@ -2,9 +2,9 @@ using Data;
 
 namespace Script
 {
-    public class UserServiceMessageDispatcher : MessageDispatcher
+    public class UserMessageDispatcher : MessageDispatcher
     {
-        public UserServiceMessageDispatcher(Server server, Service service) : base(server, service)
+        public UserMessageDispatcher(Server server, Service service) : base(server, service)
         {
         }
 

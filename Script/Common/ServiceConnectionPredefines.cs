@@ -4,8 +4,8 @@ namespace Script
 {
     public abstract class ConnectToOtherService
     {
-        public Service self { get; private set; }
-        public ServiceType to { get; private set; }
+        public readonly Service self;
+        public readonly ServiceType to;
         public ConnectToOtherService(Service self, ServiceType to)
         {
             this.self = self;
@@ -54,6 +54,14 @@ namespace Script
     public class ConnectToUserManagerService : ConnectToOtherService
     {
         public ConnectToUserManagerService(Service self) : base(self, ServiceType.UserManager)
+        {
+
+        }
+    }
+
+    public class ConnectToUserService : ConnectToOtherService
+    {
+        public ConnectToUserService(Service self) : base(self, ServiceType.User)
         {
 
         }

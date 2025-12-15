@@ -13,6 +13,7 @@ namespace Script
         }
 
         public readonly ConnectToUserManagerService connectToUserManagerService;
+        public readonly ConnectToUserService connectToUserService;
         public readonly UserServiceManager userServiceManager;
         protected override TcpListenerScript CreateTcpListenerScriptForC()
         {
@@ -22,12 +23,17 @@ namespace Script
         {
             return new GatewayProtocolClientScriptForC(this.server, this);
         }
+        public readonly GatewayServiceScript ss;
+
         public GatewayService(Server server, int serviceId) : base(server, serviceId)
         {
             this.connectToUserManagerService = new ConnectToUserManagerService(this);
+            this.connectToUserService = new ConnectToUserService(this);
             this.userServiceManager = new UserServiceManager(this.server, this);
+
+            this.ss = new GatewayServiceScript(this.server, this);
         }
-        
+
         public override void Attach()
         {
             base.Attach();
@@ -35,6 +41,8 @@ namespace Script
 
             this.dispatcher.AddHandler(new Gateway_Start(this.server, this));
             this.dispatcher.AddHandler(new Gateway_Shutdown(this.server, this));
+            this.dispatcher.AddHandler(new Gateway_UserLogin(this.server, this));
+            this.dispatcher.AddHandler(new Gateway_OnConnectionClose(this.server, this), true);
         }
     }
 }

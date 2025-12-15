@@ -25,6 +25,8 @@ namespace Script
             msg.dict["$addressFamily"] = family.ToString();
             msg.dict["$ip"] = ip;
 
+            var r = this.service.connectToUserManagerService.Request<MsgUserLogin, ResUserLogin>(MsgType._UserManager_UserLogin, msg);
+
             return ECode.Success;
         }
 
