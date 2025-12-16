@@ -4,12 +4,15 @@ namespace Data
     {
         public long userId;
 
-        public GatewayClientConnection? connection;
+        public GatewayUserConnection? connection;
         public bool IsConnected()
         {
             return this.connection != null && this.connection.IsConnected();
         }
 
         public int userServiceId;
+        public long offlineTimeS;
+        public bool destroying;
+        public ITimer? destroyTimer;
     }
 }

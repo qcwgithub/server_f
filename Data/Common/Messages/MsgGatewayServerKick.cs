@@ -4,7 +4,7 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class MsgServerKick
+    public class MsgGatewayServerKick
     {
         [Key(0)]
         public long userId;
@@ -13,8 +13,8 @@ namespace Data
     }
 
     [MessagePackObject]
-    public class ResServerKick
+    public class ResGatewayServerKick
     {
-        // nothing
+
     }
 }

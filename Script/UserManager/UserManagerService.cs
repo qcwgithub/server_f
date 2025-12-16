@@ -17,6 +17,7 @@ namespace Script
         public readonly ConnectToGatewayService connectToGatewayService;
         public readonly UserIdSnowflakeScript userIdSnowflakeScript;
         public readonly ChannelUuid channelUuid;
+        public readonly UserManagerServiceScript ss;
 
         public UserManagerService(Server server, int serviceId) : base(server, serviceId)
         {
@@ -27,6 +28,7 @@ namespace Script
 
             this.userIdSnowflakeScript = new UserIdSnowflakeScript(this.server, this);
             this.channelUuid = new ChannelUuid(this.server, this);
+            this.ss = new UserManagerServiceScript(this.server, this);
         }
 
         public override void Attach()

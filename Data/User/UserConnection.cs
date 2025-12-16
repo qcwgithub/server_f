@@ -2,6 +2,20 @@ namespace Data
 {
     public class UserConnection : IConnection
     {
+        public readonly int gatewayServiceId;
+        public readonly User user;
+        public MsgType msgProcessing;
+        public UserConnection(int gatewayServiceId, User user)
+        {
+            this.gatewayServiceId = gatewayServiceId;
+            this.user = user;
+        }
+
+        public User? GetUser()
+        {
+            return this.user;
+        }
+
         public int GetConnectionId()
         {
             throw new NotImplementedException();
@@ -14,66 +28,35 @@ namespace Data
 
         public bool IsConnecting()
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public bool IsConnected()
         {
-            throw new NotImplementedException();
+            return true;
         }
     
         public void Close(string reason)
         {
-            throw new NotImplementedException();
+
         }
 
         public bool IsClosed()
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public string? closeReason
         {
             get
             {
-                throw new NotImplementedException();
+                return null;
             }
         }
 
         public void SendBytes(MsgType msgType, byte[] msg, Action<ECode, ArraySegment<byte>>? cb, int? pTimeoutS)
         {
             throw new NotImplementedException();
-        }
-
-        public User? user;
-        public long userId;
-        public string? user_version;
-        public long lastUserId;
-        public MsgType msgProcessing;
-
-        public void BindUser(User user)
-        {
-            if (!user.IsRealPrepareLogin(out MsgPrepareUserLogin? msgPreparePlayerLogin))
-            {
-                MyDebug.Assert(false);
-            }
-
-            this.user = user;
-            this.userId = user.userId;
-            this.user_version = msgPreparePlayerLogin!.version;
-            this.lastUserId = user.userId;
-        }
-
-        public void UnbindUser()
-        {
-            this.user = null;
-            this.userId = 0;
-            this.user_version = string.Empty;
-        }
-
-        public User? GetUser()
-        {
-            return this.user;
         }
     }
 }

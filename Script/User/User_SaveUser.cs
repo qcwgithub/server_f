@@ -15,18 +15,16 @@ namespace Script
         public override MsgType msgType => MsgType._User_SaveUser;
         public override async Task<ECode> Handle(IConnection connection, MsgSaveUser msg, ResSaveUser res)
         {
-            long userId = msg.userId;
-
-            var player = this.sd.GetUser(userId);
+            var player = this.sd.GetUser(msg.userId);
             if (player == null)
             {
-                this.logger.ErrorFormat("{0} place: {1}, userId: {2}, user == null!!", this.msgType, msg.place, userId);
+                this.logger.ErrorFormat("{0} userId {1}, reason {2}, user == null!!", this.msgType, msg.userId, msg.reason);
                 return ECode.UserNotExist;
             }
 
             var msgDb = new MsgSave_UserInfo
             {
-                userId = userId,
+                userId = msg.userId,
                 userInfoNullable = new UserInfoNullable()
             };
             var infoNullable = msgDb.userInfoNullable;
@@ -80,7 +78,7 @@ namespace Script
                 fieldsStr = string.Join(", ", buffer.ToArray());
 
                 // buffer 不为 null 才打印，不然太多了
-                this.logger.InfoFormat("{0} place: {1}, playerId: {2}, fields: [{3}]", this.msgType, msg.place, userId, fieldsStr);
+                this.logger.InfoFormat("{0} userId {1}, reason {2}, fields [{3}]", this.msgType, msg.userId, msg.reason, fieldsStr);
             }
 
             if (buffer != null)
@@ -92,7 +90,7 @@ namespace Script
                 var r = await this.service.connectToDbService.Request<MsgSave_UserInfo, ResSave_UserInfo>(MsgType._Save_UserInfo, msgDb);
                 if (r.e != ECode.Success)
                 {
-                    this.service.logger.ErrorFormat("_Db_SaveUser error: {0}, userId: {1}", r.e, userId);
+                    this.service.logger.ErrorFormat("{0} error: {1}, userId {2}", MsgType._Save_UserInfo, r.e, msg.userId);
                     return r.e;
                 }
             }

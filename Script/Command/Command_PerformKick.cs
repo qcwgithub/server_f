@@ -21,11 +21,11 @@ namespace Script
 
             this.service.logger.InfoFormat("{0} {1} {2}", this.msgType, serviceId, userId);
 
-            var msgKick = new MsgServerKick();
+            var msgKick = new MsgGatewayServerKick();
             msgKick.userId = userId;
             msgKick.logoutSdk = true;
 
-            var r = await this.service.connectToSameServerType.Request<MsgServerKick, ResServerKick>(serviceId, MsgType._PS_ServerKick, msgKick);
+            var r = await this.service.connectToSameServerType.Request<MsgGatewayServerKick, ResGatewayServerKick>(serviceId, MsgType._Gateway_ServerKick, msgKick);
             return r.e;
         }
     }

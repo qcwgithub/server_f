@@ -14,18 +14,28 @@ namespace Script
 
         public override async Task<ECode> Handle(IConnection connection, MsgUserLogin msg, ResUserLogin res)
         {
-            var clientConnection = (GatewayClientConnection)connection;
+            var userConnection = (GatewayUserConnection)connection;
 
             if (msg.dict == null)
             {
                 msg.dict = new Dictionary<string, string>();
             }
 
-            (AddressFamily family, string ip) = this.GetIp(clientConnection.socket);
+            (AddressFamily family, string ip) = this.GetIp(userConnection.socket);
             msg.dict["$addressFamily"] = family.ToString();
             msg.dict["$ip"] = ip;
 
-            var r = this.service.connectToUserManagerService.Request<MsgUserLogin, ResUserLogin>(MsgType._UserManager_UserLogin, msg);
+            var r = await this.service.connectToUserManagerService.Request<MsgUserLogin, ResUserLogin>(MsgType._UserManager_UserLogin, msg);
+            if (r.e != ECode.Success)
+            {
+                return r.e;
+            }
+
+            r = await this.service.connectToUserService.Request<MsgUserLogin, ResUserLogin>(MsgType._User_UserLoginSuccess, msg);
+            if (r.e != ECode.Success)
+            {
+                return r.e;
+            }
 
             return ECode.Success;
         }

@@ -41,7 +41,7 @@ namespace Script
                 var oldConnection = user.connection;
                 if (user.connection != null)
                 {
-                    User_UserLogin.HandleOldConnection(this.service, user);
+                    User_UserLoginSuccess.HandleOldConnection(this.service, user);
                 }
             }
 

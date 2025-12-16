@@ -20,7 +20,7 @@ namespace Script
             }
         }
 
-        public stTryTransferResult TryTransfer(GatewayClientConnection connection, MsgType msgType, ArraySegment<byte> msg, Action<ECode, byte[]>? reply)
+        public stTryTransferResult TryTransfer(GatewayUserConnection connection, MsgType msgType, ArraySegment<byte> msg, Action<ECode, byte[]>? reply)
         {
             var result = new stTryTransferResult();
 
@@ -62,6 +62,28 @@ namespace Script
             },
             pTimeoutS: null);
             return result;
+        }
+
+        public void SetDestroyTimer(GatewayUser user)
+        {
+            MyDebug.Assert(!user.destroyTimer.IsAlive());
+
+            var SEC = this.service.sd.destroyTimeoutS;
+            this.service.logger.InfoFormat("SetDestroyTimer userId {0}", user.userId);
+
+            user.destroyTimer = this.server.timerScript.SetTimer(
+                this.service.serviceId,
+                SEC, MsgType._Gateway_DestroyUser,
+                new MsgGatewayDestroyUser { userId = user.userId, reason = nameof(SetDestroyTimer), msgKick = null});
+        }
+
+        public void ClearDestroyTimer(GatewayUser user)
+        {
+            MyDebug.Assert(user.destroyTimer.IsAlive());
+            this.service.logger.InfoFormat("ClearDestroyTimer userId({0})", user.userId);
+
+            server.timerScript.ClearTimer(user.destroyTimer);
+            user.destroyTimer = null;
         }
     }
 }

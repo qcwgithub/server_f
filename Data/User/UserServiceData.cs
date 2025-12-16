@@ -6,15 +6,13 @@ namespace Data
 {
     public sealed class UserServiceData : ServiceData
     {
-        // playerId -> PlayerData
         public readonly Dictionary<long, User> userDict = new Dictionary<long, User>();
-        public User? GetUser(long playerId)
+        public User? GetUser(long userId)
         {
             User? user;
-            return this.userDict.TryGetValue(playerId, out user) ? user : null;
+            return this.userDict.TryGetValue(userId, out user) ? user : null;
         }
 
-        public int destroyTimeoutS = 600;  // 下线后多久清除此玩家
         public int saveIntervalS = 60;
         public bool allowNewUser;
 

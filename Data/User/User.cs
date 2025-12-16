@@ -16,12 +16,13 @@ namespace Data
             }
         }
 
+        public int gatewayServiceId;
         public UserConnection? connection;
         public bool IsConnected()
         {
             return this.connection != null && this.connection.IsConnected();
         }
-        
+
         MsgSimulatePrepareUserLogin? msgSimulatePrepareUserLogin;
         MsgPrepareUserLogin? msgPrepareUserLogin;
         public void SetSimulatePrepareLogin(MsgSimulatePrepareUserLogin m)

@@ -1,8 +1,8 @@
 namespace Data
 {
-    public class GatewayClientConnection : DirectConnection
+    public class GatewayUserConnection : DirectConnection
     {
-        public GatewayClientConnection(ProtocolClientData socket) : base(socket, false)
+        public GatewayUserConnection(ProtocolClientData socket) : base(socket, false)
         {
 
         }

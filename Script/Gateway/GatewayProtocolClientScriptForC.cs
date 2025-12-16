@@ -18,7 +18,7 @@ namespace Script
 
         public override void DispatchNetwork(ProtocolClientData data, int seq, MsgType msgType, ArraySegment<byte> msgBytes, Action<ECode, byte[]>? reply)
         {
-            var connection = (GatewayClientConnection)data.customData;
+            var connection = (GatewayUserConnection)data.customData;
 
             stTryTransferResult result = this.gatewayService.ss.TryTransfer(connection, msgType, msgBytes, reply);
 

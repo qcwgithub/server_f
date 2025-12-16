@@ -16,7 +16,7 @@ namespace Data
 
         _UserManager_UserLogin = 9,
         _AskForStart = 10,
-        // _AAA_QueryAccountInfo = 11,
+        _User_UserLoginSuccess = 11,
         _Login_ReloadServerLists = 12,
         _AAA_SendMessageToClient = 13,
         // _SaveLocToRedis = 14,
@@ -69,9 +69,11 @@ namespace Data
         _Query_UserInfo_by_userId = 202,
         _Save_UserInfo = 203,
         _Insert_UserInfo = 204,
+        _User_ServerKick = 205,
     
         _GetPlayerCount = 509,
         _User_DestroyUser = 601,
+        _Gateway_DestroyUser = 602,
 
         _User_PrepareUserLogin = 603,
         _PSSimulatePreparePlayerLogin = 604,
@@ -81,7 +83,7 @@ namespace Data
         _PS_Tick_Loop = 608,
         _PlayerS_SendNotice = 609,
         _PS_PlayerGM = 610,
-        _PS_ServerKick = 611,
+        _Gateway_ServerKick = 611,
         _PS_SendMessageToClient = 612,
         _PS_NotifyMail = 613,
         _User_SaveUserImmediately = 614,

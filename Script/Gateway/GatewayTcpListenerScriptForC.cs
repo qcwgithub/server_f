@@ -11,7 +11,7 @@ namespace Script
 
         protected override IConnection CreateConnection(TcpClientData tcpClientData)
         {
-            var connection = new GatewayClientConnection(tcpClientData);
+            var connection = new GatewayUserConnection(tcpClientData);
             return connection;
         }
     }

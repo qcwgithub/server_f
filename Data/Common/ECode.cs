@@ -44,7 +44,7 @@ namespace Data
         NotRealPrepareLogin = 40,
         IdIsNotSupported = 41,
         NotEnoughInk = 42,
-
+        UserInfoNotExist = 43,
         ServerBusy = 44,
         Server_Timeout = 45,
         Server_NotConnected = 46,

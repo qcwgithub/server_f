@@ -43,10 +43,12 @@ namespace Script
                     break;
                 }
 
-                foreach (long playerId in kickList)
+                foreach (long userId in kickList)
                 {
-                    var msgD = MsgDestroyUser.Create(playerId, this.msgType.ToString(), new MsgKick { flags = LogoutFlags.CancelAutoLogin });
-                    tasks.Add(this.service.connectToSelf.Request<MsgDestroyUser, ResDestroyUser>(MsgType._User_DestroyUser, msgD));
+                    var msgD = new MsgUserDestroyUser();
+                    msgD.userId = userId;
+                    msgD.reason = nameof(User_Shutdown);
+                    tasks.Add(this.service.connectToSelf.Request<MsgUserDestroyUser, ResUserDestroyUser>(MsgType._User_DestroyUser, msgD));
                 }
 
                 await Task.WhenAll(tasks);

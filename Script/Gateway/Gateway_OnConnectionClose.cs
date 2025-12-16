@@ -8,14 +8,13 @@ namespace Script
         {
         }
 
-
         public override async Task<ECode> Handle(IConnection connection, MsgConnectionClose msg, ResConnectionClose res)
         {
             await base.Handle(connection, msg);
             
-            if (connection is GatewayClientConnection clientConnection)
+            if (connection is GatewayUserConnection userConnection)
             {
-                GatewayUser? user = clientConnection.GetUser();
+                GatewayUser? user = userConnection.GetUser();
                 if (user == null)
                 {
                     return ECode.Success;
@@ -27,6 +26,14 @@ namespace Script
                 {
                     user.connection.UnbindUser();
                     user.connection = null;
+                }
+
+                long nowS = TimeUtils.GetTimeS();
+                user.offlineTimeS = nowS;
+
+                if (!user.destroyTimer.IsAlive())
+                {
+                    this.service.ss.SetDestroyTimer(user);
                 }
             }
 

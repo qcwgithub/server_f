@@ -8,7 +8,7 @@ namespace Data
         [Key(0)]
         public long userId;
         [Key(1)]
-        required public string place;
+        public string reason;
     }
 
     [MessagePackObject]

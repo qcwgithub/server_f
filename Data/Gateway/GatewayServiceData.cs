@@ -2,6 +2,15 @@ namespace Data
 {
     public sealed class GatewayServiceData : ServiceData
     {
+        public readonly Dictionary<long, GatewayUser> userDict = new Dictionary<long, GatewayUser>();
+        public GatewayUser? GetUser(long userId)
+        {
+            GatewayUser? user;
+            return this.userDict.TryGetValue(userId, out user) ? user : null;
+        }
+    
+        public int destroyTimeoutS = 600;
+
         public static readonly List<ServiceType> s_connectToServiceIds = new List<ServiceType>
         {
             ServiceType.Db,

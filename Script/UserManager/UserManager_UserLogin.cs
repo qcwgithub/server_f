@@ -68,6 +68,16 @@ namespace Script
             if (accountInfo.userIds.Count == 0)
             {
                 userId = this.service.userIdSnowflakeScript.NextUserId();
+
+                UserInfo userInfo = this.service.ss.NewUserInfo(userId);
+                e = await this.service.ss.InsertUserInfo(userInfo);
+                if (e != ECode.Success)
+                {
+                    this.logger.Error($"Create user info {userId} e = {e}");
+                    return e;
+                }
+
+                this.logger.Info($"Create user info {userId} e = {e}");
                 accountInfo.userIds.Add(userId);
             }
             else

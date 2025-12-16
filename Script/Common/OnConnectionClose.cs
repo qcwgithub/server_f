@@ -10,7 +10,6 @@ namespace Script
         {
         }
 
-
         public override MsgType msgType => MsgType._OnConnectionClose;
 
         void LogServerDisconnect(ServiceConnection connection)
