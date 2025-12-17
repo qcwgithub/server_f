@@ -220,7 +220,7 @@ namespace Script
 
                 int serviceId = tai.serviceId;
                 ServiceConfig sc = this.service.data.current_resGetServiceConfigs.FindServiceConfig(tai.serviceType, tai.serviceId);
-                IConnection connection = this.service.GetServiceConnectionOrConnect(sc.serviceType, sc.serviceId, sc.inIp, sc.inPort);
+                ServiceConnection connection = this.service.GetServiceConnectionOrConnect(sc.serviceType, sc.serviceId, sc.inIp, sc.inPort);
 
                 while (connection.IsConnecting())
                 {
@@ -325,9 +325,9 @@ namespace Script
                         break;
 
                     //
-                    case "psAction":
+                    case "userServiceAction":
                         {
-                            var msg = new MsgPSAction();
+                            var msg = new MsgUserServiceAction();
 
                             string s = this.GetArg_String(nameof(msg.allowNewUser), false);
                             if (!string.IsNullOrEmpty(s))
@@ -335,17 +335,26 @@ namespace Script
                                 msg.allowNewUser = s == "true" || s == "1";
                             }
 
+                            if (this.GetArg_Int(nameof(msg.saveIntervalS), out int i))
+                            {
+                                msg.saveIntervalS = i;
+                            }
+
+                            var r = await this.service.connectToSameServerType.Request<MsgUserServiceAction, ResUserServiceAction>(serviceId, MsgType._ServerAction, msg);
+                            e = r.e;
+                        }
+                        break;
+                    //
+                    case "gatewayServiceAction":
+                        {
+                            var msg = new MsgGatewayServiceAction();
+
                             if (this.GetArg_Int(nameof(msg.destroyTimeoutS), out int i))
                             {
                                 msg.destroyTimeoutS = i;
                             }
 
-                            if (this.GetArg_Int(nameof(msg.saveIntervalS), out i))
-                            {
-                                msg.saveIntervalS = i;
-                            }
-
-                            var r = await this.service.connectToSameServerType.Request<MsgPSAction, ResPSAction>(serviceId, MsgType._ServerAction, msg);
+                            var r = await this.service.connectToSameServerType.Request<MsgGatewayServiceAction, ResGatewayServiceAction>(serviceId, MsgType._ServerAction, msg);
                             e = r.e;
                         }
                         break;
@@ -459,7 +468,7 @@ namespace Script
                 return ECode.Success;
             }
 
-            IConnection connection = this.service.GetServiceConnectionOrConnect(sc.serviceType, sc.serviceId, sc.inIp, sc.inPort);
+            ServiceConnection connection = this.service.GetServiceConnectionOrConnect(sc.serviceType, sc.serviceId, sc.inIp, sc.inPort);
             while (connection.IsConnecting())
             {
                 await Task.Delay(1);

@@ -26,11 +26,11 @@ namespace Script
 
             if (!this.IsTransferMsgType(msgType))
             {
-                result.normalDispatch = true;
+                result.transferred = false;
                 return result;
             }
 
-            result.normalDispatch = false;
+            result.transferred = true;
 
             GatewayUser? user = connection.user;
             if (user == null)
@@ -51,8 +51,12 @@ namespace Script
                 this.service.logger.Error("TryTransfer() serviceConnection == null || !serviceConnection.IsConnected()");
                 return result;
             }
-            
-            byte[] msgBytes = msg.ToArray();
+
+            // +user.userId
+            byte[] msgBytes = new byte[8 + msg.Count];
+            BinaryMessagePacker.WriteLong(msgBytes, 0, user.userId);
+            msg.CopyTo(msgBytes, 8);
+
             serviceConnection.SendBytes(msgType, msgBytes, (e, segment) =>
             {
                 if (reply != null)

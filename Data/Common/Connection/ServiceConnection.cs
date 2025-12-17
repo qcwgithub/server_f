@@ -2,6 +2,9 @@ namespace Data
 {
     public class ServiceConnection : DirectConnection
     {
+        public ServiceTypeAndId? serviceTypeAndId;
+        public bool remoteWillShutdown;
+
         // connector
         public ServiceConnection(ServiceType serviceType, int serviceId, ProtocolClientData socket) : base(socket, true)
         {
@@ -13,8 +16,5 @@ namespace Data
         {
             this.serviceTypeAndId = null;
         }
-
-        public ServiceTypeAndId? serviceTypeAndId;
-        public bool remoteWillShutdown;
     }
 }

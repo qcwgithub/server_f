@@ -32,10 +32,12 @@ namespace Data
         [Key(0)]
         public bool isNewUser;
         [Key(1)]
-        public UserInfo newUserInfo; // when isNewUser
+        public long userId;
         [Key(2)]
-        public bool kickOther; // 顶号
+        public UserInfo newUserInfo; // when isNewUser
         [Key(3)]
+        public bool kickOther; // 顶号
+        [Key(4)]
         public int delayS;
     }
 }

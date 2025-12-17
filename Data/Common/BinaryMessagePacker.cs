@@ -2,26 +2,56 @@
 {
     public partial class BinaryMessagePacker : IMessagePacker
     {
-        public bool IsCompeteMessage(byte[] buffer, int offset, int count, out int exactCount)
+        public static void WriteLong(byte[] buffer, int offset, long value_)
         {
-            exactCount = 0;
-
-            if (count < GetHeaderLength())
+            unchecked
             {
-                return false;
+                ulong value = (ulong)value_;
+                buffer[offset + 0] = (byte)(value);
+                buffer[offset + 1] = (byte)(value >> 8);
+                buffer[offset + 2] = (byte)(value >> 16);
+                buffer[offset + 3] = (byte)(value >> 24);
+                buffer[offset + 4] = (byte)(value >> 32);
+                buffer[offset + 5] = (byte)(value >> 40);
+                buffer[offset + 6] = (byte)(value >> 48);
+                buffer[offset + 7] = (byte)(value >> 56);
             }
-
-            int length = this.ReadInt(buffer, offset);
-            if (count < length)
+        }
+        public static long ReadLong(byte[] buffer, int offset)
+        {
+            unchecked
             {
-                return false;
+                ulong value = 0;
+                value += buffer[offset];
+                value += (((ulong)buffer[offset + 1]) << 8);
+                value += (((ulong)buffer[offset + 2]) << 16);
+                value += (((ulong)buffer[offset + 3]) << 24);
+                value += (((ulong)buffer[offset + 4]) << 32);
+                value += (((ulong)buffer[offset + 5]) << 40);
+                value += (((ulong)buffer[offset + 6]) << 48);
+                value += (((ulong)buffer[offset + 7]) << 56);
+                return (long)value;
             }
-
-            exactCount = length;
-            return true;
+        }
+        
+        public static long ReadLong(ArraySegment<byte> buffer, int offset)
+        {
+            unchecked
+            {
+                ulong value = 0;
+                value += buffer[offset];
+                value += (((ulong)buffer[offset + 1]) << 8);
+                value += (((ulong)buffer[offset + 2]) << 16);
+                value += (((ulong)buffer[offset + 3]) << 24);
+                value += (((ulong)buffer[offset + 4]) << 32);
+                value += (((ulong)buffer[offset + 5]) << 40);
+                value += (((ulong)buffer[offset + 6]) << 48);
+                value += (((ulong)buffer[offset + 7]) << 56);
+                return (long)value;
+            }
         }
 
-        protected void WriteInt(byte[] buffer, int offset, int value_)
+        public static void WriteInt(byte[] buffer, int offset, int value_)
         {
             unchecked
             {
@@ -32,7 +62,7 @@
                 buffer[offset + 3] = (byte)(value >> 24);
             }
         }
-        protected int ReadInt(byte[] buffer, int offset)
+        public static int ReadInt(byte[] buffer, int offset)
         {
             unchecked
             {
@@ -44,7 +74,8 @@
                 return (int)value;
             }
         }
-        protected void WriteShort(byte[] buffer, int offset, short value)
+
+        public static void WriteShort(byte[] buffer, int offset, short value)
         {
             unchecked
             {
@@ -52,7 +83,7 @@
                 buffer[offset + 1] = (byte)(value << 0 >> 8);
             }
         }
-        protected short ReadShort(byte[] buffer, int offset)
+        public static short ReadShort(byte[] buffer, int offset)
         {
             unchecked
             {
@@ -63,6 +94,25 @@
             }
         }
 
+        public bool IsCompeteMessage(byte[] buffer, int offset, int count, out int exactCount)
+        {
+            exactCount = 0;
+
+            if (count < GetHeaderLength())
+            {
+                return false;
+            }
+
+            int length = ReadInt(buffer, offset);
+            if (count < length)
+            {
+                return false;
+            }
+
+            exactCount = length;
+            return true;
+        }
+
         int GetHeaderLength()
         {
             return 3 * sizeof(int) + 1;
@@ -71,21 +121,21 @@
         public void ModifySeq(byte[] buffer, int seq)
         {
             int offset = sizeof(int);
-            this.WriteInt(buffer, offset, seq);
+            WriteInt(buffer, offset, seq);
         }
 
         void PackHeader(byte[] buffer, int seq, int msgTypeOrECode, bool requireResponse, ref int bufferOffset)
         {
             // 4 = totalLength
-            this.WriteInt(buffer, bufferOffset, buffer.Length);
+            WriteInt(buffer, bufferOffset, buffer.Length);
             bufferOffset += sizeof(int);
 
             // 4 = seq
-            this.WriteInt(buffer, bufferOffset, seq);
+            WriteInt(buffer, bufferOffset, seq);
             bufferOffset += sizeof(int);
 
             // 4 = ECode/MsgType
-            this.WriteInt(buffer, bufferOffset, msgTypeOrECode);
+            WriteInt(buffer, bufferOffset, msgTypeOrECode);
             bufferOffset += sizeof(int);
 
             // 1 = require response?
@@ -109,7 +159,7 @@
             this.PackHeader(buffer, seq, msgTypeOrECode, requireResponse, ref bufferOffset);
 
             // b
-            this.WriteInt(buffer, bufferOffset, msg.Length);
+            WriteInt(buffer, bufferOffset, msg.Length);
             bufferOffset += sizeof(int);
 
             // c
@@ -123,17 +173,17 @@
         void UnpackHeader(ref UnpackResult r, byte[] buffer, ref int offset, ref int count)
         {
             // 4 = total length
-            r.totalLength = this.ReadInt(buffer, offset);
+            r.totalLength = ReadInt(buffer, offset);
             offset += sizeof(int);
             count -= sizeof(int);
 
             // 4 = seq
-            r.seq = this.ReadInt(buffer, offset);
+            r.seq = ReadInt(buffer, offset);
             offset += sizeof(int);
             count -= sizeof(int);
 
             // 4 = ECode/MsgType
-            r.code = this.ReadInt(buffer, offset);
+            r.code = ReadInt(buffer, offset);
             offset += sizeof(int);
             count -= sizeof(int);
 
@@ -149,7 +199,7 @@
             this.UnpackHeader(ref r, buffer, ref offset, ref count);
 
             // b
-            int length = this.ReadInt(buffer, offset);
+            int length = ReadInt(buffer, offset);
             offset += sizeof(int);
             count -= sizeof(int);
 

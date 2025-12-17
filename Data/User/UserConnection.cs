@@ -4,11 +4,13 @@ namespace Data
     {
         public readonly int gatewayServiceId;
         public readonly User user;
+        public readonly UserServiceData sd;
         public MsgType msgProcessing;
-        public UserConnection(int gatewayServiceId, User user)
+        public UserConnection(int gatewayServiceId, User user, UserServiceData sd)
         {
             this.gatewayServiceId = gatewayServiceId;
             this.user = user;
+            this.sd = sd;
         }
 
         public User? GetUser()
@@ -21,37 +23,10 @@ namespace Data
             throw new NotImplementedException();
         }
 
-        public void Connect()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool IsConnecting()
-        {
-            return false;
-        }
-
         public bool IsConnected()
         {
-            return true;
-        }
-    
-        public void Close(string reason)
-        {
-
-        }
-
-        public bool IsClosed()
-        {
-            return false;
-        }
-
-        public string? closeReason
-        {
-            get
-            {
-                return null;
-            }
+            ServiceConnection? serviceConnection = this.sd.GetOtherServiceConnection(this.gatewayServiceId);
+            return serviceConnection != null && serviceConnection.IsConnected();
         }
 
         public void SendBytes(MsgType msgType, byte[] msg, Action<ECode, ArraySegment<byte>>? cb, int? pTimeoutS)

@@ -2,14 +2,14 @@ namespace Data
 {
     public class GatewayUserConnection : DirectConnection
     {
+        public GatewayUser? user;
+        public long userId;
+        public long lastUserId;
+
         public GatewayUserConnection(ProtocolClientData socket) : base(socket, false)
         {
 
         }
-
-        public GatewayUser? user;
-        public long userId;
-        public long lastUserId;
 
         public void BindUser(GatewayUser user)
         {

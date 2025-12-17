@@ -2,6 +2,6 @@ namespace Data
 {
     public struct stTryTransferResult
     {
-        public bool normalDispatch;
+        public bool transferred;
     }
 }

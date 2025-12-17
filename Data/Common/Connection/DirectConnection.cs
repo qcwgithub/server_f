@@ -56,6 +56,7 @@ namespace Data
                 return this.socket.closeReason;
             }
         }
+
         public void SendBytes(MsgType msgType, byte[] msg, Action<ECode, ArraySegment<byte>>? cb, int? pTimeoutS)
         {
             this.socket.SendBytes(msgType, msg, cb, pTimeoutS);

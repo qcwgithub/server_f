@@ -4,6 +4,11 @@ namespace Script
 {
     public static class MsgTypeExt
     {
+        public static bool IsClient(this MsgType type)
+        {
+            return type >= MsgType.ClientStart;
+        }
+
         // 消息类型是否可并行
         public static bool CanParallel(this MsgType type)
         {

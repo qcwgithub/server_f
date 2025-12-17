@@ -64,28 +64,29 @@ namespace Script
                 await this.server.accountInfoProxy.Save(accountInfo);
             }
 
-            long userId;
             if (accountInfo.userIds.Count == 0)
             {
-                userId = this.service.userIdSnowflakeScript.NextUserId();
+                res.isNewUser = true;
+                res.userId = this.service.userIdSnowflakeScript.NextUserId();
+                res.newUserInfo = this.service.ss.NewUserInfo(res.userId);
 
-                UserInfo userInfo = this.service.ss.NewUserInfo(userId);
-                e = await this.service.ss.InsertUserInfo(userInfo);
+                e = await this.service.ss.InsertUserInfo(res.newUserInfo);
                 if (e != ECode.Success)
                 {
-                    this.logger.Error($"Create user info {userId} e = {e}");
+                    this.logger.Error($"Create user info {res.userId} e = {e}");
                     return e;
                 }
 
-                this.logger.Info($"Create user info {userId} e = {e}");
-                accountInfo.userIds.Add(userId);
+                this.logger.Info($"Create user info {res.userId} e = {e}");
+                accountInfo.userIds.Add(res.userId);
             }
             else
             {
-                userId = accountInfo.userIds[0];
+                res.isNewUser = false;
+                res.userId = accountInfo.userIds[0];
+                res.newUserInfo = null;
             }
 
-            res.userId = userId;
             return ECode.Success;
         }
 

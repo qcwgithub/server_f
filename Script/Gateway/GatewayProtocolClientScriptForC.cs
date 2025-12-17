@@ -21,8 +21,7 @@ namespace Script
             var connection = (GatewayUserConnection)data.customData;
 
             stTryTransferResult result = this.gatewayService.ss.TryTransfer(connection, msgType, msgBytes, reply);
-
-            if (result.normalDispatch)
+            if (!result.transferred)
             {
                 base.DispatchNetwork(data, seq, msgType, msgBytes, reply);
             }
