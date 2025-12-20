@@ -2,7 +2,7 @@ namespace Data
 {
     public sealed class GatewayServiceData : ServiceData
     {
-        public readonly Dictionary<long, GatewayUser> userDict = new Dictionary<long, GatewayUser>();
+        public readonly Dictionary<long, GatewayUser> userDict;
         public GatewayUser? GetUser(long userId)
         {
             GatewayUser? user;
@@ -10,6 +10,7 @@ namespace Data
         }
     
         public int destroyTimeoutS = 600;
+        public readonly UserServiceAllocatorData userServiceAllocatorData;
 
         public static readonly List<ServiceType> s_connectToServiceIds = new List<ServiceType>
         {
@@ -21,6 +22,9 @@ namespace Data
         public GatewayServiceData(ServiceTypeAndId serviceTypeAndId)
             : base(serviceTypeAndId, s_connectToServiceIds)
         {
+            this.userDict = new Dictionary<long, GatewayUser>();
+            this.userServiceAllocatorData = new UserServiceAllocatorData();
+
             this.LoadConfigs();
         }
 

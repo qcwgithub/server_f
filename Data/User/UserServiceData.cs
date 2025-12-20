@@ -6,7 +6,7 @@ namespace Data
 {
     public sealed class UserServiceData : ServiceData
     {
-        public readonly Dictionary<long, User> userDict = new Dictionary<long, User>();
+        public readonly Dictionary<long, User> userDict;
         public User? GetUser(long userId)
         {
             User? user;
@@ -28,6 +28,8 @@ namespace Data
         public UserServiceData(ServiceTypeAndId serviceTypeAndId)
             : base(serviceTypeAndId, s_connectToServiceIds)
         {
+            this.userDict = new Dictionary<long, User>();
+
             this.LoadConfigs();
 
             this.allowNewUser = true;

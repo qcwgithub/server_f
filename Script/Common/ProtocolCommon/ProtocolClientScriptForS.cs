@@ -17,8 +17,7 @@ namespace Script
 
         public bool IsServiceConnected(int serviceId)
         {
-            ServiceConnection? connection;
-            if (!this.service.data.otherServiceConnections.TryGetValue(serviceId, out connection) || !connection.IsConnected())
+            if (!this.service.data.otherServiceConnections.TryGetValue(serviceId, out var connection) || !connection.IsConnected())
             {
                 return false;
             }

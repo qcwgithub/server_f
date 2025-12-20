@@ -31,7 +31,7 @@ namespace Script
                 return r.e;
             }
 
-            r = await this.service.connectToUserService.Request<MsgUserLogin, ResUserLogin>(MsgType._User_UserLoginSuccess, msg);
+            r = await this.service.connectToUserService.Request<MsgUserLoginSuccess, ResUserLoginSuccess>(MsgType._User_UserLoginSuccess, msg);
             if (r.e != ECode.Success)
             {
                 return r.e;

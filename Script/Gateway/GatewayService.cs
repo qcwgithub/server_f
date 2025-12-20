@@ -24,6 +24,7 @@ namespace Script
             return new GatewayProtocolClientScriptForC(this.server, this);
         }
         public readonly GatewayServiceScript ss;
+        public readonly UserServiceAllocator<GatewayService> userServiceAllocator;
 
         public GatewayService(Server server, int serviceId) : base(server, serviceId)
         {
@@ -32,6 +33,7 @@ namespace Script
             this.userServiceManager = new UserServiceManager(this.server, this);
 
             this.ss = new GatewayServiceScript(this.server, this);
+            this.userServiceAllocator = new UserServiceAllocator<GatewayService>(this.server, this, this.sd.userServiceAllocatorData);
         }
 
         public override void Attach()
