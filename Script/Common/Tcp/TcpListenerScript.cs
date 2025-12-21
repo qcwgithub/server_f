@@ -3,10 +3,12 @@ using Data;
 
 namespace Script
 {
-    public abstract class TcpListenerScript : ServiceScript<Service>, ITcpListenerCallback
+    public class TcpListenerScript : ServiceScript<Service>, ITcpListenerCallback
     {
-        public TcpListenerScript(Server server, Service service) : base(server, service)
+        public readonly bool forS;
+        public TcpListenerScript(Server server, Service service, bool forS) : base(server, service)
         {
+            this.forS = forS;
         }
 
         public void LogError(string str)
@@ -18,8 +20,6 @@ namespace Script
         {
             this.service.logger.Info(str);
         }
-
-        protected abstract IConnection CreateConnection(TcpClientData tcpClientData);
 
         public void OnAcceptComplete(TcpListenerData tcpListener, SocketAsyncEventArgs e)
         {
@@ -33,7 +33,7 @@ namespace Script
             Socket socket = e.AcceptSocket;
             socket.NoDelay = true;
 
-            var connection = this.CreateConnection(tcpClientData);
+            var connection = new UndefinedConnection(tcpClientData, this.forS);
             tcpClientData.customData = connection;
 
             tcpClientData.AcceptorInit(this.service.data, socket, tcpListener.isForClient);

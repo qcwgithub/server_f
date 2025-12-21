@@ -43,7 +43,7 @@ namespace Script
 
             this.connectToSelf = new ConnectToSelf(this);
 
-            this.tcpListenerScriptForS = new TcpListenerScriptForS(this.server, this);
+            this.tcpListenerScriptForS = new TcpListenerScript(this.server, this, true);
             this.tcpListenerScriptForC = this.CreateTcpListenerScriptForC();
 
             this.protocolClientScriptForS = new ProtocolClientScriptForS(this.server, this);
@@ -170,7 +170,7 @@ namespace Script
             {
                 ProtocolClientData socket = this.protocolClientScriptForS.CreateConnector(this.data, inIp, inPort);
 
-                connection = new ServiceConnection(to_serviceType, to_serviceId, socket);
+                connection = new ServiceConnection(to_serviceType, to_serviceId, socket, true);
                 data.SaveOtherServiceConnection(connection);
             }
 

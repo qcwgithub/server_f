@@ -3,10 +3,24 @@ namespace Data
     public sealed class GatewayServiceData : ServiceData
     {
         public readonly Dictionary<long, GatewayUser> userDict;
+        public int userCount
+        {
+            get
+            {
+                return this.userDict.Count;
+            }
+        }
         public GatewayUser? GetUser(long userId)
         {
-            GatewayUser? user;
-            return this.userDict.TryGetValue(userId, out user) ? user : null;
+            return this.userDict.TryGetValue(userId, out GatewayUser? user) ? user : null;
+        }
+        public bool RemoveUser(long userId)
+        {
+            return this.userDict.Remove(userId);
+        }
+        public void AddUser(GatewayUser user)
+        {
+            this.userDict.Add(user.userId, user);
         }
     
         public int destroyTimeoutS = 600;

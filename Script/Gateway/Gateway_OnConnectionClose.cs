@@ -11,30 +11,24 @@ namespace Script
         public override async Task<ECode> Handle(IConnection connection, MsgConnectionClose msg, ResConnectionClose res)
         {
             await base.Handle(connection, msg);
-            
+
             if (connection is GatewayUserConnection userConnection)
             {
-                GatewayUser? user = userConnection.GetUser();
-                if (user == null)
-                {
-                    return ECode.Success;
-                }
+                GatewayUser user = userConnection.user;
 
                 this.service.logger.InfoFormat("{0} userId {1} closeReason {2}", this.msgType, user.userId, userConnection.closeReason);
-
-                if (user.connection != null)
-                {
-                    user.connection.UnbindUser();
-                    user.connection = null;
-                }
 
                 long nowS = TimeUtils.GetTimeS();
                 user.offlineTimeS = nowS;
 
-                if (!user.destroyTimer.IsAlive())
-                {
-                    this.service.ss.SetDestroyTimer(user);
-                }
+                this.service.ss.SetDestroyTimer(user, GatewayDestroyUserReason.DestroyTimer_Disconnect);
+
+                var msgU = new MsgUserDisconnectFromGateway();
+                msgU.userId = user.userId;
+
+                var rU = await this.service.connectToUserService.Request<MsgUserDisconnectFromGateway, ResUserDisconnectFromGateway>(
+                    user.userServiceId, MsgType._User_UserDisconnectFromGateway, msgU);
+                return ECode.Success;
             }
 
             return ECode.Success;

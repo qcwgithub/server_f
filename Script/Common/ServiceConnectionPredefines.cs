@@ -59,14 +59,6 @@ namespace Script
         }
     }
 
-    public class ConnectToUserService : ConnectToOtherService
-    {
-        public ConnectToUserService(Service self) : base(self, ServiceType.User)
-        {
-
-        }
-    }
-
     public class ConnectToGatewayService : ConnectToOtherService
     {
         public ConnectToGatewayService(Service self) : base(self, ServiceType.Gateway)
@@ -75,19 +67,16 @@ namespace Script
         }
     }
 
-    public class ConnectFromUserService
+    public class ConnectWithUserService
     {
-        Service self;
-        public ConnectFromUserService(Service self)
+        protected readonly Service self;
+        public ConnectWithUserService(Service self)
         {
             this.self = self;
-
-            // 必须是 User 有连接他的
-            MyDebug.Assert(UserServiceData.s_connectToServiceIds.Contains(self.data.serviceType));
         }
 
         // 发送给 UserService 必须指定 serviceId
-        public async Task<MyResponse<Res>> Send<Msg, Res>(int serviceId, MsgType msgType, Msg msg)
+        public async Task<MyResponse<Res>> Request<Msg, Res>(int serviceId, MsgType msgType, Msg msg)
             where Res : class
         {
             IConnection? connection = this.self.data.GetOtherServiceConnection(serviceId);
@@ -97,6 +86,23 @@ namespace Script
             }
 
             return await connection.Request<Msg, Res>(msgType, msg);
+        }
+    }
+
+    public class ConnectToUserService : ConnectWithUserService
+    {
+        public ConnectToUserService(Service self) : base(self)
+        {
+            MyDebug.Assert(self.data.connectToServiceTypes.Contains(ServiceType.User));
+        }
+    }
+
+    public class ConnectFromUserService : ConnectWithUserService
+    {
+        public ConnectFromUserService(Service self) : base(self)
+        {
+            // 必须是 User 有连接他的
+            MyDebug.Assert(UserServiceData.s_connectToServiceIds.Contains(self.data.serviceType));
         }
 
         public async Task<MyResponse<Res>> SendToAll<Msg, Res>(MsgType msgType, Msg msg) where Res : class

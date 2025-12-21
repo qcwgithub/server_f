@@ -14,14 +14,15 @@ namespace Script
 
         public override async Task<ECode> Handle(IConnection connection, MsgUserLogin msg, ResUserLogin res)
         {
-            var userConnection = (GatewayUserConnection)connection;
+            var undefinedConnection = (UndefinedConnection)connection;
+            ProtocolClientData socket = undefinedConnection.socket;
 
             if (msg.dict == null)
             {
                 msg.dict = new Dictionary<string, string>();
             }
 
-            (AddressFamily family, string ip) = this.GetIp(userConnection.socket);
+            (AddressFamily family, string ip) = this.GetIp(socket);
 
             var msgUM = new MsgUserManagerUserLogin();
             msgUM.version = msg.version;
@@ -40,12 +41,25 @@ namespace Script
                 return rUM.e;
             }
 
-            var msgU = new MsgUserLoginSuccess();
-            msgU.isNewUser = rUM.res.isNewUser;
-            msgU.userId = rUM.res.userId;
-            msgU.newUserInfo = rUM.res.newUserInfo;
+            ResUserManagerUserLogin resUM = rUM.res;
 
-            var rU = await this.service.connectToUserService.Request<MsgUserLoginSuccess, ResUserLoginSuccess>(MsgType._User_UserLoginSuccess, msgU);
+            GatewayUser? user = this.service.sd.GetUser(resUM.userId);
+            int userServiceId = 0;
+            if (user != null)
+            {
+                userServiceId = user.userServiceId;
+            }
+            else
+            {
+                //...
+            }
+
+            var msgU = new MsgUserLoginSuccess();
+            msgU.isNewUser = resUM.isNewUser;
+            msgU.userId = resUM.userId;
+            msgU.newUserInfo = resUM.newUserInfo;
+
+            var rU = await this.service.connectToUserService.Request<MsgUserLoginSuccess, ResUserLoginSuccess>(userServiceId, MsgType._User_UserLoginSuccess, msgU);
             if (rU.e != ECode.Success)
             {
                 return rU.e;
@@ -54,7 +68,38 @@ namespace Script
             res.userInfo = rU.res.userInfo;
             res.kickOther = rU.res.kickOther;
             res.delayS = rU.res.delayS;
+
+            if (user != null)
+            {
+                this.HandleOldConnection(user);
+            }
+            else
+            {
+                user = new GatewayUser(resUM.userId, userServiceId);
+                this.service.sd.AddUser(user);
+            }
+
+            user.connection = new GatewayUserConnection(socket, user);
             return ECode.Success;
+        }
+
+        bool HandleOldConnection(GatewayUser user)
+        {
+            if (!user.IsConnected())
+            {
+                return false;
+            }
+
+            GatewayUserConnection oldConnection = user.connection;
+            this.service.logger.Info($"userId {user.userId} kick old");
+
+            user.connection = null;
+
+            var msgKick = new MsgKick();
+            msgKick.flags = LogoutFlags.CancelAutoLogin;
+            oldConnection.Send<MsgKick>(MsgType.Kick, msgKick);
+
+            return true;
         }
 
         (AddressFamily, string) GetIp(ProtocolClientData socket)

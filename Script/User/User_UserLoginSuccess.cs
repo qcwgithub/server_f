@@ -17,7 +17,7 @@ namespace Script
             var serviceConnection = (ServiceConnection)connection;
             MyDebug.Assert(serviceConnection.serviceType == ServiceType.Gateway);
 
-            string message0 = string.Format("{0} userId {1} preCount {2}", this.msgType, msg.userId, this.sd.userDict.Count);
+            string message0 = string.Format("{0} userId {1} preCount {2}", this.msgType, msg.userId, this.sd.userCount);
 
             if (this.service.data.state != ServiceState.Started)
             {
@@ -86,10 +86,7 @@ namespace Script
 
             this.logger.Info(message0 + ": check ok");
 
-            if (user.destroyTimer.IsAlive())
-            {
-                this.usScript.ClearDestroyTimer(user, true);
-            }
+            this.usScript.ClearDestroyTimer(user, UserClearDestroyTimerReason.UserLoginSuccess);
 
             long nowS = TimeUtils.GetTimeS();
             user.onlineTimeS = nowS;
@@ -164,7 +161,7 @@ namespace Script
         void AddUserToDict(User user)
         {
             // runtime 初始化
-            this.service.sd.userDict.Add(user.userId, user);
+            this.service.sd.AddUser(user);
 
             // 有值就不能再赋值了，不然玩家上线下线就错了
             MyDebug.Assert(user.lastUserInfo == null);

@@ -18,7 +18,7 @@ namespace Script
         {
             var sd = this.service.sd;
 
-            this.service.logger.InfoFormat("{0} userId {1}, reason {2}, preCount {3}", this.msgType, msg.userId, msg.reason, sd.userDict.Count);
+            this.service.logger.InfoFormat("{0} userId {1}, reason {2}, preCount {3}", this.msgType, msg.userId, msg.reason, sd.userCount);
 
             User? user = sd.GetUser(msg.userId);
             if (user == null)
@@ -27,11 +27,7 @@ namespace Script
                 return ECode.UserNotExist;
             }
 
-            // clear save timer
-            if (user.saveTimer.IsAlive())
-            {
-                this.service.ss.ClearSaveTimer(user);
-            }
+            this.service.ss.ClearSaveTimer(user);
 
             user.destroying = true;
 
@@ -39,13 +35,14 @@ namespace Script
             var msgSave = new MsgSaveUser();
             msgSave.userId = msg.userId;
             msgSave.reason = "User_DestroyUser";
+
             var r = await this.service.connectToSelf.Request<MsgSaveUser, ResSaveUser>(MsgType._User_SaveUser, msgSave);
             if (r.e != ECode.Success)
             {
                 return r.e;
             }
 
-            sd.userDict.Remove(msg.userId);
+            sd.RemoveUser(msg.userId);
             return ECode.Success;
         }
     }

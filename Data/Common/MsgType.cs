@@ -70,12 +70,13 @@ namespace Data
         _Save_UserInfo = 203,
         _Insert_UserInfo = 204,
         _User_ServerKick = 205,
+        _User_UserDisconnectFromGateway = 206,
     
         _GetPlayerCount = 509,
         _User_DestroyUser = 601,
         _Gateway_DestroyUser = 602,
 
-        _User_PrepareUserLogin = 603,
+        // _User_PrepareUserLogin = 603,
         _PSSimulatePreparePlayerLogin = 604,
         _User_SaveUser = 605,
         _PS_OnHttpRequest = 606,

@@ -2,31 +2,11 @@ namespace Data
 {
     public class GatewayUserConnection : DirectConnection
     {
-        public GatewayUser? user;
-        public long userId;
-        public long lastUserId;
+        public readonly GatewayUser user;
 
-        public GatewayUserConnection(ProtocolClientData socket) : base(socket, false)
-        {
-
-        }
-
-        public void BindUser(GatewayUser user)
+        public GatewayUserConnection(ProtocolClientData socket, GatewayUser user) : base(socket, false)
         {
             this.user = user;
-            this.userId = user.userId;
-            this.lastUserId = user.userId;
-        }
-
-        public void UnbindUser()
-        {
-            this.user = null;
-            this.userId = 0;
-        }
-
-        public GatewayUser? GetUser()
-        {
-            return this.user;
         }
     }
 }

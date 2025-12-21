@@ -42,35 +42,12 @@ namespace Script
             return (ECode.Success, userInfo);
         }
 
-        public async Task<ECode> InsertUserInfo(UserInfo userInfo)
-        {
-            var msgDb = new MsgInsert_UserInfo();
-            msgDb.userInfo = userInfo;
-
-            var r = await this.service.connectToDbService.Request<MsgInsert_UserInfo, ResInsert_UserInfo>(MsgType._Insert_UserInfo, msgDb);
-            if (r.e != ECode.Success)
-            {
-                this.service.logger.Error($"InsertUserInfo({userInfo.userId}) r.e {r.e}");
-                return r.e;
-            }
-
-            return ECode.Success;
-        }
-
-        public UserInfo NewUserInfo(long userId)
-        {
-            UserInfo userInfo = UserInfo.Ensure(null);
-            userInfo.userId = userId;
-
-            long nowS = TimeUtils.GetTimeS();
-            userInfo.createTimeS = nowS;
-            userInfo.lastLoginTimeS = nowS;
-            return userInfo;
-        }
-
         public void SetSaveTimer(User user)
         {
-            MyDebug.Assert(!user.saveTimer.IsAlive());
+            if (user.saveTimer.IsAlive())
+            {
+                return;
+            }
 
             var SEC = this.usData.saveIntervalS;
 #if DEBUG
@@ -83,10 +60,41 @@ namespace Script
 
         public void ClearSaveTimer(User user)
         {
-            MyDebug.Assert(user.saveTimer.IsAlive());
+            if (!user.saveTimer.IsAlive())
+            {
+                return;
+            }
 
             server.timerScript.ClearTimer(user.saveTimer);
             user.saveTimer = null;
+        }
+
+        public void SetDestroyTimer(User user, UserDestroyUserReason reason)
+        {
+            if (user.destroyTimer.IsAlive())
+            {
+                return;
+            }
+
+            var SEC = this.service.sd.destroyTimeoutS;
+            this.service.logger.Info($"SetDestroyTimer userId {user.userId} reason {reason}");
+
+            user.destroyTimer = this.server.timerScript.SetTimer(
+                this.service.serviceId,
+                SEC, MsgType._User_DestroyUser,
+                new MsgUserDestroyUser { userId = user.userId, reason = reason});
+        }
+
+        public void ClearDestroyTimer(User user, UserClearDestroyTimerReason reason)
+        {
+            if (user.destroyTimer.IsAlive())
+            {
+                return;
+            }
+
+            this.service.logger.Info($"ClearDestroyTimer userId {user.userId} reason {reason}");
+            server.timerScript.ClearTimer(user.destroyTimer);
+            user.destroyTimer = null;
         }
     }
 }

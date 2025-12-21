@@ -8,23 +8,30 @@ namespace Script
         {
         }
 
-        public void SetDestroyTimer(GatewayUser user)
+        public void SetDestroyTimer(GatewayUser user, GatewayDestroyUserReason reason)
         {
-            MyDebug.Assert(!user.destroyTimer.IsAlive());
+            if (user.destroyTimer.IsAlive())
+            {
+                return;
+            }
 
             var SEC = this.service.sd.destroyTimeoutS;
-            this.service.logger.InfoFormat("SetDestroyTimer userId {0}", user.userId);
+            this.service.logger.Info($"SetDestroyTimer userId {user.userId} reason {reason}");
 
             user.destroyTimer = this.server.timerScript.SetTimer(
                 this.service.serviceId,
                 SEC, MsgType._Gateway_DestroyUser,
-                new MsgGatewayDestroyUser { userId = user.userId, reason = "SetDestroyTimer", msgKick = null});
+                new MsgGatewayDestroyUser { userId = user.userId, reason = reason, msgKick = null});
         }
 
-        public void ClearDestroyTimer(GatewayUser user)
+        public void ClearDestroyTimer(GatewayUser user, GatewayClearDestroyTimerReason reason)
         {
-            MyDebug.Assert(user.destroyTimer.IsAlive());
-            this.service.logger.InfoFormat("ClearDestroyTimer userId({0})", user.userId);
+            if (user.destroyTimer.IsAlive())
+            {
+                return;
+            }
+
+            this.service.logger.Info($"ClearDestroyTimer userId {user.userId} reason {reason}");
 
             server.timerScript.ClearTimer(user.destroyTimer);
             user.destroyTimer = null;

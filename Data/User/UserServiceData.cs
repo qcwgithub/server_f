@@ -7,12 +7,27 @@ namespace Data
     public sealed class UserServiceData : ServiceData
     {
         public readonly Dictionary<long, User> userDict;
+        public int userCount
+        {
+            get
+            {
+                return this.userDict.Count;
+            }
+        }
         public User? GetUser(long userId)
         {
-            User? user;
-            return this.userDict.TryGetValue(userId, out user) ? user : null;
+            return this.userDict.TryGetValue(userId, out User? user) ? user : null;
+        }
+        public bool RemoveUser(long userId)
+        {
+            return this.userDict.Remove(userId);
+        }
+        public void AddUser(User user)
+        {
+            this.userDict.Add(user.userId, user);
         }
 
+        public int destroyTimeoutS = 600;
         public int saveIntervalS = 60;
         public bool allowNewUser;
 
@@ -34,6 +49,7 @@ namespace Data
 
             this.allowNewUser = true;
         }
+
         void LoadConfigs()
         {
             

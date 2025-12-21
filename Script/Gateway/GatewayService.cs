@@ -17,7 +17,7 @@ namespace Script
         public readonly UserServiceManager userServiceManager;
         protected override TcpListenerScript CreateTcpListenerScriptForC()
         {
-            return new GatewayTcpListenerScriptForC(this.server, this);
+            return new TcpListenerScript(this.server, this, false);
         }
         protected override ProtocolClientScript CreateProtocolClientScriptForC()
         {
@@ -41,10 +41,13 @@ namespace Script
             base.Attach();
             base.AddHandler<GatewayService>();
 
-            this.dispatcher.AddHandler(new Gateway_Start(this.server, this));
-            this.dispatcher.AddHandler(new Gateway_Shutdown(this.server, this));
-            this.dispatcher.AddHandler(new Gateway_UserLogin(this.server, this));
+            this.dispatcher.AddHandler(new Gateway_Action(this.server, this));
+            this.dispatcher.AddHandler(new Gateway_DestroyUser(this.server, this));
             this.dispatcher.AddHandler(new Gateway_OnConnectionClose(this.server, this), true);
+            this.dispatcher.AddHandler(new Gateway_ServerKick(this.server, this), true);
+            this.dispatcher.AddHandler(new Gateway_Shutdown(this.server, this));
+            this.dispatcher.AddHandler(new Gateway_Start(this.server, this));
+            this.dispatcher.AddHandler(new Gateway_UserLogin(this.server, this));
         }
     }
 }

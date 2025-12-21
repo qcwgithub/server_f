@@ -12,30 +12,18 @@ namespace Script
         {
             await base.Handle(connection, msg);
 
-            if (connection is UserConnection userConnection)
+            if (connection is ServiceConnection serviceConnection &&
+                serviceConnection.serviceType == ServiceType.Gateway)
             {
-                User? user = userConnection.GetUser();
-                if (user == null)
-                {
-                    return ECode.Success;
-                }
-
-                this.service.logger.InfoFormat("{0} userId {1} closeReason {2}", this.msgType, user.userId, connection.closeReason);
-
-                if (user.connection != null)
-                {
-                    user.connection.UnbindUser();
-                    user.connection = null;
-                }
-
                 long nowS = TimeUtils.GetTimeS();
-                user.offlineTimeS = nowS;
-
-                // this.service.sqlLog.PlayerLogout(player);
-
-                if (!user.destroyTimer.IsAlive())
+                foreach (var kv in this.service.sd.userDict)
                 {
-                    this.service.ss.SetDestroyTimer(user, this.msgType.ToString());
+                    User user = kv.Value;
+                    if (user.gatewayServiceId == serviceConnection.serviceId)
+                    {
+                        user.offlineTimeS = nowS;
+                        this.service.ss.SetDestroyTimer(user, UserDestroyUserReason.DestroyTimer_GatewayDisconnect);
+                    }
                 }
             }
 

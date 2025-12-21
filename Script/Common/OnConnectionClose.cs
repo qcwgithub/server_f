@@ -17,19 +17,17 @@ namespace Script
             if (connection is ServiceConnection serviceConnection)
             {
                 var sd = this.service.data;
-                if (serviceConnection.taiInited)
+
+                if (sd.state < ServiceState.ShuttingDown &&
+                    !serviceConnection.remoteWillShutdown &&
+                    serviceConnection.closeReason != ProtocolClientData.CloseReason.OnConnectComplete_false &&
+                    sd.serviceType.ShouldLogErrorWhenDisconnectFrom(serviceConnection.serviceType))
                 {
-                    if (sd.state < ServiceState.ShuttingDown &&
-                        !serviceConnection.remoteWillShutdown &&
-                        serviceConnection.closeReason != ProtocolClientData.CloseReason.OnConnectComplete_false &&
-                        sd.serviceType.ShouldLogErrorWhenDisconnectFrom(serviceConnection.serviceType))
-                    {
-                        this.service.logger.FatalFormat("SocketClose {0} reason {1}", serviceConnection.tai, serviceConnection.closeReason);
-                    }
-                    else
-                    {
-                        this.service.logger.InfoFormat("SocketClose {0} reason {1}", serviceConnection.tai, serviceConnection.closeReason);
-                    }
+                    this.service.logger.FatalFormat("SocketClose {0} reason {1}", serviceConnection.tai, serviceConnection.closeReason);
+                }
+                else
+                {
+                    this.service.logger.InfoFormat("SocketClose {0} reason {1}", serviceConnection.tai, serviceConnection.closeReason);
                 }
 
                 if (sd.state < ServiceState.ShuttingDown &&

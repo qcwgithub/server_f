@@ -68,7 +68,7 @@ namespace Data
         public WebSocketListenerData? webSocketListenerDataForClient;
 
         // 需要连接到哪些服务器
-        public List<ServiceType> connectToServiceTypes = new List<ServiceType>();
+        public readonly List<ServiceType> connectToServiceTypes = new List<ServiceType>();
 
         // 只存 Normal -> Normal 和 Group -> Group
         public Dictionary<int, ServiceConnection> otherServiceConnections = new Dictionary<int, ServiceConnection>();

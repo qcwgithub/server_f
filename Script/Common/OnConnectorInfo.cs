@@ -13,7 +13,6 @@ namespace Script
         {
         }
 
-
         public override MsgType msgType => MsgType._ConnectorInfo;
 
         public override async Task<ECode> Handle(IConnection connection, MsgConnectorInfo msg, ResConnectorInfo res)
@@ -30,9 +29,8 @@ namespace Script
                 this.service.logger.Error(message);
             }
 
-            var serviceConnection = (ServiceConnection)connection;
-            serviceConnection.InitTai(info.serviceType, info.serviceId);
-
+            var undefinedConnection = (UndefinedConnection)connection;
+            var serviceConnection = new ServiceConnection(info.serviceType, info.serviceId, undefinedConnection.socket, false);
             this.service.data.SaveOtherServiceConnection(serviceConnection);
 
             return ECode.Success;

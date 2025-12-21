@@ -21,12 +21,11 @@ namespace Script
                 return ECode.UserNotExist;
             }
 
-            if (user.userServiceId > 0)
             {
                 var msgU = new MsgUserServerKick();
                 msgU.userId = msg.userId;
 
-                var r = await this.service.connectToUserService.Request<MsgUserServerKick, ResUserServerKick>(MsgType._User_ServerKick, msgU);
+                var r = await this.service.connectToUserService.Request<MsgUserServerKick, ResUserServerKick>(user.userServiceId, MsgType._User_ServerKick, msgU);
                 if (r.e != ECode.Success)
                 {
                     return r.e;
@@ -36,7 +35,7 @@ namespace Script
             {
                 var msgD = new MsgGatewayDestroyUser();
                 msgD.userId = msg.userId;
-                msgD.reason = "Gateway_ServerKick";
+                msgD.reason = GatewayDestroyUserReason.ServerKick;
 
                 msgD.msgKick = new MsgKick
                 {

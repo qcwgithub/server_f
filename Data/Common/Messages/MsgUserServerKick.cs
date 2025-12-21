@@ -13,6 +13,7 @@ namespace Data
     [MessagePackObject]
     public class ResUserServerKick
     {
-
+        [Key(0)]
+        public bool kicked;
     }
 }

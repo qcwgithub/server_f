@@ -1,6 +1,4 @@
 
-using System.Collections;
-using System.Threading.Tasks;
 using Data;
 
 namespace Script
@@ -18,12 +16,13 @@ namespace Script
             User? user = this.service.sd.GetUser(msg.userId);
             if (user == null)
             {
-                return ECode.UserNotExist;
+                res.kicked = false;
+                return ECode.Success;
             }
 
             var msgD = new MsgUserDestroyUser();
             msgD.userId = msg.userId;
-            msgD.reason = "User_ServerKick";
+            msgD.reason = UserDestroyUserReason.ServerKick;
 
             var r = await this.service.connectToSelf.Request<MsgUserDestroyUser, ResUserDestroyUser>(MsgType._User_DestroyUser, msgD);
             if (r.e != ECode.Success)
@@ -31,6 +30,7 @@ namespace Script
                 return r.e;
             }
 
+            res.kicked = true;
             return ECode.Success;
         }
     }

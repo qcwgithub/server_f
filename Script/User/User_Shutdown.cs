@@ -25,7 +25,7 @@ namespace Script
 
             //// kick players
             List<long> kickList = new List<long>();
-            this.service.logger.InfoFormat("start kick all userss, total {0}", usData.userDict.Count);
+            this.service.logger.InfoFormat("start kick all userss, total {0}", usData.userCount);
             List<Task> tasks = new List<Task>();
             while (true)
             {
@@ -47,7 +47,7 @@ namespace Script
                 {
                     var msgD = new MsgUserDestroyUser();
                     msgD.userId = userId;
-                    msgD.reason = "User_Shutdown";
+                    msgD.reason = UserDestroyUserReason.Shutdown;
                     tasks.Add(this.service.connectToSelf.Request<MsgUserDestroyUser, ResUserDestroyUser>(MsgType._User_DestroyUser, msgD));
                 }
 
@@ -58,7 +58,7 @@ namespace Script
 
                 await Task.Delay(100);
 
-                this.service.logger.InfoFormat("left {0} users to kick", usData.userDict.Count);
+                this.service.logger.InfoFormat("left {0} users to kick", usData.userCount);
             }
 
             ////

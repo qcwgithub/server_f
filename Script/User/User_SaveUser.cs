@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Data;
 
 namespace Script
@@ -15,8 +12,8 @@ namespace Script
         public override MsgType msgType => MsgType._User_SaveUser;
         public override async Task<ECode> Handle(IConnection connection, MsgSaveUser msg, ResSaveUser res)
         {
-            var player = this.sd.GetUser(msg.userId);
-            if (player == null)
+            User? user = this.sd.GetUser(msg.userId);
+            if (user == null)
             {
                 this.logger.ErrorFormat("{0} userId {1}, reason {2}, user == null!!", this.msgType, msg.userId, msg.reason);
                 return ECode.UserNotExist;
@@ -30,8 +27,8 @@ namespace Script
             var infoNullable = msgDb.userInfoNullable;
 
             List<string>? buffer = null;
-            UserInfo last = player.lastUserInfo;
-            UserInfo curr = player.userInfo;
+            UserInfo last = user.lastUserInfo;
+            UserInfo curr = user.userInfo;
 
             #region auto
 

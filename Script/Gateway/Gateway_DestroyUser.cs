@@ -14,13 +14,13 @@ namespace Script
         {
             var sd = this.service.sd;
 
-            this.service.logger.InfoFormat("{0} userId {1}, reason {1}, preCount {2}", this.msgType, msg.userId, msg.reason, sd.userDict.Count);
+            this.service.logger.InfoFormat("{0} userId {1}, reason {1}, preCount {2}", this.msgType, msg.userId, msg.reason, sd.userCount);
 
             GatewayUser? user = sd.GetUser(msg.userId);
             if (user == null)
             {
                 logger.InfoFormat("{0} user not exist, userId: {1}", this.msgType, msg.userId);
-                return ECode.UserNotExist;
+                return ECode.Success;
             }
 
             if (msg.msgKick != null && user.IsConnected())
@@ -28,29 +28,16 @@ namespace Script
                 user.connection.Send<MsgKick>(MsgType.Kick, msg.msgKick);
             }
 
-            if (user.connection != null)
+            if (user.IsConnected())
             {
                 user.connection.Close("Gateway_DestroyUser");
             }
 
-            if (user.destroyTimer.IsAlive())
-            {
-                this.service.ss.ClearDestroyTimer(user);
-            }
+            this.service.ss.ClearDestroyTimer(user, GatewayClearDestroyTimerReason.Destroy);
 
             user.destroying = true;
 
-            var msgUser = new MsgUserDestroyUser();
-            msgUser.userId = msg.userId;
-            msgUser.reason = "Gateway_DestroyUser";
-
-            var r = await this.service.connectToUserManagerService.Request<MsgUserDestroyUser, ResUserDestroyUser>(MsgType._User_DestroyUser, msgUser);
-            if (r.e != ECode.Success)
-            {
-                return r.e;
-            }
-
-            sd.userDict.Remove(msg.userId);
+            sd.RemoveUser(msg.userId);
             return ECode.Success;
         }
     }
