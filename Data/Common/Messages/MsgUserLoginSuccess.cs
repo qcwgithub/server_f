@@ -7,14 +7,21 @@ namespace Data
     public class MsgUserLoginSuccess
     {
         [Key(0)]
-        public MsgUserLogin innerMsg;
+        public bool isNewUser;
         [Key(1)]
-        public ResUserLogin innerRes;
+        public long userId;
+        [Key(2)]
+        public UserInfo newUserInfo; // when isNewUser
     }
 
     [MessagePackObject]
     public class ResUserLoginSuccess
     {
-
+        [Key(0)]
+        public UserInfo userInfo;
+        [Key(1)]
+        public bool kickOther;
+        [Key(2)]
+        public int delayS;
     }
 }

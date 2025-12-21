@@ -10,7 +10,7 @@ namespace Script
 
         protected override async Task StopBusinesses()
         {
-            this.service.logger.Info(nameof(StopBusinesses));
+            this.service.logger.Info("StopBusinesses");
 
             UserServiceData usData = this.service.sd;
 
@@ -47,7 +47,7 @@ namespace Script
                 {
                     var msgD = new MsgUserDestroyUser();
                     msgD.userId = userId;
-                    msgD.reason = nameof(User_Shutdown);
+                    msgD.reason = "User_Shutdown";
                     tasks.Add(this.service.connectToSelf.Request<MsgUserDestroyUser, ResUserDestroyUser>(MsgType._User_DestroyUser, msgD));
                 }
 

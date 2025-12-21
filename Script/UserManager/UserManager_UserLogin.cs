@@ -5,7 +5,7 @@ using Data;
 
 namespace Script
 {
-    public class UserManager_UserLogin : UserManagerHandler<MsgUserLogin, ResUserLogin>
+    public class UserManager_UserLogin : UserManagerHandler<MsgUserManagerUserLogin, ResUserManagerUserLogin>
     {
         public UserManager_UserLogin(Server server, UserManagerService service) : base(server, service)
         {
@@ -13,7 +13,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._UserManager_UserLogin;
 
-        public override async Task<ECode> Handle(IConnection connection, MsgUserLogin msg, ResUserLogin res)
+        public override async Task<ECode> Handle(IConnection connection, MsgUserManagerUserLogin msg, ResUserManagerUserLogin res)
         {
             if (!MyChannels.IsValidChannel(msg.channel) || !this.server.data.serverConfig.generalConfig.allowChannels.Contains(msg.channel))
             {
@@ -21,19 +21,16 @@ namespace Script
                 return ECode.InvalidChannel;
             }
 
-            string addressFamily = msg.dict["$addressFamily"];
-            string ip = msg.dict["$ip"];
-
             this.logger.Info($"{this.msgType} version {msg.version} platform {msg.platform}" +
                 $" channel {msg.channel} channelUserId {msg.channelUserId} verifyData {msg.verifyData}" +
-                $" addressFamily {addressFamily} ip {ip}");
+                $" addressFamily {msg.addressFamily} ip {msg.ip}");
 
             ECode e = ECode.Success;
 
             switch (msg.channel)
             {
                 case MyChannels.uuid:
-                    e = this.service.channelUuid.VeryfyAccount(msg);
+                    e = this.service.channelUuid.VeryfyAccount(msg.platform, msg.channel, msg.channelUserId);
                     break;
             }
 
@@ -43,8 +40,8 @@ namespace Script
             }
 
             // 先锁了再往下走
-            msg.dict["$lockValue"] = await this.server.lockRedis.LockAccount(msg.channel, msg.channelUserId, this.service.logger);
-            if (msg.dict["$lockValue"] == null)
+            msg.lockValue = await this.server.lockRedis.LockAccount(msg.channel, msg.channelUserId, this.service.logger);
+            if (msg.lockValue == null)
             {
                 this.service.logger.ErrorFormat("{0} lock failed, channel {1} channelUserId {2}", this.msgType, msg.channel, msg.channelUserId);
                 return ECode.RedisLockFail;
@@ -60,7 +57,7 @@ namespace Script
             }
             else
             {
-                accountInfo = this.NewAccountInfo(msg);
+                accountInfo = this.NewAccountInfo(msg.platform, msg.channel, msg.channelUserId);
                 await this.server.accountInfoProxy.Save(accountInfo);
             }
 
@@ -105,21 +102,21 @@ namespace Script
             return false;
         }
 
-        public AccountInfo NewAccountInfo(MsgUserLogin msg)
+        public AccountInfo NewAccountInfo(string platform, string channel, string channelUserId)
         {
             var accountInfo = AccountInfo.Ensure(null);
-            accountInfo.platform = msg.platform;
-            accountInfo.channel = msg.channel;
-            accountInfo.channelUserId = msg.channelUserId;
+            accountInfo.platform = platform;
+            accountInfo.channel = channel;
+            accountInfo.channelUserId = channelUserId;
             accountInfo.createTimeS = TimeUtils.GetTimeS();
             return accountInfo;
         }
 
-        public override void PostHandle(IConnection connection, MsgUserLogin msg, ECode e, ResUserLogin res)
+        public override void PostHandle(IConnection connection, MsgUserManagerUserLogin msg, ECode e, ResUserManagerUserLogin res)
         {
-            if (msg.dict["$lockValue"] != null)
+            if (msg.lockValue != null)
             {
-                this.server.lockRedis.UnlockAccount(msg.channel, msg.channelUserId, msg.dict["$lockValue"]).Forget(this.service);
+                this.server.lockRedis.UnlockAccount(msg.channel, msg.channelUserId, msg.lockValue).Forget(this.service);
             }
         }
     }

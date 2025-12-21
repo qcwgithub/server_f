@@ -77,7 +77,7 @@ namespace Script
             SEC = 3;
 #endif
 
-            var msg = new MsgSaveUser { userId = user.userId, reason = nameof(SetSaveTimer) };
+            var msg = new MsgSaveUser { userId = user.userId, reason = "SetSaveTimer" };
             user.saveTimer = server.timerScript.SetLoopTimer(this.service.serviceId, SEC, MsgType._User_SaveUser, msg);
         }
 

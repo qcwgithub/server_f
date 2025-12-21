@@ -23,7 +23,7 @@ namespace Script
 
             var msgD = new MsgUserDestroyUser();
             msgD.userId = msg.userId;
-            msgD.reason = nameof(User_ServerKick);
+            msgD.reason = "User_ServerKick";
 
             var r = await this.service.connectToSelf.Request<MsgUserDestroyUser, ResUserDestroyUser>(MsgType._User_DestroyUser, msgD);
             if (r.e != ECode.Success)

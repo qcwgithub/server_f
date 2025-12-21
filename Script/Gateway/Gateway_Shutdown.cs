@@ -13,7 +13,7 @@ namespace Script
 
         protected override async Task StopBusinesses()
         {
-            this.service.logger.Info(nameof(StopBusinesses));
+            this.service.logger.Info("StopBusinesses");
 
             GatewayServiceData sd = this.service.sd;
 

@@ -22,21 +22,38 @@ namespace Script
             }
 
             (AddressFamily family, string ip) = this.GetIp(userConnection.socket);
-            msg.dict["$addressFamily"] = family.ToString();
-            msg.dict["$ip"] = ip;
 
-            var r = await this.service.connectToUserManagerService.Request<MsgUserLogin, ResUserLogin>(MsgType._UserManager_UserLogin, msg);
-            if (r.e != ECode.Success)
+            var msgUM = new MsgUserManagerUserLogin();
+            msgUM.version = msg.version;
+            msgUM.platform = msg.platform;
+            msgUM.channel = msg.channel;
+            msgUM.channelUserId = msg.channelUserId;
+            msgUM.verifyData = msg.verifyData;
+            msgUM.token = msg.token;
+            msgUM.deviceUid = msg.deviceUid;
+            msgUM.addressFamily = family.ToString();
+            msgUM.ip = ip;
+
+            var rUM = await this.service.connectToUserManagerService.Request<MsgUserManagerUserLogin, ResUserManagerUserLogin>(MsgType._UserManager_UserLogin, msgUM);
+            if (rUM.e != ECode.Success)
             {
-                return r.e;
+                return rUM.e;
             }
 
-            r = await this.service.connectToUserService.Request<MsgUserLoginSuccess, ResUserLoginSuccess>(MsgType._User_UserLoginSuccess, msg);
-            if (r.e != ECode.Success)
+            var msgU = new MsgUserLoginSuccess();
+            msgU.isNewUser = rUM.res.isNewUser;
+            msgU.userId = rUM.res.userId;
+            msgU.newUserInfo = rUM.res.newUserInfo;
+
+            var rU = await this.service.connectToUserService.Request<MsgUserLoginSuccess, ResUserLoginSuccess>(MsgType._User_UserLoginSuccess, msgU);
+            if (rU.e != ECode.Success)
             {
-                return r.e;
+                return rU.e;
             }
 
+            res.userInfo = rU.res.userInfo;
+            res.kickOther = rU.res.kickOther;
+            res.delayS = rU.res.delayS;
             return ECode.Success;
         }
 

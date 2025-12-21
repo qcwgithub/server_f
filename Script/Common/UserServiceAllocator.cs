@@ -59,7 +59,7 @@ namespace Script
                 serviceId = selected.serviceId;
             }
 
-            string log = $"Alloc user service for userId {userId}, result {serviceId}";
+            string log = $"Alloc user service id for userId {userId}, result {serviceId}";
             if (serviceId != 0)
             {
                 this.service.logger.Info(log);

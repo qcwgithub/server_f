@@ -30,14 +30,10 @@ namespace Data
     public class ResUserLogin
     {
         [Key(0)]
-        public bool isNewUser;
+        public UserInfo userInfo;
         [Key(1)]
-        public long userId;
+        public bool kickOther;
         [Key(2)]
-        public UserInfo newUserInfo; // when isNewUser
-        [Key(3)]
-        public bool kickOther; // 顶号
-        [Key(4)]
         public int delayS;
     }
 }

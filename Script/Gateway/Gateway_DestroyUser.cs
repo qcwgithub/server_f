@@ -30,7 +30,7 @@ namespace Script
 
             if (user.connection != null)
             {
-                user.connection.Close(nameof(Gateway_DestroyUser));
+                user.connection.Close("Gateway_DestroyUser");
             }
 
             if (user.destroyTimer.IsAlive())
@@ -42,7 +42,7 @@ namespace Script
 
             var msgUser = new MsgUserDestroyUser();
             msgUser.userId = msg.userId;
-            msgUser.reason = nameof(Gateway_DestroyUser);
+            msgUser.reason = "Gateway_DestroyUser";
 
             var r = await this.service.connectToUserManagerService.Request<MsgUserDestroyUser, ResUserDestroyUser>(MsgType._User_DestroyUser, msgUser);
             if (r.e != ECode.Success)

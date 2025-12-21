@@ -17,10 +17,7 @@ namespace Script
             var serviceConnection = (ServiceConnection)connection;
             MyDebug.Assert(serviceConnection.serviceTypeAndId.Value.serviceType == ServiceType.Gateway);
 
-            MsgUserLogin innerMsg = msg.innerMsg;
-            ResUserLogin innerRes = msg.innerRes;
-
-            string message0 = string.Format("{0} userId {1} preCount {2}", this.msgType, innerMsg.userId, this.sd.userDict.Count);
+            string message0 = string.Format("{0} userId {1} preCount {2}", this.msgType, msg.userId, this.sd.userDict.Count);
 
             if (this.service.data.state != ServiceState.Started)
             {
@@ -28,7 +25,7 @@ namespace Script
                 return ECode.ServerNotReady;
             }
 
-            User? user = this.sd.GetUser(innerMsg.userId);
+            User? user = this.sd.GetUser(msg.userId);
             if (user != null)
             {
                 if (user.destroying)
@@ -41,15 +38,15 @@ namespace Script
             else
             {
                 UserInfo? userInfo;
-                if (innerRes.isNewUser)
+                if (msg.isNewUser)
                 {
-                    userInfo = innerRes.newUserInfo;
+                    userInfo = msg.newUserInfo;
                     MyDebug.Assert(userInfo != null);
                 }
                 else
                 {
                     ECode e;
-                    (e, userInfo) = await this.service.ss.QueryUserInfo(innerMsg.userId);
+                    (e, userInfo) = await this.service.ss.QueryUserInfo(msg.userId);
                     if (e != ECode.Success)
                     {
                         return e;
@@ -61,7 +58,7 @@ namespace Script
                     }
                 
                     user = new User(userInfo);
-                    this.AddPlayerToDict(user);
+                    this.AddUserToDict(user);
 
                     // 这里不再加东西了，要加得加到 AddPlayerToDict 里
                 }
@@ -115,7 +112,6 @@ namespace Script
                 user.onlineTimeS = user.offlineTimeS + 1;
             }
 
-            res.userId = userId;
             res.userInfo = user.userInfo;
             res.kickOther = kickOther;
 
@@ -176,7 +172,7 @@ namespace Script
             }
         }
 
-        void AddPlayerToDict(User user)
+        void AddUserToDict(User user)
         {
             // runtime 初始化
             this.service.sd.userDict.Add(user.userId, user);

@@ -36,7 +36,7 @@ namespace Script
             {
                 var msgD = new MsgGatewayDestroyUser();
                 msgD.userId = msg.userId;
-                msgD.reason = nameof(Gateway_ServerKick);
+                msgD.reason = "Gateway_ServerKick";
 
                 msgD.msgKick = new MsgKick
                 {

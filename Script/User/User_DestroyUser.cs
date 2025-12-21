@@ -38,7 +38,7 @@ namespace Script
             // 保存一次
             var msgSave = new MsgSaveUser();
             msgSave.userId = msg.userId;
-            msgSave.reason = nameof(User_DestroyUser);
+            msgSave.reason = "User_DestroyUser";
             var r = await this.service.connectToSelf.Request<MsgSaveUser, ResSaveUser>(MsgType._User_SaveUser, msgSave);
             if (r.e != ECode.Success)
             {

@@ -9,7 +9,7 @@ namespace Script
             
         }
 
-        public ECode VeryfyAccount(MsgUserLogin msg)
+        public ECode VeryfyAccount(string platform, string channel, string channelUserId)
         {
             return ECode.Success;
         }
