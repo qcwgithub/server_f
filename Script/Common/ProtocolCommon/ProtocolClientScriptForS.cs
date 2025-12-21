@@ -70,7 +70,7 @@ namespace Script
                     r = await connection.Request<Msg, Res>(type, bytes);
                     if (r.e == ECode.Server_Timeout)
                     {
-                        this.service.logger.ErrorFormat("send {0} to {1} Timeout", type.ToString(), connection.serviceTypeAndId.Value.ToString());
+                        this.service.logger.ErrorFormat("send {0} to {1} Timeout", type.ToString(), connection.tai);
                     }
                 }
             }
@@ -110,7 +110,7 @@ namespace Script
                     responses.Add(r);
                     if (r.e == ECode.Server_Timeout)
                     {
-                        this.service.logger.ErrorFormat("send {0} to {1} Timeout", type.ToString(), connection.serviceTypeAndId.Value.ToString());
+                        this.service.logger.ErrorFormat("send {0} to {1} Timeout", type.ToString(), connection.tai);
                     }
                 }
             }

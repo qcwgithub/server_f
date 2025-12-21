@@ -21,7 +21,7 @@ namespace Script
             var result = new stTransferFromGatewayResult();
 
             if (!msgType.IsClient() ||
-                serviceConnection.serviceTypeAndId.Value.serviceType != ServiceType.Gateway)
+                serviceConnection.serviceType != ServiceType.Gateway)
             {
                 return result;
             }
@@ -35,7 +35,7 @@ namespace Script
 
             MyDebug.Assert(user != null);
             MyDebug.Assert(user.connection != null);
-            MyDebug.Assert(user.connection.gatewayServiceId == serviceConnection.serviceTypeAndId.Value.serviceId);
+            MyDebug.Assert(user.connection.gatewayServiceId == serviceConnection.serviceId);
 
             (ECode e, byte[] resBytes) = await this.service.dispatcher.Dispatch(user.connection, msgType, msgBytes2);
             if (reply != null)

@@ -20,7 +20,7 @@ namespace Script
                     return ECode.Success;
                 }
 
-                this.service.logger.InfoFormat("{0} userId {1} closeReason {2}", this.msgType, user.userId, connection.closeReason);
+                this.service.logger.InfoFormat("{0} userId {1} closeReason {2}", this.msgType, user.userId, userConnection.closeReason);
 
                 if (user.connection != null)
                 {

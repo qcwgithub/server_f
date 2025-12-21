@@ -75,8 +75,8 @@ namespace Data
         public List<ServiceConnection>[] otherServiceConnections2 = new List<ServiceConnection>[(int)ServiceType.Count];
         public void SaveOtherServiceConnection(ServiceConnection connection)
         {
-            ServiceType serviceType = connection.serviceTypeAndId.Value.serviceType;
-            int serviceId = connection.serviceTypeAndId.Value.serviceId;
+            ServiceType serviceType = connection.serviceType;
+            int serviceId = connection.serviceId;
 
             {
                 if (this.otherServiceConnections.TryGetValue(serviceId, out ServiceConnection? old))
@@ -84,7 +84,7 @@ namespace Data
                     if (old.IsConnected() || old.IsConnecting())
                     {
                         // Commander 不要报了
-                        if (old.serviceTypeAndId != null && old.serviceTypeAndId.Value.serviceType.IsCommand())
+                        if (old.serviceType.IsCommand())
                         {
 
                         }
@@ -113,7 +113,7 @@ namespace Data
                         continue;
                     }
 
-                    if (old.serviceTypeAndId == null || old.serviceTypeAndId.Value.serviceId != serviceId)
+                    if (old.serviceId != serviceId)
                     {
                         continue;
                     }
@@ -158,9 +158,9 @@ namespace Data
 
                 foreach (ServiceConnection connection in connections)
                 {
-                    if (connection.IsConnected() && connection.serviceTypeAndId != null)
+                    if (connection.IsConnected())
                     {
-                        list.Add(connection.serviceTypeAndId.Value);
+                        list.Add(connection.tai);
                     }
                 }
             }
@@ -207,7 +207,7 @@ namespace Data
                 List<int> serviceIds = new List<int>();
                 foreach (ServiceConnection connection in connections)
                 {
-                    serviceIds.Add(connection.serviceTypeAndId!.Value.serviceId);
+                    serviceIds.Add(connection.serviceId);
                 }
 
                 foreach (ServiceConnection connection in connections)

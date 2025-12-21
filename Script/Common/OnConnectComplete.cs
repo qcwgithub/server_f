@@ -17,7 +17,7 @@ namespace Script
         {
             var serviceConnection = (ServiceConnection)connection;
 
-            this.logger.InfoFormat("{0} connection id: {1}, to: {2}", this.msgType, serviceConnection.GetConnectionId(), serviceConnection.serviceTypeAndId.Value.ToString());
+            this.logger.InfoFormat("{0} connection id: {1}, to: {2}", this.msgType, serviceConnection.GetConnectionId(), serviceConnection.tai.ToString());
 
             // 连上去之后立即向他报告是我的身份
             var msgInfo = new MsgConnectorInfo();

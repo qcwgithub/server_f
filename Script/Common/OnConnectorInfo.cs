@@ -31,7 +31,7 @@ namespace Script
             }
 
             var serviceConnection = (ServiceConnection)connection;
-            serviceConnection.serviceTypeAndId = new ServiceTypeAndId { serviceType = info.serviceType, serviceId = info.serviceId };
+            serviceConnection.InitTai(info.serviceType, info.serviceId);
 
             this.service.data.SaveOtherServiceConnection(serviceConnection);
 

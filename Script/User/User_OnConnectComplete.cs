@@ -17,14 +17,6 @@ namespace Script
                 return e;
             }
 
-            var serviceConnection = (ServiceConnection)connection;
-            if (serviceConnection.serviceTypeAndId == null)
-            {
-                return e;
-            }
-
-            // var serviceTypeAndId = (ServiceTypeAndId)connection.serviceTypeAndId;
-
             // if (serviceTypeAndId.serviceType == ServiceType.Stateless)
             // {
             //     await this.service.SendPSInfoToAAA(false, connection);

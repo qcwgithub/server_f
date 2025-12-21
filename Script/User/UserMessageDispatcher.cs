@@ -38,15 +38,7 @@ namespace Script
             if (connection is UserConnection userConnection &&
                 e != ECode.Success && type.LogErrorIfNotSuccess())
             {
-                if (userConnection.userId != 0)
-                {
-                    this.service.logger.ErrorFormat("{0} userIdId {1} ECode.{2}", type, userConnection.userId, e);
-                }
-                else
-                {
-                    // 已知 oldConnection 会走到这，不是错误
-                    this.service.logger.InfoFormat("{0} lastUserId {1} ECode.{2}", type, userConnection.lastUserId, e);
-                }
+                this.service.logger.ErrorFormat("{0} userIdId {1} ECode.{2}", type, userConnection.user.userId, e);
             }
             else
             {

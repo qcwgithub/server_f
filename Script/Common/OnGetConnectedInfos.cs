@@ -23,14 +23,14 @@ namespace Script
                     continue;
                 }
 
-                foreach (ServiceConnection soc in list)
+                foreach (ServiceConnection serviceConnection in list)
                 {
-                    if (soc == null || soc.serviceTypeAndId == null || !soc.IsConnected())
+                    if (!serviceConnection.IsConnected())
                     {
                         continue;
                     }
 
-                    res.connectedInfos.Add(soc.serviceTypeAndId.Value);
+                    res.connectedInfos.Add(serviceConnection.tai);
                 }
             }
 

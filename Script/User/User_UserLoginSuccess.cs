@@ -15,7 +15,7 @@ namespace Script
         {
             // Gateway
             var serviceConnection = (ServiceConnection)connection;
-            MyDebug.Assert(serviceConnection.serviceTypeAndId.Value.serviceType == ServiceType.Gateway);
+            MyDebug.Assert(serviceConnection.serviceType == ServiceType.Gateway);
 
             string message0 = string.Format("{0} userId {1} preCount {2}", this.msgType, msg.userId, this.sd.userDict.Count);
 
@@ -56,7 +56,7 @@ namespace Script
                     {
                         return ECode.UserInfoNotExist;
                     }
-                
+
                     user = new User(userInfo);
                     this.AddUserToDict(user);
 
@@ -77,22 +77,11 @@ namespace Script
                 return ECode.DelayLogin;
             }
 
-            bool kickOther = false;
-            if (user.connection != null)
-            {
-                kickOther = true;
-                this.HandleOldConnection(this.service, user);
-            }
+            bool kickOther = this.HandleOldConnection(user, serviceConnection);
 
-            User? oldUser = serviceConnection.GetUser();
-            if (oldUser != null)
+            if (user.connection == null)
             {
-                // 这个分支都没走过
-
-                // 情况1 同一个客户端意外地登录2次
-                // 情况2 客户端A已经登录，B再登录
-                this.logger.Error(message0 + $": oldUser != null ({oldUser.userId})");
-                return ECode.OldUser;
+                user.connection = new UserConnection(serviceConnection.serviceId, user, this.service.sd);
             }
 
             this.logger.Info(message0 + ": check ok");
@@ -101,9 +90,6 @@ namespace Script
             {
                 this.usScript.ClearDestroyTimer(user, true);
             }
-
-            user.connection = serviceConnection;
-            serviceConnection.BindUser(user);
 
             long nowS = TimeUtils.GetTimeS();
             user.onlineTimeS = nowS;
@@ -119,20 +105,21 @@ namespace Script
             return ECode.Success;
         }
 
-        void HandleOldConnection(Service service, User user)
+        bool HandleOldConnection(User user, ServiceConnection serviceConnection)
         {
-            UserConnection? oldConnection = user.connection;
-            if (oldConnection == null)
+            if (user.connection == null || user.connection.gatewayServiceId == serviceConnection.serviceId)
             {
-                return;
+                return false;
             }
+
+            UserConnection oldConnection = user.connection;
 
             // 情况1 同一个客户端意外地登录2次
             // 情况2 客户端A已经登录，B再登录
-            service.logger.InfoFormat("2 userId: {0}, ECode.OldConnection oldConnectionId: {1}, kick oldConnection.", user.userId, oldConnection.GetConnectionId());
+            this.service.logger.InfoFormat("userId {0} gatewayServiceId {1} old {2}, kick old",
+                user.userId, serviceConnection.serviceId, oldConnection.gatewayServiceId);
 
             user.connection = null;
-            oldConnection.UnbindUser();
 
             // 给客户端发消息...
             if (oldConnection.IsConnected())
@@ -141,6 +128,8 @@ namespace Script
                 msgKick.flags = LogoutFlags.CancelAutoLogin;
                 oldConnection.Send<MsgKick>(MsgType.Kick, msgKick);
             }
+
+            return true;
         }
 
         int NeedDelayLogin(User user)

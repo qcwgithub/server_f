@@ -14,7 +14,8 @@ namespace Script
         public override async Task<ECode> Handle(IConnection _connection, MsgRemoteWillShutdown msg, ResRemoteWillShutdown res)
         {
             ServiceConnection connection = (ServiceConnection)_connection;
-            this.service.logger.InfoFormat("{0} {1}", this.msgType, connection.serviceTypeAndId == null ? "null" : connection.serviceTypeAndId.Value.ToString());
+            this.service.logger.InfoFormat("{0} {1}", this.msgType, connection.tai);
+
             connection.remoteWillShutdown = true;
             return ECode.Success;
         }
