@@ -26,6 +26,7 @@ namespace Script
         public readonly IMessagePacker messagePacker;
         public readonly PersistenceTaskQueueRedis persistence_taskQueueRedis;
         public readonly UserServiceInfoRedis userServiceInfoRedis;
+        public readonly UserUSRedis userUSRedis;
 
         public Server()
         {
@@ -37,6 +38,7 @@ namespace Script
             this.feiShuMessenger = new FeiShuMessenger(this);
             this.persistence_taskQueueRedis = new PersistenceTaskQueueRedis(this, DbKey.PersistenceTaskQueueList, DbKey.PersistenceTaskQueueSortedSet);
             this.userServiceInfoRedis = new UserServiceInfoRedis(this);
+            this.userUSRedis = new UserUSRedis(this);
         }
 
         int seq;

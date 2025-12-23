@@ -31,7 +31,9 @@ namespace Data
 
         public void SendBytes(MsgType msgType, byte[] msg, Action<ECode, ArraySegment<byte>>? cb, int? pTimeoutS)
         {
-            throw new NotImplementedException();
+            MyDebug.Assert(cb == null && pTimeoutS == null);
+
+            
         }
     }
 }

@@ -17,12 +17,9 @@ namespace Script
             var undefinedConnection = (UndefinedConnection)connection;
             ProtocolClientData socket = undefinedConnection.socket;
 
-            if (msg.dict == null)
-            {
-                msg.dict = new Dictionary<string, string>();
-            }
-
             (AddressFamily family, string ip) = this.GetIp(socket);
+
+            //------------------------------------------------------------------------------
 
             var msgUM = new MsgUserManagerUserLogin();
             msgUM.version = msg.version;
@@ -43,15 +40,25 @@ namespace Script
 
             ResUserManagerUserLogin resUM = rUM.res;
 
+            //------------------------------------------------------------------------------
+
             GatewayUser? user = this.service.sd.GetUser(resUM.userId);
-            int userServiceId = 0;
+            int userServiceId;
             if (user != null)
             {
                 userServiceId = user.userServiceId;
             }
             else
             {
-                //...
+                userServiceId = await this.server.userUSRedis.GetUSId(resUM.userId);
+                if (userServiceId == 0)
+                {
+                    userServiceId = await this.service.userServiceAllocator.AllocUserServiceId(resUM.userId);
+                    if (userServiceId == 0)
+                    {
+                        return ECode.NoAvailableUserService;
+                    }
+                }
             }
 
             var msgU = new MsgUserLoginSuccess();
@@ -65,9 +72,13 @@ namespace Script
                 return rU.e;
             }
 
-            res.userInfo = rU.res.userInfo;
-            res.kickOther = rU.res.kickOther;
-            res.delayS = rU.res.delayS;
+            ResUserLoginSuccess resU = rU.res;
+
+            //------------------------------------------------------------------------------
+
+            res.userInfo = resU.userInfo;
+            res.kickOther = resU.kickOther;
+            res.delayS = resU.delayS;
 
             if (user != null)
             {
@@ -95,6 +106,8 @@ namespace Script
 
             user.connection = null;
 
+            // Case 1
+            // User connect to the same Gateway twice
             var msgKick = new MsgKick();
             msgKick.flags = LogoutFlags.CancelAutoLogin;
             oldConnection.Send<MsgKick>(MsgType.Kick, msgKick);

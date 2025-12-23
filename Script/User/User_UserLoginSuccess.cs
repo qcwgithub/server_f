@@ -58,6 +58,9 @@ namespace Script
                     }
 
                     user = new User(userInfo);
+
+                    await this.server.userUSRedis.SetUSId(msg.userId, this.service.serviceId, this.service.sd.saveIntervalS + 60);
+
                     this.AddUserToDict(user);
 
                     // 这里不再加东西了，要加得加到 AddPlayerToDict 里

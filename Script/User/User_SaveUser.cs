@@ -8,7 +8,6 @@ namespace Script
         {
         }
 
-
         public override MsgType msgType => MsgType._User_SaveUser;
         public override async Task<ECode> Handle(IConnection connection, MsgSaveUser msg, ResSaveUser res)
         {
@@ -18,6 +17,8 @@ namespace Script
                 this.logger.ErrorFormat("{0} userId {1}, reason {2}, user == null!!", this.msgType, msg.userId, msg.reason);
                 return ECode.UserNotExist;
             }
+
+            await this.server.userUSRedis.SetUSId(msg.userId, this.service.serviceId, this.service.sd.saveIntervalS + 60);
 
             var msgDb = new MsgSave_UserInfo
             {

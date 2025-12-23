@@ -14,7 +14,6 @@ namespace Script
 
         public readonly ConnectToUserManagerService connectToUserManagerService;
         public readonly ConnectToUserService connectToUserService;
-        public readonly UserServiceManager userServiceManager;
         protected override TcpListenerScript CreateTcpListenerScriptForC()
         {
             return new TcpListenerScript(this.server, this, false);
@@ -30,7 +29,6 @@ namespace Script
         {
             this.connectToUserManagerService = new ConnectToUserManagerService(this);
             this.connectToUserService = new ConnectToUserService(this);
-            this.userServiceManager = new UserServiceManager(this.server, this);
 
             this.ss = new GatewayServiceScript(this.server, this);
             this.userServiceAllocator = new UserServiceAllocator<GatewayService>(this.server, this, this.sd.userServiceAllocatorData);

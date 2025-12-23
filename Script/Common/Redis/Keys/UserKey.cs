@@ -4,6 +4,6 @@ namespace Script
     {
         public static string Brief(long userId) => "user:" + userId + ":brief";
 
-        public static string PSId(long userId) => "user:" + userId + ":psId";
+        public static string USId(long userId) => "user:" + userId + ":usId";
     }
 }

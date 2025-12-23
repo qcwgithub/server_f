@@ -3,7 +3,7 @@ namespace Data
     public enum ECode
     {
         Success = 0,
-        NoAvailableUserManager = 1,
+        NoAvailableUserService = 1,
         InvalidAccount = 2,
         InvalidPassword = 3,
         UserAlreadyExist = 4,
