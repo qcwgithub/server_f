@@ -18,6 +18,10 @@ namespace Script
         }
 
         public readonly ProtocolClientScriptForS protocolClientScriptForS;
+        protected virtual ProtocolClientScriptForS CreateProtocolClientScriptForS()
+        {
+            return new ProtocolClientScriptForS(this.server, this);
+        }
         public readonly ProtocolClientScript protocolClientScriptForC;
         protected virtual ProtocolClientScript CreateProtocolClientScriptForC()
         {
@@ -26,6 +30,7 @@ namespace Script
 
         public readonly HttpListenerScript httpListenerScript;
         public readonly WebSocketListenerScript webSocketListenerScript;
+        public readonly ForwardingScript forwardingScript;
 
         public readonly MessageDispatcher dispatcher;
         protected virtual MessageDispatcher CreateMessageDispatcher()
@@ -46,11 +51,12 @@ namespace Script
             this.tcpListenerScriptForS = new TcpListenerScript(this.server, this, true);
             this.tcpListenerScriptForC = this.CreateTcpListenerScriptForC();
 
-            this.protocolClientScriptForS = new ProtocolClientScriptForS(this.server, this);
+            this.protocolClientScriptForS = this.CreateProtocolClientScriptForS();
             this.protocolClientScriptForC = this.CreateProtocolClientScriptForC();
 
             this.httpListenerScript = new HttpListenerScript(this.server, this);
             this.webSocketListenerScript = new WebSocketListenerScript(this.server, this);
+            this.forwardingScript = new ForwardingScript(this.server, this);
 
             this.dispatcher = this.CreateMessageDispatcher();
 
@@ -98,6 +104,8 @@ namespace Script
 
             this.data.httpListenerCallback = this.httpListenerScript;
             this.data.webSocketListenerCallback = this.webSocketListenerScript;
+
+            this.data.sendClientMessageThroughGateway = this.forwardingScript;
         }
 
         public bool detaching { get; private set; }

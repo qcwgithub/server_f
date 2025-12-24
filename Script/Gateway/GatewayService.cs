@@ -18,6 +18,10 @@ namespace Script
         {
             return new TcpListenerScript(this.server, this, false);
         }
+        protected override ProtocolClientScriptForS CreateProtocolClientScriptForS()
+        {
+            return new GatewayProtocolClientScriptForS(this.server, this);
+        }
         protected override ProtocolClientScript CreateProtocolClientScriptForC()
         {
             return new GatewayProtocolClientScriptForC(this.server, this);

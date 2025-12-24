@@ -1,8 +1,5 @@
 using Data;
 using MessagePack;
-using System;
-using System.Collections.Generic;
-using System.Web;
 
 namespace Script
 {
@@ -38,9 +35,9 @@ namespace Script
             return new MyResponse<Res>(e, res);
         }
 
-        public static void Send(this IConnection connection, MsgType msgType, byte[] msgBytes)
+        public static void SendBytes(this IConnection connection, MsgType msgType, byte[] msgBytes, Action<ECode, ArraySegment<byte>>? cb, int? pTimeoutS)
         {
-            connection.SendBytes(msgType, msgBytes, null, pTimeoutS: null);
+            connection.SendBytes(msgType, msgBytes, cb, pTimeoutS);
         }
 
         public static async Task<MyResponse<Res>> Request<Msg, Res>(this IConnection connection, MsgType msgType, Msg msg) where Res : class
@@ -49,61 +46,16 @@ namespace Script
             return await Request<Msg, Res>(connection, msgType, msgBytes);
         }
 
-        public static void Send<Msg>(this IConnection connection, MsgType msgType, Msg msg)
+        public static void Send<Msg>(this IConnection connection, MsgType msgType, Msg msg, Action<ECode, ArraySegment<byte>>? cb, int? pTimeoutS)
         {
             byte[] msgBytes = Serialize<Msg>(msg);
-            Send(connection, msgType, msgBytes);
-        }
-
-        public static T CastObject<T>(object msg)
-        {
-            if (msg == null || !(msg is T))
-            {
-                string message = string.Empty;
-                if (msg == null)
-                {
-                    message = string.Format("Can not convert null to '{0}'", typeof(T).Name);
-                }
-                else
-                {
-                    message = string.Format("Can not convert '{0}' to '{1}'", msg.GetType().Name, typeof(T).Name);
-                }
-
-                throw new InvalidCastException(message);
-            }
-            return (T)msg;
-        }
-
-        public static string BuildUri(string baseUrl, Dictionary<string, string> dict)
-        {
-            var builder = new UriBuilder(baseUrl);
-            builder.Port = -1;
-            var query = HttpUtility.ParseQueryString(builder.Query);
-            foreach (var kv in dict)
-            {
-                query[kv.Key] = kv.Value;
-            }
-            builder.Query = query.ToString();
-            string url = builder.ToString();
-            return url;
+            connection.SendBytes(msgType, msgBytes, cb, pTimeoutS);
         }
 
         public static bool IsWindows()
         {
             OperatingSystem os = Environment.OSVersion;
             return os.Platform == PlatformID.Win32NT;
-        }
-
-        public static void RunWithCatchException(log4net.ILog logger, Action action)
-        {
-            try
-            {
-                action();
-            }
-            catch (Exception ex)
-            {
-                logger.Error("RunWithCatchException exception: ", ex);
-            }
         }
     }
 }

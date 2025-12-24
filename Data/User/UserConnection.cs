@@ -33,7 +33,11 @@ namespace Data
         {
             MyDebug.Assert(cb == null && pTimeoutS == null);
 
-            
+            ServiceConnection? serviceConnection = this.sd.GetOtherServiceConnection(this.gatewayServiceId);
+            if (serviceConnection != null && serviceConnection.IsConnected())
+            {
+                this.sd.GetSendClientMessageThroughGateway().SendClientMessageThroughGateway(serviceConnection, this.user.userId, msgType, msg, cb, pTimeoutS);
+            }
         }
     }
 }

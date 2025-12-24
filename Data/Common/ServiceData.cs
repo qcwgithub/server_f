@@ -10,7 +10,8 @@ namespace Data
         IProtocolClientCallbackProvider,
         ITcpListenerCallbackProvider,
         IHttpListenerCallbackProvider,
-        IWebSocketListenerCallbackProvider
+        IWebSocketListenerCallbackProvider,
+        ISendClientMessageThroughGatewayProvider
     {
         public bool replyServerTime = true;
 
@@ -66,6 +67,9 @@ namespace Data
         public IWebSocketListenerCallback? GetWebSocketListenerCallback() => this.webSocketListenerCallback;
         public WebSocketListenerData? webSocketListenerDataForServer;
         public WebSocketListenerData? webSocketListenerDataForClient;
+
+        public ISendClientMessageThroughGateway? sendClientMessageThroughGateway;
+        public ISendClientMessageThroughGateway? GetSendClientMessageThroughGateway() => this.sendClientMessageThroughGateway;
 
         // 需要连接到哪些服务器
         public readonly List<ServiceType> connectToServiceTypes = new List<ServiceType>();
