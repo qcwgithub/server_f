@@ -46,6 +46,13 @@ namespace Script
                 if (buffer == null) buffer = new List<string>();
                 buffer.Add("roomId");
             }
+            if (last.createTimeS != curr.createTimeS)
+            {
+                infoNullable.createTimeS = curr.createTimeS;
+                last.createTimeS = curr.createTimeS;
+                if (buffer == null) buffer = new List<string>();
+                buffer.Add("createTimeS");
+            }
 
             #endregion auto
 

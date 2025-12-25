@@ -321,6 +321,9 @@ namespace Data
                 case ServiceType.Command:
                     return CommandServiceData.s_connectToServiceIds;
 
+                case ServiceType.UserManager:
+                    return UserManagerServiceData.s_connectToServiceIds;
+
                 default:
                     throw new Exception("Not handled serviceType: " + serviceType);
             }

@@ -36,8 +36,9 @@ namespace Script
             base.Attach();
             base.AddHandler<UserManagerService>();
 
-            this.dispatcher.AddHandler(new UserManager_Start(this.server, this));
             this.dispatcher.AddHandler(new UserManager_Shutdown(this.server, this));
+            this.dispatcher.AddHandler(new UserManager_Start(this.server, this));
+            this.dispatcher.AddHandler(new UserManager_UserLogin(this.server, this));
         }
     }
 }

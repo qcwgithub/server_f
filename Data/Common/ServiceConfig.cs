@@ -22,6 +22,9 @@ namespace Data
         // UserManager
         [Key(6)]
         public long userIdSnowflakeWorkerId;
+        // RoomManager
+        [Key(7)]
+        public long roomIdSnowflakeWorkerId;
 
         public ServiceTypeAndId Tai()
         {

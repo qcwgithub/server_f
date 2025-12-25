@@ -8,6 +8,8 @@ namespace Data
         Global,
         Command,
         UserManager,
+        Room,
+        RoomManager,
         Count,
     }
 

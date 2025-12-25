@@ -86,6 +86,7 @@ namespace Data
         _Query_UserInfo_maxOf_userId = 2005,
         _Query_RoomInfo_by_roomId = 2006,
         _Query_RoomInfo_maxOf_roomId = 2007,
+        _Insert_RoomInfo = 2008,
         #endregion ?!
 
         ClientStart = 10000,

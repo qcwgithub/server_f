@@ -10,6 +10,8 @@ namespace Data
 
         [Key(0)]
         public long? roomId;
+        [Key(1)]
+        public long? createTimeS;
 
         #endregion auto
     }

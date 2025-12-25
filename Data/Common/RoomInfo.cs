@@ -9,6 +9,8 @@ namespace Data
 
         [Key(0)]
         public long roomId;
+        [Key(1)]
+        public long createTimeS;
 
         public static RoomInfo Ensure(RoomInfo? p)
         {
@@ -30,12 +32,17 @@ namespace Data
             {
                 return true;
             }
+            if (this.createTimeS != other.createTimeS)
+            {
+                return true;
+            }
             return false;
         }
 
         public void DeepCopyFrom(RoomInfo other)
         {
             this.roomId = other.roomId;
+            this.createTimeS = other.createTimeS;
         }
 
         #endregion auto

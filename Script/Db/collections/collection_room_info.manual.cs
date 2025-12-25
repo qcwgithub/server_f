@@ -39,6 +39,15 @@ public partial class collection_room_info
             updList.Add(upd);
         }
 
+        if (infoNullable.createTimeS != null)
+        {
+            var createTimeS_Db = XInfoHelper_Db.Copy_long(infoNullable.createTimeS.Value);
+            var upd = createTimeS_Db != null
+                ? Builders<RoomInfo_Db>.Update.Set(nameof(RoomInfo_Db.createTimeS), createTimeS_Db)
+                : Builders<RoomInfo_Db>.Update.Unset(nameof(RoomInfo_Db.createTimeS));
+            updList.Add(upd);
+        }
+
 
         #endregion autoSave
 

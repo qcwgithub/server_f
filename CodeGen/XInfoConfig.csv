@@ -18,3 +18,4 @@ string_,,,,,blockOrUnblockReason,,
 long_,,,,,lastLoginUserId,,
 @RoomInfo,,,,,,,Memory
 long_,,,,,roomId,,
+long_,,,,,createTimeS,,
