@@ -38,14 +38,14 @@ namespace Script
         //     }
         // }
 
-        public static async Task<T> GetFromJson<T>(IDatabase db, RedisKey key) where T : class
+        public static async Task<T?> GetFromJson<T>(IDatabase db, RedisKey key) where T : class
         {
             RedisValue redisValue = await db.StringGetAsync(key);
             if (redisValue.IsNullOrEmpty)
             {
                 return null;
             }
-            return JsonUtils.parse<T>(redisValue);
+            return JsonUtils.parse<T>(redisValue.ToString());
         }
 
         public static async Task SaveAsJson<T>(IDatabase db, RedisKey key, T data, TimeSpan? expiry) where T : class
@@ -64,7 +64,7 @@ namespace Script
             foreach (var v in redisValues)
             {
                 if (!v.IsNullOrEmpty)
-                    list.Add(JsonUtils.parse<T>(v));
+                    list.Add(JsonUtils.parse<T>(v.ToString()));
             }
 
             return list;
@@ -90,7 +90,7 @@ namespace Script
             return defaultValue;
         }
 
-        public static Task<string> LockOnce(IDatabase db, string key, int lockTimeS, ILog logger)
+        public static Task<string?> LockOnce(IDatabase db, string key, int lockTimeS, ILog logger)
         {
             return Lock(db, key, lockTimeS, 1, 0, logger);
         }
@@ -100,7 +100,7 @@ namespace Script
         // Use Case 1 tryCount == -1 锁到成功为止
         // Use Case 2 tryCount == 1 
         // Use Case 3 tryCount >= 1
-        public static async Task<string> Lock(IDatabase db, string key,
+        public static async Task<string?> Lock(IDatabase db, string key,
             int lockTimeS,
             int tryCount,
             int tryIntervalMs,

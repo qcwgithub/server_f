@@ -57,7 +57,7 @@ namespace Data
             }
         }
 
-        public void SendBytes(MsgType msgType, byte[] msg, Action<ECode, ArraySegment<byte>>? cb, int? pTimeoutS)
+        public void SendBytes(MsgType msgType, byte[] msg, ReplyCallback? cb, int? pTimeoutS)
         {
             this.socket.SendBytes(msgType, msg, cb, pTimeoutS);
         }

@@ -96,12 +96,12 @@ namespace Script
 
         bool HandleOldConnection(GatewayUser user)
         {
-            if (!user.IsConnected())
+            GatewayUserConnection? oldConnection = user.connection;
+            if (oldConnection == null || !oldConnection.IsConnected())
             {
                 return false;
             }
 
-            GatewayUserConnection oldConnection = user.connection;
             this.service.logger.Info($"userId {user.userId} kick old");
 
             user.connection = null;
@@ -124,7 +124,7 @@ namespace Script
             {
                 addressFamily = endPoint.AddressFamily;
 
-                IPEndPoint ipEndPoint = endPoint as IPEndPoint;
+                IPEndPoint? ipEndPoint = endPoint as IPEndPoint;
                 if (ipEndPoint != null)
                 {
                     ip = ipEndPoint.Address.MapToIPv4().ToString();

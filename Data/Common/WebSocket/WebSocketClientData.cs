@@ -191,7 +191,7 @@ namespace Data
             }
         }
 
-        public override void SendBytes(MsgType msgType, byte[] msg, Action<ECode, ArraySegment<byte>>? cb, int? pTimeoutS)
+        public override void SendBytes(MsgType msgType, ArraySegment<byte> msg, ReplyCallback? cb, int? pTimeoutS)
         {
             if (!this.IsConnected())
             {
@@ -261,7 +261,7 @@ namespace Data
             }
         }
 
-        protected override void SendPacketIgnoreResult(int msgTypeOrECode, byte[] msg, int seq, bool requireResponse)
+        protected override void SendPacketIgnoreResult(int msgTypeOrECode, ArraySegment<byte> msg, int seq, bool requireResponse)
         {
             var bytes = this.callback.GetMessagePacker().Pack(msgTypeOrECode, msg, seq, requireResponse);
             this.SendPacket(bytes, CancellationToken.None);

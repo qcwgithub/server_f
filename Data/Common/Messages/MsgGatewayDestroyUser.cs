@@ -21,7 +21,7 @@ namespace Data
         [Key(1)]
         public GatewayDestroyUserReason reason;
         [Key(2)]
-        public MsgKick msgKick;
+        public MsgKick? msgKick;
     }
 
     [MessagePackObject]

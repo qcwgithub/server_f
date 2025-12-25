@@ -23,7 +23,7 @@ namespace Script
         }
 
         ////
-        public async Task<string> LockForLoadFromDBToRedis(string lockKey, log4net.ILog logger)
+        public async Task<string?> LockForLoadFromDBToRedis(string lockKey, log4net.ILog logger)
         {
             return await RedisUtils.LockOnce(this.GetDb(), lockKey, 40, logger);
         }
@@ -32,7 +32,7 @@ namespace Script
             await RedisUtils.Unlock(this.GetDb(), lockKey, lockValue);
         }
 
-        public async Task<string> LockAccount(string channel, string channelUserId, log4net.ILog logger)
+        public async Task<string?> LockAccount(string channel, string channelUserId, log4net.ILog logger)
         {
             string key = LockKey.Account(channel, channelUserId);
             return await RedisUtils.LockOnce(this.GetDb(), key, 60, logger);

@@ -17,7 +17,7 @@ namespace Script
         }
 
         // G:C->S
-        public static ServiceType? GatewayTryForwardClientMessageToOtherService(GatewayService gatewayService, GatewayUserConnection connection, MsgType msgType, ArraySegment<byte> msg, Action<ECode, byte[]>? reply)
+        public static ServiceType? GatewayTryForwardClientMessageToOtherService(GatewayService gatewayService, GatewayUserConnection connection, MsgType msgType, ArraySegment<byte> msg, ReplyCallback? reply)
         {
             ServiceType? serviceType = ShouldForwardClientMessage(msgType);
             if (serviceType == null)
@@ -66,7 +66,7 @@ namespace Script
         }
 
         // S:<-G<-C
-        public static async Task<bool> TryReceiveClientMessageFromGateway(UserService userService, ServiceConnection serviceConnection, MsgType msgType, ArraySegment<byte> msgBytes, Action<ECode, byte[]>? reply)
+        public static async Task<bool> TryReceiveClientMessageFromGateway(UserService userService, ServiceConnection serviceConnection, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback reply)
         {
             if (!msgType.IsClient() ||
                 serviceConnection.serviceType != ServiceType.Gateway)
@@ -83,7 +83,7 @@ namespace Script
             MyDebug.Assert(user.connection != null);
             MyDebug.Assert(user.connection.gatewayServiceId == serviceConnection.serviceId);
 
-            (ECode e, byte[] resBytes) = await userService.dispatcher.Dispatch(user.connection, msgType, msgBytes2);
+            (ECode e, ArraySegment<byte> resBytes) = await userService.dispatcher.Dispatch(user.connection, msgType, msgBytes2);
             if (reply != null)
             {
                 reply(e, resBytes);
@@ -93,7 +93,7 @@ namespace Script
         }
 
         // S:->G->C
-        public static void SendClientMessageThroughGateway(ServiceConnection serviceConnection, long userId, MsgType msgType, byte[] msg, Action<ECode, byte[]>? reply, int? pTimeoutS)
+        public static void SendClientMessageThroughGateway(ServiceConnection serviceConnection, long userId, MsgType msgType, byte[] msg, ReplyCallback reply, int? pTimeoutS)
         {
             MyDebug.Assert(serviceConnection.serviceType == ServiceType.Gateway);
 
@@ -117,7 +117,7 @@ namespace Script
         }
 
         // G:S->C
-        public static bool GatewayTryForwardClientMessageToClient(GatewayService gatewayService, MsgType msgType, ArraySegment<byte> msgBytes, Action<ECode, byte[]>? reply)
+        public static bool GatewayTryForwardClientMessageToClient(GatewayService gatewayService, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback? reply)
         {
             if (!msgType.IsClient())
             {
@@ -128,7 +128,7 @@ namespace Script
             var msgBytes2 = new ArraySegment<byte>(msgBytes.Array!, msgBytes.Offset + 8, msgBytes.Count - 8);
 
             GatewayUser? user = gatewayService.sd.GetUser(userId);
-            if (user == null || !user.IsConnected())
+            if (user == null || user.connection == null || !user.connection.IsConnected())
             {
                 return true;
             }

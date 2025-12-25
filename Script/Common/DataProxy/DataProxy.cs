@@ -253,7 +253,7 @@ namespace Script
 
                 for (int i = 0; i < tasks.Count; i++)
                 {
-                    int index = indexes[i];
+                    int index = indexes![i];
                     list[index] = tasks[i].Result;
                 }
             }

@@ -30,7 +30,12 @@ namespace Script
             }
 
             var tcpClientData = new TcpClientData();
-            Socket socket = e.AcceptSocket;
+            Socket? socket = e.AcceptSocket;
+            if (socket == null)
+            {
+                this.service.logger.Error("socket == null");
+                return;
+            }
             socket.NoDelay = true;
 
             var connection = new UndefinedConnection(tcpClientData, this.forS);

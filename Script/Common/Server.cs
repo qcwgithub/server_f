@@ -94,7 +94,14 @@ namespace Script
 
             if (seq == 1)
             {
-                string redisInfo = (await this.data.redis.GetDatabase(0).ExecuteAsync("INFO")).ToString();
+                string? redisInfo = (await this.data.redis.GetDatabase(0).ExecuteAsync("INFO")).ToString();
+                if (redisInfo == null)
+                {
+                    Console.WriteLine("redisInfo == null");
+                    Environment.Exit(1);
+                    return;
+                }
+
                 string redisVersionString = ExtractRedisVersionString(redisInfo);
                 this.data.redisVersion = new Version(redisVersionString);
                 Version requireMinRedisVersion = new Version(this.data.serverConfig.redisConfig.requireMinVersion);
@@ -260,7 +267,7 @@ namespace Script
             {
                 if (service.serviceId == serviceId)
                 {
-                    service.dispatcher.Dispatch<object, object>(service.data.localConnection, msgType, msg);
+                    service.dispatcher.Dispatch<object, object>(service.data.localConnection, msgType, msg).Forget();
                     found = true;
                     break;
                 }

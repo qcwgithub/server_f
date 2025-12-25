@@ -22,7 +22,7 @@ namespace Data
     {
         bool IsCompeteMessage(byte[] buffer, int offset, int count, out int exactCount);
         UnpackResult Unpack(byte[] buffer, int offset, int count);
-        byte[] Pack(int msgTypeOrECode, byte[] msg, int seq, bool requireResponse);
+        byte[] Pack(int msgTypeOrECode, ArraySegment<byte> msg, int seq, bool requireResponse);
         void ModifySeq(byte[] buffer, int seq);
     }
 }

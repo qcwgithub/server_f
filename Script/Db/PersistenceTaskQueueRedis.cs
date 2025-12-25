@@ -69,7 +69,7 @@ namespace Script
         public async Task<List<stDirtyElementWithTime>> LRangeOfTaskQueue(int taskQueue, int take)
         {
             RedisValue[] values = await this.GetDb().ListRangeAsync(this.key_taskQueueList(taskQueue), 0, take - 1);
-            return values.Select(v => stDirtyElementWithTime.FromString(v)).ToList();
+            return values.Select(v => stDirtyElementWithTime.FromString(v.ToString())).ToList();
         }
 
         async Task LPopFromTaskQueue(int taskQueue, int count, log4net.ILog logger)

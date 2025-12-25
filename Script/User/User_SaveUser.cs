@@ -28,6 +28,12 @@ namespace Script
             var infoNullable = msgDb.userInfoNullable;
 
             List<string>? buffer = null;
+            if (user.lastUserInfo == null)
+            {
+                this.service.logger.Error($"{this.msgType} user.lastUserInfo == null");
+                return ECode.Error;
+            }
+
             UserInfo last = user.lastUserInfo;
             UserInfo curr = user.userInfo;
 

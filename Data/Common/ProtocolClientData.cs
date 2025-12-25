@@ -6,7 +6,7 @@ namespace Data
 {
     public struct stWaitingResponse
     {
-        public Action<ECode, ArraySegment<byte>> callback;
+        public ReplyCallback callback;
         // public CancellationTokenSource source;
     }
 
@@ -130,8 +130,8 @@ namespace Data
         #endregion
 
         #region send
-        public abstract void SendBytes(MsgType msgType, byte[] msg, Action<ECode, ArraySegment<byte>>? cb, int? pTimeoutS);
-        protected abstract void SendPacketIgnoreResult(int msgTypeOrECode, byte[] msg, int seq, bool requireResponse);
+        public abstract void SendBytes(MsgType msgType, ArraySegment<byte> msg, ReplyCallback? cb, int? pTimeoutS);
+        protected abstract void SendPacketIgnoreResult(int msgTypeOrECode, ArraySegment<byte> msg, int seq, bool requireResponse);
         protected abstract void SendRaw(byte[] buffer);
 
         #endregion
@@ -167,12 +167,12 @@ namespace Data
 
                     if (!requireResponse)
                     {
-                        this.callback!.DispatchNetwork(this, seq, msgType, msg, null);
+                        this.callback!.ReceiveFromNetwork(this, seq, msgType, msg, null);
                     }
                     else
                     {
-                        this.callback!.DispatchNetwork(this, seq, msgType, msg,
-                            (ECode e2, byte[] msg2) =>
+                        this.callback!.ReceiveFromNetwork(this, seq, msgType, msg,
+                            (ECode e2, ArraySegment<byte> msg2) =>
                             {
                                 // 消息处理是异步的，在回复的时候，有可能已经断开了。因此这里要加个判断
                                 if (!this.IsClosed())
@@ -233,7 +233,7 @@ namespace Data
             // timeout all waiting responses
             if (this.waitingResponseDict.Count > 0)
             {
-                var list = new List<Action<ECode, ArraySegment<byte>>>();
+                var list = new List<ReplyCallback>();
                 foreach (var kv in this.waitingResponseDict)
                 {
                     // kv.Value.source.Cancel();

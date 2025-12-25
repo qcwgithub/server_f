@@ -97,7 +97,7 @@ namespace Script
             return new MyResponse<Res>(e, (Res)res);
         }
 
-        public async Task<(ECode, byte[])> Dispatch(IConnection connection, MsgType msgType, ArraySegment<byte> msgData)
+        public async Task<(ECode, ArraySegment<byte>)> Dispatch(IConnection connection, MsgType msgType, ArraySegment<byte> msgData)
         {
             IHandler? handler = this.GetHandler(msgType);
             if (handler == null)
@@ -109,7 +109,7 @@ namespace Script
             object msg = handler.DeserializeMsg(msgData);
             (ECode e, object res) = await this.DispatchImpl(connection, handler, msgType, msg);
 
-            byte[] resBytes = handler.SerializeRes(res);
+            ArraySegment<byte> resBytes = handler.SerializeRes(res);
             return (e, resBytes);
         }
 

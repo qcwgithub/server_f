@@ -62,7 +62,7 @@ namespace Script
         {
             var args = this.server.data.arguments;
             var targets = new List<ServiceTypeAndId>();
-            string s;
+            string? s;
             if (!args.TryGetValue("targets", out s))
             {
                 throw new Exception("missing targets");
@@ -106,10 +106,10 @@ namespace Script
             return userId;
         }
 
-        string GetArg_String(string key, bool mustExist = true)
+        string? GetArg_String(string key, bool mustExist = true)
         {
             var args = this.server.data.arguments;
-            string s;
+            string? s;
             if (!args.TryGetValue(key, out s) && mustExist)
             {
                 throw new Exception("missing " + key);
@@ -120,7 +120,7 @@ namespace Script
         int GetArg_Int(string key, bool mustExist = true)
         {
             var args = this.server.data.arguments;
-            string s;
+            string? s;
             if (!args.TryGetValue(key, out s) && mustExist)
             {
                 throw new Exception("missing " + key);
@@ -131,7 +131,7 @@ namespace Script
         bool GetArg_Int(string key, out int result)
         {
             var args = this.server.data.arguments;
-            string s;
+            string? s;
             if (args.TryGetValue(key, out s) && int.TryParse(s, out result))
             {
                 return true;
@@ -265,10 +265,10 @@ namespace Script
                     // 重新加载 Script.dll
                     case "reloadScript":
                         {
-                            string zip = this.GetArg_String("zip", false);
+                            string? zip = this.GetArg_String("zip", false);
 
                             var r = await this.service.connectToSelf.Request<MsgCommon, ResCommon>(MsgType._Command_PerformReloadScript,
-                                        new MsgCommon().SetLong("serviceId", serviceId).SetString("zip", zip));
+                                        new MsgCommon().SetLong("serviceId", serviceId).SetString("zip", zip == null ? string.Empty : zip));
                             e = r.e;
                         }
                         break;
@@ -277,7 +277,7 @@ namespace Script
                     case "reloadConfigs":
                         {
                             var msgReload = new MsgReloadConfigs();
-                            string files = this.GetArg_String("files", false);
+                            string? files = this.GetArg_String("files", false);
                             if (files == null || files.Length == 0)
                             {
                                 e = ECode.Error;
@@ -301,7 +301,6 @@ namespace Script
                     case "getReloadConfigOptions":
                         {
                             var msgGet = new MsgGetReloadConfigOptions();
-                            ResGetReloadConfigOptions resGet;
                             var r = await this.service.connectToSameServerType.Request<MsgGetReloadConfigOptions, ResGetReloadConfigOptions>(serviceId, MsgType._GetReloadConfigOptions, msgGet);
                             e = r.e;
 
@@ -329,7 +328,7 @@ namespace Script
                         {
                             var msg = new MsgUserServiceAction();
 
-                            string s = this.GetArg_String(nameof(msg.allowNewUser), false);
+                            string? s = this.GetArg_String(nameof(msg.allowNewUser), false);
                             if (!string.IsNullOrEmpty(s))
                             {
                                 msg.allowNewUser = s == "true" || s == "1";
@@ -505,7 +504,7 @@ namespace Script
                 case "fakeSilence":
                 case "un_fakeSilence":
                     {
-                        string msgGMStr = null;
+                        string? msgGMStr = null;
 
                         switch (action)
                         {
@@ -514,6 +513,10 @@ namespace Script
                                 break;
                         }
 
+                        if (msgGMStr == null)
+                        {
+                            msgGMStr = string.Empty;
+                        }
                         var r = await this.service.connectToSelf.Request<MsgCommon, ResCommon>(MsgType._Command_PerformPlayerGM,
                             new MsgCommon().SetLong("serviceId", usId).SetLong("playerId", userId).SetString("msgGM", msgGMStr));
                         e = r.e;

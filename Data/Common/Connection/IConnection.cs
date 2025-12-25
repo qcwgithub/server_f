@@ -4,6 +4,6 @@ namespace Data
     {
         int GetConnectionId();
         bool IsConnected();
-        void SendBytes(MsgType msgType, byte[] msg, Action<ECode, ArraySegment<byte>>? cb, int? pTimeoutS);
+        void SendBytes(MsgType msgType, byte[] msg, ReplyCallback? cb, int? pTimeoutS);
     }
 }

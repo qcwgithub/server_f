@@ -26,7 +26,7 @@ namespace Data
         [Key(8)]
         public string ip;
         [Key(9)]
-        public string lockValue; // used by UserManager_UserLogin
+        public string? lockValue; // used by UserManager_UserLogin
     }
 
     [MessagePackObject]
@@ -37,6 +37,6 @@ namespace Data
         [Key(1)]
         public long userId;
         [Key(2)]
-        public UserInfo newUserInfo; // when isNewUser
+        public UserInfo? newUserInfo; // when isNewUser
     }
 }

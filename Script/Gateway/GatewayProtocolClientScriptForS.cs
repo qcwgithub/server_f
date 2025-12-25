@@ -10,14 +10,14 @@ namespace Script
             this.gatewayService = gatewayService;
         }
 
-        public override void DispatchNetwork(ProtocolClientData data, int seq, MsgType msgType, ArraySegment<byte> msgBytes, Action<ECode, byte[]>? reply)
+        public override void ReceiveFromNetwork(ProtocolClientData data, int seq, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback? reply)
         {
             var serviceConnection = (ServiceConnection)data.customData;
 
             bool b = Forwarding.GatewayTryForwardClientMessageToClient(this.gatewayService, msgType, msgBytes, reply);
             if (!b)
             {
-                base.DispatchNetwork(data, seq, msgType, msgBytes, reply);
+                base.ReceiveFromNetwork(data, seq, msgType, msgBytes, reply);
             }
         }
     }

@@ -21,7 +21,7 @@ namespace Script
             user.destroyTimer = this.server.timerScript.SetTimer(
                 this.service.serviceId,
                 SEC, MsgType._Gateway_DestroyUser,
-                new MsgGatewayDestroyUser { userId = user.userId, reason = reason, msgKick = null});
+                new MsgGatewayDestroyUser { userId = user.userId, reason = reason, msgKick = null });
         }
 
         public void ClearDestroyTimer(GatewayUser user, GatewayClearDestroyTimerReason reason)
@@ -33,8 +33,11 @@ namespace Script
 
             this.service.logger.Info($"ClearDestroyTimer userId {user.userId} reason {reason}");
 
-            server.timerScript.ClearTimer(user.destroyTimer);
-            user.destroyTimer = null;
+            if (user.destroyTimer != null)
+            {
+                server.timerScript.ClearTimer(user.destroyTimer);
+                user.destroyTimer = null;
+            }
         }
     }
 }

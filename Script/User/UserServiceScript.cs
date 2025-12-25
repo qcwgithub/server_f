@@ -60,6 +60,11 @@ namespace Script
 
         public void ClearSaveTimer(User user)
         {
+            if (user.saveTimer == null)
+            {
+                return;
+            }
+
             if (!user.saveTimer.IsAlive())
             {
                 return;
@@ -87,6 +92,11 @@ namespace Script
 
         public void ClearDestroyTimer(User user, UserClearDestroyTimerReason reason)
         {
+            if (user.destroyTimer == null)
+            {
+                return;
+            }
+
             if (user.destroyTimer.IsAlive())
             {
                 return;

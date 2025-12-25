@@ -22,7 +22,7 @@ namespace Script
             this.taskQueueOwnersRedis = new TaskQueueOwnersRedis(server, this.key_PersistenceTaskQueueOwners);
         }
 
-        TaskQueueOwnersAssignmentInput input;
+        TaskQueueOwnersAssignmentInput? input;
         public override async Task<ECode> Handle(IConnection connection, MsgPersistence msg, ResPersistence res)
         {
             MyDebug.Assert(!this.persistenceHandling);
@@ -185,7 +185,7 @@ namespace Script
 
         void CheckHandleResult(Task task, List<string> removeFromSortedSets)
         {
-            stPersistenceResult result = (task as Task<stPersistenceResult>).Result;
+            stPersistenceResult result = ((Task<stPersistenceResult>)task).Result;
             if (result.e != ECode.Success && result.putBack)
             {
 

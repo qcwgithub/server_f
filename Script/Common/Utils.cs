@@ -35,7 +35,7 @@ namespace Script
             return new MyResponse<Res>(e, res);
         }
 
-        public static void SendBytes(this IConnection connection, MsgType msgType, byte[] msgBytes, Action<ECode, ArraySegment<byte>>? cb, int? pTimeoutS)
+        public static void SendBytes(this IConnection connection, MsgType msgType, byte[] msgBytes, ReplyCallback? cb, int? pTimeoutS)
         {
             connection.SendBytes(msgType, msgBytes, cb, pTimeoutS);
         }
@@ -46,7 +46,7 @@ namespace Script
             return await Request<Msg, Res>(connection, msgType, msgBytes);
         }
 
-        public static void Send<Msg>(this IConnection connection, MsgType msgType, Msg msg, Action<ECode, ArraySegment<byte>>? cb, int? pTimeoutS)
+        public static void Send<Msg>(this IConnection connection, MsgType msgType, Msg msg, ReplyCallback? cb, int? pTimeoutS)
         {
             byte[] msgBytes = Serialize<Msg>(msg);
             connection.SendBytes(msgType, msgBytes, cb, pTimeoutS);

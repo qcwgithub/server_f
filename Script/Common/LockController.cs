@@ -61,7 +61,7 @@ namespace Script
             }
         }
 
-        void ConsumeRequests(HashSet<string> busys, out List<LockRequest> successList, out List<LockRequest> failedList)
+        void ConsumeRequests(HashSet<string> busys, out List<LockRequest>? successList, out List<LockRequest>? failedList)
         {
             // this.service.logger.Info("++++ requests.Count " + this.data.requests.Count);
             // this.service.logger.Info("++++ busys " + JsonUtils.stringify(busys));
@@ -138,7 +138,7 @@ namespace Script
         {
             HashSet<string> busys = new HashSet<string>();
             HashEntry[] hashEntries = await this.GetDb().HashGetAllAsync(this.lockedHashKey);
-            List<RedisValue> expires = null;
+            List<RedisValue>? expires = null;
             long nowS = TimeUtils.GetTimeS();
             foreach (HashEntry entry in hashEntries)
             {
@@ -149,7 +149,7 @@ namespace Script
                 }
                 else
                 {
-                    busys.Add(entry.Name);
+                    busys.Add(entry.Name.ToString());
                 }
             }
             if (expires != null)
@@ -166,7 +166,7 @@ namespace Script
 
             while (true)
             {
-                this.ConsumeRequests(busys, out List<LockRequest> successList, out List<LockRequest> failedList);
+                this.ConsumeRequests(busys, out List<LockRequest>? successList, out List<LockRequest>? failedList);
                 // this.service.logger.InfoFormat("++++ success {0} failed {1}", successList == null ? 0 : successList.Count, failedList == null ? 0 : failedList.Count);
 
                 // int preCount = this.data.requests.Count; // 检测在 ApplyNewLockeds 期间，又往 requests 添加了东西

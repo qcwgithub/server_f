@@ -16,14 +16,19 @@ namespace Script
             }
         }
 
-        public override async void DispatchNetwork(ProtocolClientData data, int seq, MsgType msgType, ArraySegment<byte> msgBytes, Action<ECode, byte[]>? reply)
+        public override async void ReceiveFromNetwork(ProtocolClientData data, int seq, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback reply)
         {
-            var serviceConnection = (ServiceConnection)data.customData;
+            ServiceConnection? serviceConnection = data.customData as ServiceConnection;
+            if (serviceConnection == null)
+            {
+                this.service.logger.Error("serviceConnection == null");
+                return;
+            }
 
             bool received = await Forwarding.TryReceiveClientMessageFromGateway(this.userService, serviceConnection, msgType, msgBytes, reply);
             if (!received)
             {
-                base.DispatchNetwork(data, seq, msgType, msgBytes, reply);
+                base.ReceiveFromNetwork(data, seq, msgType, msgBytes, reply);
             }
         }
     }

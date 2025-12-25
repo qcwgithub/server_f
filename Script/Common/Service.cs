@@ -289,7 +289,7 @@ namespace Script
                     this.logger.Info("Wait GetServiceConfigs...");
                 }
 
-                ResGetServiceConfigs res = await this.RequestServiceConfigs("init");
+                ResGetServiceConfigs? res = await this.RequestServiceConfigs("init");
                 if (res == null)
                 {
                     await Task.Delay(100);

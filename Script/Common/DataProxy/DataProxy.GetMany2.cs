@@ -16,8 +16,8 @@ namespace Script
 
             var list = new List<DataType>();
 
-            List<Task<DataType>> tasks = null;
-            List<int> indexes = null;
+            List<Task<DataType>>? tasks = null;
+            List<int>? indexes = null;
             for (int i = 0; i < values.Length; i++)
             {
                 list.Add(null);

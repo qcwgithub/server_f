@@ -11,7 +11,7 @@ namespace Data
         [Key(1)]
         public long userId;
         [Key(2)]
-        public UserInfo newUserInfo; // when isNewUser
+        public UserInfo? newUserInfo; // when isNewUser
     }
 
     [MessagePackObject]

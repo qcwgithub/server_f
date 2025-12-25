@@ -23,12 +23,12 @@ namespace Script
                 return ECode.Success;
             }
 
-            if (msg.msgKick != null && user.IsConnected())
+            if (msg.msgKick != null && user.connection != null && user.connection.IsConnected())
             {
                 user.connection.Send<MsgKick>(MsgType.Kick, msg.msgKick, null, null);
             }
 
-            if (user.IsConnected())
+            if (user.connection != null && user.connection.IsConnected())
             {
                 user.connection.Close("Gateway_DestroyUser");
             }

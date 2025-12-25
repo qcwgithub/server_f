@@ -62,7 +62,7 @@
                 buffer[offset + 3] = (byte)(value >> 24);
             }
         }
-        public static int ReadInt(byte[] buffer, int offset)
+        public static int ReadInt(ArraySegment<byte> buffer, int offset)
         {
             unchecked
             {
@@ -143,7 +143,7 @@
             bufferOffset++;
         }
 
-        public byte[] Pack(int msgTypeOrECode, byte[] msg, int seq, bool requireResponse)
+        public byte[] Pack(int msgTypeOrECode, ArraySegment<byte> msg, int seq, bool requireResponse)
         {
             byte[] buffer;
             int bufferOffset = 0;
@@ -153,24 +153,24 @@
             totalLength += sizeof(int);
 
             // c
-            totalLength += msg.Length;
+            totalLength += msg.Count;
 
             buffer = new byte[totalLength];
             this.PackHeader(buffer, seq, msgTypeOrECode, requireResponse, ref bufferOffset);
 
             // b
-            WriteInt(buffer, bufferOffset, msg.Length);
+            WriteInt(buffer, bufferOffset, msg.Count);
             bufferOffset += sizeof(int);
 
             // c
-            Array.Copy(msg, 0, buffer, bufferOffset, msg.Length);
-            bufferOffset += msg.Length;
+            msg.CopyTo(buffer, bufferOffset);
+            bufferOffset += msg.Count;
 
             MyDebug.Assert(bufferOffset == buffer.Length);
             return buffer;
         }
 
-        void UnpackHeader(ref UnpackResult r, byte[] buffer, ref int offset, ref int count)
+        void UnpackHeader(ref UnpackResult r, ArraySegment<byte> buffer, ref int offset, ref int count)
         {
             // 4 = total length
             r.totalLength = ReadInt(buffer, offset);

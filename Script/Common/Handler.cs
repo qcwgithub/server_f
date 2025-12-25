@@ -25,10 +25,10 @@ namespace Script
             return m;
         }
 
-        public byte[] SerializeRes(object res)
+        public ArraySegment<byte> SerializeRes(object res)
         {
             byte[] bytes = this.server.messageSerializer.Serialize<Res>((Res)res);
-            return bytes;
+            return new ArraySegment<byte>(bytes);
         }
 
         public async Task<(ECode, object)> Handle(IConnection connection, object msg)

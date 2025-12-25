@@ -44,11 +44,16 @@ namespace Script
             }
         }
 
-        public virtual async void DispatchNetwork(ProtocolClientData data, int seq, MsgType msgType, ArraySegment<byte> msgBytes, Action<ECode, byte[]>? reply)
+        public virtual async void ReceiveFromNetwork(ProtocolClientData data, int seq, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback? reply)
         {
-            var connection = (IConnection)data.customData;
+            IConnection? connection = data.customData as IConnection;
+            if (connection == null)
+            {
+                this.service.logger.Error("connection == null");
+                return;
+            }
 
-            (ECode e, byte[] resBytes) = await this.service.dispatcher.Dispatch(connection, msgType, msgBytes);
+            (ECode e, ArraySegment<byte> resBytes) = await this.service.dispatcher.Dispatch(connection, msgType, msgBytes);
             if (reply != null)
             {
                 reply(e, resBytes);

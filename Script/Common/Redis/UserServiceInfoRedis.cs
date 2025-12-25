@@ -20,8 +20,8 @@ namespace Script
             var dict = new Dictionary<int, UserServiceInfo>();
             foreach (HashEntry entry in entries)
             {
-                int serviceId = int.Parse(entry.Name);
-                var info = JsonUtils.parse<UserServiceInfo>(entry.Value);
+                int serviceId = int.Parse(entry.Name.ToString());
+                var info = JsonUtils.parse<UserServiceInfo>(entry.Value.ToString());
                 dict[serviceId] = info;
             }
             return dict;
