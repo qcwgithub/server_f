@@ -50,10 +50,10 @@ namespace Script
             }
             else
             {
-                userServiceId = await this.server.userUSRedis.GetUSId(resUM.userId);
+                userServiceId = await this.server.userServiceAssignmentResultRedis.GetOwningServiceId(resUM.userId);
                 if (userServiceId == 0)
                 {
-                    userServiceId = await this.service.userServiceAllocator.AllocUserServiceId(resUM.userId);
+                    userServiceId = await this.service.userServiceAssignment.AssignServiceId(resUM.userId);
                     if (userServiceId == 0)
                     {
                         return ECode.NoAvailableUserService;

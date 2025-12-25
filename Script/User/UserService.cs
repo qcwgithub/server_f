@@ -59,5 +59,28 @@ namespace Script
         {
             await base.Detach();
         }
+
+        ServiceRuntimeInfo CreateRuntimeInfo()
+        {
+            var info = new ServiceRuntimeInfo();
+            info.serviceId = this.serviceId;
+            info.busyCount = this.sd.userCount;
+            info.allowNew = this.sd.allowNewUser;
+            return info;
+        }
+
+        public async Task UpdateRuntimeInfo()
+        {
+            await this.server.userServiceRuntimeInfoRedis.Update(this.CreateRuntimeInfo());
+        }
+
+        public async Task CheckUpdateRuntimeInfo()
+        {
+            if (Math.Abs(this.sd.userCountDelta) >= 100)
+            {
+                this.sd.userCountDelta = 0;
+                await this.UpdateRuntimeInfo();
+            }
+        }
     }
 }

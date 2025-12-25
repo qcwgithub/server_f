@@ -27,7 +27,7 @@ namespace Script
             return new GatewayProtocolClientScriptForC(this.server, this);
         }
         public readonly GatewayServiceScript ss;
-        public readonly UserServiceAllocator<GatewayService> userServiceAllocator;
+        public readonly ServiceAssignment userServiceAssignment;
 
         public GatewayService(Server server, int serviceId) : base(server, serviceId)
         {
@@ -35,7 +35,7 @@ namespace Script
             this.connectToUserService = new ConnectToUserService(this);
 
             this.ss = new GatewayServiceScript(this.server, this);
-            this.userServiceAllocator = new UserServiceAllocator<GatewayService>(this.server, this, this.sd.userServiceAllocatorData);
+            this.userServiceAssignment = new ServiceAssignment(this.server, this, this.sd.userServiceAllocatorData, this.server.userServiceRuntimeInfoRedis);
         }
 
         public override void Attach()

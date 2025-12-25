@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
 using Data;
-using System.Threading.Tasks;
-using System.Linq;
 
 namespace Script
 {
@@ -25,8 +21,10 @@ namespace Script
         public readonly IMessageSerializer messageSerializer;
         public readonly IMessagePacker messagePacker;
         public readonly PersistenceTaskQueueRedis persistence_taskQueueRedis;
-        public readonly UserServiceInfoRedis userServiceInfoRedis;
-        public readonly UserUSRedis userUSRedis;
+        public readonly ServiceRuntimeInfoRedis userServiceRuntimeInfoRedis;
+        public readonly ServiceRuntimeInfoRedis roomServiceRuntimeInfoRedis;
+        public readonly ServiceAssignmentResultRedis userServiceAssignmentResultRedis;
+        public readonly ServiceAssignmentResultRedis roomServiceAssignmentResultRedis;
 
         public Server()
         {
@@ -37,8 +35,12 @@ namespace Script
             this.lockRedis = new LockRedis(this);
             this.feiShuMessenger = new FeiShuMessenger(this);
             this.persistence_taskQueueRedis = new PersistenceTaskQueueRedis(this, DbKey.PersistenceTaskQueueList, DbKey.PersistenceTaskQueueSortedSet);
-            this.userServiceInfoRedis = new UserServiceInfoRedis(this);
-            this.userUSRedis = new UserUSRedis(this);
+
+            this.userServiceRuntimeInfoRedis = new ServiceRuntimeInfoRedis(this, CommonKey.UserServiceRuntimeInfos());
+            this.roomServiceRuntimeInfoRedis = new ServiceRuntimeInfoRedis(this, CommonKey.RoomServiceRuntimeInfos());
+
+            this.userServiceAssignmentResultRedis = new ServiceAssignmentResultRedis(this, UserKey.OwningServiceId);
+            this.roomServiceAssignmentResultRedis = new ServiceAssignmentResultRedis(this, RoomKey.OwningServiceId);
         }
 
         int seq;

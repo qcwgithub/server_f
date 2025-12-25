@@ -193,7 +193,7 @@ namespace Data
                 new Mark { startMark = "#region auto", text = Gen_XInfo_Db.Do(xinfoConfig) },
             });
 
-            if (xinfoConfig.name == "UserInfo")
+            if (xinfoConfig.cacheType == CacheType.Memory)
             {
                 DoXInfoStuff(xinfoConfig);
             }

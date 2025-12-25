@@ -43,6 +43,7 @@ namespace Script
             }
 
             sd.RemoveUser(msg.userId);
+            this.service.CheckUpdateRuntimeInfo().Forget();
             return ECode.Success;
         }
     }

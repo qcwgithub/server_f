@@ -4,7 +4,7 @@ long_,,,,,userId,,
 string_,,,,,userName,,
 long_,,,,,createTimeS,,
 long_,,,,,lastLoginTimeS,,
-#
+#,,,,,,,
 @AccountInfo,,,,,,,Redis
 string_,,,,,platform,,
 string_,,,,,channel,,
@@ -16,3 +16,5 @@ long_,,,,,unblockTime,,
 string_,,,,,blockPrompt,,
 string_,,,,,blockOrUnblockReason,,
 long_,,,,,lastLoginUserId,,
+@RoomInfo,,,,,,,Memory
+long_,,,,,roomId,,

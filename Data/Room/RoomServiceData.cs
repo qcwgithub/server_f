@@ -4,39 +4,39 @@ using log4net;
 
 namespace Data
 {
-    public sealed class UserServiceData : ServiceData
+    public sealed class RoomServiceData : ServiceData
     {
-        public readonly Dictionary<long, User> userDict;
-        public int userCount
+        public readonly Dictionary<long, Room> roomDict;
+        public int roomCount
         {
             get
             {
-                return this.userDict.Count;
+                return this.roomDict.Count;
             }
         }
-        public User? GetUser(long userId)
+        public Room? GetRoom(long roomId)
         {
-            return this.userDict.TryGetValue(userId, out User? user) ? user : null;
+            return this.roomDict.TryGetValue(roomId, out Room? room) ? room : null;
         }
-        public bool RemoveUser(long userId)
+        public bool RemoveRoom(long roomId)
         {
-            if (this.userDict.Remove(userId))
+            if (this.roomDict.Remove(roomId))
             {
-                this.userCountDelta--;
+                this.roomCountDelta--;
                 return true;
             }
             return false;
         }
-        public void AddUser(User user)
+        public void AddRoom(Room room)
         {
-            this.userCountDelta++;
-            this.userDict.Add(user.userId, user);
+            this.roomCountDelta++;
+            this.roomDict.Add(room.roomId, room);
         }
 
-        public int userCountDelta = 0;
+        public int roomCountDelta = 0;
         public int destroyTimeoutS = 600;
         public int saveIntervalS = 60;
-        public bool allowNewUser;
+        public bool allowNewRoom;
 
         //------------------------------------------------------
 
@@ -47,14 +47,14 @@ namespace Data
             ServiceType.Gateway,
         };
 
-        public UserServiceData(ServiceTypeAndId serviceTypeAndId)
+        public RoomServiceData(ServiceTypeAndId serviceTypeAndId)
             : base(serviceTypeAndId, s_connectToServiceIds)
         {
-            this.userDict = new Dictionary<long, User>();
+            this.roomDict = new Dictionary<long, Room>();
 
             this.LoadConfigs();
 
-            this.allowNewUser = true;
+            this.allowNewRoom = true;
         }
 
         void LoadConfigs()

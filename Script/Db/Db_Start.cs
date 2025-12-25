@@ -15,6 +15,7 @@ namespace Script
 
             await this.service.collection_user_info.CreateIndex();
             await this.service.collection_account_info.CreateIndex();
+            await this.service.collection_room_info.CreateIndex();
 
             #endregion auto_callCreateIndex
 

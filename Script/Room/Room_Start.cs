@@ -2,9 +2,9 @@ using Data;
 
 namespace Script
 {
-    public class User_Start : OnStart<UserService>
+    public class Room_Start : OnStart<RoomService>
     {
-        public User_Start(Server server, UserService service) : base(server, service)
+        public Room_Start(Server server, RoomService service) : base(server, service)
         {
         }
 

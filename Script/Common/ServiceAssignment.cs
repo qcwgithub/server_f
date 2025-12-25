@@ -2,41 +2,43 @@ using Data;
 
 namespace Script
 {
-    public class UserServiceAllocator<S> : ServiceScript<S> where S : Service
+    public class ServiceAssignment : ServiceScript<Service>
     {
-        public readonly UserServiceAllocatorData allocatorData;
-        public UserServiceAllocator(Server server, S service, UserServiceAllocatorData allocatorData) : base(server, service)
+        public readonly ServiceAssignmentData assignmentData;
+        public readonly ServiceRuntimeInfoRedis serviceRuntimeInfoRedis;
+        public ServiceAssignment(Server server, Service service, ServiceAssignmentData assignmentData, ServiceRuntimeInfoRedis serviceRuntimeInfoRedis) : base(server, service)
         {
-            this.allocatorData = allocatorData;
+            this.assignmentData = assignmentData;
+            this.serviceRuntimeInfoRedis = serviceRuntimeInfoRedis;
         }
 
-        public async Task<int> AllocUserServiceId(long userId)
+        public async Task<int> AssignServiceId(long targetId)
         {
             bool needUpdate = false;
-            if (this.allocatorData.lastUpdateS == 0)
+            if (this.assignmentData.lastUpdateS == 0)
             {
                 needUpdate = true;
             }
             else
             {
                 long nowS = TimeUtils.GetTimeS();
-                if (nowS - this.allocatorData.lastUpdateS >= 60)
+                if (nowS - this.assignmentData.lastUpdateS >= 60)
                 {
                     needUpdate = true;
                 }
             }
             if (needUpdate)
             {
-                var dict = await this.server.userServiceInfoRedis.GetAll();
+                var dict = await this.serviceRuntimeInfoRedis.GetAll();
                 long nowS = TimeUtils.GetTimeS();
-                this.allocatorData.Update(nowS, dict);
+                this.assignmentData.Update(nowS, dict);
             }
 
-            UserServiceInfo? selected = null;
-            foreach (var kv in this.allocatorData.userServiceInfoDict)
+            ServiceRuntimeInfo? selected = null;
+            foreach (var kv in this.assignmentData.serviceRuntimeInfoDict)
             {
-                UserServiceInfo info = kv.Value;
-                if (!info.allowNewUser)
+                ServiceRuntimeInfo info = kv.Value;
+                if (!info.allowNew)
                 {
                     continue;
                 }
@@ -46,7 +48,7 @@ namespace Script
                     continue;
                 }
 
-                if (selected == null || info.userCount < selected.userCount)
+                if (selected == null || info.busyCount < selected.busyCount)
                 {
                     selected = info;
                 }
@@ -55,11 +57,11 @@ namespace Script
             int serviceId = 0;
             if (selected != null)
             {
-                selected.userCount++;
+                selected.busyCount++;
                 serviceId = selected.serviceId;
             }
 
-            string log = $"Alloc user service id for userId {userId}, result {serviceId}";
+            string log = $"Alloc service id for targetId {targetId}, result {serviceId}";
             if (serviceId != 0)
             {
                 this.service.logger.Info(log);

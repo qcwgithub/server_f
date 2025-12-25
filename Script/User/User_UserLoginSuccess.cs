@@ -59,7 +59,7 @@ namespace Script
 
                     user = new User(userInfo);
 
-                    await this.server.userUSRedis.SetUSId(msg.userId, this.service.serviceId, this.service.sd.saveIntervalS + 60);
+                    await this.server.userServiceAssignmentResultRedis.SetOwningServiceId(msg.userId, this.service.serviceId, this.service.sd.saveIntervalS + 60);
 
                     this.AddUserToDict(user);
 
@@ -175,6 +175,7 @@ namespace Script
             // qiucw
             // 这句会修改 userInfo，必须放在 lastUserInfo.DeepCopyFrom 后面
             // this.gameScripts.CallInit(user);
+            this.service.CheckUpdateRuntimeInfo().Forget();
         }
     }
 }

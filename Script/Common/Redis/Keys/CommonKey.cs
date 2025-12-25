@@ -2,9 +2,7 @@ namespace Script
 {
     public static class CommonKey
     {
-        public static string UserServiceInfos()
-        {
-            return "common:usInfos";
-        }
+        public static string UserServiceRuntimeInfos() => "common:userSRTInfos";
+        public static string RoomServiceRuntimeInfos() => "common:roomSRTInfos";
     }
 }
