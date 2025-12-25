@@ -13,7 +13,7 @@ namespace Script
         {
             var msg = new MsgOnHttpRequest();
             msg.context = context;
-            this.service.dispatcher.Dispatch<MsgOnHttpRequest, ResOnHttpRequest>(this.service.data.localConnection, MsgType._OnHttpRequest, msg).Forget();
+            this.service.dispatcher.Dispatch<MsgOnHttpRequest, ResOnHttpRequest>(this.service.data.selfConnection, MsgType._OnHttpRequest, msg).Forget();
         }
 
         public log4net.ILog GetLogger() => this.service.logger;
