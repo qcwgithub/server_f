@@ -24,7 +24,7 @@ namespace Script
             msgSet.startUserId = startId;
             msgSet.endUserId = endId;
 
-            var r = await this.service.connectToSameServerType.Request<MsgSetGmFlag, ResSetGmFlag>(serviceId, MsgType._SetGmFlag, msgSet);
+            var r = await this.service.commandConnectToOtherService.Request<MsgSetGmFlag, ResSetGmFlag>(serviceId, MsgType._SetGmFlag, msgSet);
             if (r.res.listUser != null)
             {
                 foreach (var item in r.res.listUser)

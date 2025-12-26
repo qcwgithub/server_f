@@ -5,12 +5,12 @@ namespace Script
     public class CommandService : Service
     {
         public ConnectToGlobalService connectToGlobalService { get; private set; }
-        public MonitorConnectToSameServerType connectToSameServerType { get; private set; }
+        public CommandConnectToOtherService commandConnectToOtherService { get; private set; }
 
         public CommandService(Server server, int serviceId) : base(server, serviceId)
         {
             this.AddConnectToOtherService(this.connectToGlobalService = new ConnectToGlobalService(this));
-            this.connectToSameServerType = new MonitorConnectToSameServerType(this);
+            this.commandConnectToOtherService = new CommandConnectToOtherService(this);
         }
 
         public CommandServiceData commandServiceData

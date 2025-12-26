@@ -293,7 +293,7 @@ namespace Script
                                 msgReload.files = new List<string>();
                                 msgReload.files.AddRange(array);
                             }
-                            var r = await this.service.connectToSameServerType.Request<MsgReloadConfigs, ResReloadConfigs>(serviceId, MsgType._ReloadConfigs, msgReload);
+                            var r = await this.service.commandConnectToOtherService.Request<MsgReloadConfigs, ResReloadConfigs>(serviceId, MsgType._ReloadConfigs, msgReload);
                             e = r.e;
                         }
                         break;
@@ -301,7 +301,7 @@ namespace Script
                     case "getReloadConfigOptions":
                         {
                             var msgGet = new MsgGetReloadConfigOptions();
-                            var r = await this.service.connectToSameServerType.Request<MsgGetReloadConfigOptions, ResGetReloadConfigOptions>(serviceId, MsgType._GetReloadConfigOptions, msgGet);
+                            var r = await this.service.commandConnectToOtherService.Request<MsgGetReloadConfigOptions, ResGetReloadConfigOptions>(serviceId, MsgType._GetReloadConfigOptions, msgGet);
                             e = r.e;
 
                             if (e == ECode.Success)
@@ -318,7 +318,7 @@ namespace Script
                     case "gc":
                         {
                             var msgGc = new MsgGC();
-                            var r = await this.service.connectToSameServerType.Request<MsgGC, ResGC>(serviceId, MsgType._GC, msgGc);
+                            var r = await this.service.commandConnectToOtherService.Request<MsgGC, ResGC>(serviceId, MsgType._GC, msgGc);
                             e = r.e;
                         }
                         break;
@@ -339,7 +339,7 @@ namespace Script
                                 msg.saveIntervalS = i;
                             }
 
-                            var r = await this.service.connectToSameServerType.Request<MsgUserServiceAction, ResUserServiceAction>(serviceId, MsgType._ServerAction, msg);
+                            var r = await this.service.commandConnectToOtherService.Request<MsgUserServiceAction, ResUserServiceAction>(serviceId, MsgType._ServerAction, msg);
                             e = r.e;
                         }
                         break;
@@ -353,7 +353,7 @@ namespace Script
                                 msg.destroyTimeoutS = i;
                             }
 
-                            var r = await this.service.connectToSameServerType.Request<MsgGatewayServiceAction, ResGatewayServiceAction>(serviceId, MsgType._ServerAction, msg);
+                            var r = await this.service.commandConnectToOtherService.Request<MsgGatewayServiceAction, ResGatewayServiceAction>(serviceId, MsgType._ServerAction, msg);
                             e = r.e;
                         }
                         break;
@@ -415,7 +415,7 @@ namespace Script
                     case "showUserCount":
                         {
                             var msg2 = new MsgGetUserCount();
-                            var r = await this.service.connectToSameServerType.Request<MsgGetUserCount, ResGetUserCount>(serviceId, MsgType._GetPlayerCount, msg2);
+                            var r = await this.service.commandConnectToOtherService.Request<MsgGetUserCount, ResGetUserCount>(serviceId, MsgType._GetPlayerCount, msg2);
                             e = r.e;
 
                             if (e == ECode.Success)

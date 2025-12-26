@@ -324,6 +324,12 @@ namespace Data
                 case ServiceType.UserManager:
                     return UserManagerServiceData.s_connectToServiceIds;
 
+                case ServiceType.Room:
+                    return RoomServiceData.s_connectToServiceIds;
+
+                case ServiceType.RoomManager:
+                    return RoomManagerServiceData.s_connectToServiceIds;
+
                 default:
                     throw new Exception("Not handled serviceType: " + serviceType);
             }

@@ -20,7 +20,7 @@ namespace Script
 
             var msgShutdown = new MsgShutdown();
             msgShutdown.force = force == 1;
-            var r = await this.service.connectToSameServerType.Request<MsgShutdown, ResShutdown>(serviceId, MsgType._Shutdown, msgShutdown);
+            var r = await this.service.commandConnectToOtherService.Request<MsgShutdown, ResShutdown>(serviceId, MsgType._Shutdown, msgShutdown);
             return r.e;
         }
     }

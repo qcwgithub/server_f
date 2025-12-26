@@ -21,7 +21,7 @@ namespace Script
 
             var msg2 = new MsgSaveUserInfoToFile();
             msg2.userId = userId;
-            var r = await this.service.connectToSameServerType.Request<MsgSaveUserInfoToFile, ResSaveUserInfoToFile>(serviceId, MsgType._SaveUserInfoToFile, msg2);
+            var r = await this.service.commandConnectToOtherService.Request<MsgSaveUserInfoToFile, ResSaveUserInfoToFile>(serviceId, MsgType._SaveUserInfoToFile, msg2);
             if (r.e == ECode.Success)
             {
                 this.service.logger.Info("save user info to file ok, file name: " + r.res.fileName);

@@ -37,7 +37,7 @@ namespace Script
         {
             return new MessageDispatcher(this.server, this);
         }
-        
+
         public readonly Dictionary<ServiceType, ConnectToOtherService> connectToOtherServiceDict;
 
         public Service(Server server, int serviceId)
@@ -342,7 +342,28 @@ namespace Script
                 }
 
                 var msg = new MsgGetServiceState();
-                var r = await connectToOtherService.Request<MsgGetServiceState, ResGetServiceState>(MsgType._GetServiceState, msg);
+                MyResponse<ResGetServiceState> r;
+
+                if (connectToOtherService is ConnectToStatelessService stateless)
+                {
+                    r = await stateless.Request<MsgGetServiceState, ResGetServiceState>(MsgType._GetServiceState, msg);
+                }
+                else if (connectToOtherService is ConnectToStatefulService stateful)
+                {
+                    int sid = stateful.GetFirstConnected();
+                    if (sid == 0)
+                    {
+                        r = new MyResponse<ResGetServiceState>(ECode.Server_NotConnected, null);
+                    }
+                    else
+                    {
+                        r = await stateful.Request<MsgGetServiceState, ResGetServiceState>(sid, MsgType._GetServiceState, msg);
+                    }
+                }
+                else
+                {
+                    throw new Exception();
+                }
                 if (r.e != ECode.Success)
                 {
                     await Task.Delay(100);

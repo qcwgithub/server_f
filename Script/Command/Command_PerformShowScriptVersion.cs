@@ -18,7 +18,7 @@ namespace Script
             int serviceId = (int)msg.GetLong("serviceId");
 
             var msg2 = new MsgGetScriptVersion();
-            var r = await this.service.connectToSameServerType.Request<MsgGetScriptVersion, ResGetScriptVersion>(serviceId, MsgType._GetScriptVersion, msg2);
+            var r = await this.service.commandConnectToOtherService.Request<MsgGetScriptVersion, ResGetScriptVersion>(serviceId, MsgType._GetScriptVersion, msg2);
 
             if (r.e == ECode.Success)
             {
