@@ -176,17 +176,25 @@ namespace Script
             ServiceConnection? connection;
             if (!data.otherServiceConnections.TryGetValue(to_serviceId, out connection) || connection.IsClosed())
             {
-                ProtocolClientData socket = this.protocolClientScriptForS.CreateConnector(this.data, inIp, inPort);
+                if (this.server.data.serviceTypeAndIds.Exists(tai => tai.serviceType == to_serviceType && tai.serviceId == to_serviceId))
+                {
+                    connection = new InProcessServiceConnection(to_serviceType, to_serviceId);
+                    data.SaveOtherServiceConnection(connection);
+                }
+                else
+                {
+                    ProtocolClientData socket = this.protocolClientScriptForS.CreateConnector(this.data, inIp, inPort);
 
-                connection = new ServiceConnection(to_serviceType, to_serviceId, socket, true);
-                data.SaveOtherServiceConnection(connection);
-            }
+                    connection = new SocketServiceConnection(to_serviceType, to_serviceId, socket, true);
+                    data.SaveOtherServiceConnection(connection);
 
-            if (!connection.IsConnected() && !connection.IsConnecting())
-            {
-                // connect once
-                // this.server.logger.Info("call connect to " + serviceId + ", " + this.server.data.getInt("keepServerConnectionsing"));
-                connection.Connect();
+                    if (!connection.IsConnected() && !connection.IsConnecting())
+                    {
+                        // connect once
+                        // this.server.logger.Info("call connect to " + serviceId + ", " + this.server.data.getInt("keepServerConnectionsing"));
+                        connection.Connect();
+                    }
+                }
             }
 
             return connection;

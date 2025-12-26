@@ -14,8 +14,8 @@ namespace Script
 
         public override async Task<ECode> Handle(IConnection connection, MsgUserLogin msg, ResUserLogin res)
         {
-            var undefinedConnection = (UndefinedConnection)connection;
-            ProtocolClientData socket = undefinedConnection.socket;
+            var pendingConnection = (PendingSocketConnection)connection;
+            ProtocolClientData socket = pendingConnection.socket;
 
             (AddressFamily family, string ip) = this.GetIp(socket);
 

@@ -29,8 +29,8 @@ namespace Script
                 this.service.logger.Error(message);
             }
 
-            var undefinedConnection = (UndefinedConnection)connection;
-            var serviceConnection = new ServiceConnection(info.serviceType, info.serviceId, undefinedConnection.socket, false);
+            var pendingConnection = (PendingSocketConnection)connection;
+            var serviceConnection = new SocketServiceConnection(info.serviceType, info.serviceId, pendingConnection.socket, false);
             this.service.data.SaveOtherServiceConnection(serviceConnection);
 
             return ECode.Success;
