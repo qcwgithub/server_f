@@ -2,16 +2,16 @@ using Data;
 
 namespace Script
 {
-    public class User_SaveUser : UserHandler<MsgSaveUser, ResSaveUser>
+    public class User_SaveUser : User_ServerHandler<MsgSaveUser, ResSaveUser>
     {
         public User_SaveUser(Server server, UserService service) : base(server, service)
         {
         }
 
         public override MsgType msgType => MsgType._User_SaveUser;
-        public override async Task<ECode> Handle(IConnection connection, MsgSaveUser msg, ResSaveUser res)
+        protected override async Task<ECode> Handle(ServiceConnection connection, MsgSaveUser msg, ResSaveUser res)
         {
-            User? user = this.sd.GetUser(msg.userId);
+            User? user = this.service.sd.GetUser(msg.userId);
             if (user == null)
             {
                 this.logger.ErrorFormat("{0} userId {1}, reason {2}, user == null!!", this.msgType, msg.userId, msg.reason);

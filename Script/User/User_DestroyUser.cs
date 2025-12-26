@@ -5,7 +5,7 @@ using Data;
 
 namespace Script
 {
-    public class User_DestroyUser : UserHandler<MsgUserDestroyUser, ResUserDestroyUser>
+    public class User_DestroyUser : User_ServerHandler<MsgUserDestroyUser, ResUserDestroyUser>
     {
         public User_DestroyUser(Server server, UserService service) : base(server, service)
         {
@@ -14,7 +14,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._User_DestroyUser;
 
-        public override async Task<ECode> Handle(IConnection connection, MsgUserDestroyUser msg, ResUserDestroyUser res)
+        protected override async Task<ECode> Handle(ServiceConnection connection, MsgUserDestroyUser msg, ResUserDestroyUser res)
         {
             var sd = this.service.sd;
 

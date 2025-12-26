@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    public class User_SaveUserInfoToFile : UserHandler<MsgSaveUserInfoToFile, ResSaveUserInfoToFile>
+    public class User_SaveUserInfoToFile : User_ServerHandler<MsgSaveUserInfoToFile, ResSaveUserInfoToFile>
     {
         public User_SaveUserInfoToFile(Server server, UserService service) : base(server, service)
         {
@@ -10,7 +10,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._SaveUserInfoToFile;
 
-        public override async Task<ECode> Handle(IConnection connection, MsgSaveUserInfoToFile msg, ResSaveUserInfoToFile res)
+        protected override async Task<ECode> Handle(ServiceConnection connection, MsgSaveUserInfoToFile msg, ResSaveUserInfoToFile res)
         {
             UserInfo? userInfo = null;
             User? user = this.service.sd.GetUser(msg.userId);

@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    public class User_UserDisconnectFromGateway : UserHandler<MsgUserDisconnectFromGateway, ResUserDisconnectFromGateway>
+    public class User_UserDisconnectFromGateway : User_ServerHandler<MsgUserDisconnectFromGateway, ResUserDisconnectFromGateway>
     {
         public User_UserDisconnectFromGateway(Server server, UserService service) : base(server, service)
         {
@@ -10,7 +10,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._User_UserDisconnectFromGateway;
 
-        public override async Task<ECode> Handle(IConnection connection, MsgUserDisconnectFromGateway msg, ResUserDisconnectFromGateway res)
+        protected override async Task<ECode> Handle(ServiceConnection connection, MsgUserDisconnectFromGateway msg, ResUserDisconnectFromGateway res)
         {
             User? user = this.service.sd.GetUser(msg.userId);
             if (user == null)

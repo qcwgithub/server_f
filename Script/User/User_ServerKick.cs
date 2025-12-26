@@ -3,7 +3,7 @@ using Data;
 
 namespace Script
 {
-    public class User_ServerKick : UserHandler<MsgUserServerKick, ResUserServerKick>
+    public class User_ServerKick : User_ServerHandler<MsgUserServerKick, ResUserServerKick>
     {
         public User_ServerKick(Server server, UserService service) : base(server, service)
         {
@@ -11,7 +11,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._User_ServerKick;
 
-        public override async Task<ECode> Handle(IConnection connection, MsgUserServerKick msg, ResUserServerKick res)
+        protected override async Task<ECode> Handle(ServiceConnection connection, MsgUserServerKick msg, ResUserServerKick res)
         {
             User? user = this.service.sd.GetUser(msg.userId);
             if (user == null)

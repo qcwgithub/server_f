@@ -4,7 +4,7 @@ using Data;
 
 namespace Script
 {
-    public class User_SetGmFlag : UserHandler<MsgSetGmFlag, ResSetGmFlag>
+    public class User_SetGmFlag : User_ServerHandler<MsgSetGmFlag, ResSetGmFlag>
     {
         public User_SetGmFlag(Server server, UserService service) : base(server, service)
         {
@@ -12,7 +12,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._SetGmFlag;
 
-        public override async Task<ECode> Handle(IConnection connection, MsgSetGmFlag msg, ResSetGmFlag res)
+        protected override async Task<ECode> Handle(ServiceConnection connection, MsgSetGmFlag msg, ResSetGmFlag res)
         {
             res.listUser = new List<long>();
             for (long i = msg.startUserId; i <= msg.endUserId; i++)

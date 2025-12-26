@@ -3,7 +3,7 @@ using Data;
 namespace Script
 {
     // 其他服 -> User
-    public class User_SaveUserImmediately : UserHandler<MsgSaveUser, ResSaveUser>
+    public class User_SaveUserImmediately : User_ServerHandler<MsgSaveUser, ResSaveUser>
     {
         public User_SaveUserImmediately(Server server, UserService service) : base(server, service)
         {
@@ -11,7 +11,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._User_SaveUserImmediately;
 
-        public override async Task<ECode> Handle(IConnection connection, MsgSaveUser msg, ResSaveUser res)
+        protected override async Task<ECode> Handle(ServiceConnection connection, MsgSaveUser msg, ResSaveUser res)
         {
             var r = await this.service.connectToSelf.Request<MsgSaveUser, ResSaveUser>(MsgType._User_SaveUser, msg);
             return r.e;

@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    public class User_Action : UserHandler<MsgUserServiceAction, ResUserServiceAction>
+    public class User_Action : User_ServerHandler<MsgUserServiceAction, ResUserServiceAction>
     {
         public User_Action(Server server, UserService service) : base(server, service)
         {
@@ -10,7 +10,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._ServerAction;
 
-        public override async Task<ECode> Handle(IConnection connection, MsgUserServiceAction msg, ResUserServiceAction res)
+        protected override async Task<ECode> Handle(ServiceConnection connection, MsgUserServiceAction msg, ResUserServiceAction res)
         {
             this.logger.Info(this.msgType);
             var sd = this.service.sd;

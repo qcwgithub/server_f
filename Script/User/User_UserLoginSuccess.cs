@@ -3,7 +3,7 @@ using Data;
 namespace Script
 {
     // <- Gateway
-    public class User_UserLoginSuccess : UserHandler<MsgUserLoginSuccess, ResUserLoginSuccess>
+    public class User_UserLoginSuccess : User_ServerHandler<MsgUserLoginSuccess, ResUserLoginSuccess>
     {
         public User_UserLoginSuccess(Server server, UserService service) : base(server, service)
         {
@@ -11,13 +11,13 @@ namespace Script
 
         public override MsgType msgType { get { return MsgType._User_UserLoginSuccess; } }
 
-        public override async Task<ECode> Handle(IConnection connection, MsgUserLoginSuccess msg, ResUserLoginSuccess res)
+        protected override async Task<ECode> Handle(ServiceConnection connection, MsgUserLoginSuccess msg, ResUserLoginSuccess res)
         {
             // Gateway
             var serviceConnection = (ServiceConnection)connection;
             MyDebug.Assert(serviceConnection.serviceType == ServiceType.Gateway);
 
-            string message0 = string.Format("{0} userId {1} preCount {2}", this.msgType, msg.userId, this.sd.userCount);
+            string message0 = string.Format("{0} userId {1} preCount {2}", this.msgType, msg.userId, this.service.sd.userCount);
 
             if (this.service.data.state != ServiceState.Started)
             {
@@ -25,7 +25,7 @@ namespace Script
                 return ECode.ServerNotReady;
             }
 
-            User? user = this.sd.GetUser(msg.userId);
+            User? user = this.service.sd.GetUser(msg.userId);
             if (user != null)
             {
                 if (user.destroying)
@@ -89,7 +89,7 @@ namespace Script
 
             this.logger.Info(message0 + ": check ok");
 
-            this.usScript.ClearDestroyTimer(user, UserClearDestroyTimerReason.UserLoginSuccess);
+            this.service.ss.ClearDestroyTimer(user, UserClearDestroyTimerReason.UserLoginSuccess);
 
             long nowS = TimeUtils.GetTimeS();
             user.onlineTimeS = nowS;
