@@ -3,7 +3,7 @@ using StackExchange.Redis;
 
 namespace Script
 {
-    public class ServiceRuntimeInfoRedis : ServerScript
+    public abstract class ServiceRuntimeInfoRedis : ServerScript
     {
         public readonly string key;
         public ServiceRuntimeInfoRedis(Server server, string key) : base(server)
@@ -19,6 +19,20 @@ namespace Script
         public async Task Update(ServiceRuntimeInfo runtimeInfo)
         {
             await this.GetDb().HashSetAsync(this.key, new RedisValue(runtimeInfo.serviceId.ToString()), JsonUtils.stringify(runtimeInfo));
+        }
+    }
+
+    public class ServiceRuntimeInfoRedisW : ServiceRuntimeInfoRedis
+    {
+        public ServiceRuntimeInfoRedisW(Server server, string key) : base(server, key)
+        {
+        }
+    }
+
+    public class ServiceRuntimeInfoRedisRW : ServiceRuntimeInfoRedis
+    {
+        public ServiceRuntimeInfoRedisRW(Server server, string key) : base(server, key)
+        {
         }
 
         public async Task<Dictionary<int, ServiceRuntimeInfo>> GetAll()

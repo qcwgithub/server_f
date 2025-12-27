@@ -8,7 +8,7 @@ namespace Script
         {
             switch (msgType)
             {
-                case MsgType.UserLogin:
+                case MsgType.Login:
                     return null;
 
                 default:

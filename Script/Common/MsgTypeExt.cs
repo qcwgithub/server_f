@@ -34,7 +34,7 @@ namespace Script
 
             switch (msgType)
             {
-                case MsgType.UserLogin:
+                case MsgType.Login:
                     return false;
 
                 default:
@@ -47,7 +47,7 @@ namespace Script
         {
             switch (msgType)
             {
-                case MsgType.UserLogin: // 这个一定不能等了。也不需要，因为那时候 socket 还未绑定 player
+                case MsgType.Login: // 这个一定不能等了。也不需要，因为那时候 socket 还未绑定 player
                     return false;
 
                 default:

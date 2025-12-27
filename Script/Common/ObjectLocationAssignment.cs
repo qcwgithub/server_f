@@ -2,14 +2,14 @@ using Data;
 
 namespace Script
 {
-    public class ServiceAssignment : ServiceScript<Service>
+    public class ObjectLocationAssignment : ServiceScript<Service>
     {
-        public readonly ServiceAssignmentData assignmentData;
-        public readonly ServiceRuntimeInfoRedis serviceRuntimeInfoRedis;
-        public ServiceAssignment(Server server, Service service, ServiceAssignmentData assignmentData, ServiceRuntimeInfoRedis serviceRuntimeInfoRedis) : base(server, service)
+        public readonly ObjectLocationAssignmentData assignmentData;
+        public readonly ServiceRuntimeInfoRedisRW serviceRuntimeInfoRedis;
+        public ObjectLocationAssignment(Server server, Service service, ObjectLocationAssignmentData assignmentData, string redisKey) : base(server, service)
         {
             this.assignmentData = assignmentData;
-            this.serviceRuntimeInfoRedis = serviceRuntimeInfoRedis;
+            this.serviceRuntimeInfoRedis = new ServiceRuntimeInfoRedisRW(server, redisKey);
         }
 
         public async Task<int> AssignServiceId(long targetId)

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Data
 {
     [MessagePackObject]
-    public class MsgUserLogin
+    public class MsgLogin
     {
         [Key(0)]
         public string version;
@@ -27,7 +27,7 @@ namespace Data
     }
 
     [MessagePackObject]
-    public class ResUserLogin
+    public class ResLogin
     {
         [Key(0)]
         public UserInfo userInfo;

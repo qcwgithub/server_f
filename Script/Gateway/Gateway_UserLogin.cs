@@ -4,15 +4,15 @@ using Data;
 
 namespace Script
 {
-    public class Gateway_UserLogin : GatewayHandler<MsgUserLogin, ResUserLogin>
+    public class Gateway_UserLogin : GatewayHandler<MsgLogin, ResLogin>
     {
         public Gateway_UserLogin(Server server, GatewayService service) : base(server, service)
         {
         }
 
-        public override MsgType msgType => MsgType.UserLogin;
+        public override MsgType msgType => MsgType.Login;
 
-        public override async Task<ECode> Handle(IConnection connection, MsgUserLogin msg, ResUserLogin res)
+        public override async Task<ECode> Handle(IConnection connection, MsgLogin msg, ResLogin res)
         {
             var pendingConnection = (PendingSocketConnection)connection;
             ProtocolClientData socket = pendingConnection.socket;
@@ -50,14 +50,15 @@ namespace Script
             }
             else
             {
-                userServiceId = await this.server.userServiceAssignmentResultRedis.GetOwningServiceId(resUM.userId);
+                userServiceId = await this.service.userLocator.GetOwningServiceId(resUM.userId);
                 if (userServiceId == 0)
                 {
-                    userServiceId = await this.service.userServiceAssignment.AssignServiceId(resUM.userId);
+                    userServiceId = await this.service.userLocationAssignmentScript.AssignServiceId(resUM.userId);
                     if (userServiceId == 0)
                     {
                         return ECode.NoAvailableUserService;
                     }
+                    this.service.userLocator.CacheOwningServiceId(resUM.userId, userServiceId, 60);
                 }
             }
 

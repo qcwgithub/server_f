@@ -18,7 +18,7 @@ namespace Script
                 return ECode.RoomNotExist;
             }
 
-            await this.server.roomServiceAssignmentResultRedis.SetOwningServiceId(msg.roomId, this.service.serviceId, this.service.sd.saveIntervalS + 60);
+            await this.server.roomLocationRedisW.SetOwningServiceId(msg.roomId, this.service.serviceId, this.service.sd.saveIntervalS + 60);
 
             var msgDb = new MsgSave_RoomInfo
             {

@@ -90,7 +90,9 @@ namespace Data
         #endregion ?!
 
         ClientStart = 10000,
-        UserLogin = 10001,
+        Login = 10001,
         Kick = 10002,
+        EnterRoom = 10003,
+        LeaveRoom = 10004,
     }
 }

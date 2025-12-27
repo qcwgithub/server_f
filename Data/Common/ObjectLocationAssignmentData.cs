@@ -1,10 +1,10 @@
 namespace Data
 {
-    public class ServiceAssignmentData
+    public class ObjectLocationAssignmentData
     {
         public long lastUpdateS;
         public readonly Dictionary<int, ServiceRuntimeInfo> serviceRuntimeInfoDict;
-        public ServiceAssignmentData()
+        public ObjectLocationAssignmentData()
         {
             this.serviceRuntimeInfoDict = new Dictionary<int, ServiceRuntimeInfo>();
         }

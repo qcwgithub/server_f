@@ -65,7 +65,7 @@ namespace Script
 
         public async Task UpdateRuntimeInfo()
         {
-            await this.server.roomServiceRuntimeInfoRedis.Update(this.CreateRuntimeInfo());
+            await this.server.roomServiceRuntimeInfoRedisW.Update(this.CreateRuntimeInfo());
         }
 
         public async Task CheckUpdateRuntimeInfo()

@@ -17,7 +17,7 @@ namespace Script
         public const long MIN_STAMP = 1;
         public const long MAX_STAMP = (1 << STAMP_BITS) - 1;
 
-        public const long MIN_WORKER_ID = 0;
+        public const long MIN_WORKER_ID = 1; // 其实可以0，但是如果缺少配置也是0，干脆1
         public const long MAX_WORKER_ID = (1 << WORKER_ID_BITS) - 1;
 
         public const long MIN_SEQ = 0;

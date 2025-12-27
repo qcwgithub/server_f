@@ -24,7 +24,8 @@ namespace Data
         }
     
         public int destroyTimeoutS = 600;
-        public readonly ServiceAssignmentData userServiceAllocatorData;
+        public readonly ObjectLocatorData userLocatorData;
+        public readonly ObjectLocationAssignmentData userServiceAllocatorData;
 
         public static readonly List<ServiceType> s_connectToServiceIds = new List<ServiceType>
         {
@@ -37,7 +38,8 @@ namespace Data
             : base(serviceTypeAndId, s_connectToServiceIds)
         {
             this.userDict = new Dictionary<long, GatewayUser>();
-            this.userServiceAllocatorData = new ServiceAssignmentData();
+            this.userLocatorData = new ObjectLocatorData();
+            this.userServiceAllocatorData = new ObjectLocationAssignmentData();
 
             this.LoadConfigs();
         }

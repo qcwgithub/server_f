@@ -21,10 +21,10 @@ namespace Script
         public readonly IMessageSerializer messageSerializer;
         public readonly IMessagePacker messagePacker;
         public readonly PersistenceTaskQueueRedis persistence_taskQueueRedis;
-        public readonly ServiceRuntimeInfoRedis userServiceRuntimeInfoRedis;
-        public readonly ServiceRuntimeInfoRedis roomServiceRuntimeInfoRedis;
-        public readonly ServiceAssignmentResultRedis userServiceAssignmentResultRedis;
-        public readonly ServiceAssignmentResultRedis roomServiceAssignmentResultRedis;
+        public readonly ObjectLocationRedisW userLocationRedisW;
+        public readonly ObjectLocationRedisW roomLocationRedisW;
+        public readonly ServiceRuntimeInfoRedisW userServiceRuntimeInfoRedisW;
+        public readonly ServiceRuntimeInfoRedisW roomServiceRuntimeInfoRedisW;
 
         public Server()
         {
@@ -36,11 +36,11 @@ namespace Script
             this.feiShuMessenger = new FeiShuMessenger(this);
             this.persistence_taskQueueRedis = new PersistenceTaskQueueRedis(this, DbKey.PersistenceTaskQueueList, DbKey.PersistenceTaskQueueSortedSet);
 
-            this.userServiceRuntimeInfoRedis = new ServiceRuntimeInfoRedis(this, CommonKey.UserServiceRuntimeInfos());
-            this.roomServiceRuntimeInfoRedis = new ServiceRuntimeInfoRedis(this, CommonKey.RoomServiceRuntimeInfos());
+            this.userLocationRedisW = new ObjectLocationRedisW(this, UserKey.OwningServiceId);
+            this.roomLocationRedisW = new ObjectLocationRedisW(this, RoomKey.OwningServiceId);
 
-            this.userServiceAssignmentResultRedis = new ServiceAssignmentResultRedis(this, UserKey.OwningServiceId);
-            this.roomServiceAssignmentResultRedis = new ServiceAssignmentResultRedis(this, RoomKey.OwningServiceId);
+            this.userServiceRuntimeInfoRedisW = new ServiceRuntimeInfoRedisW(this, CommonKey.UserServiceRuntimeInfos());
+            this.roomServiceRuntimeInfoRedisW = new ServiceRuntimeInfoRedisW(this, CommonKey.RoomServiceRuntimeInfos());
         }
 
         int seq;
