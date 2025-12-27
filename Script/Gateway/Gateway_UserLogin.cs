@@ -50,15 +50,22 @@ namespace Script
             }
             else
             {
-                userServiceId = await this.service.userLocator.GetOwningServiceId(resUM.userId);
-                if (userServiceId == 0)
+                stObjectLocation location = await this.service.userLocator.GetLocation(resUM.userId);
+                if (location.IsValid())
                 {
-                    userServiceId = await this.service.userLocationAssignmentScript.AssignServiceId(resUM.userId);
-                    if (userServiceId == 0)
+                    userServiceId = location.serviceId;
+                }
+                else
+                {
+                    location = await this.service.userLocationAssignmentScript.AssignLocation(resUM.userId);
+                    if (!location.IsValid())
                     {
                         return ECode.NoAvailableUserService;
                     }
-                    this.service.userLocator.SaveOwningServiceId(resUM.userId, userServiceId, TimeUtils.GetTimeS() + 60);
+
+                    this.service.userLocator.CacheLocation(resUM.userId, location);
+
+                    userServiceId = location.serviceId;
                 }
             }
 

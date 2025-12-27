@@ -2,6 +2,6 @@ namespace Script
 {
     public static class UserKey
     {
-        public static string OwningServiceId(long userId) => "user:" + userId + ":owningServiceId";
+        public static string Location(long userId) => "user:" + userId + ":location";
     }
 }

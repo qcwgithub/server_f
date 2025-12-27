@@ -22,8 +22,8 @@ namespace Script
                 return ECode.Success;
             }
 
-            int serviceId = await this.service.roomLocator.GetOwningServiceId(user.roomId);
-            if (serviceId == 0)
+            stObjectLocation location = await this.service.roomLocator.GetLocation(user.roomId);
+            if (!location.IsValid())
             {
                 return ECode.RoomLocationNotFound;
             }
@@ -32,7 +32,7 @@ namespace Script
             msgR.userId = user.userId;
             msgR.roomId = msg.roomId;
 
-            var r = await this.service.connectToRoomService.Request<MsgRoomUserLeave, ResRoomUserLeave>(serviceId, MsgType._Room_UserLeave, msgR);
+            var r = await this.service.connectToRoomService.Request<MsgRoomUserLeave, ResRoomUserLeave>(location.serviceId, MsgType._Room_UserLeave, msgR);
             if (r.e != ECode.Success)
             {
                 return r.e;

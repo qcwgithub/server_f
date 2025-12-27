@@ -18,11 +18,11 @@ namespace Script
             return this.server.data.redis_db;
         }
 
-        public async Task SetOwningServiceId(long objectId, int owningServiceId, int secondsToLive)
+        public async Task WriteLocation(long objectId, int serviceId, int secondsToLive)
         {
             string key = this.getKeyFunc(objectId);
             long expiry = TimeUtils.GetTimeS() + secondsToLive;
-            string value = $"{owningServiceId},{expiry}";
+            string value = $"{serviceId},{expiry}";
             await GetDb().StringSetAsync(key, value, TimeSpan.FromSeconds(secondsToLive));
         }
     }
@@ -40,19 +40,19 @@ namespace Script
         {
         }
 
-        public async Task<(int, long)> GetOwningServiceIdWithExpiry(long objectId)
+        public async Task<stObjectLocation> GetLocation(long objectId)
         {
             string key = this.getKeyFunc(objectId);
             RedisValue redisValue = await GetDb().StringGetAsync(key);
             if (redisValue.IsNullOrEmpty)
             {
-                return (0, 0);
+                return default;
             }
             string s = redisValue.ToString();
             int dot = s.IndexOf('.');
-            int owningServiceId = int.Parse(s.Substring(0, dot));
+            int serviceId = int.Parse(s.Substring(0, dot));
             long expiry = long.Parse(s.Substring(dot + 1));
-            return (owningServiceId, expiry);
+            return new stObjectLocation { serviceId = serviceId, expiry = expiry };
         }
     }
 }

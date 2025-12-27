@@ -15,8 +15,8 @@ namespace Script
             msg.lockValue = await this.server.lockRedis.LockRoom(msg.roomId, this.service.logger);
             if (msg.lockValue != null)
             {
-                (res.serviceId, res.expiry) = await this.service.roomLocator.GetOwningServiceIdWithExpiry(msg.roomId);
-                if (res.serviceId != 0)
+                res.location = await this.service.roomLocator.GetLocation(msg.roomId);
+                if (res.location.IsValid())
                 {
                     return ECode.Success;
                 }
@@ -32,22 +32,19 @@ namespace Script
                     return ECode.RoomNotExist;
                 }
 
-                res.serviceId = await this.service.roomLocationAssignment.AssignServiceId(roomInfo.roomId);
-                if (res.serviceId == 0)
+                res.location = await this.service.roomLocationAssignment.AssignLocation(roomInfo.roomId);
+                if (!res.location.IsValid())
                 {
                     return ECode.NoAvailableRoomService;
                 }
 
-                res.expiry = TimeUtils.GetTimeS() + 60;
-                this.service.roomLocator.SaveOwningServiceId(roomInfo.roomId, res.serviceId, res.expiry);
+                this.service.roomLocator.CacheLocation(roomInfo.roomId, res.location);
                 return ECode.Success;
             }
             else
             {
-                // Just wait
+                return ECode.Retry;
             }
-
-            return ECode.Success;
         }
 
         public override void PostHandle(IConnection connection, MsgLoadRoom msg, ECode e, ResLoadRoom res)

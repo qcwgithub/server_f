@@ -14,42 +14,36 @@ namespace Script
 
         public static ObjectLocator CreateUserLocator(Server server, Service service, ObjectLocatorData locatorData)
         {
-            return new ObjectLocator(server, service, locatorData, UserKey.OwningServiceId);
+            return new ObjectLocator(server, service, locatorData, UserKey.Location);
         }
 
         public static ObjectLocator CreateRoomLocator(Server server, Service service, ObjectLocatorData locatorData)
         {
-            return new ObjectLocator(server, service, locatorData, RoomKey.OwningServiceId);
+            return new ObjectLocator(server, service, locatorData, RoomKey.Location);
         }
 
-        public async Task<int> GetOwningServiceId(long objectId)
-        {
-            (int serviceId, long expiry) = await this.GetOwningServiceIdWithExpiry(objectId);
-            return serviceId;
-        }
-
-        public async Task<(int, long)> GetOwningServiceIdWithExpiry(long objectId)
+        public async Task<stObjectLocation> GetLocation(long objectId)
         {
             long nowS = TimeUtils.GetTimeS();
-            (int serviceId, long expiry) = this.locatorData.GetOwningServiceIdWithExpiry(objectId, nowS);
-            if (serviceId != 0)
+            stObjectLocation location = this.locatorData.GetLocation(objectId, nowS);
+            if (location.IsValid())
             {
-                return (serviceId, expiry);
+                return location;
             }
 
-            (serviceId, expiry) = await this.locationRedis.GetOwningServiceIdWithExpiry(objectId);
-            if (serviceId == 0)
+            location = await this.locationRedis.GetLocation(objectId);
+            if (!location.IsValid())
             {
-                return (0, 0);
+                return location;
             }
 
-            this.locatorData.Update(objectId, serviceId, expiry);
-            return (serviceId, expiry);
+            this.locatorData.SaveLocation(objectId, location);
+            return location;
         }
 
-        public void SaveOwningServiceId(long objectId, int serviceId, long expiry)
+        public void CacheLocation(long objectId, stObjectLocation location)
         {
-            this.locatorData.Update(objectId, serviceId, expiry);
+            this.locatorData.SaveLocation(objectId, location);
         }
     }
 }

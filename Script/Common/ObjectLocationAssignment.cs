@@ -22,8 +22,10 @@ namespace Script
             return new ObjectLocationAssignment(server, service, assignmentData, CommonKey.RoomServiceRuntimeInfos());
         }
 
-        public async Task<int> AssignServiceId(long targetId)
+        public async Task<stObjectLocation> AssignLocation(long objectId)
         {
+            long nowS = TimeUtils.GetTimeS();
+
             bool needUpdate = false;
             if (this.assignmentData.lastUpdateS == 0)
             {
@@ -31,7 +33,6 @@ namespace Script
             }
             else
             {
-                long nowS = TimeUtils.GetTimeS();
                 if (nowS - this.assignmentData.lastUpdateS >= 60)
                 {
                     needUpdate = true;
@@ -40,7 +41,7 @@ namespace Script
             if (needUpdate)
             {
                 var dict = await this.serviceRuntimeInfoRedis.GetAll();
-                long nowS = TimeUtils.GetTimeS();
+                nowS = TimeUtils.GetTimeS();
                 this.assignmentData.Update(nowS, dict);
             }
 
@@ -63,7 +64,7 @@ namespace Script
                     selected = info;
                 }
             }
-            
+
             int serviceId = 0;
             if (selected != null)
             {
@@ -71,7 +72,7 @@ namespace Script
                 serviceId = selected.serviceId;
             }
 
-            string log = $"Alloc service id for targetId {targetId}, result {serviceId}";
+            string log = $"Alloc service id for objectId {objectId}, result {serviceId}";
             if (serviceId != 0)
             {
                 this.service.logger.Info(log);
@@ -81,7 +82,7 @@ namespace Script
                 this.service.logger.Error(log);
             }
 
-            return serviceId;
+            return new stObjectLocation { serviceId = serviceId, expiry = nowS + 60 };
         }
     }
 }

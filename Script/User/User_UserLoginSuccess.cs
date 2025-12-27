@@ -59,7 +59,7 @@ namespace Script
 
                     user = new User(userInfo);
 
-                    await this.server.userLocationRedisW.SetOwningServiceId(msg.userId, this.service.serviceId, this.service.sd.saveIntervalS + 60);
+                    await this.server.userLocationRedisW.WriteLocation(msg.userId, this.service.serviceId, this.service.sd.saveIntervalS + 60);
 
                     this.AddUserToDict(user);
 

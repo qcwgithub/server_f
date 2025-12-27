@@ -25,15 +25,17 @@ namespace Data
         Server_NotConnected = 46,
         RoomInfoNotExist = 43,
         InvalidChannel = 85,
-        DBErrorAffectedRowCount = 150,
+        DBErrorAffectedRowCount = 86,
 
-        RedisLockFail = 179,
-        MsgProcessing = 227,
+        RedisLockFail = 87,
+        MsgProcessing = 88,
 
-        MonitorRunLoop = 228,
-        NotEnoughCount = 650,
-        RoomLocationNotFound = 651,
-        AlreadyIs = 652,
-        NoAvailableRoomService = 653,
+        MonitorRunLoop = 89,
+        NotEnoughCount = 90,
+        RoomLocationNotFound = 91,
+        AlreadyIs = 92,
+        NoAvailableRoomService = 93,
+        Retry = 94,
+        RetryFailed = 95,
     }
 }

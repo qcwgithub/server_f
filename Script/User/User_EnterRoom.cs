@@ -22,12 +22,12 @@ namespace Script
                 return ECode.Success;
             }
 
-            int serviceId;
+            stObjectLocation location;
             if (user.roomId != 0)
             {
                 // leave first
-                serviceId = await this.service.roomLocator.GetOwningServiceId(user.roomId);
-                if (serviceId == 0)
+                location = await this.service.roomLocator.GetLocation(user.roomId);
+                if (!location.IsValid())
                 {
                     return ECode.RoomLocationNotFound;
                 }
@@ -36,7 +36,7 @@ namespace Script
                 msgLeave.userId = user.userId;
                 msgLeave.roomId = msg.roomId;
 
-                var rLeave = await this.service.connectToRoomService.Request<MsgRoomUserLeave, ResRoomUserLeave>(serviceId, MsgType._Room_UserLeave, msgLeave);
+                var rLeave = await this.service.connectToRoomService.Request<MsgRoomUserLeave, ResRoomUserLeave>(location.serviceId, MsgType._Room_UserLeave, msgLeave);
                 if (rLeave.e != ECode.Success)
                 {
                     return rLeave.e;
@@ -45,29 +45,46 @@ namespace Script
                 user.roomId = 0;
             }
 
-            serviceId = await this.service.roomLocator.GetOwningServiceId(msg.roomId);
-            if (serviceId == 0)
+            location = await this.service.roomLocator.GetLocation(msg.roomId);
+            if (!location.IsValid())
             {
                 var msgLoad = new MsgLoadRoom();
                 msgLoad.roomId = msg.roomId;
 
                 var rLoad = await this.service.connectToRoomManagerService.Request<MsgLoadRoom, ResLoadRoom>(MsgType._RoomManager_LoadRoom, msgLoad);
-                if (rLoad.e != ECode.Success)
+                if (rLoad.e == ECode.Success)
+                {
+                    ResLoadRoom resLoad = rLoad.res;
+                    location = resLoad.location;
+
+                    this.service.roomLocator.CacheLocation(msg.roomId, location);
+                }
+                else if (rLoad.e == ECode.Retry)
+                {
+                    for (int i = 1; i <= 3; i++)
+                    {
+                        // 1, 2, 3 seconds, total 6 seconds
+                        await Task.Delay(i * 1000);
+
+                        location = await this.service.roomLocator.GetLocation(msg.roomId);
+                        if (location.IsValid())
+                        {
+                            break;
+                        }
+                    }
+                    return ECode.RetryFailed;
+                }
+                else
                 {
                     return rLoad.e;
                 }
-
-                ResLoadRoom resLoad = rLoad.res;
-                this.service.roomLocator.SaveOwningServiceId(msg.roomId, resLoad.serviceId, resLoad.expiry);
-
-                serviceId = resLoad.serviceId;
             }
 
             var msgEnter = new MsgRoomUserEnter();
             msgEnter.userId = user.userId;
             msgEnter.roomId = msg.roomId;
 
-            var rEnter = await this.service.connectToRoomService.Request<MsgRoomUserEnter, ResRoomUserEnter>(serviceId, MsgType._Room_UserEnter, msgEnter);
+            var rEnter = await this.service.connectToRoomService.Request<MsgRoomUserEnter, ResRoomUserEnter>(location.serviceId, MsgType._Room_UserEnter, msgEnter);
             if (rEnter.e != ECode.Success)
             {
                 return rEnter.e;

@@ -15,8 +15,6 @@ namespace Data
     public class ResLoadRoom
     {
         [Key(0)]
-        public int serviceId;
-        [Key(1)]
-        public long expiry;
+        public stObjectLocation location;
     }
 }

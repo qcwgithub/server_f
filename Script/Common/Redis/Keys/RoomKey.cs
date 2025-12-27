@@ -2,6 +2,6 @@ namespace Script
 {
     public static class RoomKey
     {
-        public static string OwningServiceId(long roomId) => "room:" + roomId + ":owningServiceId";
+        public static string Location(long roomId) => "room:" + roomId + ":location";
     }
 }

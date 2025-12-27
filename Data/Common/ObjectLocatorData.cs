@@ -1,32 +1,32 @@
 namespace Data
 {
-    public struct ServiceIdAndExpiry
-    {
-        public int serviceId;
-        public long expiry;
-    }
-
     public class ObjectLocatorData
     {
-        public long lastUpdateS;
-        public readonly Dictionary<long, ServiceIdAndExpiry> cache;
+        public readonly Dictionary<long, stObjectLocation> cache;
         public ObjectLocatorData()
         {
-            this.cache = new Dictionary<long, ServiceIdAndExpiry>();
+            this.cache = new Dictionary<long, stObjectLocation>();
         }
 
-        public void Update(long objectId, int serviceId, long expiry)
+        public void SaveLocation(long objectId, stObjectLocation location)
         {
-            this.cache[objectId] = new ServiceIdAndExpiry { serviceId = serviceId, expiry = expiry };
+            this.cache[objectId] = location;
         }
 
-        public (int, long) GetOwningServiceIdWithExpiry(long objectId, long nowS)
+        public stObjectLocation GetLocation(long objectId, long nowS)
         {
-            if (!this.cache.TryGetValue(objectId, out ServiceIdAndExpiry st) || st.expiry < nowS)
+            if (!this.cache.TryGetValue(objectId, out stObjectLocation location))
             {
-                return (0, 0);
+                return default;
             }
-            return (st.serviceId, st.expiry);
+
+            if (location.expiry < nowS)
+            {
+                this.cache.Remove(objectId);
+                return default;
+            }
+
+            return location;
         }
     }
 }

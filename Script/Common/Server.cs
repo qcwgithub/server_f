@@ -36,8 +36,8 @@ namespace Script
             this.feiShuMessenger = new FeiShuMessenger(this);
             this.persistence_taskQueueRedis = new PersistenceTaskQueueRedis(this, DbKey.PersistenceTaskQueueList, DbKey.PersistenceTaskQueueSortedSet);
 
-            this.userLocationRedisW = new ObjectLocationRedisW(this, UserKey.OwningServiceId);
-            this.roomLocationRedisW = new ObjectLocationRedisW(this, RoomKey.OwningServiceId);
+            this.userLocationRedisW = new ObjectLocationRedisW(this, UserKey.Location);
+            this.roomLocationRedisW = new ObjectLocationRedisW(this, RoomKey.Location);
 
             this.userServiceRuntimeInfoRedisW = new ServiceRuntimeInfoRedisW(this, CommonKey.UserServiceRuntimeInfos());
             this.roomServiceRuntimeInfoRedisW = new ServiceRuntimeInfoRedisW(this, CommonKey.RoomServiceRuntimeInfos());
