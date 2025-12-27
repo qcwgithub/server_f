@@ -11,7 +11,7 @@ namespace Script
         public override MsgType msgType => MsgType._Room_SaveRoom;
         public override async Task<ECode> Handle(IConnection connection, MsgSaveRoom msg, ResSaveRoom res)
         {
-            Room? room = this.sd.GetRoom(msg.roomId);
+            Room? room = this.service.sd.GetRoom(msg.roomId);
             if (room == null)
             {
                 this.logger.ErrorFormat("{0} roomId {1}, reason {2}, room == null!!", this.msgType, msg.roomId, msg.reason);

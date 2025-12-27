@@ -32,5 +32,7 @@ namespace Data
 
         MonitorRunLoop = 228,
         NotEnoughCount = 650,
+        RoomLocationNotFound = 651,
+        AlreadyIs = 652,
     }
 }

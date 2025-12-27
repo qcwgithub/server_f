@@ -47,6 +47,8 @@ namespace Data
             ServiceType.Gateway,
         };
 
+        public readonly ObjectLocatorData roomLocatorData;
+
         public UserServiceData(ServiceTypeAndId serviceTypeAndId)
             : base(serviceTypeAndId, s_connectToServiceIds)
         {
@@ -55,6 +57,7 @@ namespace Data
             this.LoadConfigs();
 
             this.allowNewUser = true;
+            this.roomLocatorData = new ObjectLocatorData();
         }
 
         void LoadConfigs()

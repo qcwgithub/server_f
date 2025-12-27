@@ -9,10 +9,5 @@ namespace Script
         protected RoomHandler(Server server, RoomService service) : base(server, service)
         {
         }
-
-
-        public RoomServiceData sd { get { return this.service.sd; } }
-
-        public RoomServiceScript usScript { get { return this.service.ss; } }
     }
 }

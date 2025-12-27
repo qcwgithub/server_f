@@ -45,6 +45,8 @@ namespace Data
         _Room_DestroyRoom = 66,
         _Room_SaveRoom = 67,
         _SaveRoomInfoToFile = 68,
+        _Room_UserEnter = 69,
+        _Room_UserLeave = 70,
 
         #endregion
         _Query_UserInfo_by_userId = 202,
