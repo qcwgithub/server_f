@@ -8,6 +8,7 @@ namespace Script
         {
         }
 
+        // todo duplicate
         public async Task<(ECode, RoomInfo?)> QueryRoomInfo(long roomId)
         {
             var msgDb = new MsgQuery_RoomInfo_by_roomId();

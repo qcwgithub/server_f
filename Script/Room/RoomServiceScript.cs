@@ -10,6 +10,7 @@ namespace Script
         {
         }
 
+        // todo duplicate
         public async Task<(ECode, RoomInfo?)> QueryRoomInfo(long roomId)
         {
             var msgDb = new MsgQuery_RoomInfo_by_roomId();
@@ -82,7 +83,7 @@ namespace Script
             room.destroyTimer = this.server.timerScript.SetTimer(
                 this.service.serviceId,
                 SEC, MsgType._Room_DestroyRoom,
-                new MsgRoomDestroyRoom { roomId = room.roomId, reason = reason});
+                new MsgRoomDestroyRoom { roomId = room.roomId, reason = reason });
         }
 
         public void ClearDestroyTimer(Room room, RoomClearDestroyTimerReason reason)

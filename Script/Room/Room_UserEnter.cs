@@ -14,8 +14,17 @@ namespace Script
             Room? room = this.service.sd.GetRoom(msg.roomId);
             if (room == null)
             {
-                this.logger.ErrorFormat("{0} userId {1} roomId {2}, room == null!", this.msgType, msg.userId, msg.roomId);
-                return ECode.RoomNotExist;
+                // no, should get from room manager,
+                (ECode e, RoomInfo? roomInfo) = await this.service.ss.QueryRoomInfo(msg.roomId);
+                if (e != ECode.Success)
+                {
+                    return e;
+                }
+
+                if (roomInfo == null)
+                {
+                    
+                }
             }
 
             return ECode.Success;
