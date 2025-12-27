@@ -20,9 +20,13 @@ namespace Data
             this.cache[objectId] = new ServiceIdAndExpiry { serviceId = serviceId, expiry = expiry };
         }
 
-        public int GetOwningServiceId(long objectId, long nowS)
+        public (int, long) GetOwningServiceIdWithExpiry(long objectId, long nowS)
         {
-            return (this.cache.TryGetValue(objectId, out ServiceIdAndExpiry st) && st.expiry > nowS) ? st.serviceId : 0;
+            if (!this.cache.TryGetValue(objectId, out ServiceIdAndExpiry st) || st.expiry < nowS)
+            {
+                return (0, 0);
+            }
+            return (st.serviceId, st.expiry);
         }
     }
 }

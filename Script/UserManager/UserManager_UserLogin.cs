@@ -39,7 +39,6 @@ namespace Script
                 return e;
             }
 
-            // 先锁了再往下走
             msg.lockValue = await this.server.lockRedis.LockAccount(msg.channel, msg.channelUserId, this.service.logger);
             if (msg.lockValue == null)
             {

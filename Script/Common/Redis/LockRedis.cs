@@ -32,6 +32,7 @@ namespace Script
             await RedisUtils.Unlock(this.GetDb(), lockKey, lockValue);
         }
 
+        ////
         public async Task<string?> LockAccount(string channel, string channelUserId, log4net.ILog logger)
         {
             string key = LockKey.Account(channel, channelUserId);
@@ -47,6 +48,19 @@ namespace Script
         public async Task<bool> IsForbid(string channelUserId)
         {
             return await this.GetDb().KeyExistsAsync(GAAAKey.ForbidAccount(channelUserId));
+        }
+
+        ////
+        public async Task<string?> LockRoom(long roomId, log4net.ILog logger)
+        {
+            string key = LockKey.Room(roomId);
+            return await RedisUtils.LockOnce(this.GetDb(), key, 60, logger);
+        }
+
+        public async Task UnlockRoom(long roomId, string lockValue)
+        {
+            string key = LockKey.Room(roomId);
+            await RedisUtils.Unlock(this.GetDb(), key, lockValue);
         }
     }
 }

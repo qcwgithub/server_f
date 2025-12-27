@@ -40,7 +40,7 @@ namespace Script
         {
         }
 
-        public async Task<(int, long)> GetOwningServiceId(long objectId)
+        public async Task<(int, long)> GetOwningServiceIdWithExpiry(long objectId)
         {
             string key = this.getKeyFunc(objectId);
             RedisValue redisValue = await GetDb().StringGetAsync(key);

@@ -17,6 +17,8 @@ namespace Script
         public readonly ConnectToGatewayService connectToGatewayService;
         public readonly RoomIdSnowflakeScript roomIdSnowflakeScript;
         public readonly RoomManagerServiceScript ss;
+        public readonly ObjectLocator roomLocator;
+        public readonly ObjectLocationAssignment roomLocationAssignment;
 
         public RoomManagerService(Server server, int serviceId) : base(server, serviceId)
         {
@@ -27,6 +29,8 @@ namespace Script
 
             this.roomIdSnowflakeScript = new RoomIdSnowflakeScript(this.server, this);
             this.ss = new RoomManagerServiceScript(this.server, this);
+            this.roomLocator = ObjectLocator.CreateRoomLocator(this.server, this, this.sd.roomLocatorData);
+            this.roomLocationAssignment = ObjectLocationAssignment.CreateRoomLocationAssignment(this.server, this, this.sd.roomLocationAssignmentData);
         }
 
         public override void Attach()

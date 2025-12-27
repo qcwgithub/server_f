@@ -36,8 +36,8 @@ namespace Script
             this.connectToUserService = new ConnectToUserService(this);
 
             this.ss = new GatewayServiceScript(this.server, this);
-            this.userLocator = new ObjectLocator(this.server, this, this.sd.userLocatorData, UserKey.OwningServiceId);
-            this.userLocationAssignmentScript = new ObjectLocationAssignment(this.server, this, this.sd.userServiceAllocatorData, CommonKey.UserServiceRuntimeInfos());
+            this.userLocator = ObjectLocator.CreateUserLocator(this.server, this, this.sd.userLocatorData);
+            this.userLocationAssignmentScript = ObjectLocationAssignment.CreateUserLocationAssignment(this.server, this, this.sd.userServiceAllocatorData);
         }
 
         public override void Attach()

@@ -6,10 +6,20 @@ namespace Script
     {
         public readonly ObjectLocationAssignmentData assignmentData;
         public readonly ServiceRuntimeInfoRedisRW serviceRuntimeInfoRedis;
-        public ObjectLocationAssignment(Server server, Service service, ObjectLocationAssignmentData assignmentData, string redisKey) : base(server, service)
+        private ObjectLocationAssignment(Server server, Service service, ObjectLocationAssignmentData assignmentData, string redisKey) : base(server, service)
         {
             this.assignmentData = assignmentData;
             this.serviceRuntimeInfoRedis = new ServiceRuntimeInfoRedisRW(server, redisKey);
+        }
+
+        public static ObjectLocationAssignment CreateUserLocationAssignment(Server server, Service service, ObjectLocationAssignmentData assignmentData)
+        {
+            return new ObjectLocationAssignment(server, service, assignmentData, CommonKey.UserServiceRuntimeInfos());
+        }
+
+        public static ObjectLocationAssignment CreateRoomLocationAssignment(Server server, Service service, ObjectLocationAssignmentData assignmentData)
+        {
+            return new ObjectLocationAssignment(server, service, assignmentData, CommonKey.RoomServiceRuntimeInfos());
         }
 
         public async Task<int> AssignServiceId(long targetId)

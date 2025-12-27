@@ -26,7 +26,7 @@ namespace Data
         [Key(8)]
         public string ip;
         [Key(9)]
-        public string? lockValue; // used by UserManager_UserLogin
+        public string? lockValue;
     }
 
     [MessagePackObject]

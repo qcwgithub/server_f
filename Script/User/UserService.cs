@@ -17,6 +17,7 @@ namespace Script
         public readonly ConnectToGlobalService connectToGlobalService;
         public readonly ConnectToGatewayService connectToGatewayService;
         public readonly ConnectToRoomService connectToRoomService;
+        public readonly ConnectToRoomManagerService connectToRoomManagerService;
 
         protected override MessageDispatcher CreateMessageDispatcher()
         {
@@ -33,10 +34,11 @@ namespace Script
             this.AddConnectToOtherService(this.connectToGlobalService = new ConnectToGlobalService(this));
             this.AddConnectToOtherService(this.connectToGatewayService = new ConnectToGatewayService(this));
             this.AddConnectToOtherService(this.connectToRoomService = new ConnectToRoomService(this));
+            this.AddConnectToOtherService(this.connectToRoomManagerService = new ConnectToRoomManagerService(this));
 
             this.ss = new UserServiceScript(this.server, this);
 
-            this.roomLocator = new ObjectLocator(this.server, this, this.sd.roomLocatorData, RoomKey.OwningServiceId);
+            this.roomLocator = ObjectLocator.CreateRoomLocator(this.server, this, this.sd.roomLocatorData);
         }
 
         public override void Attach()

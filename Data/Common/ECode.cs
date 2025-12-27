@@ -34,5 +34,6 @@ namespace Data
         NotEnoughCount = 650,
         RoomLocationNotFound = 651,
         AlreadyIs = 652,
+        NoAvailableRoomService = 653,
     }
 }

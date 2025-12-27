@@ -58,7 +58,7 @@ namespace Script
                     {
                         return ECode.NoAvailableUserService;
                     }
-                    this.service.userLocator.CacheOwningServiceId(resUM.userId, userServiceId, 60);
+                    this.service.userLocator.SaveOwningServiceId(resUM.userId, userServiceId, TimeUtils.GetTimeS() + 60);
                 }
             }
 

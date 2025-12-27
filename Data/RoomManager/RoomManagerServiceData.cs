@@ -8,6 +8,8 @@ namespace Data
         };
 
         public readonly SnowflakeData roomIdSnowflakeData;
+        public readonly ObjectLocatorData roomLocatorData;
+        public readonly ObjectLocationAssignmentData roomLocationAssignmentData;
 
         public RoomManagerServiceData(ServiceTypeAndId serviceTypeAndId)
             : base(serviceTypeAndId, s_connectToServiceIds)
@@ -15,6 +17,8 @@ namespace Data
             this.LoadConfigs(false);
             
             this.roomIdSnowflakeData = new SnowflakeData();
+            this.roomLocatorData = new ObjectLocatorData();
+            this.roomLocationAssignmentData = new ObjectLocationAssignmentData();
         }
 
         public void LoadConfigs(bool isReload)
