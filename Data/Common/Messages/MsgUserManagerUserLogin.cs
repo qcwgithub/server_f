@@ -35,8 +35,12 @@ namespace Data
         [Key(0)]
         public bool isNewUser;
         [Key(1)]
-        public long userId;
+        public UserInfo userInfo;
         [Key(2)]
-        public UserInfo? newUserInfo; // when isNewUser
+        public bool kickOther;
+        [Key(3)]
+        public int delayS;
+        [Key(4)]
+        public int userServiceId;
     }
 }

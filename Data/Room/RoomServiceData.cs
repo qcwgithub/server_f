@@ -44,7 +44,6 @@ namespace Data
         {
             ServiceType.Db,
             ServiceType.Global,
-            ServiceType.Gateway,
         };
 
         public RoomServiceData(ServiceTypeAndId serviceTypeAndId)

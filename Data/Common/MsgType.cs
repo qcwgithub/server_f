@@ -48,6 +48,7 @@ namespace Data
         _Room_UserEnter = 69,
         _Room_UserLeave = 70,
         _RoomManager_LoadRoom = 71,
+        _Room_LoadRoom = 72,
 
         #endregion
         _Query_UserInfo_by_userId = 202,

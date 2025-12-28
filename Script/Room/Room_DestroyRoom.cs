@@ -14,7 +14,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._Room_DestroyRoom;
 
-        public override async Task<ECode> Handle(IConnection connection, MsgRoomDestroyRoom msg, ResRoomDestroyRoom res)
+        protected override async Task<ECode> Handle(ServiceConnection connection, MsgRoomDestroyRoom msg, ResRoomDestroyRoom res)
         {
             var sd = this.service.sd;
 

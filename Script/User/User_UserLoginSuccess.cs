@@ -13,10 +13,6 @@ namespace Script
 
         protected override async Task<ECode> Handle(ServiceConnection connection, MsgUserLoginSuccess msg, ResUserLoginSuccess res)
         {
-            // Gateway
-            var serviceConnection = (ServiceConnection)connection;
-            MyDebug.Assert(serviceConnection.serviceType == ServiceType.Gateway);
-
             string message0 = string.Format("{0} userId {1} preCount {2}", this.msgType, msg.userId, this.service.sd.userCount);
 
             if (this.service.data.state != ServiceState.Started)
@@ -80,11 +76,11 @@ namespace Script
                 return ECode.DelayLogin;
             }
 
-            bool kickOther = this.HandleOldConnection(user, serviceConnection);
+            bool kickOther = this.HandleOldConnection(user, msg.gatewayServiceId);
 
             if (user.connection == null)
             {
-                user.connection = new UserConnection(serviceConnection.serviceId, user, this.service.sd);
+                user.connection = new UserConnection(msg.gatewayServiceId, user, this.service.sd);
             }
 
             this.logger.Info(message0 + ": check ok");
@@ -105,9 +101,9 @@ namespace Script
             return ECode.Success;
         }
 
-        bool HandleOldConnection(User user, ServiceConnection serviceConnection)
+        bool HandleOldConnection(User user, int gatewayServiceId)
         {
-            if (user.connection == null || user.connection.gatewayServiceId == serviceConnection.serviceId)
+            if (user.connection == null || user.connection.gatewayServiceId == gatewayServiceId)
             {
                 return false;
             }
@@ -117,7 +113,7 @@ namespace Script
             // 情况1 同一个客户端意外地登录2次
             // 情况2 客户端A已经登录，B再登录
             this.service.logger.InfoFormat("userId {0} gatewayServiceId {1} old {2}, kick old",
-                user.userId, serviceConnection.serviceId, oldConnection.gatewayServiceId);
+                user.userId, gatewayServiceId, oldConnection.gatewayServiceId);
 
             user.connection = null;
 

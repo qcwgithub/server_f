@@ -13,7 +13,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._UserManager_UserLogin;
 
-        public override async Task<ECode> Handle(IConnection connection, MsgUserManagerUserLogin msg, ResUserManagerUserLogin res)
+        protected override async Task<ECode> Handle(ServiceConnection connection, MsgUserManagerUserLogin msg, ResUserManagerUserLogin res)
         {
             if (!MyChannels.IsValidChannel(msg.channel) || !this.server.data.serverConfig.generalConfig.allowChannels.Contains(msg.channel))
             {
@@ -60,28 +60,70 @@ namespace Script
                 await this.server.accountInfoProxy.Save(accountInfo);
             }
 
+            bool isNewUser;
+            long userId;
+            UserInfo? newUserInfo;
+
             if (accountInfo.userIds.Count == 0)
             {
-                res.isNewUser = true;
-                res.userId = this.service.userIdSnowflakeScript.NextUserId();
-                res.newUserInfo = this.service.ss.NewUserInfo(res.userId);
+                isNewUser = true;
+                userId = this.service.userIdSnowflakeScript.NextUserId();
+                newUserInfo = this.service.ss.NewUserInfo(userId);
 
-                e = await this.service.ss.InsertUserInfo(res.newUserInfo);
+                e = await this.service.ss.InsertUserInfo(newUserInfo);
                 if (e != ECode.Success)
                 {
-                    this.logger.Error($"Create user info {res.userId} e = {e}");
+                    this.logger.Error($"Create user info {userId} e = {e}");
                     return e;
                 }
 
-                this.logger.Info($"Create user info {res.userId} e = {e}");
-                accountInfo.userIds.Add(res.userId);
+                this.logger.Info($"Create user info {userId} e = {e}");
+                accountInfo.userIds.Add(userId);
             }
             else
             {
-                res.isNewUser = false;
-                res.userId = accountInfo.userIds[0];
-                res.newUserInfo = null;
+                isNewUser = false;
+                userId = accountInfo.userIds[0];
+                newUserInfo = null;
             }
+
+            ////
+
+            stObjectLocation location = await this.service.userLocator.GetLocation(userId);
+            if (!location.IsValid())
+            {
+                location = await this.service.userLocationAssignmentScript.AssignLocation(userId);
+                if (!location.IsValid())
+                {
+                    return ECode.NoAvailableUserService;
+                }
+
+                this.service.userLocator.CacheLocation(userId, location);
+            }
+
+            ////
+
+            var msgU = new MsgUserLoginSuccess();
+            msgU.isNewUser = isNewUser;
+            msgU.userId = userId;
+            msgU.newUserInfo = newUserInfo;
+            msgU.gatewayServiceId = connection.serviceId;
+
+            var rU = await this.service.connectFromUserService.Request<MsgUserLoginSuccess, ResUserLoginSuccess>(location.serviceId, MsgType._User_UserLoginSuccess, msgU);
+            if (rU.e != ECode.Success)
+            {
+                return rU.e;
+            }
+
+            ResUserLoginSuccess resU = rU.res;
+
+            ////
+
+            res.isNewUser = isNewUser;
+            res.userInfo = resU.userInfo;
+            res.kickOther = resU.kickOther;
+            res.delayS = resU.delayS;
+            res.userServiceId = location.serviceId;
 
             return ECode.Success;
         }

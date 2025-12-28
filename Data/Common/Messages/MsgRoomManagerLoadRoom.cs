@@ -3,7 +3,7 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class MsgLoadRoom
+    public class MsgRoomManagerLoadRoom
     {
         [Key(0)]
         public long roomId;
@@ -12,7 +12,7 @@ namespace Data
     }
 
     [MessagePackObject]
-    public class ResLoadRoom
+    public class ResRoomManagerLoadRoom
     {
         [Key(0)]
         public stObjectLocation location;

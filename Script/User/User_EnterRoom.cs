@@ -48,13 +48,13 @@ namespace Script
             location = await this.service.roomLocator.GetLocation(msg.roomId);
             if (!location.IsValid())
             {
-                var msgLoad = new MsgLoadRoom();
+                var msgLoad = new MsgRoomManagerLoadRoom();
                 msgLoad.roomId = msg.roomId;
 
-                var rLoad = await this.service.connectToRoomManagerService.Request<MsgLoadRoom, ResLoadRoom>(MsgType._RoomManager_LoadRoom, msgLoad);
+                var rLoad = await this.service.connectToRoomManagerService.Request<MsgRoomManagerLoadRoom, ResRoomManagerLoadRoom>(MsgType._RoomManager_LoadRoom, msgLoad);
                 if (rLoad.e == ECode.Success)
                 {
-                    ResLoadRoom resLoad = rLoad.res;
+                    ResRoomManagerLoadRoom resLoad = rLoad.res;
                     location = resLoad.location;
 
                     this.service.roomLocator.CacheLocation(msg.roomId, location);

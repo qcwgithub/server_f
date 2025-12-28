@@ -30,10 +30,12 @@ namespace Data
     public class ResLogin
     {
         [Key(0)]
-        public UserInfo userInfo;
+        public bool isNewUser;
         [Key(1)]
-        public bool kickOther;
+        public UserInfo userInfo;
         [Key(2)]
+        public bool kickOther;
+        [Key(3)]
         public int delayS;
     }
 }

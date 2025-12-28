@@ -8,6 +8,8 @@ namespace Data
         };
 
         public readonly SnowflakeData userIdSnowflakeData;
+        public readonly ObjectLocatorData userLocatorData;
+        public readonly ObjectLocationAssignmentData userServiceAllocatorData;
 
         public UserManagerServiceData(ServiceTypeAndId serviceTypeAndId)
             : base(serviceTypeAndId, s_connectToServiceIds)
@@ -15,6 +17,8 @@ namespace Data
             this.LoadConfigs(false);
             
             this.userIdSnowflakeData = new SnowflakeData();
+            this.userLocatorData = new ObjectLocatorData();
+            this.userServiceAllocatorData = new ObjectLocationAssignmentData();
         }
 
         public void LoadConfigs(bool isReload)

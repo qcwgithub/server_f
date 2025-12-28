@@ -19,7 +19,7 @@ namespace Script
 
             (AddressFamily family, string ip) = this.GetIp(socket);
 
-            //------------------------------------------------------------------------------
+            ////
 
             var msgUM = new MsgUserManagerUserLogin();
             msgUM.version = msg.version;
@@ -40,65 +40,27 @@ namespace Script
 
             ResUserManagerUserLogin resUM = rUM.res;
 
-            //------------------------------------------------------------------------------
+            ////
 
-            GatewayUser? user = this.service.sd.GetUser(resUM.userId);
-            int userServiceId;
-            if (user != null)
-            {
-                userServiceId = user.userServiceId;
-            }
-            else
-            {
-                stObjectLocation location = await this.service.userLocator.GetLocation(resUM.userId);
-                if (location.IsValid())
-                {
-                    userServiceId = location.serviceId;
-                }
-                else
-                {
-                    location = await this.service.userLocationAssignmentScript.AssignLocation(resUM.userId);
-                    if (!location.IsValid())
-                    {
-                        return ECode.NoAvailableUserService;
-                    }
-
-                    this.service.userLocator.CacheLocation(resUM.userId, location);
-
-                    userServiceId = location.serviceId;
-                }
-            }
-
-            var msgU = new MsgUserLoginSuccess();
-            msgU.isNewUser = resUM.isNewUser;
-            msgU.userId = resUM.userId;
-            msgU.newUserInfo = resUM.newUserInfo;
-
-            var rU = await this.service.connectToUserService.Request<MsgUserLoginSuccess, ResUserLoginSuccess>(userServiceId, MsgType._User_UserLoginSuccess, msgU);
-            if (rU.e != ECode.Success)
-            {
-                return rU.e;
-            }
-
-            ResUserLoginSuccess resU = rU.res;
-
-            //------------------------------------------------------------------------------
-
-            res.userInfo = resU.userInfo;
-            res.kickOther = resU.kickOther;
-            res.delayS = resU.delayS;
-
+            GatewayUser? user = this.service.sd.GetUser(resUM.userInfo.userId);
             if (user != null)
             {
                 this.HandleOldConnection(user);
             }
             else
             {
-                user = new GatewayUser(resUM.userId, userServiceId);
+                user = new GatewayUser(resUM.userInfo.userId, resUM.userServiceId);
                 this.service.sd.AddUser(user);
             }
 
             user.connection = new GatewayUserConnection(socket, user);
+
+            ////
+
+            res.isNewUser = resUM.isNewUser;
+            res.userInfo = resUM.userInfo;
+            res.kickOther = resUM.kickOther;
+            res.delayS = resUM.delayS;
             return ECode.Success;
         }
 

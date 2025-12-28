@@ -12,6 +12,8 @@ namespace Data
         public long userId;
         [Key(2)]
         public UserInfo? newUserInfo; // when isNewUser
+        [Key(3)]
+        public int gatewayServiceId;
     }
 
     [MessagePackObject]

@@ -32,6 +32,7 @@ namespace Data
             ServiceType.Db,
             ServiceType.Global,
             ServiceType.User,
+            ServiceType.UserManager,
         };
 
         public GatewayServiceData(ServiceTypeAndId serviceTypeAndId)
