@@ -12,7 +12,7 @@ namespace Script
         {
         }
 
-        public override async Task<ECode> Handle(IConnection connection, MsgQuery_RoomInfo_by_roomId msg, ResQuery_RoomInfo_by_roomId res)
+        public override async Task<ECode> Handle(MsgContext context, MsgQuery_RoomInfo_by_roomId msg, ResQuery_RoomInfo_by_roomId res)
         {
             // this.service.logger.InfoFormat("{0} roomId: {1}", this.msgType, msg.roomId);
 

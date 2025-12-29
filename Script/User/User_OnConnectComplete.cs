@@ -9,18 +9,13 @@ namespace Script
         {
         }
 
-        public override async Task<ECode> Handle(IConnection connection, MsgOnConnectComplete msg, ResOnConnectComplete res)
+        public override async Task<ECode> Handle(MsgContext context, MsgOnConnectComplete msg, ResOnConnectComplete res)
         {
-            var e = await base.Handle(connection, msg, res);
+            var e = await base.Handle(context, msg, res);
             if (e != ECode.Success)
             {
                 return e;
             }
-
-            // if (serviceTypeAndId.serviceType == ServiceType.Stateless)
-            // {
-            //     await this.service.SendPSInfoToAAA(false, connection);
-            // }
 
             return e;
         }

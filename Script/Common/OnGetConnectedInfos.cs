@@ -10,7 +10,7 @@ namespace Script
         }
 
         public override MsgType msgType => MsgType._GetConnectedInfos;
-        public override async Task<ECode> Handle(IConnection connection, MsgGetConnectedInfos msg, ResGetConnectedInfos res)
+        public override async Task<ECode> Handle(MsgContext context, MsgGetConnectedInfos msg, ResGetConnectedInfos res)
         {
             ServiceData sd = this.service.data;
         

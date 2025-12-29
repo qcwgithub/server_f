@@ -83,7 +83,12 @@ namespace Script
             MyDebug.Assert(user.connection != null);
             MyDebug.Assert(user.connection.gatewayServiceId == serviceConnection.serviceId);
 
-            (ECode e, ArraySegment<byte> resBytes) = await userService.dispatcher.Dispatch(user.connection, msgType, msgBytes2);
+            var context = new MsgContext
+            {
+                connection = serviceConnection,
+                user = user
+            };
+            (ECode e, ArraySegment<byte> resBytes) = await userService.dispatcher.Dispatch(context, msgType, msgBytes2);
             if (reply != null)
             {
                 reply(e, resBytes);

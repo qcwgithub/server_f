@@ -23,7 +23,7 @@ namespace Script
         }
 
         TaskQueueOwnersAssignmentInput? input;
-        public override async Task<ECode> Handle(IConnection connection, MsgPersistence msg, ResPersistence res)
+        public override async Task<ECode> Handle(MsgContext context, MsgPersistence msg, ResPersistence res)
         {
             MyDebug.Assert(!this.persistenceHandling);
             this.persistenceHandling = true;
@@ -176,9 +176,9 @@ namespace Script
             return dirtyElements.Count;
         }
 
-        public override void PostHandle(IConnection collection, MsgPersistence msg, ECode e, ResPersistence res)
+        public override void PostHandle(MsgContext context, MsgPersistence msg, ECode e, ResPersistence res)
         {
-            base.PostHandle(collection, msg, e, res);
+            base.PostHandle(context, msg, e, res);
 
             this.persistenceHandling = false;
         }

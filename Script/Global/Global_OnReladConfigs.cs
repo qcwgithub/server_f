@@ -10,9 +10,9 @@ namespace Script
         {
         }
 
-        public override async Task<ECode> Handle(IConnection connection, MsgReloadConfigs msg, ResReloadConfigs res)
+        public override async Task<ECode> Handle(MsgContext context, MsgReloadConfigs msg, ResReloadConfigs res)
         {
-            ECode e = await base.Handle(connection, msg, res);
+            ECode e = await base.Handle(context, msg, res);
             if (e != ECode.Success)
             {
                 return e;

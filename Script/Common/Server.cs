@@ -187,7 +187,7 @@ namespace Script
 
             foreach (var service in this.services)
             {
-                service.dispatcher.Dispatch<MsgStart, ResStart>(service.data.selfConnection, MsgType._Start, new MsgStart()).Forget();
+                service.dispatcher.Dispatch<MsgStart, ResStart>(default, MsgType._Start, new MsgStart()).Forget();
             }
         }
 
@@ -269,7 +269,7 @@ namespace Script
             {
                 if (service.serviceId == serviceId)
                 {
-                    service.dispatcher.Dispatch<object, object>(service.data.selfConnection, msgType, msg).Forget();
+                    service.dispatcher.Dispatch<object, object>(default, msgType, msg).Forget();
                     found = true;
                     break;
                 }

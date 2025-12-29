@@ -44,7 +44,7 @@ public class Create_Query_XInfo
                 ff.BlockEnd();
                 ff.Push("\n");
 
-                ff.TabPushF("public override async Task<ECode> Handle(IConnection connection, Msg{0} msg, Res{0} res)\n", query.methodName);
+                ff.TabPushF("public override async Task<ECode> Handle(MsgContext context, Msg{0} msg, Res{0} res)\n", query.methodName);
                 ff.BlockStart();
                 {
                     if (query.methodParamExps.Length == 0)

@@ -10,7 +10,7 @@ namespace Script
 
 
         public override MsgType msgType => MsgType._Save_UserInfo;
-        public override async Task<ECode> Handle(IConnection connection, MsgSave_UserInfo msg, ResSave_UserInfo res)
+        public override async Task<ECode> Handle(MsgContext context, MsgSave_UserInfo msg, ResSave_UserInfo res)
         {
             this.service.logger.InfoFormat("{0} userIdId:{1}", this.msgType, msg.userId);
             //MyResponse r = await this.service.table_player.Save(msg.playerId, msg.userInfoNullable);

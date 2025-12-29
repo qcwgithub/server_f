@@ -31,7 +31,7 @@ namespace Script
         }
 
         public List<MsgType> recentMsgTypes = new List<MsgType>();
-        protected virtual ECode BeforeHandle(IConnection connection, MsgType type, object msg)
+        protected virtual ECode BeforeHandle(MsgContext context, MsgType type, object msg)
         {
             if (this.recentMsgTypes.Count > 10000)
             {
@@ -43,7 +43,7 @@ namespace Script
             return ECode.Success;
         }
 
-        protected virtual void AfterHandle(IConnection connection, MsgType type, object msg, ECode e, object res)
+        protected virtual void AfterHandle(MsgContext context, MsgType type, object msg, ECode e, object res)
         {
             if (e != ECode.Success && type.LogErrorIfNotSuccess())
             {
@@ -83,7 +83,7 @@ namespace Script
             return string.Join(", ", list.Select(x => x.Item1.ToString() + "*" + x.Item2));
         }
 
-        public async Task<MyResponse<Res>> Dispatch<Msg, Res>(IConnection connection, MsgType msgType, Msg msg)
+        public async Task<MyResponse<Res>> Dispatch<Msg, Res>(MsgContext context, MsgType msgType, Msg msg)
             where Res : class
         {
             IHandler? handler = this.GetHandler(msgType);
@@ -93,11 +93,11 @@ namespace Script
                 return new MyResponse<Res>(ECode.Error, null);
             }
 
-            (ECode e, object res) = await this.DispatchImpl(connection, handler, msgType, msg);
+            (ECode e, object res) = await this.DispatchImpl(context, handler, msgType, msg);
             return new MyResponse<Res>(e, (Res)res);
         }
 
-        public async Task<(ECode, ArraySegment<byte>)> Dispatch(IConnection connection, MsgType msgType, ArraySegment<byte> msgData)
+        public async Task<(ECode, ArraySegment<byte>)> Dispatch(MsgContext context, MsgType msgType, ArraySegment<byte> msgData)
         {
             IHandler? handler = this.GetHandler(msgType);
             if (handler == null)
@@ -107,23 +107,23 @@ namespace Script
             }
 
             object msg = handler.DeserializeMsg(msgData);
-            (ECode e, object res) = await this.DispatchImpl(connection, handler, msgType, msg);
+            (ECode e, object res) = await this.DispatchImpl(context, handler, msgType, msg);
 
             ArraySegment<byte> resBytes = handler.SerializeRes(res);
             return (e, resBytes);
         }
 
-        protected virtual void BeforePostHandle(IConnection connection, MsgType type, object msg, ECode e, object res)
+        protected virtual void BeforePostHandle(MsgContext context, MsgType type, object msg, ECode e, object res)
         {
 
         }
 
-        protected virtual void AfterPostHandle(IConnection connection, MsgType type, object msg, ECode e, object res)
+        protected virtual void AfterPostHandle(MsgContext context, MsgType type, object msg, ECode e, object res)
         {
 
         }
 
-        protected virtual async Task<(ECode, object)> DispatchImpl(IConnection connection, IHandler handler, MsgType type, object msg)
+        protected virtual async Task<(ECode, object)> DispatchImpl(MsgContext context, IHandler handler, MsgType type, object msg)
         {
             if (this.service.detached)
             {
@@ -150,9 +150,9 @@ namespace Script
 
             try
             {
-                this.BeforeHandle(connection, type, msg);
-                (e, res) = await handler.Handle(connection, msg);
-                this.AfterHandle(connection, type, msg, e, res);
+                this.BeforeHandle(context, type, msg);
+                (e, res) = await handler.Handle(context, msg);
+                this.AfterHandle(context, type, msg, e, res);
             }
             catch (Exception ex)
             {
@@ -163,9 +163,9 @@ namespace Script
             try
             {
                 this.service.data.RemoveFromBusyList(busyIndex);
-                this.BeforePostHandle(connection, type, msg, e, res);
-                (e, res) = handler.PostHandle(connection, msg, e, res);
-                this.AfterPostHandle(connection, type, msg, e, res);
+                this.BeforePostHandle(context, type, msg, e, res);
+                (e, res) = handler.PostHandle(context, msg, e, res);
+                this.AfterPostHandle(context, type, msg, e, res);
                 return (e, res);
             }
             catch (Exception ex)

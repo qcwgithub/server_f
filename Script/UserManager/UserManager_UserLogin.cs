@@ -13,7 +13,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._UserManager_UserLogin;
 
-        protected override async Task<ECode> Handle(ServiceConnection connection, MsgUserManagerUserLogin msg, ResUserManagerUserLogin res)
+        public override async Task<ECode> Handle(MsgContext context, MsgUserManagerUserLogin msg, ResUserManagerUserLogin res)
         {
             if (!MyChannels.IsValidChannel(msg.channel) || !this.server.data.serverConfig.generalConfig.allowChannels.Contains(msg.channel))
             {
@@ -107,7 +107,7 @@ namespace Script
             msgU.isNewUser = isNewUser;
             msgU.userId = userId;
             msgU.newUserInfo = newUserInfo;
-            msgU.gatewayServiceId = connection.serviceId;
+            msgU.gatewayServiceId = (context.connection as ServiceConnection).serviceId;
 
             var rU = await this.service.connectFromUserService.Request<MsgUserLoginSuccess, ResUserLoginSuccess>(location.serviceId, MsgType._User_UserLoginSuccess, msgU);
             if (rU.e != ECode.Success)
@@ -153,7 +153,7 @@ namespace Script
             return accountInfo;
         }
 
-        public override void PostHandle(IConnection connection, MsgUserManagerUserLogin msg, ECode e, ResUserManagerUserLogin res)
+        public override void PostHandle(MsgContext context, MsgUserManagerUserLogin msg, ECode e, ResUserManagerUserLogin res)
         {
             if (msg.lockValue != null)
             {

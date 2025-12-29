@@ -13,16 +13,18 @@ namespace Script
 
         public override MsgType msgType => MsgType._OnConnectComplete;
 
-        public override async Task<ECode> Handle(IConnection connection, MsgOnConnectComplete msg, ResOnConnectComplete res)
+        public override async Task<ECode> Handle(MsgContext context, MsgOnConnectComplete msg, ResOnConnectComplete res)
         {
-            var serviceConnection = (ServiceConnection)connection;
+            if (context.connection is ServiceConnection serviceConnection)
+            {
 
-            this.logger.InfoFormat("{0} connection id: {1}, to: {2}", this.msgType, serviceConnection.GetConnectionId(), serviceConnection.tai.ToString());
+                this.logger.InfoFormat("{0} connection id: {1}, to: {2}", this.msgType, serviceConnection.GetConnectionId(), serviceConnection.tai.ToString());
 
-            // 连上去之后立即向他报告是我的身份
-            var msgInfo = new MsgConnectorInfo();
-            msgInfo.connectorInfo = this.service.CreateConnectorInfo();
-            await connection.Request<MsgConnectorInfo, ResConnectorInfo>(MsgType._ConnectorInfo, msgInfo);
+                // 连上去之后立即向他报告是我的身份
+                var msgInfo = new MsgConnectorInfo();
+                msgInfo.connectorInfo = this.service.CreateConnectorInfo();
+                await serviceConnection.Request<MsgConnectorInfo, ResConnectorInfo>(MsgType._ConnectorInfo, msgInfo);
+            }
 
             return ECode.Success;
         }

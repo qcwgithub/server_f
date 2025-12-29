@@ -8,15 +8,15 @@ namespace Script
         {
         }
 
-        protected override ECode BeforeHandle(IConnection connection, MsgType type, object msg)
+        protected override ECode BeforeHandle(MsgContext context, MsgType type, object msg)
         {
-            ECode e = base.BeforeHandle(connection, type, msg);
+            ECode e = base.BeforeHandle(context, type, msg);
             if (e != ECode.Success)
             {
                 return e;
             }
 
-            if (connection is UserConnection userConnection)
+            if (context.connection is UserConnection userConnection)
             {
                 if (userConnection.msgProcessing != 0 && !type.CanParallel())
                 {
@@ -33,24 +33,24 @@ namespace Script
             return ECode.Success;
         }
 
-        protected override void AfterHandle(IConnection connection, MsgType type, object msg, ECode e, object res)
+        protected override void AfterHandle(MsgContext context, MsgType type, object msg, ECode e, object res)
         {
-            if (connection is UserConnection userConnection &&
+            if (context.connection is UserConnection userConnection &&
                 e != ECode.Success && type.LogErrorIfNotSuccess())
             {
                 this.service.logger.ErrorFormat("{0} userIdId {1} ECode.{2}", type, userConnection.user.userId, e);
             }
             else
             {
-                base.AfterHandle(connection, type, msg, e, res);
+                base.AfterHandle(context, type, msg, e, res);
             }
         }
 
-        protected override void BeforePostHandle(IConnection connection, MsgType type, object msg, ECode e, object res)
+        protected override void BeforePostHandle(MsgContext context, MsgType type, object msg, ECode e, object res)
         {
-            base.BeforePostHandle(connection, type, msg, e, res);
+            base.BeforePostHandle(context, type, msg, e, res);
 
-            if (connection is UserConnection userConnection)
+            if (context.connection is UserConnection userConnection)
             {
                 userConnection.msgProcessing = 0;
             }

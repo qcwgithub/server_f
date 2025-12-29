@@ -10,7 +10,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._SaveUserInfoToFile;
 
-        protected override async Task<ECode> Handle(ServiceConnection connection, MsgSaveUserInfoToFile msg, ResSaveUserInfoToFile res)
+        public override async Task<ECode> Handle(MsgContext context, MsgSaveUserInfoToFile msg, ResSaveUserInfoToFile res)
         {
             UserInfo? userInfo = null;
             User? user = this.service.sd.GetUser(msg.userId);

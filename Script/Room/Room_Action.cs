@@ -10,7 +10,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._ServerAction;
 
-        protected override async Task<ECode> Handle(ServiceConnection connection, MsgRoomServiceAction msg, ResRoomServiceAction res)
+        public override async Task<ECode> Handle(MsgContext context, MsgRoomServiceAction msg, ResRoomServiceAction res)
         {
             this.logger.Info(this.msgType);
             var sd = this.service.sd;

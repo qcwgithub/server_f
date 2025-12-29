@@ -12,10 +12,9 @@ namespace Script
 
         public override MsgType msgType => MsgType.Login;
 
-        public override async Task<ECode> Handle(IConnection connection, MsgLogin msg, ResLogin res)
+        public override async Task<ECode> Handle(MsgContext context, MsgLogin msg, ResLogin res)
         {
-            var pendingConnection = (PendingSocketConnection)connection;
-            ProtocolClientData socket = pendingConnection.socket;
+            ProtocolClientData socket = (context.connection as PendingSocketConnection).socket;
 
             (AddressFamily family, string ip) = this.GetIp(socket);
 

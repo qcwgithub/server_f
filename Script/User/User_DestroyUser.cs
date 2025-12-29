@@ -14,7 +14,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._User_DestroyUser;
 
-        protected override async Task<ECode> Handle(ServiceConnection connection, MsgUserDestroyUser msg, ResUserDestroyUser res)
+        public override async Task<ECode> Handle(MsgContext context, MsgUserDestroyUser msg, ResUserDestroyUser res)
         {
             var sd = this.service.sd;
 

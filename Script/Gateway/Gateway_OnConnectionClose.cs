@@ -8,15 +8,15 @@ namespace Script
         {
         }
 
-        public override async Task<ECode> Handle(IConnection connection, MsgConnectionClose msg, ResConnectionClose res)
+        public override async Task<ECode> Handle(MsgContext context, MsgConnectionClose msg, ResConnectionClose res)
         {
-            await base.Handle(connection, msg);
+            await base.Handle(context, msg);
 
-            if (connection is GatewayUserConnection userConnection)
+            if (context.connection is GatewayUserConnection gatewayUserConnection)
             {
-                GatewayUser user = userConnection.user;
+                GatewayUser user = gatewayUserConnection.user;
 
-                this.service.logger.InfoFormat("{0} userId {1} closeReason {2}", this.msgType, user.userId, userConnection.closeReason);
+                this.service.logger.InfoFormat("{0} userId {1} closeReason {2}", this.msgType, user.userId, gatewayUserConnection.closeReason);
 
                 long nowS = TimeUtils.GetTimeS();
                 user.offlineTimeS = nowS;

@@ -10,7 +10,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._SaveRoomInfoToFile;
 
-        protected override async Task<ECode> Handle(ServiceConnection connection, MsgSaveRoomInfoToFile msg, ResSaveRoomInfoToFile res)
+        public override async Task<ECode> Handle(MsgContext context, MsgSaveRoomInfoToFile msg, ResSaveRoomInfoToFile res)
         {
             RoomInfo? roomInfo = null;
             Room? room = this.service.sd.GetRoom(msg.roomId);

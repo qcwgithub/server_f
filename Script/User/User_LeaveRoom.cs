@@ -9,9 +9,9 @@ namespace Script
         {
         }
 
-        protected override async Task<ECode> Handle(UserConnection connection, MsgLeaveRoom msg, ResLeaveRoom res)
+        public override async Task<ECode> Handle(MsgContext context, MsgLeaveRoom msg, ResLeaveRoom res)
         {
-            User user = connection.user;
+            User user = context.user;
             if (msg.roomId <= 0)
             {
                 return ECode.InvalidParam;

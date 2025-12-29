@@ -53,7 +53,12 @@ namespace Script
                 return;
             }
 
-            (ECode e, ArraySegment<byte> resBytes) = await this.service.dispatcher.Dispatch(connection, msgType, msgBytes);
+            var context = new MsgContext
+            {
+                connection = connection,
+            };
+
+            (ECode e, ArraySegment<byte> resBytes) = await this.service.dispatcher.Dispatch(context, msgType, msgBytes);
             if (reply != null)
             {
                 reply(e, resBytes);
@@ -74,10 +79,13 @@ namespace Script
                 return;
             }
 
-            var connection = (IConnection)data.customData;
+            var context = new MsgContext
+            {
+                connection = (IConnection)data.customData,
+            };
 
             var msg = new MsgOnConnectComplete();
-            this.service.dispatcher.Dispatch<MsgOnConnectComplete, ResOnConnectComplete>(connection, MsgType._OnConnectComplete, msg).Forget();
+            this.service.dispatcher.Dispatch<MsgOnConnectComplete, ResOnConnectComplete>(context, MsgType._OnConnectComplete, msg).Forget();
         }
 
         public virtual void OnCloseComplete(ProtocolClientData data)
@@ -86,11 +94,12 @@ namespace Script
             {
                 return;
             }
-
-            var connection = (IConnection)data.customData;
-
+            var context = new MsgContext
+            {
+                connection = (IConnection)data.customData,
+            };
             var msg = new MsgConnectionClose();
-            this.service.dispatcher.Dispatch<MsgConnectionClose, ResConnectionClose>(connection, MsgType._OnConnectionClose, msg).Forget();
+            this.service.dispatcher.Dispatch<MsgConnectionClose, ResConnectionClose>(context, MsgType._OnConnectionClose, msg).Forget();
         }
     }
 }

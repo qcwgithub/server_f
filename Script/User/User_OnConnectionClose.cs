@@ -8,11 +8,11 @@ namespace Script
         {
         }
 
-        public override async Task<ECode> Handle(IConnection connection, MsgConnectionClose msg, ResConnectionClose res)
+        public override async Task<ECode> Handle(MsgContext context, MsgConnectionClose msg, ResConnectionClose res)
         {
-            await base.Handle(connection, msg);
+            await base.Handle(context, msg);
 
-            if (connection is ServiceConnection serviceConnection &&
+            if (context.connection is ServiceConnection serviceConnection &&
                 serviceConnection.serviceType == ServiceType.Gateway)
             {
                 long nowS = TimeUtils.GetTimeS();

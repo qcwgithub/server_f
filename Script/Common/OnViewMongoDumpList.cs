@@ -14,7 +14,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._ViewMongoDumpList;
 
-        public override async Task<ECode> Handle(IConnection connection, MsgViewMongoDumpList msg, ResViewMongoDumpList res)
+        public override async Task<ECode> Handle(MsgContext context, MsgViewMongoDumpList msg, ResViewMongoDumpList res)
         {
             res.directories = new List<string>();
 

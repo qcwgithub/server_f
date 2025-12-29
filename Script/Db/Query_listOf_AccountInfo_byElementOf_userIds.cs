@@ -12,7 +12,7 @@ namespace Script
         {
         }
 
-        public override async Task<ECode> Handle(IConnection connection, MsgQuery_listOf_AccountInfo_byElementOf_userIds msg, ResQuery_listOf_AccountInfo_byElementOf_userIds res)
+        public override async Task<ECode> Handle(MsgContext context, MsgQuery_listOf_AccountInfo_byElementOf_userIds msg, ResQuery_listOf_AccountInfo_byElementOf_userIds res)
         {
             // this.service.logger.InfoFormat("{0} ele_userIds: {1}", this.msgType, msg.ele_userIds);
 

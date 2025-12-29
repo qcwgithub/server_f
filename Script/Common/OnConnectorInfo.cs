@@ -15,7 +15,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._ConnectorInfo;
 
-        public override async Task<ECode> Handle(IConnection connection, MsgConnectorInfo msg, ResConnectorInfo res)
+        public override async Task<ECode> Handle(MsgContext context, MsgConnectorInfo msg, ResConnectorInfo res)
         {
             ConnectorInfo info = msg.connectorInfo;
             string message = string.Format("{0} ServiceType.{1} serviceId {2} this.service.data.state {3}",
@@ -29,8 +29,7 @@ namespace Script
                 this.service.logger.Error(message);
             }
 
-            var pendingConnection = (PendingSocketConnection)connection;
-            var serviceConnection = new SocketServiceConnection(info.serviceType, info.serviceId, pendingConnection.socket, false);
+            var serviceConnection = new SocketServiceConnection(info.serviceType, info.serviceId, (context.connection as PendingSocketConnection).socket, false);
             this.service.data.SaveOtherServiceConnection(serviceConnection);
 
             return ECode.Success;

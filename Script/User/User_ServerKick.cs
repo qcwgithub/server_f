@@ -11,7 +11,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._User_ServerKick;
 
-        protected override async Task<ECode> Handle(ServiceConnection connection, MsgUserServerKick msg, ResUserServerKick res)
+        public override async Task<ECode> Handle(MsgContext context, MsgUserServerKick msg, ResUserServerKick res)
         {
             User? user = this.service.sd.GetUser(msg.userId);
             if (user == null)

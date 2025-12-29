@@ -2,12 +2,10 @@ using Data;
 
 namespace Script
 {
-    public class ConnectWithUserService
+    public class ConnectWithUserService : ConnectToOtherService
     {
-        protected readonly Service self;
-        public ConnectWithUserService(Service self)
+        public ConnectWithUserService(Service self, ServiceType to) : base(self, to)
         {
-            this.self = self;
         }
 
         // 发送给 UserService 必须指定 serviceId

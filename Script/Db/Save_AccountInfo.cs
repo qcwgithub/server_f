@@ -12,7 +12,7 @@ namespace Script
         {
         }
 
-        public override async Task<ECode> Handle(IConnection connection, MsgSave_AccountInfo msg, ResSave_AccountInfo res)
+        public override async Task<ECode> Handle(MsgContext context, MsgSave_AccountInfo msg, ResSave_AccountInfo res)
         {
             this.service.logger.InfoFormat("{0} channel {1} channelUserId {2}", this.msgType, msg.info.channel, msg.info.channelUserId);
 

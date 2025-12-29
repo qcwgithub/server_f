@@ -11,12 +11,14 @@ namespace Script
 
         public override MsgType msgType => MsgType._RemoteWillShutdown;
 
-        public override async Task<ECode> Handle(IConnection _connection, MsgRemoteWillShutdown msg, ResRemoteWillShutdown res)
+        public override async Task<ECode> Handle(MsgContext context, MsgRemoteWillShutdown msg, ResRemoteWillShutdown res)
         {
-            ServiceConnection connection = (ServiceConnection)_connection;
-            this.service.logger.InfoFormat("{0} {1}", this.msgType, connection.tai);
+            if (context.connection is ServiceConnection serviceConnection)
+            {
+                this.service.logger.InfoFormat("{0} {1}", this.msgType, serviceConnection.tai);
 
-            connection.remoteWillShutdown = true;
+                serviceConnection.remoteWillShutdown = true;
+            }
             return ECode.Success;
         }
     }

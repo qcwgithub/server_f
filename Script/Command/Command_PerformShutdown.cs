@@ -13,7 +13,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._Command_PerformShutdown;
 
-        public override async Task<ECode> Handle(IConnection connection, MsgCommon msg, ResCommon res)
+        public override async Task<ECode> Handle(MsgContext context, MsgCommon msg, ResCommon res)
         {
             int serviceId = (int)msg.GetLong("serviceId");
             int force = (int)msg.GetLong("force");

@@ -11,7 +11,7 @@ namespace Script
 
         public override MsgType msgType { get { return MsgType._User_UserLoginSuccess; } }
 
-        protected override async Task<ECode> Handle(ServiceConnection connection, MsgUserLoginSuccess msg, ResUserLoginSuccess res)
+        public override async Task<ECode> Handle(MsgContext context, MsgUserLoginSuccess msg, ResUserLoginSuccess res)
         {
             string message0 = string.Format("{0} userId {1} preCount {2}", this.msgType, msg.userId, this.service.sd.userCount);
 

@@ -9,7 +9,7 @@ namespace Script
         }
 
         public override MsgType msgType => MsgType._Room_SaveRoom;
-        protected override async Task<ECode> Handle(ServiceConnection connection, MsgSaveRoom msg, ResSaveRoom res)
+        public override async Task<ECode> Handle(MsgContext context, MsgSaveRoom msg, ResSaveRoom res)
         {
             Room? room = this.service.sd.GetRoom(msg.roomId);
             if (room == null)

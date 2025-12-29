@@ -13,7 +13,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._CheckConnections;
 
-        public override async Task<ECode> Handle(IConnection connection, MsgCheckConnections msg, ResCheckConnections res)
+        public override async Task<ECode> Handle(MsgContext context, MsgCheckConnections msg, ResCheckConnections res)
         {
             ServiceData sd = this.service.data;
             if (sd.connectToServiceTypes.Count == 0)
