@@ -25,7 +25,7 @@ namespace Script
                 var msgU = new MsgUserServerKick();
                 msgU.userId = msg.userId;
 
-                var r = await this.service.connectToUserService.Request<MsgUserServerKick, ResUserServerKick>(user.userServiceId, MsgType._User_ServerKick, msgU);
+                var r = await this.service.connectWithUserService.ServerKick(user.userServiceId, msgU);
                 if (r.e != ECode.Success)
                 {
                     return r.e;
@@ -42,7 +42,7 @@ namespace Script
                     flags = msg.logoutSdk ? LogoutFlags.LogoutSdk : LogoutFlags.None,
                 };
 
-                var r = await this.service.connectToSelf.Request<MsgGatewayDestroyUser, ResGatewayDestroyUser>(MsgType._Gateway_DestroyUser, msgD);
+                var r = await this.service.Request<MsgGatewayDestroyUser, ResGatewayDestroyUser>(MsgType._Gateway_DestroyUser, msgD);
                 if (r.e != ECode.Success)
                 {
                     return r.e;

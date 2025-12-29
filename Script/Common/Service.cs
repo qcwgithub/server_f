@@ -8,8 +8,6 @@ namespace Script
         public readonly int serviceId;
         public readonly ServiceData data;
 
-        public readonly ConnectToSelf connectToSelf;
-
         public readonly TcpListenerScript tcpListenerScriptForS;
         public readonly TcpListenerScript tcpListenerScriptForC;
         protected virtual TcpListenerScript CreateTcpListenerScriptForC()
@@ -45,8 +43,6 @@ namespace Script
             this.server = server;
             this.serviceId = serviceId;
             this.data = this.server.data.serviceDatas[this.serviceId];
-
-            this.connectToSelf = new ConnectToSelf(this);
 
             this.tcpListenerScriptForS = new TcpListenerScript(this.server, this, true);
             this.tcpListenerScriptForC = this.CreateTcpListenerScriptForC();
@@ -403,6 +399,11 @@ namespace Script
         {
             this.data.state = s;
             this.logger.Info(s);
+        }
+
+        public async Task<MyResponse<Res>> Request<Msg, Res>(MsgType msgType, Msg msg) where Res : class
+        {
+            return await this.dispatcher.Dispatch<Msg, Res>(default, msgType, msg);
         }
     }
 }

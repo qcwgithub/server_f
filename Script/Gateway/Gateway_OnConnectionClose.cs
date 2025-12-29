@@ -26,8 +26,7 @@ namespace Script
                 var msgU = new MsgUserDisconnectFromGateway();
                 msgU.userId = user.userId;
 
-                var rU = await this.service.connectToUserService.Request<MsgUserDisconnectFromGateway, ResUserDisconnectFromGateway>(
-                    user.userServiceId, MsgType._User_UserDisconnectFromGateway, msgU);
+                await this.service.connectWithUserService.DisconnectFromGateway(user.userServiceId, msgU);
                 return ECode.Success;
             }
 

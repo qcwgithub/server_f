@@ -32,7 +32,7 @@ namespace Script
             msgR.userId = user.userId;
             msgR.roomId = msg.roomId;
 
-            var r = await this.service.connectToRoomService.Request<MsgRoomUserLeave, ResRoomUserLeave>(location.serviceId, MsgType._Room_UserLeave, msgR);
+            var r = await this.service.connectToRoomService.UserLeave(location.serviceId, msgR);
             if (r.e != ECode.Success)
             {
                 return r.e;

@@ -13,7 +13,7 @@ namespace Script
         }
 
         public readonly ConnectToUserManagerService connectToUserManagerService;
-        public readonly ConnectToUserService connectToUserService;
+        public readonly ConnectWithUserService connectWithUserService;
         protected override TcpListenerScript CreateTcpListenerScriptForC()
         {
             return new TcpListenerScript(this.server, this, false);
@@ -33,7 +33,7 @@ namespace Script
         public GatewayService(Server server, int serviceId) : base(server, serviceId)
         {
             this.connectToUserManagerService = new ConnectToUserManagerService(this);
-            this.connectToUserService = new ConnectToUserService(this);
+            this.connectWithUserService = new ConnectToUserService(this);
 
             this.ss = new GatewayServiceScript(this.server, this);
             this.userLocator = ObjectLocator.CreateUserLocator(this.server, this, this.sd.userLocatorData);

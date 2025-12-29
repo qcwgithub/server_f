@@ -48,7 +48,7 @@ namespace Script
                     var msgD = new MsgUserDestroyUser();
                     msgD.userId = userId;
                     msgD.reason = UserDestroyUserReason.Shutdown;
-                    tasks.Add(this.service.connectToSelf.Request<MsgUserDestroyUser, ResUserDestroyUser>(MsgType._User_DestroyUser, msgD));
+                    tasks.Add(this.service.Request<MsgUserDestroyUser, ResUserDestroyUser>(MsgType._User_DestroyUser, msgD));
                 }
 
                 await Task.WhenAll(tasks);

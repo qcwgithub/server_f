@@ -31,7 +31,7 @@ namespace Script
             msgUM.addressFamily = family.ToString();
             msgUM.ip = ip;
 
-            var rUM = await this.service.connectToUserManagerService.Request<MsgUserManagerUserLogin, ResUserManagerUserLogin>(MsgType._UserManager_UserLogin, msgUM);
+            var rUM = await this.service.connectToUserManagerService.UserLogin(msgUM);
             if (rUM.e != ECode.Success)
             {
                 return rUM.e;

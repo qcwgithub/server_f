@@ -8,5 +8,10 @@ namespace Script
         {
 
         }
+
+        public async Task<MyResponse<ResRoomManagerLoadRoom>> LoadRoom(MsgRoomManagerLoadRoom msg)
+        {
+            return await this.Request<MsgRoomManagerLoadRoom, ResRoomManagerLoadRoom>(MsgType._RoomManager_LoadRoom, msg);
+        }
     }
 }

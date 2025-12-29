@@ -20,5 +20,20 @@ namespace Script
 
             return await connection.Request<Msg, Res>(msgType, msg);
         }
+
+        public async Task<MyResponse<ResUserLoginSuccess>> UserLoginSuccess(int serviceId, MsgUserLoginSuccess msg)
+        {
+            return await this.Request<MsgUserLoginSuccess, ResUserLoginSuccess>(serviceId, MsgType._User_UserLoginSuccess, msg);
+        }
+
+        public async Task<MyResponse<ResUserDisconnectFromGateway>> DisconnectFromGateway(int serviceId, MsgUserDisconnectFromGateway msg)
+        {
+            return await this.Request<MsgUserDisconnectFromGateway, ResUserDisconnectFromGateway>(serviceId, MsgType._User_UserDisconnectFromGateway, msg);
+        }
+
+        public async Task<MyResponse<ResUserServerKick>> ServerKick(int serviceId, MsgUserServerKick msg)
+        {
+            return await this.Request<MsgUserServerKick, ResUserServerKick>(serviceId, MsgType._User_ServerKick, msg);
+        }
     }
 }

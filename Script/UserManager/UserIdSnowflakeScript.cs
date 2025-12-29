@@ -12,7 +12,7 @@ namespace Script
         {
             var msgDb = new MsgQuery_UserInfo_maxOf_userId();
 
-            var r = await this.service.connectToDbService.Request<MsgQuery_UserInfo_maxOf_userId, ResQuery_UserInfo_maxOf_userId>(MsgType._Query_UserInfo_maxOf_userId, msgDb);
+            var r = await this.service.connectToDbService.Query_UserInfo_maxOf_userId(msgDb);
             if (r.e != ECode.Success)
             {
                 this.service.logger.Error($"InitSnowflakeData r.e {r.e}");

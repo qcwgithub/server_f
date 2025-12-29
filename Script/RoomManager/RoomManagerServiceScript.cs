@@ -13,7 +13,7 @@ namespace Script
             var msgDb = new MsgInsert_RoomInfo();
             msgDb.roomInfo = roomInfo;
 
-            var r = await this.service.connectToDbService.Request<MsgInsert_RoomInfo, ResInsert_RoomInfo>(MsgType._Insert_RoomInfo, msgDb);
+            var r = await this.service.connectToDbService.Insert_RoomInfo(msgDb);
             if (r.e != ECode.Success)
             {
                 this.service.logger.Error($"InsertRoomInfo({roomInfo.roomId}) r.e {r.e}");

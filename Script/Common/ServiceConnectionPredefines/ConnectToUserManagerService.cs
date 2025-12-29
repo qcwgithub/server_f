@@ -8,5 +8,10 @@ namespace Script
         {
 
         }
+
+        public async Task<MyResponse<ResUserManagerUserLogin>> UserLogin(MsgUserManagerUserLogin msg)
+        {
+            return await this.Request<MsgUserManagerUserLogin, ResUserManagerUserLogin>(MsgType._UserManager_UserLogin, msg);
+        }
     }
 }

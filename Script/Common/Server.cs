@@ -309,7 +309,7 @@ namespace Script
                 msgShutdown.force = false;
                 foreach (var baseService in allServices)
                 {
-                    await baseService.connectToSelf.Request<MsgShutdown, ResShutdown>(MsgType._Shutdown, msgShutdown);
+                    await baseService.Request<MsgShutdown, ResShutdown>(MsgType._Shutdown, msgShutdown);
                     await Task.Delay(100);
                 }
             }

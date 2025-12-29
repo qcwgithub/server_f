@@ -8,5 +8,10 @@ namespace Script
         {
 
         }
+
+        public async Task<MyResponse<ResRoomUserLeave>> UserLeave(int serviceId, MsgRoomUserLeave msg)
+        {
+            return await this.Request<MsgRoomUserLeave, ResRoomUserLeave>(serviceId, MsgType._Room_UserLeave, msg);
+        }
     }
 }

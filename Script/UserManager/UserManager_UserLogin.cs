@@ -109,7 +109,7 @@ namespace Script
             msgU.newUserInfo = newUserInfo;
             msgU.gatewayServiceId = (context.connection as ServiceConnection).serviceId;
 
-            var rU = await this.service.connectFromUserService.Request<MsgUserLoginSuccess, ResUserLoginSuccess>(location.serviceId, MsgType._User_UserLoginSuccess, msgU);
+            var rU = await this.service.connectFromUserService.UserLoginSuccess(location.serviceId, msgU);
             if (rU.e != ECode.Success)
             {
                 return rU.e;

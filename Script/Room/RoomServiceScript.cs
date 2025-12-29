@@ -10,13 +10,12 @@ namespace Script
         {
         }
 
-        // todo duplicate
         public async Task<(ECode, RoomInfo?)> QueryRoomInfo(long roomId)
         {
             var msgDb = new MsgQuery_RoomInfo_by_roomId();
             msgDb.roomId = roomId;
 
-            var r = await this.service.connectToDbService.Request<MsgQuery_RoomInfo_by_roomId, ResQuery_RoomInfo_by_roomId>(MsgType._Query_RoomInfo_by_roomId, msgDb);
+            var r = await this.service.connectToDbService.Query_RoomInfo_by_roomId(msgDb);
             if (r.e != ECode.Success)
             {
                 this.service.logger.Error($"QueryRoomInfo({roomId}) r.err {r.e}");

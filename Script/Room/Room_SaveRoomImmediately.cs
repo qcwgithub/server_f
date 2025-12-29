@@ -13,7 +13,7 @@ namespace Script
 
         public override async Task<ECode> Handle(MsgContext context, MsgSaveRoom msg, ResSaveRoom res)
         {
-            var r = await this.service.connectToSelf.Request<MsgSaveRoom, ResSaveRoom>(MsgType._Room_SaveRoom, msg);
+            var r = await this.service.Request<MsgSaveRoom, ResSaveRoom>(MsgType._Room_SaveRoom, msg);
             return r.e;
         }
     }

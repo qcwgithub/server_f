@@ -36,7 +36,7 @@ namespace Script
             msgSave.roomId = msg.roomId;
             msgSave.reason = "Room_DestroyRoom";
 
-            var r = await this.service.connectToSelf.Request<MsgSaveRoom, ResSaveRoom>(MsgType._Room_SaveRoom, msgSave);
+            var r = await this.service.Request<MsgSaveRoom, ResSaveRoom>(MsgType._Room_SaveRoom, msgSave);
             if (r.e != ECode.Success)
             {
                 return r.e;

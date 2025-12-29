@@ -24,7 +24,7 @@ namespace Script
             msgD.userId = msg.userId;
             msgD.reason = UserDestroyUserReason.ServerKick;
 
-            var r = await this.service.connectToSelf.Request<MsgUserDestroyUser, ResUserDestroyUser>(MsgType._User_DestroyUser, msgD);
+            var r = await this.service.Request<MsgUserDestroyUser, ResUserDestroyUser>(MsgType._User_DestroyUser, msgD);
             if (r.e != ECode.Success)
             {
                 return r.e;

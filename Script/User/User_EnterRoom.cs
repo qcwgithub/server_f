@@ -36,7 +36,7 @@ namespace Script
                 msgLeave.userId = user.userId;
                 msgLeave.roomId = msg.roomId;
 
-                var rLeave = await this.service.connectToRoomService.Request<MsgRoomUserLeave, ResRoomUserLeave>(location.serviceId, MsgType._Room_UserLeave, msgLeave);
+                var rLeave = await this.service.connectToRoomService.UserLeave(location.serviceId, msgLeave);
                 if (rLeave.e != ECode.Success)
                 {
                     return rLeave.e;
@@ -51,7 +51,7 @@ namespace Script
                 var msgLoad = new MsgRoomManagerLoadRoom();
                 msgLoad.roomId = msg.roomId;
 
-                var rLoad = await this.service.connectToRoomManagerService.Request<MsgRoomManagerLoadRoom, ResRoomManagerLoadRoom>(MsgType._RoomManager_LoadRoom, msgLoad);
+                var rLoad = await this.service.connectToRoomManagerService.LoadRoom(msgLoad);
                 if (rLoad.e == ECode.Success)
                 {
                     ResRoomManagerLoadRoom resLoad = rLoad.res;
