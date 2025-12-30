@@ -169,16 +169,19 @@ namespace CodeGen
             var argMap = ParseArguments(args);
             var action = argMap["action"];
 
-            if (action.Contains("ServerData"))
+            if (action.Contains("XInfo"))
             {
-                ServerDataProgram.Do();
+                XInfoProgram.Main();
             }
 
-            if (action.Contains("xinfo"))
+            if (action.Contains("ServerData"))
             {
-                Console.Write(">>>> Gen XInfo...");
-                XInfoProgram.Do();
-                Console.WriteLine("Done");
+                ServerDataProgram.Main();
+            }
+
+            if (action.Contains("Message"))
+            {
+                MessageProgram.Main();
             }
 
             if (action.Contains("messagePack"))

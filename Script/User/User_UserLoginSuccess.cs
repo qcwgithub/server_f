@@ -2,8 +2,7 @@ using Data;
 
 namespace Script
 {
-    // <- Gateway
-    public class User_UserLoginSuccess : User_ServerHandler<MsgUserLoginSuccess, ResUserLoginSuccess>
+    public class User_UserLoginSuccess : UserHandler<MsgUserLoginSuccess, ResUserLoginSuccess>
     {
         public User_UserLoginSuccess(Server server, UserService service) : base(server, service)
         {

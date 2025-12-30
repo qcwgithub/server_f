@@ -92,7 +92,7 @@ public class XInfoProgram
         return info;
     }
 
-    static void Do2()
+    public static void Main()
     {
         Script.CsvHelper helper = Script.CsvUtils.Parse(CodeGen.Program.ReadAllText("CodeGen/XInfoConfig.csv"));
 
@@ -198,10 +198,5 @@ namespace Data
                 DoXInfoStuff(xinfoConfig);
             }
         }
-    }
-
-    public static void Do()
-    {
-        Do2();
     }
 }

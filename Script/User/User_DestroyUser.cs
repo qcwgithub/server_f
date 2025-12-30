@@ -5,7 +5,7 @@ using Data;
 
 namespace Script
 {
-    public class User_DestroyUser : User_ServerHandler<MsgUserDestroyUser, ResUserDestroyUser>
+    public class User_DestroyUser : UserHandler<MsgUserDestroyUser, ResUserDestroyUser>
     {
         public User_DestroyUser(Server server, UserService service) : base(server, service)
         {

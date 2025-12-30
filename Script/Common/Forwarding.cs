@@ -66,7 +66,7 @@ namespace Script
         }
 
         // S:<-G<-C
-        public static async Task<bool> TryReceiveClientMessageFromGateway(UserService userService, ServiceConnection serviceConnection, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback reply)
+        public static async Task<bool> TryReceiveClientMessageFromGateway(UserService userService, ServiceConnection serviceConnection, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback? reply)
         {
             if (!msgType.IsClient() ||
                 serviceConnection.serviceType != ServiceType.Gateway)

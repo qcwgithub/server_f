@@ -16,7 +16,7 @@ namespace Script
             }
         }
 
-        public override async void ReceiveFromNetwork(ProtocolClientData data, int seq, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback reply)
+        public override async void ReceiveFromNetwork(ProtocolClientData data, int seq, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback? reply)
         {
             ServiceConnection? serviceConnection = data.customData as ServiceConnection;
             if (serviceConnection == null)

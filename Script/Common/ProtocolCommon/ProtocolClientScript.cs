@@ -65,7 +65,7 @@ namespace Script
             }
         }
 
-        public virtual void OnConnectComplete(ProtocolClientData data, bool success)
+        public void OnConnectComplete(ProtocolClientData data, bool success)
         {
             if (!success)
             {
@@ -88,7 +88,7 @@ namespace Script
             this.service.dispatcher.Dispatch<MsgOnConnectComplete, ResOnConnectComplete>(context, MsgType._OnConnectComplete, msg).Forget();
         }
 
-        public virtual void OnCloseComplete(ProtocolClientData data)
+        public void OnCloseComplete(ProtocolClientData data)
         {
             if (data.customData == null)
             {

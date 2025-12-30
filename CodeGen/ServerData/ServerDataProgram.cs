@@ -178,7 +178,7 @@ public class ServerDataProgram
 
         return list;
     }
-    public static void Do()
+    public static void Main()
     {
         var copyConfigDict = new Dictionary<string, ServerDataCopyConfig>();
 

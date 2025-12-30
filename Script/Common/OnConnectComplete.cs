@@ -17,7 +17,6 @@ namespace Script
         {
             if (context.connection is ServiceConnection serviceConnection)
             {
-
                 this.logger.InfoFormat("{0} connection id: {1}, to: {2}", this.msgType, serviceConnection.GetConnectionId(), serviceConnection.tai.ToString());
 
                 // 连上去之后立即向他报告是我的身份
