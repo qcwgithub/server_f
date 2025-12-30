@@ -1,6 +1,6 @@
 public class MessageProgram
 {
-    public static void Main()
+    public static void MainX()
     {
         Script.CsvHelper helper = Script.CsvUtils.Parse(CodeGen.Program.ReadAllText("CodeGen/MessageConfig.csv"));
         var list = new List<MessageConfig>();
@@ -13,5 +13,7 @@ public class MessageProgram
             c.res = helper.ReadString("res");
             list.Add(c);
         }
+
+        Create_MsgType_cs.Create(list);
     }
 }

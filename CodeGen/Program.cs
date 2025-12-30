@@ -171,17 +171,17 @@ namespace CodeGen
 
             if (action.Contains("XInfo"))
             {
-                XInfoProgram.Main();
+                XInfoProgram.MainX();
             }
 
             if (action.Contains("ServerData"))
             {
-                ServerDataProgram.Main();
+                ServerDataProgram.MainX();
             }
 
             if (action.Contains("Message"))
             {
-                MessageProgram.Main();
+                MessageProgram.MainX();
             }
 
             if (action.Contains("messagePack"))

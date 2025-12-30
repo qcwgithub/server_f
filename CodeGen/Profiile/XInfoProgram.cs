@@ -92,7 +92,7 @@ public class XInfoProgram
         return info;
     }
 
-    public static void Main()
+    public static void MainX()
     {
         Script.CsvHelper helper = Script.CsvUtils.Parse(CodeGen.Program.ReadAllText("CodeGen/XInfoConfig.csv"));
 

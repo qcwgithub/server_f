@@ -339,7 +339,7 @@ namespace Script
                                 msg.saveIntervalS = i;
                             }
 
-                            var r = await this.service.commandConnectToOtherService.Request<MsgUserServiceAction, ResUserServiceAction>(serviceId, MsgType._ServerAction, msg);
+                            var r = await this.service.commandConnectToOtherService.Request<MsgUserServiceAction, ResUserServiceAction>(serviceId, MsgType._User_ServerAction, msg);
                             e = r.e;
                         }
                         break;
@@ -353,7 +353,7 @@ namespace Script
                                 msg.destroyTimeoutS = i;
                             }
 
-                            var r = await this.service.commandConnectToOtherService.Request<MsgGatewayServiceAction, ResGatewayServiceAction>(serviceId, MsgType._ServerAction, msg);
+                            var r = await this.service.commandConnectToOtherService.Request<MsgGatewayServiceAction, ResGatewayServiceAction>(serviceId, MsgType._Gateway_ServerAction, msg);
                             e = r.e;
                         }
                         break;

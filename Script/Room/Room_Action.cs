@@ -8,7 +8,7 @@ namespace Script
         {
         }
 
-        public override MsgType msgType => MsgType._ServerAction;
+        public override MsgType msgType => MsgType._Room_ServerAction;
 
         public override async Task<ECode> Handle(MsgContext context, MsgRoomServiceAction msg, ResRoomServiceAction res)
         {
