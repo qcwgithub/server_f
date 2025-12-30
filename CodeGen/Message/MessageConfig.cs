@@ -4,4 +4,5 @@ public class MessageConfig
     public int value;
     public string msg;
     public string res;
+    public string queue; // MsgQueue
 }

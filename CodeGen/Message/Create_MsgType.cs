@@ -1,4 +1,4 @@
-public class Create_MsgType_cs
+public class Create_MsgType
 {
     public static void Create(List<MessageConfig> configs)
     {

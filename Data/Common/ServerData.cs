@@ -39,6 +39,7 @@ namespace Data
         public readonly List<ServiceTypeAndId> serviceTypeAndIds;
         public readonly TimerSData timerSData;
         public Random random = new Random();
+        public readonly MsgConfigData msgConfigData;
 
         public ServerConfig.MongoDBConfig mongoDBConfig => this.serverConfig.mongoDBConfig;
 
@@ -200,6 +201,7 @@ namespace Data
             //-----------------------------------------------------
 
             this.ioThread = new IOThread();
+            this.msgConfigData = new MsgConfigData();
 
             // Console.WriteLine(this.redis.GetServer().Version);
             this.InitShutdownServiceOrder();

@@ -11,9 +11,11 @@ public class MessageProgram
             c.value = helper.ReadInt("value");
             c.msg = helper.ReadString("msg");
             c.res = helper.ReadString("res");
+            c.queue = helper.ReadString("queue");
             list.Add(c);
         }
 
-        Create_MsgType_cs.Create(list);
+        Create_MsgType.Create(list);
+        Create_MsgConfigData.Create(list);
     }
 }
