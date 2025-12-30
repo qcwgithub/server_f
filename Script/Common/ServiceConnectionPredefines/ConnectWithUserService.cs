@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    public class ConnectWithUserService : ConnectToOtherService
+    public abstract class ConnectWithUserService : ConnectToOtherService
     {
         public ConnectWithUserService(Service self, ServiceType to) : base(self, to)
         {
@@ -34,6 +34,23 @@ namespace Script
         public async Task<MyResponse<ResUserServerKick>> ServerKick(int serviceId, MsgUserServerKick msg)
         {
             return await this.Request<MsgUserServerKick, ResUserServerKick>(serviceId, MsgType._User_ServerKick, msg);
+        }
+    }
+
+    public class ConnectToUserService : ConnectWithUserService
+    {
+        public ConnectToUserService(Service self) : base(self, ServiceType.User)
+        {
+            MyDebug.Assert(self.data.connectToServiceTypes.Contains(ServiceType.User));
+        }
+    }
+    
+    public class ConnectFromUserService : ConnectWithUserService
+    {
+        public ConnectFromUserService(Service self) : base(self, ServiceType.User)
+        {
+            // 必须是 User 有连接他的
+            MyDebug.Assert(UserServiceData.s_connectToServiceIds.Contains(self.data.serviceType));
         }
     }
 }
