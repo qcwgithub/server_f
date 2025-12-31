@@ -19,18 +19,6 @@ namespace Script
 
         public abstract MsgType msgType { get; }
 
-        public object DeserializeMsg(ArraySegment<byte> msg)
-        {
-            Msg m = this.server.messageSerializer.Deserialize<Msg>(msg);
-            return m;
-        }
-
-        public ArraySegment<byte> SerializeRes(object res)
-        {
-            byte[] bytes = this.server.messageSerializer.Serialize<Res>((Res)res);
-            return new ArraySegment<byte>(bytes);
-        }
-
         public async Task<(ECode, object)> Handle(MessageContext context, object msg)
         {
             Res res = new Res();
