@@ -60,7 +60,7 @@ public class Create_MessageConfigData
             deserializeMsg.AddTab(1);
             if (!string.IsNullOrEmpty(config.msg))
             {
-                deserializeMsg.TabPushF("return MessagePackSerializer.Deserialize<{0}>(msg);\n", config.msg);
+                deserializeMsg.TabPushF("return MessagePackSerializer.Deserialize<{0}>(msgBytes);\n", config.msg);
             }
             else
             {
@@ -98,7 +98,7 @@ public class Create_MessageConfigData
             deserializeRes.AddTab(1);
             if (!string.IsNullOrEmpty(config.msg))
             {
-                deserializeRes.TabPushF("return MessagePackSerializer.Deserialize<{0}>(res);\n", config.res);
+                deserializeRes.TabPushF("return MessagePackSerializer.Deserialize<{0}>(resBytes);\n", config.res);
             }
             else
             {

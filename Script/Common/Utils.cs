@@ -1,20 +1,9 @@
 using Data;
-using MessagePack;
 
 namespace Script
 {
     public static class Utils
     {
-        public static byte[] Serialize<T>(T msg)
-        {
-            return MessagePackSerializer.Serialize<T>(msg);
-        }
-
-        public static T Deserialize<T>(ArraySegment<byte> msg)
-        {
-            return MessagePackSerializer.Deserialize<T>(msg);
-        }
-
         public static async Task<MyResponse> Request(this IConnection connection, MsgType msgType, byte[] msgBytes)
         {
             var cs = new TaskCompletionSource<(ECode, ArraySegment<byte>)>();
@@ -29,9 +18,9 @@ namespace Script
             },
             pTimeoutS: null);
     
-            (ECode e, ArraySegment<byte> segment) = await cs.Task;
+            (ECode e, ArraySegment<byte> resSegment) = await cs.Task;
 
-            object res = MessageConfigData.DeserializeRes(msgType, segment);
+            object res = MessageConfigData.DeserializeRes(msgType, resSegment);
             return new MyResponse(e, res);
         }
 
