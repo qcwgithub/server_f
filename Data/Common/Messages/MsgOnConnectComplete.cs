@@ -3,13 +3,11 @@ using MessagePack;
 
 namespace Data
 {
-    [MessagePackObject]
     public class MsgOnConnectComplete
     {
-
+        public IConnection connection;
     }
 
-    [MessagePackObject]
     public class ResOnConnectComplete
     {
         

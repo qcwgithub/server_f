@@ -3,7 +3,7 @@ using Data;
 
 namespace Script
 {
-    public class OnConnectionClose<S> : Handler<S, MsgConnectionClose, ResConnectionClose>
+    public class OnConnectionClose<S> : Handler<S, MsgOnConnectionClose, ResOnConnectionClose>
         where S : Service
     {
         public OnConnectionClose(Server server, S service) : base(server, service)
@@ -12,7 +12,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._Service_OnConnectionClose;
 
-        public override async Task<ECode> Handle(MessageContext context, MsgConnectionClose msg, ResConnectionClose res)
+        public override async Task<ECode> Handle(MessageContext context, MsgOnConnectionClose msg, ResOnConnectionClose res)
         {
             if (context.connection is ServiceConnection serviceConnection)
             {

@@ -187,7 +187,7 @@ namespace Script
 
             foreach (var service in this.services)
             {
-                service.dispatcher.Dispatch<MsgStart, ResStart>(default, MsgType._Service_Start, new MsgStart()).Forget();
+                service.Start(new MsgStart()).Forget();
             }
         }
 

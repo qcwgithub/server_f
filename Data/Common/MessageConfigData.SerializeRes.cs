@@ -20,7 +20,7 @@ namespace Data
                     return MessagePackSerializer.Serialize<MsgOnConnectComplete>((MsgOnConnectComplete)res);
 
                 case MsgType._Service_OnConnectionClose:
-                    return MessagePackSerializer.Serialize<MsgConnectionClose>((MsgConnectionClose)res);
+                    return MessagePackSerializer.Serialize<MsgOnConnectionClose>((MsgOnConnectionClose)res);
 
                 case MsgType._Service_ReloadScript:
                     return MessagePackSerializer.Serialize<MsgReloadScript>((MsgReloadScript)res);

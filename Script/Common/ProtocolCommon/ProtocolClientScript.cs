@@ -79,13 +79,9 @@ namespace Script
                 return;
             }
 
-            var context = new MessageContext
-            {
-                connection = (IConnection)data.customData,
-            };
-
             var msg = new MsgOnConnectComplete();
-            this.service.dispatcher.Dispatch<MsgOnConnectComplete, ResOnConnectComplete>(context, MsgType._Service_OnConnectComplete, msg).Forget();
+            msg.connection = (IConnection)data.customData;
+            this.service.OnConnectComplete(msg).Forget();
         }
 
         public void OnCloseComplete(ProtocolClientData data)
@@ -94,12 +90,10 @@ namespace Script
             {
                 return;
             }
-            var context = new MessageContext
-            {
-                connection = (IConnection)data.customData,
-            };
-            var msg = new MsgConnectionClose();
-            this.service.dispatcher.Dispatch<MsgConnectionClose, ResConnectionClose>(context, MsgType._Service_OnConnectionClose, msg).Forget();
+
+            var msg = new MsgOnConnectionClose();
+            msg.connection = (IConnection)data.customData;
+            this.service.OnConnectionClose(msg).Forget();
         }
     }
 }

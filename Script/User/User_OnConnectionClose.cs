@@ -8,7 +8,7 @@ namespace Script
         {
         }
 
-        public override async Task<ECode> Handle(MessageContext context, MsgConnectionClose msg, ResConnectionClose res)
+        public override async Task<ECode> Handle(MessageContext context, MsgOnConnectionClose msg, ResOnConnectionClose res)
         {
             await base.Handle(context, msg);
 
