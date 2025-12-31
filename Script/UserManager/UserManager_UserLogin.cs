@@ -13,7 +13,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._UserManager_UserLogin;
 
-        public override async Task<ECode> Handle(MsgContext context, MsgUserManagerUserLogin msg, ResUserManagerUserLogin res)
+        public override async Task<ECode> Handle(MessageContext context, MsgUserManagerUserLogin msg, ResUserManagerUserLogin res)
         {
             if (!MyChannels.IsValidChannel(msg.channel) || !this.server.data.serverConfig.generalConfig.allowChannels.Contains(msg.channel))
             {
@@ -153,7 +153,7 @@ namespace Script
             return accountInfo;
         }
 
-        public override void PostHandle(MsgContext context, MsgUserManagerUserLogin msg, ECode e, ResUserManagerUserLogin res)
+        public override void PostHandle(MessageContext context, MsgUserManagerUserLogin msg, ECode e, ResUserManagerUserLogin res)
         {
             if (msg.lockValue != null)
             {

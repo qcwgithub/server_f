@@ -21,7 +21,7 @@ public class MessageProgram
         }
 
         Create_MsgType.Create(list);
-        Create_MsgConfigData.Create(list);
+        Create_MessageConfigData.Create(list);
         Create_ServiceProxy.Create(list);
     }
 }

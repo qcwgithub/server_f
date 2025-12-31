@@ -9,7 +9,7 @@ namespace Script
         }
 
         public override MsgType msgType => MsgType._User_SaveUser;
-        public override async Task<ECode> Handle(MsgContext context, MsgSaveUser msg, ResSaveUser res)
+        public override async Task<ECode> Handle(MessageContext context, MsgSaveUser msg, ResSaveUser res)
         {
             User? user = this.service.sd.GetUser(msg.userId);
             if (user == null)

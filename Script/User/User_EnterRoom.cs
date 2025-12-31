@@ -9,7 +9,7 @@ namespace Script
         {
         }
 
-        public override async Task<ECode> Handle(MsgContext context, MsgEnterRoom msg, ResEnterRoom res)
+        public override async Task<ECode> Handle(MessageContext context, MsgEnterRoom msg, ResEnterRoom res)
         {
             User user = context.user;
             if (msg.roomId <= 0)

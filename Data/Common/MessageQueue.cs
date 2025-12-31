@@ -1,6 +1,6 @@
 namespace Data
 {
-    public enum MsgQueue
+    public enum MessageQueue
     {
         None,
         User,

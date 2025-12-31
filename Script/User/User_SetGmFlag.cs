@@ -12,7 +12,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._User_SetGmFlag;
 
-        public override async Task<ECode> Handle(MsgContext context, MsgSetGmFlag msg, ResSetGmFlag res)
+        public override async Task<ECode> Handle(MessageContext context, MsgSetGmFlag msg, ResSetGmFlag res)
         {
             res.listUser = new List<long>();
             for (long i = msg.startUserId; i <= msg.endUserId; i++)

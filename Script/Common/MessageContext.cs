@@ -1,6 +1,6 @@
 namespace Data
 {
-    public struct MsgContext
+    public struct MessageContext
     {
         public IConnection connection;
         public User user;

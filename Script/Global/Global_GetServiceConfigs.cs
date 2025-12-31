@@ -12,7 +12,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._Global_GetServiceConfigs;
 
-        public override async Task<ECode> Handle(MsgContext context, MsgGetServiceConfigs msg, ResGetServiceConfigs res)
+        public override async Task<ECode> Handle(MessageContext context, MsgGetServiceConfigs msg, ResGetServiceConfigs res)
         {
             // this.service.logger.InfoFormat("{0} {1}/{2} from? {3}{4} why? {5}", this.msgType, msg.serverType, msg.serverId, msg.fromServiceType, msg.fromServiceId, msg.why);
 

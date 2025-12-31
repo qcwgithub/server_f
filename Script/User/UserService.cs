@@ -89,5 +89,8 @@ namespace Script
                 await this.UpdateRuntimeInfo();
             }
         }
+
+        #region request_self
+        #endregion request_self
     }
 }

@@ -8,7 +8,7 @@ namespace Script
         {
         }
 
-        protected override ECode BeforeHandle(MsgContext context, MsgType type, object msg)
+        protected override ECode BeforeHandle(MessageContext context, MsgType type, object msg)
         {
             ECode e = base.BeforeHandle(context, type, msg);
             if (e != ECode.Success)
@@ -33,7 +33,7 @@ namespace Script
             return ECode.Success;
         }
 
-        protected override void AfterHandle(MsgContext context, MsgType type, object msg, ECode e, object res)
+        protected override void AfterHandle(MessageContext context, MsgType type, object msg, ECode e, object res)
         {
             if (context.connection is UserConnection userConnection &&
                 e != ECode.Success && type.LogErrorIfNotSuccess())
@@ -46,7 +46,7 @@ namespace Script
             }
         }
 
-        protected override void BeforePostHandle(MsgContext context, MsgType type, object msg, ECode e, object res)
+        protected override void BeforePostHandle(MessageContext context, MsgType type, object msg, ECode e, object res)
         {
             base.BeforePostHandle(context, type, msg, e, res);
 

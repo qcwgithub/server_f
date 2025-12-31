@@ -9,7 +9,7 @@ namespace Script
         {
         }
 
-        public override async Task<ECode> Handle(MsgContext context, MsgOnConnectComplete msg, ResOnConnectComplete res)
+        public override async Task<ECode> Handle(MessageContext context, MsgOnConnectComplete msg, ResOnConnectComplete res)
         {
             var e = await base.Handle(context, msg, res);
             if (e != ECode.Success)

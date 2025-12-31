@@ -11,7 +11,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._Room_SaveRoomImmediately;
 
-        public override async Task<ECode> Handle(MsgContext context, MsgSaveRoom msg, ResSaveRoom res)
+        public override async Task<ECode> Handle(MessageContext context, MsgSaveRoom msg, ResSaveRoom res)
         {
             var r = await this.service.Request<MsgSaveRoom, ResSaveRoom>(MsgType._Room_SaveRoom, msg);
             return r.e;

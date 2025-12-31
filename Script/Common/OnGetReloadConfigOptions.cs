@@ -11,7 +11,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._Service_GetReloadConfigOptions;
 
-        public override async Task<ECode> Handle(MsgContext context, MsgGetReloadConfigOptions msg, ResGetReloadConfigOptions res)
+        public override async Task<ECode> Handle(MessageContext context, MsgGetReloadConfigOptions msg, ResGetReloadConfigOptions res)
         {
             this.service.logger.InfoFormat("{0}", this.msgType);
             

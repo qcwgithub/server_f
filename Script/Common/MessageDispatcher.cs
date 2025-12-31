@@ -31,7 +31,7 @@ namespace Script
         }
 
         public List<MsgType> recentMsgTypes = new List<MsgType>();
-        protected virtual ECode BeforeHandle(MsgContext context, MsgType type, object msg)
+        protected virtual ECode BeforeHandle(MessageContext context, MsgType type, object msg)
         {
             if (this.recentMsgTypes.Count > 10000)
             {
@@ -43,7 +43,7 @@ namespace Script
             return ECode.Success;
         }
 
-        protected virtual void AfterHandle(MsgContext context, MsgType type, object msg, ECode e, object res)
+        protected virtual void AfterHandle(MessageContext context, MsgType type, object msg, ECode e, object res)
         {
             if (e != ECode.Success && type.LogErrorIfNotSuccess())
             {
@@ -83,7 +83,7 @@ namespace Script
             return string.Join(", ", list.Select(x => x.Item1.ToString() + "*" + x.Item2));
         }
 
-        public async Task<MyResponse<Res>> Dispatch<Msg, Res>(MsgContext context, MsgType msgType, Msg msg)
+        public async Task<MyResponse<Res>> Dispatch<Msg, Res>(MessageContext context, MsgType msgType, Msg msg)
             where Res : class
         {
             IHandler? handler = this.GetHandler(msgType);
@@ -97,7 +97,7 @@ namespace Script
             return new MyResponse<Res>(e, (Res)res);
         }
 
-        public async Task<(ECode, ArraySegment<byte>)> Dispatch(MsgContext context, MsgType msgType, ArraySegment<byte> msgData)
+        public async Task<(ECode, ArraySegment<byte>)> Dispatch(MessageContext context, MsgType msgType, ArraySegment<byte> msgData)
         {
             IHandler? handler = this.GetHandler(msgType);
             if (handler == null)
@@ -113,17 +113,17 @@ namespace Script
             return (e, resBytes);
         }
 
-        protected virtual void BeforePostHandle(MsgContext context, MsgType type, object msg, ECode e, object res)
+        protected virtual void BeforePostHandle(MessageContext context, MsgType type, object msg, ECode e, object res)
         {
 
         }
 
-        protected virtual void AfterPostHandle(MsgContext context, MsgType type, object msg, ECode e, object res)
+        protected virtual void AfterPostHandle(MessageContext context, MsgType type, object msg, ECode e, object res)
         {
 
         }
 
-        protected virtual async Task<(ECode, object)> DispatchImpl(MsgContext context, IHandler handler, MsgType type, object msg)
+        protected virtual async Task<(ECode, object)> DispatchImpl(MessageContext context, IHandler handler, MsgType type, object msg)
         {
             if (this.service.detached)
             {

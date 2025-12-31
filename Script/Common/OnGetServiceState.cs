@@ -12,7 +12,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._Service_GetServiceState;
 
-        public override async Task<ECode> Handle(MsgContext context, MsgGetServiceState msg, ResGetServiceState res)
+        public override async Task<ECode> Handle(MessageContext context, MsgGetServiceState msg, ResGetServiceState res)
         {
             res.serviceType = this.service.data.serviceType;
             res.serviceId = this.service.data.serviceId;

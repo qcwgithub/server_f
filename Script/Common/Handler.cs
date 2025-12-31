@@ -31,21 +31,21 @@ namespace Script
             return new ArraySegment<byte>(bytes);
         }
 
-        public async Task<(ECode, object)> Handle(MsgContext context, object msg)
+        public async Task<(ECode, object)> Handle(MessageContext context, object msg)
         {
             Res res = new Res();
             ECode e = await this.Handle(context, (Msg)msg, res);
             return (e, res);
         }
 
-        public abstract Task<ECode> Handle(MsgContext context, Msg msg, Res res);
-        public virtual (ECode, object) PostHandle(MsgContext context, object msg, ECode e, object res)
+        public abstract Task<ECode> Handle(MessageContext context, Msg msg, Res res);
+        public virtual (ECode, object) PostHandle(MessageContext context, object msg, ECode e, object res)
         {
             this.PostHandle(context, (Msg)msg, e, (Res)res);
             return (e, res);
         }
 
-        public virtual void PostHandle(MsgContext context, Msg msg, ECode e, Res res)
+        public virtual void PostHandle(MessageContext context, Msg msg, ECode e, Res res)
         {
 
         }

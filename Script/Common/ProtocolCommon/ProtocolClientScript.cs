@@ -53,7 +53,7 @@ namespace Script
                 return;
             }
 
-            var context = new MsgContext
+            var context = new MessageContext
             {
                 connection = connection,
             };
@@ -79,7 +79,7 @@ namespace Script
                 return;
             }
 
-            var context = new MsgContext
+            var context = new MessageContext
             {
                 connection = (IConnection)data.customData,
             };
@@ -94,7 +94,7 @@ namespace Script
             {
                 return;
             }
-            var context = new MsgContext
+            var context = new MessageContext
             {
                 connection = (IConnection)data.customData,
             };

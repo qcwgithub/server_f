@@ -16,7 +16,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._Service_CheckConnections_Loop;
 
-        public override async Task<ECode> Handle(MsgContext context, MsgCheckConnections_Loop msg, ResCheckConnections_Loop res)
+        public override async Task<ECode> Handle(MessageContext context, MsgCheckConnections_Loop msg, ResCheckConnections_Loop res)
         {
             if (this.service.data.connectToServiceTypes.Count > 0)
             {
@@ -27,7 +27,7 @@ namespace Script
             return ECode.Success;
         }
 
-        public override (ECode, object) PostHandle(MsgContext context, object msg, ECode e, object res)
+        public override (ECode, object) PostHandle(MessageContext context, object msg, ECode e, object res)
         {
             if (this.service.data.state >= ServiceState.ShuttingDown)
             {

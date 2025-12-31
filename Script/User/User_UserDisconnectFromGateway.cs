@@ -10,7 +10,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._User_UserDisconnectFromGateway;
 
-        public override async Task<ECode> Handle(MsgContext context, MsgUserDisconnectFromGateway msg, ResUserDisconnectFromGateway res)
+        public override async Task<ECode> Handle(MessageContext context, MsgUserDisconnectFromGateway msg, ResUserDisconnectFromGateway res)
         {
             User? user = this.service.sd.GetUser(msg.userId);
             if (user == null)

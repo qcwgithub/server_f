@@ -11,7 +11,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._Service_RemoteWillShutdown;
 
-        public override async Task<ECode> Handle(MsgContext context, MsgRemoteWillShutdown msg, ResRemoteWillShutdown res)
+        public override async Task<ECode> Handle(MessageContext context, MsgRemoteWillShutdown msg, ResRemoteWillShutdown res)
         {
             if (context.connection is ServiceConnection serviceConnection)
             {

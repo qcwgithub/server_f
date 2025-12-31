@@ -9,7 +9,7 @@ namespace Script
         }
 
 
-        public override async Task<ECode> Handle(MsgContext context, MsgStart msg, ResStart res)
+        public override async Task<ECode> Handle(MessageContext context, MsgStart msg, ResStart res)
         {
             // this.service.SetState(ServiceState.Starting);
 

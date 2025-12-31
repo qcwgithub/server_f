@@ -11,7 +11,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._Service_GetPendingMessageList;
 
-        public override async Task<ECode> Handle(MsgContext context, MsgGetPendingMsgList msg, ResGetPendingMsgList res)
+        public override async Task<ECode> Handle(MessageContext context, MsgGetPendingMsgList msg, ResGetPendingMsgList res)
         {
             res.list = new List<int>();
             res.list.AddRange(this.service.data.busyList);

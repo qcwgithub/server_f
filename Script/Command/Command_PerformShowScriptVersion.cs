@@ -13,7 +13,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._Command_PerformShowScriptVersion;
 
-        public override async Task<ECode> Handle(MsgContext context, MsgCommon msg, ResCommon res)
+        public override async Task<ECode> Handle(MessageContext context, MsgCommon msg, ResCommon res)
         {
             int serviceId = (int)msg.GetLong("serviceId");
 

@@ -15,7 +15,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._Service_ConnectorInfo;
 
-        public override async Task<ECode> Handle(MsgContext context, MsgConnectorInfo msg, ResConnectorInfo res)
+        public override async Task<ECode> Handle(MessageContext context, MsgConnectorInfo msg, ResConnectorInfo res)
         {
             ConnectorInfo info = msg.connectorInfo;
             string message = string.Format("{0} ServiceType.{1} serviceId {2} this.service.data.state {3}",

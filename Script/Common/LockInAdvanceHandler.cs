@@ -18,7 +18,7 @@ namespace Script
             return null;
         }
 
-        public sealed override async Task<ECode> Handle(MsgContext context, Msg msg, Res res)
+        public sealed override async Task<ECode> Handle(MessageContext context, Msg msg, Res res)
         {
             ECode e = ECode.Success;
             if (this.hasBeforeLock)

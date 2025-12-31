@@ -10,7 +10,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._Gateway_DestroyUser;
 
-        public override async Task<ECode> Handle(MsgContext context, MsgGatewayDestroyUser msg, ResGatewayDestroyUser res)
+        public override async Task<ECode> Handle(MessageContext context, MsgGatewayDestroyUser msg, ResGatewayDestroyUser res)
         {
             var sd = this.service.sd;
 

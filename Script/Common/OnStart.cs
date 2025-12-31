@@ -22,7 +22,7 @@ namespace Script
             this.service.data.timer_CheckConnections_Loop = this.server.timerScript.SetTimer(this.service.serviceId, 0, MsgType._Service_CheckConnections_Loop, null);
         }
 
-        public override async Task<ECode> Handle(MsgContext context, MsgStart msg, ResStart res)
+        public override async Task<ECode> Handle(MessageContext context, MsgStart msg, ResStart res)
         {
             try
             {

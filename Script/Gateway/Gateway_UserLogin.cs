@@ -12,7 +12,7 @@ namespace Script
 
         public override MsgType msgType => MsgType.Login;
 
-        public override async Task<ECode> Handle(MsgContext context, MsgLogin msg, ResLogin res)
+        public override async Task<ECode> Handle(MessageContext context, MsgLogin msg, ResLogin res)
         {
             ProtocolClientData socket = (context.connection as PendingSocketConnection).socket;
 

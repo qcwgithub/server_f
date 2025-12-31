@@ -11,7 +11,7 @@ namespace Script
         {
         }
 
-        public override async Task<ECode> Handle(MsgContext context, MsgReloadConfigs msg, ResReloadConfigs res)
+        public override async Task<ECode> Handle(MessageContext context, MsgReloadConfigs msg, ResReloadConfigs res)
         {
             ECode e = await base.Handle(context, msg, res);
             if (e != ECode.Success)

@@ -9,7 +9,7 @@ namespace Script
         }
 
         public override MsgType msgType => MsgType._Room_LoadRoom;
-        public override async Task<ECode> Handle(MsgContext context, MsgRoomLoadRoom msg, ResRoomLoadRoom res)
+        public override async Task<ECode> Handle(MessageContext context, MsgRoomLoadRoom msg, ResRoomLoadRoom res)
         {
             Room? room = this.service.sd.GetRoom(msg.roomId);
             if (room != null)

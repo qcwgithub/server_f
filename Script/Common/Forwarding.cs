@@ -83,7 +83,7 @@ namespace Script
             MyDebug.Assert(user.connection != null);
             MyDebug.Assert(user.connection.gatewayServiceId == serviceConnection.serviceId);
 
-            var context = new MsgContext
+            var context = new MessageContext
             {
                 connection = serviceConnection,
                 user = user

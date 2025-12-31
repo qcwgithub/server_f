@@ -394,5 +394,8 @@ namespace Script
         {
             return await this.dispatcher.Dispatch<Msg, Res>(default, msgType, msg);
         }
+
+        #region request_self
+        #endregion request_self
     }
 }

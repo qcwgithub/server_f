@@ -11,7 +11,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._Gateway_ServerKick;
 
-        public override async Task<ECode> Handle(MsgContext context, MsgGatewayServerKick msg, ResGatewayServerKick res)
+        public override async Task<ECode> Handle(MessageContext context, MsgGatewayServerKick msg, ResGatewayServerKick res)
         {
             this.service.logger.InfoFormat("{0} userId {1}", this.msgType, msg.userId);
 

@@ -12,7 +12,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._Service_OnConnectionClose;
 
-        public override async Task<ECode> Handle(MsgContext context, MsgConnectionClose msg, ResConnectionClose res)
+        public override async Task<ECode> Handle(MessageContext context, MsgConnectionClose msg, ResConnectionClose res)
         {
             if (context.connection is ServiceConnection serviceConnection)
             {

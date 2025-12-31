@@ -13,7 +13,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._Service_OnConnectComplete;
 
-        public override async Task<ECode> Handle(MsgContext context, MsgOnConnectComplete msg, ResOnConnectComplete res)
+        public override async Task<ECode> Handle(MessageContext context, MsgOnConnectComplete msg, ResOnConnectComplete res)
         {
             if (context.connection is ServiceConnection serviceConnection)
             {

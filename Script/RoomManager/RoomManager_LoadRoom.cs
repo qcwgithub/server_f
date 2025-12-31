@@ -10,7 +10,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._RoomManager_LoadRoom;
 
-        public override async Task<ECode> Handle(MsgContext context, MsgRoomManagerLoadRoom msg, ResRoomManagerLoadRoom res)
+        public override async Task<ECode> Handle(MessageContext context, MsgRoomManagerLoadRoom msg, ResRoomManagerLoadRoom res)
         {
             msg.lockValue = await this.server.lockRedis.LockRoom(msg.roomId, this.service.logger);
             if (msg.lockValue != null)
@@ -33,7 +33,7 @@ namespace Script
             return ECode.Success;
         }
 
-        public override void PostHandle(MsgContext context, MsgRoomManagerLoadRoom msg, ECode e, ResRoomManagerLoadRoom res)
+        public override void PostHandle(MessageContext context, MsgRoomManagerLoadRoom msg, ECode e, ResRoomManagerLoadRoom res)
         {
             if (msg.lockValue != null)
             {

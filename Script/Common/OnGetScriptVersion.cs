@@ -13,7 +13,7 @@ namespace Script
 
 
         public override MsgType msgType => MsgType._Service_GetScriptVersion;
-        public override async Task<ECode> Handle(MsgContext context, MsgGetScriptVersion msg, ResGetScriptVersion res)
+        public override async Task<ECode> Handle(MessageContext context, MsgGetScriptVersion msg, ResGetScriptVersion res)
         {
             // if (this.server.data.state != ServerState.Started)
             // {

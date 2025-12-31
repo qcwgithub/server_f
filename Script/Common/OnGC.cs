@@ -12,7 +12,7 @@ namespace Script
 
         public override MsgType msgType => MsgType._Service_GC;
 
-        public override async Task<ECode> Handle(MsgContext context, MsgGC msg, ResGC res)
+        public override async Task<ECode> Handle(MessageContext context, MsgGC msg, ResGC res)
         {
             this.service.logger.Info(this.msgType.ToString());
 
