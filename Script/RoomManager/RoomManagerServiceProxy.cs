@@ -15,7 +15,6 @@ namespace Script
             return await this.Request<MsgRoomManagerLoadRoom, ResRoomManagerLoadRoom>(ServiceType.RoomManager, MsgType._RoomManager_LoadRoom, msg);
         }
 
-
         #endregion auto_proxy
     }
 }

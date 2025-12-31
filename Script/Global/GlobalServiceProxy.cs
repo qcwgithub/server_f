@@ -15,7 +15,6 @@ namespace Script
             return await this.Request<MsgGetServiceConfigs, ResGetServiceConfigs>(ServiceType.Global, MsgType._Global_GetServiceConfigs, msg);
         }
 
-
         #endregion auto_proxy
     }
 }

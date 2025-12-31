@@ -14,12 +14,10 @@ namespace Script
         {
             return await this.Request<MsgGatewayServiceAction, ResGatewayServiceAction>(serviceId, MsgType._Gateway_ServerAction, msg);
         }
-
         public async Task<MyResponse<ResGatewayServerKick>> ServerKick(int serviceId, MsgGatewayServerKick msg)
         {
             return await this.Request<MsgGatewayServerKick, ResGatewayServerKick>(serviceId, MsgType._Gateway_ServerKick, msg);
         }
-
 
         #endregion auto_proxy
     }

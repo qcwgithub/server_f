@@ -11,7 +11,7 @@ namespace Data
         public MessageConfigData()
         {
             this.configDict = new();
-            this.Init();
+            this.InitDict();
         }
 
         public stMessageConfig GetMsgConfig(MsgType msgType)

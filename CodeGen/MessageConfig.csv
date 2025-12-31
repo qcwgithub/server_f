@@ -32,11 +32,11 @@ _User_ServerAction,300,MsgUserServiceAction,ResUserServiceAction,,,1,1,
 _User_UserLoginSuccess,301,MsgUserLoginSuccess,ResUserLoginSuccess,User,msg.userId,1,1,
 _User_ServerKick,302,MsgUserServerKick,ResUserServerKick,,,1,1,
 _User_UserDisconnectFromGateway,303,MsgUserDisconnectFromGateway,ResUserDisconnectFromGateway,,,1,1,
-_User_DestroyUser,304,MsgUserDestroyUser,ResUserDestroyUser,User,msg.userId,,,
+_User_DestroyUser,304,MsgUserDestroyUser,ResUserDestroyUser,User,msg.userId,,,1
 _User_SaveUserImmediately,305,MsgSaveUser,ResSaveUser,User,msg.userId,1,1,
 _User_GetUserCount,306,MsgGetUserCount,ResGetUserCount,,,1,1,
 _User_SaveUserInfoToFile,307,MsgSaveUserInfoToFile,ResSaveUserInfoToFile,User,msg.userId,1,1,
-_User_SaveUser,308,MsgSaveUser,ResSaveUser,User,msg.userId,,,
+_User_SaveUser,308,MsgSaveUser,ResSaveUser,User,msg.userId,,,1
 _User_SetGmFlag,309,MsgSetGmFlag,ResSetGmFlag,,,1,1,
 #,,,,,,,,
 _UserManager_UserLogin,500,MsgUserManagerUserLogin,ResUserManagerUserLogin,,,1,0,

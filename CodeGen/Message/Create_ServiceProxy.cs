@@ -79,11 +79,6 @@ public class Create_ServiceProxy
                 }
                 f.Push($"MsgType.{config.msgType}, msg);\n");
                 f.BlockEnd();
-
-                if (i < configs.Count - 1)
-                {
-                    f.Push("\n");
-                }
             }
 
             // RequestSelf
@@ -105,11 +100,6 @@ public class Create_ServiceProxy
                 f.BlockStart();
                 f.TabPush($"return await this.dispatcher.Dispatch<{config.msg}, {config.res}>(default, MsgType.{config.msgType}, msg);\n");
                 f.BlockEnd();
-
-                if (i < configs.Count - 1)
-                {
-                    f.Push("\n");
-                }
             }
         }
 
@@ -117,7 +107,17 @@ public class Create_ServiceProxy
         {
             string serviceType = kv.Key;
 
-            XInfoProgram.ReplaceFile($"Script/Common/ServiceProxy/{serviceType}ServiceProxy.cs", new Mark[]
+            string path;
+            if (string.IsNullOrEmpty(serviceType))
+            {
+                path = $"Script/Common/ServiceProxy.cs";
+            }
+            else
+            {
+                path = $"Script/{serviceType}/{serviceType}ServiceProxy.cs";
+            }
+
+            XInfoProgram.ReplaceFile(path, new Mark[]
             {
                 new Mark { startMark = "#region auto", text = kv.Value.GetString() },
             });
@@ -127,7 +127,17 @@ public class Create_ServiceProxy
         {
             string serviceType = kv.Key;
 
-            XInfoProgram.ReplaceFile($"Script/{serviceType}/{serviceType}Service.RequestSelf.cs", new Mark[]
+            string path;
+            if (string.IsNullOrEmpty(serviceType))
+            {
+                path = $"Script/Common/Service.RequestSelf.cs";
+            }
+            else
+            {
+                path = $"Script/{serviceType}/{serviceType}Service.RequestSelf.cs";
+            }
+
+            XInfoProgram.ReplaceFile(path, new Mark[]
             {
                 new Mark { startMark = "#region auto", text = kv.Value.GetString() },
             });

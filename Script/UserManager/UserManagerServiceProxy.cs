@@ -15,7 +15,6 @@ namespace Script
             return await this.Request<MsgUserManagerUserLogin, ResUserManagerUserLogin>(ServiceType.UserManager, MsgType._UserManager_UserLogin, msg);
         }
 
-
         #endregion auto_proxy
     }
 }
