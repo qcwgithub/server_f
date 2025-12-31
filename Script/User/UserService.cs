@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    public class UserService : Service
+    public partial class UserService : Service
     {
         public UserServiceData sd
         {
@@ -89,8 +89,5 @@ namespace Script
                 await this.UpdateRuntimeInfo();
             }
         }
-
-        #region request_self
-        #endregion request_self
     }
 }

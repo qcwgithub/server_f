@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    public class UserManagerService : Service
+    public partial class UserManagerService : Service
     {
         public UserManagerServiceData sd
         {

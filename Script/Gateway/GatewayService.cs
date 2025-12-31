@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    public class GatewayService : Service
+    public partial class GatewayService : Service
     {
         public GatewayServiceData sd
         {

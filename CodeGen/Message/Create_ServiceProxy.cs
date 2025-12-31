@@ -2,15 +2,12 @@ public class Create_ServiceProxy
 {
     public static void Create(List<MessageConfig> configs)
     {
-        var fdict = new Dictionary<string, FileFormatter>();
+        var proxyDict = new Dictionary<string, FileFormatter>();
+        var selfDict = new Dictionary<string, FileFormatter>();
 
         for (int i = 0; i < configs.Count; i++)
         {
             var config = configs[i];
-            if (!config.external)
-            {
-                continue;
-            }
             if (config.msgType[0] != '_')
             {
                 continue;
@@ -27,7 +24,7 @@ public class Create_ServiceProxy
             string serviceType;
             if (key == "Service")
             {
-                serviceType = ""; // !
+                serviceType = string.Empty; // !
                 methodName = config.msgType.Substring(index2 + 1);
             }
             else
@@ -48,47 +45,89 @@ public class Create_ServiceProxy
                 }
             }
 
-            FileFormatter f;
-            if (!fdict.ContainsKey(serviceType))
+            // Proxy
+            if (config.external)
             {
-                f = new FileFormatter();
-                f.AddTab(2);
-                fdict.Add(serviceType, f);
-            }
-            else
-            {
-                f = fdict[serviceType];
+                FileFormatter f;
+                if (!proxyDict.ContainsKey(serviceType))
+                {
+                    f = new FileFormatter();
+                    f.AddTab(2);
+                    proxyDict.Add(serviceType, f);
+                }
+                else
+                {
+                    f = proxyDict[serviceType];
+                }
+
+                f.TabPush($"public async Task<MyResponse<{config.res}>> {methodName}(");
+                if (config.arg_serviceId)
+                {
+                    f.Push($"int serviceId, ");
+                }
+                f.Push($"{config.msg} msg)\n");
+
+                f.BlockStart();
+                f.TabPush($"return await this.Request<{config.msg}, {config.res}>(");
+                if (config.arg_serviceId)
+                {
+                    f.Push($"serviceId, ");
+                }
+                else
+                {
+                    f.Push($"ServiceType.{serviceType}, ");
+                }
+                f.Push($"MsgType.{config.msgType}, msg);\n");
+                f.BlockEnd();
+
+                if (i < configs.Count - 1)
+                {
+                    f.Push("\n");
+                }
             }
 
-            f.TabPush($"public async Task<MyResponse<{config.res}>> {methodName}(");
-            if (config.arg_serviceId)
+            // RequestSelf
+            if (config.internal_)
             {
-                f.Push($"int serviceId, ");
-            }
-            f.Push($"{config.msg} msg)\n");
+                FileFormatter f;
+                if (!selfDict.ContainsKey(serviceType))
+                {
+                    f = new FileFormatter();
+                    f.AddTab(2);
+                    selfDict.Add(serviceType, f);
+                }
+                else
+                {
+                    f = selfDict[serviceType];
+                }
 
-            f.BlockStart();
-            f.TabPush($"return await this.Request<{config.msg}, {config.res}>(");
-            if (config.arg_serviceId)
-            {
-                f.Push($"serviceId, ");
-            }
-            else
-            {
-                f.Push($"ServiceType.{serviceType}, ");
-            }
-            f.Push($"MsgType.{config.msgType}, msg);\n");
-            f.BlockEnd();
+                f.TabPush($"public async Task<MyResponse<{config.res}>> {methodName}({config.msg} msg)\n");
+                f.BlockStart();
+                f.TabPush($"return await this.dispatcher.Dispatch<{config.msg}, {config.res}>(default, MsgType.{config.msgType}, msg);\n");
+                f.BlockEnd();
 
-            if (i < configs.Count - 1)
-            {
-                f.Push("\n");
+                if (i < configs.Count - 1)
+                {
+                    f.Push("\n");
+                }
             }
         }
 
-        foreach (var kv in fdict)
+        foreach (var kv in proxyDict)
         {
-            XInfoProgram.ReplaceFile($"Script/Common/ServiceProxy/{kv.Key}ServiceProxy.cs", new Mark[]
+            string serviceType = kv.Key;
+
+            XInfoProgram.ReplaceFile($"Script/Common/ServiceProxy/{serviceType}ServiceProxy.cs", new Mark[]
+            {
+                new Mark { startMark = "#region auto", text = kv.Value.GetString() },
+            });
+        }
+
+        foreach (var kv in selfDict)
+        {
+            string serviceType = kv.Key;
+
+            XInfoProgram.ReplaceFile($"Script/{serviceType}/{serviceType}Service.RequestSelf.cs", new Mark[]
             {
                 new Mark { startMark = "#region auto", text = kv.Value.GetString() },
             });

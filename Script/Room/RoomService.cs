@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    public class RoomService : Service
+    public partial class RoomService : Service
     {
         public RoomServiceData sd
         {

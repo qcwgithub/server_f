@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    public class GlobalService : Service
+    public partial class GlobalService : Service
     {
         public GlobalServiceData sd
         {

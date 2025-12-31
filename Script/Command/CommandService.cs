@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    public class CommandService : Service
+    public partial class CommandService : Service
     {
         public readonly GlobalServiceProxy globalServiceProxy;
         public CommandConnectToOtherService commandConnectToOtherService { get; private set; }

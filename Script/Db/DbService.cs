@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    public class DbService : Service
+    public partial class DbService : Service
     {
         public DbServiceData sd
         {
