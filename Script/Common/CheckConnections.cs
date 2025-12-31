@@ -11,7 +11,7 @@ namespace Script
         }
 
 
-        public override MsgType msgType => MsgType._CheckConnections;
+        public override MsgType msgType => MsgType._Service_CheckConnections;
 
         public override async Task<ECode> Handle(MsgContext context, MsgCheckConnections msg, ResCheckConnections res)
         {

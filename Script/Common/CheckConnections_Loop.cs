@@ -14,13 +14,13 @@ namespace Script
         {
         }
 
-        public override MsgType msgType => MsgType._CheckConnections_Loop;
+        public override MsgType msgType => MsgType._Service_CheckConnections_Loop;
 
         public override async Task<ECode> Handle(MsgContext context, MsgCheckConnections_Loop msg, ResCheckConnections_Loop res)
         {
             if (this.service.data.connectToServiceTypes.Count > 0)
             {
-                var r = await this.service.Request<MsgCheckConnections, ResCheckConnections>(MsgType._CheckConnections, new MsgCheckConnections());
+                var r = await this.service.Request<MsgCheckConnections, ResCheckConnections>(MsgType._Service_CheckConnections, new MsgCheckConnections());
                 return r.e;
             }
 

@@ -10,7 +10,7 @@ namespace Script
         {
         }
 
-        public override MsgType msgType => MsgType._OnConnectionClose;
+        public override MsgType msgType => MsgType._Service_OnConnectionClose;
 
         public override async Task<ECode> Handle(MsgContext context, MsgConnectionClose msg, ResConnectionClose res)
         {
@@ -35,7 +35,7 @@ namespace Script
                     sd.GetPassivelyConnections().Count == 0 &&
                     !sd.timer_shutdown.IsAlive())
                 {
-                    sd.timer_shutdown = this.server.timerScript.SetTimer(this.service.serviceId, 0, MsgType._Shutdown, new MsgShutdown { force = false });
+                    sd.timer_shutdown = this.server.timerScript.SetTimer(this.service.serviceId, 0, MsgType._Service_Shutdown, new MsgShutdown { force = false });
                     this.service.logger.Info("0 passive connections, shutdown in 0 second...");
                 }
             }

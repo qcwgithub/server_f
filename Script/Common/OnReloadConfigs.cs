@@ -10,7 +10,7 @@ namespace Script
         {
         }
 
-        public override MsgType msgType => MsgType._ReloadConfigs;
+        public override MsgType msgType => MsgType._Service_ReloadConfigs;
 
         public override async Task<ECode> Handle(MsgContext context, MsgReloadConfigs msg, ResReloadConfigs res)
         {

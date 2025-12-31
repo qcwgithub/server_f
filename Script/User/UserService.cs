@@ -13,11 +13,11 @@ namespace Script
         }
 
         //
-        public readonly ConnectToDbService connectToDbService;
-        public readonly ConnectToGlobalService connectToGlobalService;
-        public readonly ConnectToGatewayService connectToGatewayService;
-        public readonly ConnectToRoomService connectToRoomService;
-        public readonly ConnectToRoomManagerService connectToRoomManagerService;
+        public readonly DbServiceProxy dbServiceProxy;
+        public readonly GlobalServiceProxy globalServiceProxy;
+        public readonly GatewayServiceProxy gatewayServiceProxy;
+        public readonly RoomServiceProxy roomServiceProxy;
+        public readonly RoomManagerServiceProxy roomManagerServiceProxy;
 
         protected override MessageDispatcher CreateMessageDispatcher()
         {
@@ -30,11 +30,11 @@ namespace Script
         public UserService(Server server, int serviceId) : base(server, serviceId)
         {
             //
-            this.AddConnectToOtherService(this.connectToDbService = new ConnectToDbService(this));
-            this.AddConnectToOtherService(this.connectToGlobalService = new ConnectToGlobalService(this));
-            this.AddConnectToOtherService(this.connectToGatewayService = new ConnectToGatewayService(this));
-            this.AddConnectToOtherService(this.connectToRoomService = new ConnectToRoomService(this));
-            this.AddConnectToOtherService(this.connectToRoomManagerService = new ConnectToRoomManagerService(this));
+            this.AddServiceProxy(this.dbServiceProxy = new DbServiceProxy(this));
+            this.AddServiceProxy(this.globalServiceProxy = new GlobalServiceProxy(this));
+            this.AddServiceProxy(this.gatewayServiceProxy = new GatewayServiceProxy(this));
+            this.AddServiceProxy(this.roomServiceProxy = new RoomServiceProxy(this));
+            this.AddServiceProxy(this.roomManagerServiceProxy = new RoomManagerServiceProxy(this));
 
             this.ss = new UserServiceScript(this.server, this);
 

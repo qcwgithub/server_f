@@ -29,7 +29,7 @@ namespace Script
 
             // 自己也走相同逻辑
             this.service.data.SaveServiceConfigs(broadcast.res);
-            await this.BroadcastToAll(MsgType._A_ResGetServiceConfigs, broadcast);
+            await this.BroadcastToAll(MsgType._Service_A_ResGetServiceConfigs, broadcast);
         }
 
         async Task BroadcastToAll(MsgType msgType, object msg)

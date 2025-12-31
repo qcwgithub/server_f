@@ -12,10 +12,16 @@ public class MessageProgram
             c.msg = helper.ReadString("msg");
             c.res = helper.ReadString("res");
             c.queue = helper.ReadString("queue");
+            c.external = helper.ReadString("external") == "1";
+            c.arg_serviceId = helper.ReadString("arg_serviceId") == "1";
+
+
+
             list.Add(c);
         }
 
         Create_MsgType.Create(list);
         Create_MsgConfigData.Create(list);
+        Create_ServiceProxy.Create(list);
     }
 }

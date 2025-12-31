@@ -11,7 +11,7 @@ namespace Script
         }
 
 
-        public override MsgType msgType => MsgType._OnConnectComplete;
+        public override MsgType msgType => MsgType._Service_OnConnectComplete;
 
         public override async Task<ECode> Handle(MsgContext context, MsgOnConnectComplete msg, ResOnConnectComplete res)
         {
@@ -22,7 +22,7 @@ namespace Script
                 // 连上去之后立即向他报告是我的身份
                 var msgInfo = new MsgConnectorInfo();
                 msgInfo.connectorInfo = this.service.CreateConnectorInfo();
-                await serviceConnection.Request<MsgConnectorInfo, ResConnectorInfo>(MsgType._ConnectorInfo, msgInfo);
+                await serviceConnection.Request<MsgConnectorInfo, ResConnectorInfo>(MsgType._Service_ConnectorInfo, msgInfo);
             }
 
             return ECode.Success;

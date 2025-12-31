@@ -8,7 +8,7 @@ namespace Script
         {
         }
 
-        public override MsgType msgType => MsgType._SaveRoomInfoToFile;
+        public override MsgType msgType => MsgType._Room_SaveRoomInfoToFile;
 
         public override async Task<ECode> Handle(MsgContext context, MsgSaveRoomInfoToFile msg, ResSaveRoomInfoToFile res)
         {

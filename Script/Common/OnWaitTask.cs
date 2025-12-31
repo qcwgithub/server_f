@@ -10,7 +10,7 @@ namespace Script
         {
         }
 
-        public override MsgType msgType => MsgType._WaitTask;
+        public override MsgType msgType => MsgType._Service_WaitTask;
         public sealed override async Task<ECode> Handle(MsgContext context, MsgWaitTask msg, ResWaitTask res)
         {
             await msg.task;

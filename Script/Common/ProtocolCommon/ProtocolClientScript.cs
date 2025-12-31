@@ -85,7 +85,7 @@ namespace Script
             };
 
             var msg = new MsgOnConnectComplete();
-            this.service.dispatcher.Dispatch<MsgOnConnectComplete, ResOnConnectComplete>(context, MsgType._OnConnectComplete, msg).Forget();
+            this.service.dispatcher.Dispatch<MsgOnConnectComplete, ResOnConnectComplete>(context, MsgType._Service_OnConnectComplete, msg).Forget();
         }
 
         public void OnCloseComplete(ProtocolClientData data)
@@ -99,7 +99,7 @@ namespace Script
                 connection = (IConnection)data.customData,
             };
             var msg = new MsgConnectionClose();
-            this.service.dispatcher.Dispatch<MsgConnectionClose, ResConnectionClose>(context, MsgType._OnConnectionClose, msg).Forget();
+            this.service.dispatcher.Dispatch<MsgConnectionClose, ResConnectionClose>(context, MsgType._Service_OnConnectionClose, msg).Forget();
         }
     }
 }

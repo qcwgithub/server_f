@@ -189,7 +189,7 @@ public class Create_XInfo_Proxy
                 ff.Push("\n");
                 ff.TabPush("//// AUTO CREATED ////\n");
                 string jjjj = config.keyParamToString(true, true, string.Empty, true, true, true);
-                ff.TabPushF("protected override async Task<(ECode, {0})> LoadFromDB(ConnectToDbService connectToDbService{1}{2})\n",
+                ff.TabPushF("protected override async Task<(ECode, {0})> LoadFromDB(DbServiceProxy dbServiceProxy{1}{2})\n",
                     config.xinfoType,
                     jjjj.Length > 0 ? ", " : "",
                     jjjj);
@@ -203,7 +203,7 @@ public class Create_XInfo_Proxy
                         ff.TabPushF("msgDb.{0} = {0};\n", p.Substring(p.LastIndexOf(' ') + 1));
                     }
 
-                    ff.TabPushF("var r = await connectToDbService.Request<Msg{0}, Res{0}>(MsgType._{0}{1}, msgDb);\n",
+                    ff.TabPushF("var r = await dbServiceProxy.{0}{1}(msgDb);\n",
                         query.methodName,
                         config.postfix);
                     ff.TabPushF("if (r.e != ECode.Success)\n");
@@ -304,7 +304,7 @@ public class Create_XInfo_Proxy
                 ff.TabPush("//// AUTO CREATED ////\n");
 
                 string ssss = config.keyParamToString(true, true, string.Empty, false, false, false);
-                ff.TabPushF("public async Task<{0}> Get(ConnectTo{1}Service connectTo{1}Service{2}{3})\n",
+                ff.TabPushF("public async Task<{0}> Get({1}ServiceProxy {1}ServiceProxy{2}{3})\n",
                     config.xinfoType,
                     config.dbFilesConfig.serviceType,
                     ssss.Length > 0 ? ", " : "",
@@ -355,7 +355,7 @@ public class Create_XInfo_Proxy
                     }
 
                     string kkkk = config.keyParamToString(false, true, string.Empty, false, false, true);
-                    ff.TabPushF("var info = await base.InternalGet(connectTo{0}Service{1}{2});\n",
+                    ff.TabPushF("var info = await base.InternalGet({0}ServiceProxy{1}{2});\n",
                         config.dbFilesConfig.serviceType,
                         kkkk.Length > 0 ? ", " : "",
                         kkkk);

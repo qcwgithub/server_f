@@ -4,12 +4,12 @@ namespace Script
 {
     public class CommandService : Service
     {
-        public ConnectToGlobalService connectToGlobalService { get; private set; }
+        public readonly GlobalServiceProxy globalServiceProxy;
         public CommandConnectToOtherService commandConnectToOtherService { get; private set; }
 
         public CommandService(Server server, int serviceId) : base(server, serviceId)
         {
-            this.AddConnectToOtherService(this.connectToGlobalService = new ConnectToGlobalService(this));
+            this.AddServiceProxy(this.globalServiceProxy = new GlobalServiceProxy(this));
             this.commandConnectToOtherService = new CommandConnectToOtherService(this);
         }
 

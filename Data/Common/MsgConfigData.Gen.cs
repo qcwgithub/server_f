@@ -10,112 +10,112 @@ namespace Data
 
             #region auto_init
 
-            dict[MsgType._Start] = new stMsgConfig
+            dict[MsgType._Service_Start] = new stMsgConfig
             {
                 queue = MsgQueue.None,
             };
 
-            dict[MsgType._Shutdown] = new stMsgConfig
+            dict[MsgType._Service_Shutdown] = new stMsgConfig
             {
                 queue = MsgQueue.None,
             };
 
-            dict[MsgType._OnConnectComplete] = new stMsgConfig
+            dict[MsgType._Service_OnConnectComplete] = new stMsgConfig
             {
                 queue = MsgQueue.None,
             };
 
-            dict[MsgType._OnConnectionClose] = new stMsgConfig
+            dict[MsgType._Service_OnConnectionClose] = new stMsgConfig
             {
                 queue = MsgQueue.None,
             };
 
-            dict[MsgType._ReloadScript] = new stMsgConfig
+            dict[MsgType._Service_ReloadScript] = new stMsgConfig
             {
                 queue = MsgQueue.None,
             };
 
-            dict[MsgType._CheckConnections] = new stMsgConfig
+            dict[MsgType._Service_CheckConnections] = new stMsgConfig
             {
                 queue = MsgQueue.None,
             };
 
-            dict[MsgType._CheckConnections_Loop] = new stMsgConfig
+            dict[MsgType._Service_CheckConnections_Loop] = new stMsgConfig
             {
                 queue = MsgQueue.None,
             };
 
-            dict[MsgType._ConnectorInfo] = new stMsgConfig
+            dict[MsgType._Service_ConnectorInfo] = new stMsgConfig
             {
                 queue = MsgQueue.None,
             };
 
-            dict[MsgType._GetPendingMessageList] = new stMsgConfig
+            dict[MsgType._Service_GetPendingMessageList] = new stMsgConfig
             {
                 queue = MsgQueue.None,
             };
 
-            dict[MsgType._GetScriptVersion] = new stMsgConfig
+            dict[MsgType._Service_GetScriptVersion] = new stMsgConfig
             {
                 queue = MsgQueue.None,
             };
 
-            dict[MsgType._OnHttpRequest] = new stMsgConfig
+            dict[MsgType._Service_OnHttpRequest] = new stMsgConfig
             {
                 queue = MsgQueue.None,
             };
 
-            dict[MsgType._ReloadConfigs] = new stMsgConfig
+            dict[MsgType._Service_ReloadConfigs] = new stMsgConfig
             {
                 queue = MsgQueue.None,
             };
 
-            dict[MsgType._GC] = new stMsgConfig
+            dict[MsgType._Service_GC] = new stMsgConfig
             {
                 queue = MsgQueue.None,
             };
 
-            dict[MsgType._RemoteWillShutdown] = new stMsgConfig
+            dict[MsgType._Service_RemoteWillShutdown] = new stMsgConfig
             {
                 queue = MsgQueue.None,
             };
 
-            dict[MsgType._WaitTask] = new stMsgConfig
+            dict[MsgType._Service_WaitTask] = new stMsgConfig
             {
                 queue = MsgQueue.None,
             };
 
-            dict[MsgType._GetServiceState] = new stMsgConfig
+            dict[MsgType._Service_GetServiceState] = new stMsgConfig
             {
                 queue = MsgQueue.None,
             };
 
-            dict[MsgType._PersistenceTaskQueueHandler] = new stMsgConfig
+            dict[MsgType._Service_PersistenceTaskQueueHandler] = new stMsgConfig
             {
                 queue = MsgQueue.None,
             };
 
-            dict[MsgType._PersistenceTaskQueueHandler_Loop] = new stMsgConfig
+            dict[MsgType._Service_PersistenceTaskQueueHandler_Loop] = new stMsgConfig
             {
                 queue = MsgQueue.None,
             };
 
-            dict[MsgType._GetReloadConfigOptions] = new stMsgConfig
+            dict[MsgType._Service_GetReloadConfigOptions] = new stMsgConfig
             {
                 queue = MsgQueue.None,
             };
 
-            dict[MsgType._GetConnectedInfos] = new stMsgConfig
+            dict[MsgType._Service_GetConnectedInfos] = new stMsgConfig
             {
                 queue = MsgQueue.None,
             };
 
-            dict[MsgType._ViewMongoDumpList] = new stMsgConfig
+            dict[MsgType._Service_ViewMongoDumpList] = new stMsgConfig
             {
                 queue = MsgQueue.None,
             };
 
-            dict[MsgType._A_ResGetServiceConfigs] = new stMsgConfig
+            dict[MsgType._Service_A_ResGetServiceConfigs] = new stMsgConfig
             {
                 queue = MsgQueue.None,
             };
@@ -170,12 +170,12 @@ namespace Data
                 queue = MsgQueue.User,
             };
 
-            dict[MsgType._GetPlayerCount] = new stMsgConfig
+            dict[MsgType._User_GetUserCount] = new stMsgConfig
             {
                 queue = MsgQueue.None,
             };
 
-            dict[MsgType._SaveUserInfoToFile] = new stMsgConfig
+            dict[MsgType._User_SaveUserInfoToFile] = new stMsgConfig
             {
                 queue = MsgQueue.User,
             };
@@ -185,7 +185,7 @@ namespace Data
                 queue = MsgQueue.User,
             };
 
-            dict[MsgType._SetGmFlag] = new stMsgConfig
+            dict[MsgType._User_SetGmFlag] = new stMsgConfig
             {
                 queue = MsgQueue.None,
             };
@@ -210,7 +210,7 @@ namespace Data
                 queue = MsgQueue.Room,
             };
 
-            dict[MsgType._SaveRoomInfoToFile] = new stMsgConfig
+            dict[MsgType._Room_SaveRoomInfoToFile] = new stMsgConfig
             {
                 queue = MsgQueue.None,
             };
@@ -379,70 +379,70 @@ namespace Data
             {
                 #region auto_deserialize
 
-                case MsgType._Start:
+                case MsgType._Service_Start:
                     return MessagePackSerializer.Deserialize<MsgStart>(msg);
 
-                case MsgType._Shutdown:
+                case MsgType._Service_Shutdown:
                     return MessagePackSerializer.Deserialize<MsgShutdown>(msg);
 
-                case MsgType._OnConnectComplete:
+                case MsgType._Service_OnConnectComplete:
                     return MessagePackSerializer.Deserialize<MsgOnConnectComplete>(msg);
 
-                case MsgType._OnConnectionClose:
+                case MsgType._Service_OnConnectionClose:
                     return MessagePackSerializer.Deserialize<MsgConnectionClose>(msg);
 
-                case MsgType._ReloadScript:
+                case MsgType._Service_ReloadScript:
                     return MessagePackSerializer.Deserialize<MsgReloadScript>(msg);
 
-                case MsgType._CheckConnections:
+                case MsgType._Service_CheckConnections:
                     return MessagePackSerializer.Deserialize<MsgCheckConnections>(msg);
 
-                case MsgType._CheckConnections_Loop:
+                case MsgType._Service_CheckConnections_Loop:
                     return MessagePackSerializer.Deserialize<MsgCheckConnections_Loop>(msg);
 
-                case MsgType._ConnectorInfo:
+                case MsgType._Service_ConnectorInfo:
                     return MessagePackSerializer.Deserialize<MsgConnectorInfo>(msg);
 
-                case MsgType._GetPendingMessageList:
+                case MsgType._Service_GetPendingMessageList:
                     return MessagePackSerializer.Deserialize<MsgGetPendingMsgList>(msg);
 
-                case MsgType._GetScriptVersion:
+                case MsgType._Service_GetScriptVersion:
                     return MessagePackSerializer.Deserialize<MsgGetScriptVersion>(msg);
 
-                case MsgType._OnHttpRequest:
+                case MsgType._Service_OnHttpRequest:
                     return MessagePackSerializer.Deserialize<MsgOnHttpRequest>(msg);
 
-                case MsgType._ReloadConfigs:
+                case MsgType._Service_ReloadConfigs:
                     return MessagePackSerializer.Deserialize<MsgReloadConfigs>(msg);
 
-                case MsgType._GC:
+                case MsgType._Service_GC:
                     return MessagePackSerializer.Deserialize<MsgGC>(msg);
 
-                case MsgType._RemoteWillShutdown:
+                case MsgType._Service_RemoteWillShutdown:
                     return MessagePackSerializer.Deserialize<MsgRemoteWillShutdown>(msg);
 
-                case MsgType._WaitTask:
+                case MsgType._Service_WaitTask:
                     return MessagePackSerializer.Deserialize<MsgWaitTask>(msg);
 
-                case MsgType._GetServiceState:
+                case MsgType._Service_GetServiceState:
                     return MessagePackSerializer.Deserialize<MsgGetServiceState>(msg);
 
-                case MsgType._PersistenceTaskQueueHandler:
-                    throw new Exception("Missing config for MsgType._PersistenceTaskQueueHandler");
+                case MsgType._Service_PersistenceTaskQueueHandler:
+                    throw new Exception("Missing config for MsgType._Service_PersistenceTaskQueueHandler");
 
-                case MsgType._PersistenceTaskQueueHandler_Loop:
-                    throw new Exception("Missing config for MsgType._PersistenceTaskQueueHandler_Loop");
+                case MsgType._Service_PersistenceTaskQueueHandler_Loop:
+                    throw new Exception("Missing config for MsgType._Service_PersistenceTaskQueueHandler_Loop");
 
-                case MsgType._GetReloadConfigOptions:
+                case MsgType._Service_GetReloadConfigOptions:
                     return MessagePackSerializer.Deserialize<MsgGetReloadConfigOptions>(msg);
 
-                case MsgType._GetConnectedInfos:
+                case MsgType._Service_GetConnectedInfos:
                     return MessagePackSerializer.Deserialize<MsgGetConnectedInfos>(msg);
 
-                case MsgType._ViewMongoDumpList:
+                case MsgType._Service_ViewMongoDumpList:
                     return MessagePackSerializer.Deserialize<MsgViewMongoDumpList>(msg);
 
-                case MsgType._A_ResGetServiceConfigs:
+                case MsgType._Service_A_ResGetServiceConfigs:
                     return MessagePackSerializer.Deserialize<A_ResGetServiceConfigs>(msg);
 
                 case MsgType._Global_GetServiceConfigs:
@@ -475,16 +475,16 @@ namespace Data
                 case MsgType._User_SaveUserImmediately:
                     return MessagePackSerializer.Deserialize<MsgSaveUser>(msg);
 
-                case MsgType._GetPlayerCount:
+                case MsgType._User_GetUserCount:
                     return MessagePackSerializer.Deserialize<MsgGetUserCount>(msg);
 
-                case MsgType._SaveUserInfoToFile:
+                case MsgType._User_SaveUserInfoToFile:
                     return MessagePackSerializer.Deserialize<MsgSaveUserInfoToFile>(msg);
 
                 case MsgType._User_SaveUser:
                     return MessagePackSerializer.Deserialize<MsgSaveUser>(msg);
 
-                case MsgType._SetGmFlag:
+                case MsgType._User_SetGmFlag:
                     return MessagePackSerializer.Deserialize<MsgSetGmFlag>(msg);
 
                 case MsgType._UserManager_UserLogin:
@@ -499,7 +499,7 @@ namespace Data
                 case MsgType._Room_SaveRoom:
                     return MessagePackSerializer.Deserialize<MsgSaveRoom>(msg);
 
-                case MsgType._SaveRoomInfoToFile:
+                case MsgType._Room_SaveRoomInfoToFile:
                     return MessagePackSerializer.Deserialize<MsgSaveRoomInfoToFile>(msg);
 
                 case MsgType._Room_UserEnter:

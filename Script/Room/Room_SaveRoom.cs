@@ -77,7 +77,7 @@ namespace Script
                 msgDb.roomInfo_debug = RoomInfo.Ensure(null);
                 msgDb.roomInfo_debug.DeepCopyFrom(curr);
 #endif
-                var r = await this.service.connectToDbService.Save_RoomInfo(msgDb);
+                var r = await this.service.dbServiceProxy.Save_RoomInfo(msgDb);
                 if (r.e != ECode.Success)
                 {
                     this.service.logger.ErrorFormat("{0} error: {1}, roomId {2}", MsgType._Save_RoomInfo, r.e, msg.roomId);

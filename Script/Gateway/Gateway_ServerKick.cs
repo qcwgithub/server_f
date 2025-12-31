@@ -25,7 +25,7 @@ namespace Script
                 var msgU = new MsgUserServerKick();
                 msgU.userId = msg.userId;
 
-                var r = await this.service.connectWithUserService.ServerKick(user.userServiceId, msgU);
+                var r = await this.service.userServiceProxy.ServerKick(user.userServiceId, msgU);
                 if (r.e != ECode.Success)
                 {
                     return r.e;

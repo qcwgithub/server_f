@@ -13,7 +13,7 @@ namespace Script
             var msgDb = new MsgInsert_UserInfo();
             msgDb.userInfo = userInfo;
 
-            var r = await this.service.connectToDbService.InsertUserInfo(msgDb);
+            var r = await this.service.dbServiceProxy.InsertUserInfo(msgDb);
             if (r.e != ECode.Success)
             {
                 this.service.logger.Error($"InsertUserInfo({userInfo.userId}) r.e {r.e}");

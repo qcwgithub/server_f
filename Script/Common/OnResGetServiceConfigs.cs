@@ -10,7 +10,7 @@ namespace Script
         }
 
 
-        public override MsgType msgType => MsgType._A_ResGetServiceConfigs;
+        public override MsgType msgType => MsgType._Service_A_ResGetServiceConfigs;
 
         public override async Task<ECode> Handle(MsgContext context, A_ResGetServiceConfigs msg, ResNull res)
         {

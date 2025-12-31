@@ -13,7 +13,7 @@ namespace Script
         {
         }
 
-        public override MsgType msgType => MsgType._ConnectorInfo;
+        public override MsgType msgType => MsgType._Service_ConnectorInfo;
 
         public override async Task<ECode> Handle(MsgContext context, MsgConnectorInfo msg, ResConnectorInfo res)
         {

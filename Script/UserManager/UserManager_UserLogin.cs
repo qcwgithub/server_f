@@ -46,7 +46,7 @@ namespace Script
                 return ECode.RedisLockFail;
             }
 
-            AccountInfo accountInfo = await this.server.accountInfoProxy.Get(this.service.connectToDbService, msg.channel, msg.channelUserId);
+            AccountInfo accountInfo = await this.server.accountInfoProxy.Get(this.service.dbServiceProxy, msg.channel, msg.channelUserId);
             if (accountInfo != null)
             {
                 if (this.IsBlocked(accountInfo))
@@ -109,7 +109,7 @@ namespace Script
             msgU.newUserInfo = newUserInfo;
             msgU.gatewayServiceId = (context.connection as ServiceConnection).serviceId;
 
-            var rU = await this.service.connectFromUserService.UserLoginSuccess(location.serviceId, msgU);
+            var rU = await this.service.userServiceProxy.UserLoginSuccess(location.serviceId, msgU);
             if (rU.e != ECode.Success)
             {
                 return rU.e;

@@ -4,7 +4,7 @@ namespace Script
 {
     public partial class PersistenceTaskQueueHandler : PersistenceTaskQueueHandler_Base<DbService>
     {
-        public override MsgType msgType => MsgType._PersistenceTaskQueueHandler;
+        public override MsgType msgType => MsgType._Service_PersistenceTaskQueueHandler;
         protected override LockController lockController => this.service.lockController;
 
         protected override string key_PersistenceTaskQueueOwners

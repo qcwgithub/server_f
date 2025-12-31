@@ -36,7 +36,7 @@ namespace Script
             return new MessageDispatcher(this.server, this);
         }
 
-        public readonly Dictionary<ServiceType, ConnectToOtherService> connectToOtherServiceDict;
+        public readonly Dictionary<ServiceType, ServiceProxy> serviceProxyDict;
 
         public Service(Server server, int serviceId)
         {
@@ -56,7 +56,7 @@ namespace Script
 
             this.dispatcher = this.CreateMessageDispatcher();
 
-            this.connectToOtherServiceDict = new Dictionary<ServiceType, ConnectToOtherService>();
+            this.serviceProxyDict = new Dictionary<ServiceType, ServiceProxy>();
         }
 
         protected void AddHandler<S>()
@@ -86,9 +86,9 @@ namespace Script
         }
 
         public log4net.ILog logger => this.data.logger;
-        protected void AddConnectToOtherService(ConnectToOtherService connectToOtherService)
+        protected void AddServiceProxy(ServiceProxy serviceProxy)
         {
-            this.connectToOtherServiceDict.Add(connectToOtherService.to, connectToOtherService);
+            this.serviceProxyDict.Add(serviceProxy.to, serviceProxy);
         }
         public virtual void Attach()
         {
@@ -328,7 +328,7 @@ namespace Script
             return connectorInfo;
         }
 
-        public async Task<ECode> WaitServiceConnectedAndStarted(ConnectToOtherService connectToOtherService, MsgType msgType)
+        public async Task<ECode> WaitServiceConnectedAndStarted(ServiceProxy serviceProxy, MsgType msgType)
         {
             int counter = 0;
 
@@ -342,31 +342,20 @@ namespace Script
                 counter++;
                 if (counter == 2)
                 {
-                    this.logger.InfoFormat("{0} Wait connect to {1}...", msgType, connectToOtherService.to);
+                    this.logger.InfoFormat("{0} Wait connect to {1}...", msgType, serviceProxy.to);
                 }
 
                 var msg = new MsgGetServiceState();
                 MyResponse<ResGetServiceState> r;
 
-                if (connectToOtherService is ConnectToStatelessService stateless)
+                int sid = this.data.GetFirstConnected(serviceProxy.to);
+                if (sid == 0)
                 {
-                    r = await stateless.Request<MsgGetServiceState, ResGetServiceState>(MsgType._GetServiceState, msg);
-                }
-                else if (connectToOtherService is ConnectToStatefulService stateful)
-                {
-                    int sid = stateful.GetFirstConnected();
-                    if (sid == 0)
-                    {
-                        r = new MyResponse<ResGetServiceState>(ECode.Server_NotConnected, null);
-                    }
-                    else
-                    {
-                        r = await stateful.Request<MsgGetServiceState, ResGetServiceState>(sid, MsgType._GetServiceState, msg);
-                    }
+                    r = new MyResponse<ResGetServiceState>(ECode.Server_NotConnected, null);
                 }
                 else
                 {
-                    throw new Exception();
+                    r = await serviceProxy.GetServiceState(sid, msg);
                 }
                 if (r.e != ECode.Success)
                 {
@@ -382,7 +371,7 @@ namespace Script
 
                 if (counter >= 2)
                 {
-                    this.logger.InfoFormat("{0} Wait connect to {1}...Done", msgType, connectToOtherService.to);
+                    this.logger.InfoFormat("{0} Wait connect to {1}...Done", msgType, serviceProxy.to);
                 }
                 break;
             }

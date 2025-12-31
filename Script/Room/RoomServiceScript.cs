@@ -15,7 +15,7 @@ namespace Script
             var msgDb = new MsgQuery_RoomInfo_by_roomId();
             msgDb.roomId = roomId;
 
-            var r = await this.service.connectToDbService.Query_RoomInfo_by_roomId(msgDb);
+            var r = await this.service.dbServiceProxy.Query_RoomInfo_by_roomId(msgDb);
             if (r.e != ECode.Success)
             {
                 this.service.logger.Error($"QueryRoomInfo({roomId}) r.err {r.e}");

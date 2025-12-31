@@ -12,10 +12,11 @@ namespace Script
             }
         }
 
-        public readonly ConnectToDbService connectToDbService;
-        public readonly ConnectToGlobalService connectToGlobalService;
-        public readonly ConnectToGatewayService connectToGatewayService;
-        public readonly ConnectFromUserService connectFromUserService;
+        public readonly DbServiceProxy dbServiceProxy;
+        public readonly GlobalServiceProxy globalServiceProxy;
+        public readonly GatewayServiceProxy gatewayServiceProxy;
+        public readonly UserServiceProxy userServiceProxy;
+
         public readonly UserIdSnowflakeScript userIdSnowflakeScript;
         public readonly ChannelUuid channelUuid;
         public readonly UserManagerServiceScript ss;
@@ -25,10 +26,10 @@ namespace Script
         public UserManagerService(Server server, int serviceId) : base(server, serviceId)
         {
             //
-            this.AddConnectToOtherService(this.connectToDbService = new ConnectToDbService(this));
-            this.AddConnectToOtherService(this.connectToGlobalService = new ConnectToGlobalService(this));
-            this.AddConnectToOtherService(this.connectToGatewayService = new ConnectToGatewayService(this));
-            this.AddConnectToOtherService(this.connectFromUserService = new ConnectFromUserService(this));
+            this.AddServiceProxy(this.dbServiceProxy = new DbServiceProxy(this));
+            this.AddServiceProxy(this.globalServiceProxy = new GlobalServiceProxy(this));
+            this.AddServiceProxy(this.gatewayServiceProxy = new GatewayServiceProxy(this));
+            this.AddServiceProxy(this.userServiceProxy = new UserServiceProxy(this));
 
             this.userIdSnowflakeScript = new UserIdSnowflakeScript(this.server, this);
             this.channelUuid = new ChannelUuid(this.server, this);

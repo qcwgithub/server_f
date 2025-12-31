@@ -12,9 +12,9 @@ namespace Script
             }
         }
 
-        public readonly ConnectToDbService connectToDbService;
-        public readonly ConnectToGlobalService connectToGlobalService;
-        public readonly ConnectToGatewayService connectToGatewayService;
+        public readonly DbServiceProxy dbServiceProxy;
+        public readonly GlobalServiceProxy globalServiceProxy;
+        public readonly GatewayServiceProxy gatewayServiceProxy;
         public readonly RoomIdSnowflakeScript roomIdSnowflakeScript;
         public readonly RoomManagerServiceScript ss;
         public readonly ObjectLocator roomLocator;
@@ -23,9 +23,9 @@ namespace Script
         public RoomManagerService(Server server, int serviceId) : base(server, serviceId)
         {
             //
-            this.AddConnectToOtherService(this.connectToDbService = new ConnectToDbService(this));
-            this.AddConnectToOtherService(this.connectToGlobalService = new ConnectToGlobalService(this));
-            this.AddConnectToOtherService(this.connectToGatewayService = new ConnectToGatewayService(this));
+            this.AddServiceProxy(this.dbServiceProxy = new DbServiceProxy(this));
+            this.AddServiceProxy(this.globalServiceProxy = new GlobalServiceProxy(this));
+            this.AddServiceProxy(this.gatewayServiceProxy = new GatewayServiceProxy(this));
 
             this.roomIdSnowflakeScript = new RoomIdSnowflakeScript(this.server, this);
             this.ss = new RoomManagerServiceScript(this.server, this);

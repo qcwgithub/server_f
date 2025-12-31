@@ -10,7 +10,7 @@ namespace Script
 {
     public abstract partial class DataProxy<DataType, P1, P2>
     {
-        public async Task<List<DataType>> GetManyHelp(ConnectToDbService connectToDbService, P1 p1, List<P2> p2s)
+        public async Task<List<DataType>> GetManyHelp(DbServiceProxy dbServiceProxy, P1 p1, List<P2> p2s)
         {
             RedisValue[] values = await this.GetDb().StringGetAsync(p2s.Select(p2 => this.Key(p1, p2)).ToArray());
 
@@ -37,7 +37,7 @@ namespace Script
                         indexes = new List<int>();
                     }
 
-                    tasks.Add(this.InternalGet(connectToDbService, p1, p2s[i]));
+                    tasks.Add(this.InternalGet(dbServiceProxy, p1, p2s[i]));
                     indexes.Add(i);
                 }
             }
@@ -56,9 +56,9 @@ namespace Script
             return list;
         }
 
-        public async Task<List<DataType>> GetMany(ConnectToDbService connectToDbService, P1 p1, List<P2> p2s, bool fillNullIfNotExist)
+        public async Task<List<DataType>> GetMany(DbServiceProxy dbServiceProxy, P1 p1, List<P2> p2s, bool fillNullIfNotExist)
         {
-            var list2 = await this.GetManyHelp(connectToDbService, p1, p2s);
+            var list2 = await this.GetManyHelp(dbServiceProxy, p1, p2s);
             if (fillNullIfNotExist)
             {
                 return list2;

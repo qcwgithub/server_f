@@ -67,7 +67,7 @@ namespace Script
         // 当数据不在 redis 中时，需要从数据库加载
         // 此时需要锁一下，防止多人同时加载
         protected abstract string GetLockKeyForLoadFromDBToRedis(P1 p1, P2 p2);
-        protected abstract Task<(ECode, DataType)> LoadFromDB(ConnectToDbService connectToDBService, P1 p1, P2 p2);
+        protected abstract Task<(ECode, DataType)> LoadFromDB(DbServiceProxy dbServiceProxy, P1 p1, P2 p2);
         // protected abstract bool SaveImmediately();
         // protected abstract Task<ECode> SaveToDB(DataType info);
         protected async Task SaveToRedis(P1 p1, P2 p2, DataType data)
@@ -144,7 +144,7 @@ namespace Script
             return S_EXPIRY.Subtract(TimeSpan.FromSeconds(seconds));
         }
 
-        protected async Task<DataType?> InternalGet(ConnectToDbService connectToDBService, P1 p1, P2 p2)
+        protected async Task<DataType?> InternalGet(DbServiceProxy dbServiceProxy, P1 p1, P2 p2)
         {
             DataType? data = await this.GetFromRedis(p1, p2);
             if (data != null)
@@ -173,7 +173,7 @@ namespace Script
             {
                 ECode err;
                 // this.scriptEntry.firstLogger.InfoFormat("{0} load from mongodb p1 {1} p2 {2}", this.GetType().Name, p1, p2);
-                (err, data) = await this.LoadFromDB(connectToDBService, p1, p2);
+                (err, data) = await this.LoadFromDB(dbServiceProxy, p1, p2);
                 if (err != ECode.Success)
                 {
                     // *1
@@ -211,7 +211,7 @@ namespace Script
                 return data.IsPlaceholder() ? null : data;
             }
         }
-        public async Task<List<DataType?>> GetManyHelp(ConnectToDbService connectToDBService, List<P1> idList)
+        public async Task<List<DataType?>> GetManyHelp(DbServiceProxy dbServiceProxy, List<P1> idList)
         {
             RedisValue[] values = await this.GetDb().StringGetAsync(idList.Select(id => this.Key(id, default)).ToArray());
 
@@ -242,7 +242,7 @@ namespace Script
                         indexes = new List<int>();
                     }
 
-                    tasks.Add(this.InternalGet(connectToDBService, idList[i], default));
+                    tasks.Add(this.InternalGet(dbServiceProxy, idList[i], default));
                     indexes.Add(i);
                 }
             }
@@ -261,9 +261,9 @@ namespace Script
             return list;
         }
 
-        public async Task<List<DataType?>> GetMany(ConnectToDbService connectToDBService, List<P1> idList, bool fillNullIfNotExist)
+        public async Task<List<DataType?>> GetMany(DbServiceProxy dbServiceProxy, List<P1> idList, bool fillNullIfNotExist)
         {
-            var list2 = await this.GetManyHelp(connectToDBService, idList);
+            var list2 = await this.GetManyHelp(dbServiceProxy, idList);
             if (fillNullIfNotExist)
             {
                 return list2;
@@ -281,9 +281,9 @@ namespace Script
             return list;
         }
 
-        public async Task<Dictionary<P1, DataType>> GetManyAsDict(ConnectToDbService connectToDBService, List<P1> idList, bool fillNullIfNotExist)
+        public async Task<Dictionary<P1, DataType>> GetManyAsDict(DbServiceProxy dbServiceProxy, List<P1> idList, bool fillNullIfNotExist)
         {
-            var list2 = await this.GetManyHelp(connectToDBService, idList);
+            var list2 = await this.GetManyHelp(dbServiceProxy, idList);
 
             var dict = new Dictionary<P1, DataType>();
             for (int i = 0; i < idList.Count; i++)

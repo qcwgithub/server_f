@@ -20,7 +20,7 @@ namespace Script
             var msgDb = new MsgQuery_UserInfo_by_userId();
             msgDb.userId = userId;
 
-            var r = await this.service.connectToDbService.Query_UserInfo_by_userId(msgDb);
+            var r = await this.service.dbServiceProxy.Query_UserInfo_by_userId(msgDb);
             if (r.e != ECode.Success)
             {
                 this.service.logger.Error($"QueryUserInfo({userId}) r.err {r.e}");

@@ -21,7 +21,7 @@ namespace Script
 
             var msgPersistence = new MsgPersistence();
             msgPersistence.isShuttingDownSaveAll = true;
-            var r = await this.service.Request<MsgPersistence, ResPersistence>(MsgType._PersistenceTaskQueueHandler, msgPersistence);
+            var r = await this.service.Request<MsgPersistence, ResPersistence>(MsgType._Service_PersistenceTaskQueueHandler, msgPersistence);
             if (r.e != ECode.Success)
             {
                 this.service.logger.ErrorFormat("{0} save all r.err {1}", this.msgType, r.e);

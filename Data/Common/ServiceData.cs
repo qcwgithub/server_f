@@ -196,7 +196,7 @@ namespace Data
                     if (connection.IsConnected())
                     {
                         total++;
-                        connection.SendBytes(MsgType._RemoteWillShutdown, [], (e, segment) =>
+                        connection.SendBytes(MsgType._Service_RemoteWillShutdown, [], (e, segment) =>
                         {
                             finish++;
                         },
@@ -239,7 +239,7 @@ namespace Data
                 if (connection.IsConnected())
                 {
                     total++;
-                    connection.SendBytes(MsgType._RemoteWillShutdown, [], (e, segment) =>
+                    connection.SendBytes(MsgType._Service_RemoteWillShutdown, [], (e, segment) =>
                     {
                         finish++;
                     }, pTimeoutS: 5);
@@ -264,6 +264,25 @@ namespace Data
                 if (list != null)
                     list.Clear();
             }
+        }
+
+        public int GetFirstConnected(ServiceType to)
+        {
+            List<ServiceConnection> connections = this.otherServiceConnections2[(int)to];
+            if (connections == null || connections.Count == 0)
+            {
+                return 0;
+            }
+
+            foreach (ServiceConnection connection in connections)
+            {
+                if (connection.IsConnected())
+                {
+                    return connection.serviceId;
+                }
+            }
+
+            return 0;
         }
 
         // showdown 时由于被他人连接而关闭不了时，先打标记

@@ -12,7 +12,7 @@ namespace Script
         {
             var msgDb = new MsgQuery_RoomInfo_maxOf_roomId();
 
-            var r = await this.service.connectToDbService.Request<MsgQuery_RoomInfo_maxOf_roomId, ResQuery_RoomInfo_maxOf_roomId>(MsgType._Query_RoomInfo_maxOf_roomId, msgDb);
+            var r = await this.service.dbServiceProxy.Query_RoomInfo_maxOf_roomId(msgDb);
             if (r.e != ECode.Success)
             {
                 this.service.logger.Error($"InitSnowflakeData r.e {r.e}");

@@ -64,12 +64,12 @@ namespace Script
         }
 
         //// AUTO CREATED ////
-        protected override async Task<(ECode, AccountInfo)> LoadFromDB(ConnectToDbService connectToDbService, string channel, string channelUserId)
+        protected override async Task<(ECode, AccountInfo)> LoadFromDB(DbServiceProxy dbServiceProxy, string channel, string channelUserId)
         {
             var msgDb = new MsgQuery_AccountInfo_by_channel_channelUserId();
             msgDb.channel = channel;
             msgDb.channelUserId = channelUserId;
-            var r = await connectToDbService.Request<MsgQuery_AccountInfo_by_channel_channelUserId, ResQuery_AccountInfo_by_channel_channelUserId>(MsgType._Query_AccountInfo_by_channel_channelUserId, msgDb);
+            var r = await dbServiceProxy.Query_AccountInfo_by_channel_channelUserId(msgDb);
             if (r.e != ECode.Success)
             {
                 return (r.e, null);
@@ -88,14 +88,14 @@ namespace Script
 
         /////////////////////////////////////////// PUBLIC ///////////////////////////////////////////
         //// AUTO CREATED ////
-        public async Task<AccountInfo> Get(ConnectToDbService connectToDbService, string channel, string channelUserId)
+        public async Task<AccountInfo> Get(DbServiceProxy DbServiceProxy, string channel, string channelUserId)
         {
             if (string.IsNullOrEmpty(channel) && string.IsNullOrEmpty(channelUserId))
             {
                 MyDebug.Assert(false);
                 return null;
             }
-            var info = await base.InternalGet(connectToDbService, channel, channelUserId);
+            var info = await base.InternalGet(DbServiceProxy, channel, channelUserId);
             if (info != null)
             {
                 MyDebug.Assert(info.channel == channel);

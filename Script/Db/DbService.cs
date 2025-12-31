@@ -13,7 +13,7 @@ namespace Script
         }
 
         public readonly LockController lockController;
-        public readonly ConnectToGlobalService connectToGlobalService;
+        public readonly GlobalServiceProxy globalServiceProxy;
         
         #region auto_collection_var_decl
 
@@ -27,7 +27,7 @@ namespace Script
         {
             this.lockController = new LockController(this.server, this, this.sd.lockControllerData, DbKey.TakeLockControl(), DbKey.LockedHash(), DbKey.LockPrefix());
 
-            this.AddConnectToOtherService(this.connectToGlobalService = new ConnectToGlobalService(this));
+            this.AddServiceProxy(this.globalServiceProxy = new GlobalServiceProxy(this));
 
             #region auto_collection_var_create
 

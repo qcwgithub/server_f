@@ -13,9 +13,9 @@ namespace Script
         }
 
         //
-        public readonly ConnectToDbService connectToDbService;
-        public readonly ConnectToGlobalService connectToGlobalService;
-        public readonly ConnectToGatewayService connectToGatewayService;
+        public readonly DbServiceProxy dbServiceProxy;
+        public readonly GlobalServiceProxy globalServiceProxy;
+        public readonly GatewayServiceProxy gatewayServiceProxy;
 
         protected override MessageDispatcher CreateMessageDispatcher()
         {
@@ -27,9 +27,9 @@ namespace Script
         public RoomService(Server server, int serviceId) : base(server, serviceId)
         {
             //
-            this.AddConnectToOtherService(this.connectToDbService = new ConnectToDbService(this));
-            this.AddConnectToOtherService(this.connectToGlobalService = new ConnectToGlobalService(this));
-            this.AddConnectToOtherService(this.connectToGatewayService = new ConnectToGatewayService(this));
+            this.AddServiceProxy(this.dbServiceProxy = new DbServiceProxy(this));
+            this.AddServiceProxy(this.globalServiceProxy = new GlobalServiceProxy(this));
+            this.AddServiceProxy(this.gatewayServiceProxy = new GatewayServiceProxy(this));
 
             this.ss = new RoomServiceScript(this.server, this);
         }

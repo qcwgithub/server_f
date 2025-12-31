@@ -8,7 +8,7 @@ namespace Script
         {
         }
 
-        public override MsgType msgType => MsgType._SaveUserInfoToFile;
+        public override MsgType msgType => MsgType._User_SaveUserInfoToFile;
 
         public override async Task<ECode> Handle(MsgContext context, MsgSaveUserInfoToFile msg, ResSaveUserInfoToFile res)
         {

@@ -10,7 +10,7 @@ namespace Script
         {
         }
 
-        public override MsgType msgType => MsgType._SetGmFlag;
+        public override MsgType msgType => MsgType._User_SetGmFlag;
 
         public override async Task<ECode> Handle(MsgContext context, MsgSetGmFlag msg, ResSetGmFlag res)
         {

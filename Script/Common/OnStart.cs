@@ -14,12 +14,12 @@ namespace Script
         }
 
 
-        public override MsgType msgType => MsgType._Start;
+        public override MsgType msgType => MsgType._Service_Start;
 
         void StartKeepConnections()
         {
             MyDebug.Assert(!this.service.data.timer_CheckConnections_Loop.IsAlive());
-            this.service.data.timer_CheckConnections_Loop = this.server.timerScript.SetTimer(this.service.serviceId, 0, MsgType._CheckConnections_Loop, null);
+            this.service.data.timer_CheckConnections_Loop = this.server.timerScript.SetTimer(this.service.serviceId, 0, MsgType._Service_CheckConnections_Loop, null);
         }
 
         public override async Task<ECode> Handle(MsgContext context, MsgStart msg, ResStart res)
@@ -40,9 +40,10 @@ namespace Script
 
                     foreach (var serviceType in this.service.data.connectToServiceTypes)
                     {
-                        if (!this.service.connectToOtherServiceDict.TryGetValue(serviceType, out ConnectToOtherService? connectToOtherService))
+                        if (!this.service.serviceProxyDict.TryGetValue(serviceType, out ServiceProxy? serviceProxy) || serviceProxy == null)
                         {
                             MyDebug.Assert(false);
+                            continue;
                         }
 
                         // 代码中写着要连接，但是服务器配置里却没有启动这个服务，此时不需要等
@@ -51,7 +52,7 @@ namespace Script
                             continue;
                         }
 
-                        e = await this.service.WaitServiceConnectedAndStarted(connectToOtherService!, this.msgType);
+                        e = await this.service.WaitServiceConnectedAndStarted(serviceProxy, this.msgType);
                         if (e != ECode.Success)
                         {
                             break;

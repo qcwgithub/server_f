@@ -14,7 +14,7 @@ namespace Script
         }
 
 
-        public override MsgType msgType => MsgType._Shutdown;
+        public override MsgType msgType => MsgType._Service_Shutdown;
 
         // 每个服务需要实现此接口，把自己的业务结束掉
         protected abstract Task StopBusinesses();
@@ -135,8 +135,8 @@ namespace Script
                 {
                     int v = this.service.data.busyList[i];
                     if (v != -1 &&
-                        v != (int)MsgType._Shutdown &&
-                        v != (int)MsgType._Start)
+                        v != (int)MsgType._Service_Shutdown &&
+                        v != (int)MsgType._Service_Start)
                     {
                         this.service.logger.InfoFormat("{0} is being handled, wait for it", (MsgType)v);
                         busy = true;

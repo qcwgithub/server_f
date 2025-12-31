@@ -187,7 +187,7 @@ namespace Script
 
             foreach (var service in this.services)
             {
-                service.dispatcher.Dispatch<MsgStart, ResStart>(default, MsgType._Start, new MsgStart()).Forget();
+                service.dispatcher.Dispatch<MsgStart, ResStart>(default, MsgType._Service_Start, new MsgStart()).Forget();
             }
         }
 
@@ -309,7 +309,7 @@ namespace Script
                 msgShutdown.force = false;
                 foreach (var baseService in allServices)
                 {
-                    await baseService.Request<MsgShutdown, ResShutdown>(MsgType._Shutdown, msgShutdown);
+                    await baseService.Request<MsgShutdown, ResShutdown>(MsgType._Service_Shutdown, msgShutdown);
                     await Task.Delay(100);
                 }
             }

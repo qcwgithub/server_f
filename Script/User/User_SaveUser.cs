@@ -91,7 +91,7 @@ namespace Script
                 msgDb.userInfo_debug = UserInfo.Ensure(null);
                 msgDb.userInfo_debug.DeepCopyFrom(curr);
 #endif
-                var r = await this.service.connectToDbService.Save_UserInfo(msgDb);
+                var r = await this.service.dbServiceProxy.Save_UserInfo(msgDb);
                 if (r.e != ECode.Success)
                 {
                     this.service.logger.ErrorFormat("Save_UserInfo e {1}, userId {2}", r.e, msg.userId);
