@@ -42,7 +42,7 @@ namespace Script
                     flags = msg.logoutSdk ? LogoutFlags.LogoutSdk : LogoutFlags.None,
                 };
 
-                var r = await this.service.Request<MsgGatewayDestroyUser, ResGatewayDestroyUser>(MsgType._Gateway_DestroyUser, msgD);
+                var r = await this.service.DestroyUser(msgD);
                 if (r.e != ECode.Success)
                 {
                     return r.e;

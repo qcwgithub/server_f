@@ -12,7 +12,7 @@ namespace Script
         {
         }
 
-        public override async Task<ECode> Handle(MsgContext context, MsgQuery_AccountInfo_by_channel_channelUserId msg, ResQuery_AccountInfo_by_channel_channelUserId res)
+        public override async Task<ECode> Handle(MessageContext context, MsgQuery_AccountInfo_by_channel_channelUserId msg, ResQuery_AccountInfo_by_channel_channelUserId res)
         {
             // this.service.logger.InfoFormat("{0} channel: {1}, channelUserId: {2}", this.msgType, msg.channel, msg.channelUserId);
 

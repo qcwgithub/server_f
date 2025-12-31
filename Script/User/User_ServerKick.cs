@@ -24,7 +24,7 @@ namespace Script
             msgD.userId = msg.userId;
             msgD.reason = UserDestroyUserReason.ServerKick;
 
-            var r = await this.service.Request<MsgUserDestroyUser, ResUserDestroyUser>(MsgType._User_DestroyUser, msgD);
+            var r = await this.service.DestroyUser(msgD);
             if (r.e != ECode.Success)
             {
                 return r.e;

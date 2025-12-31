@@ -36,7 +36,7 @@ namespace Script
             msgSave.userId = msg.userId;
             msgSave.reason = "User_DestroyUser";
 
-            var r = await this.service.Request<MsgSaveUser, ResSaveUser>(MsgType._User_SaveUser, msgSave);
+            var r = await this.service.SaveUser(msgSave);
             if (r.e != ECode.Success)
             {
                 return r.e;

@@ -12,7 +12,7 @@ namespace Script
         {
         }
 
-        public override async Task<ECode> Handle(MsgContext context, MsgQuery_RoomInfo_maxOf_roomId msg, ResQuery_RoomInfo_maxOf_roomId res)
+        public override async Task<ECode> Handle(MessageContext context, MsgQuery_RoomInfo_maxOf_roomId msg, ResQuery_RoomInfo_maxOf_roomId res)
         {
             // this.service.logger.InfoFormat("{0}", this.msgType);
 

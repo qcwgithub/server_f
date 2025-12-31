@@ -238,8 +238,7 @@ namespace Script
                     // 关服
                     case "shutdown":
                         {
-                            var r = await this.service.Request<MsgCommon, ResCommon>(MsgType._Command_PerformShutdown,
-                                   new MsgCommon().SetLong("serviceId", serviceId).SetLong("force", this.GetArg_Int("force", false)));
+                            var r = await this.service.PerformShutdown(new MsgCommon().SetLong("serviceId", serviceId).SetLong("force", this.GetArg_Int("force", false)));
                             e = r.e;
                         }
                         break;
@@ -247,8 +246,7 @@ namespace Script
                     // 打印积压了多少消息
                     case "printPendingMsgList":
                         {
-                            var r = await this.service.Request<MsgCommon, ResCommon>(MsgType._Command_PerformGetPendingMsgList,
-                                   new MsgCommon().SetLong("serviceId", serviceId));
+                            var r = await this.service.PerformGetPendingMsgList(new MsgCommon().SetLong("serviceId", serviceId));
                             e = r.e;
                         }
                         break;
@@ -256,8 +254,7 @@ namespace Script
                     // 打印服务器 Script.dll 版本
                     case "showScriptVersion":
                         {
-                            var r = await this.service.Request<MsgCommon, ResCommon>(MsgType._Command_PerformShowScriptVersion,
-                                   new MsgCommon().SetLong("serviceId", serviceId));
+                            var r = await this.service.PerformShowScriptVersion(new MsgCommon().SetLong("serviceId", serviceId));
                             e = r.e;
                         }
                         break;
@@ -267,8 +264,7 @@ namespace Script
                         {
                             string? zip = this.GetArg_String("zip", false);
 
-                            var r = await this.service.Request<MsgCommon, ResCommon>(MsgType._Command_PerformReloadScript,
-                                        new MsgCommon().SetLong("serviceId", serviceId).SetString("zip", zip == null ? string.Empty : zip));
+                            var r = await this.service.PerformReloadScript(new MsgCommon().SetLong("serviceId", serviceId).SetString("zip", zip == null ? string.Empty : zip));
                             e = r.e;
                         }
                         break;
@@ -370,8 +366,7 @@ namespace Script
                             {
                                 throw new System.Exception("missing endId");
                             }
-                            var r = await this.service.Request<MsgCommon, ResCommon>(MsgType._Command_PerformSetPlayerGmFlag,
-                                new MsgCommon().SetLong("serviceId", serviceId).SetLong("startId", startId).SetLong("endId", endId));
+                            var r = await this.service.PerformSetPlayerGmFlag(new MsgCommon().SetLong("serviceId", serviceId).SetLong("startId", startId).SetLong("endId", endId));
                             e = r.e;
                         }
                         break;
@@ -482,15 +477,13 @@ namespace Script
             {
                 case "kick":
                     {
-                        var r = await this.service.Request<MsgCommon, ResCommon>(MsgType._Command_PerformKick,
-                            new MsgCommon().SetLong("serviceId", usId).SetLong("playerId", userId));
+                        var r = await this.service.PerformKick(new MsgCommon().SetLong("serviceId", usId).SetLong("playerId", userId));
                         e = r.e;
                     }
                     break;
                 case "saveUserInfoToFile":
                     {
-                        var r = await this.service.Request<MsgCommon, ResCommon>(MsgType._Command_PerformSaveUserInfoToFile,
-                            new MsgCommon().SetLong("serviceId", usId).SetLong("playerId", userId));
+                        var r = await this.service.PerformSaveUserInfoToFile(new MsgCommon().SetLong("serviceId", usId).SetLong("playerId", userId));
                         e = r.e;
                     }
                     break;
@@ -517,8 +510,7 @@ namespace Script
                         {
                             msgGMStr = string.Empty;
                         }
-                        var r = await this.service.Request<MsgCommon, ResCommon>(MsgType._Command_PerformPlayerGM,
-                            new MsgCommon().SetLong("serviceId", usId).SetLong("playerId", userId).SetString("msgGM", msgGMStr));
+                        var r = await this.service.PerformPlayerGM(new MsgCommon().SetLong("serviceId", usId).SetLong("playerId", userId).SetString("msgGM", msgGMStr));
                         e = r.e;
                     }
                     break;

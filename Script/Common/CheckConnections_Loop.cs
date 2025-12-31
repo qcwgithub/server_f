@@ -20,7 +20,7 @@ namespace Script
         {
             if (this.service.data.connectToServiceTypes.Count > 0)
             {
-                var r = await this.service.Request<MsgCheckConnections, ResCheckConnections>(MsgType._Service_CheckConnections, new MsgCheckConnections());
+                var r = await this.service.CheckConnections(new MsgCheckConnections());
                 return r.e;
             }
 

@@ -389,10 +389,5 @@ namespace Script
             this.data.state = s;
             this.logger.Info(s);
         }
-
-        public async Task<MyResponse<Res>> Request<Msg, Res>(MsgType msgType, Msg msg) where Res : class
-        {
-            return await this.dispatcher.Dispatch<Msg, Res>(default, msgType, msg);
-        }
     }
 }

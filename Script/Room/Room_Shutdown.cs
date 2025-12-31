@@ -48,7 +48,7 @@ namespace Script
                     var msgD = new MsgRoomDestroyRoom();
                     msgD.roomId = roomId;
                     msgD.reason = RoomDestroyRoomReason.Shutdown;
-                    tasks.Add(this.service.Request<MsgRoomDestroyRoom, ResRoomDestroyRoom>(MsgType._Room_DestroyRoom, msgD));
+                    tasks.Add(this.service.DestroyRoom(msgD));
                 }
 
                 await Task.WhenAll(tasks);

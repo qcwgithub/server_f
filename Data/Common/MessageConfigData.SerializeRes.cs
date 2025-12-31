@@ -59,7 +59,7 @@ namespace Data
                     return MessagePackSerializer.Serialize<MsgGetServiceState>((MsgGetServiceState)res);
 
                 case MsgType._Service_PersistenceTaskQueueHandler:
-                    throw new Exception("Missing config for MsgType._Service_PersistenceTaskQueueHandler");
+                    return MessagePackSerializer.Serialize<MsgPersistence>((MsgPersistence)res);
 
                 case MsgType._Service_PersistenceTaskQueueHandler_Loop:
                     throw new Exception("Missing config for MsgType._Service_PersistenceTaskQueueHandler_Loop");

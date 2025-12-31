@@ -44,7 +44,7 @@ public class Create_Save_XInfo
                 ff.BlockEnd();
                 ff.Push("\n");
 
-                ff.TabPushF("public override async Task<ECode> Handle(MsgContext context, MsgSave_{0} msg, ResSave_{0} res)\n", config.xinfoType);
+                ff.TabPushF("public override async Task<ECode> Handle(MessageContext context, MsgSave_{0} msg, ResSave_{0} res)\n", config.xinfoType);
                 ff.BlockStart();
                 {
                     if (save.field == null)
