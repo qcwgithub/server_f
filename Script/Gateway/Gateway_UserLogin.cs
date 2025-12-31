@@ -31,13 +31,13 @@ namespace Script
             msgUM.addressFamily = family.ToString();
             msgUM.ip = ip;
 
-            var rUM = await this.service.userManagerServiceProxy.UserLogin(msgUM);
-            if (rUM.e != ECode.Success)
+            var r = await this.service.userManagerServiceProxy.UserLogin(msgUM);
+            if (r.e != ECode.Success)
             {
-                return rUM.e;
+                return r.e;
             }
 
-            ResUserManagerUserLogin resUM = rUM.res;
+            var resUM = r.CastRes<ResUserManagerUserLogin>();
 
             ////
 
@@ -79,7 +79,7 @@ namespace Script
             // User connect to the same Gateway twice
             var msgKick = new MsgKick();
             msgKick.flags = LogoutFlags.CancelAutoLogin;
-            oldConnection.Send<MsgKick>(MsgType.Kick, msgKick, null, null);
+            oldConnection.Send(MsgType.Kick, msgKick, null, null);
 
             return true;
         }

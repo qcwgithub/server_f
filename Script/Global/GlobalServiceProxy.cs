@@ -10,9 +10,9 @@ namespace Script
 
         #region auto_proxy
 
-        public async Task<MyResponse<ResGetServiceConfigs>> GetServiceConfigs(MsgGetServiceConfigs msg)
+        public async Task<MyResponse> GetServiceConfigs(MsgGetServiceConfigs msg)
         {
-            return await this.Request<MsgGetServiceConfigs, ResGetServiceConfigs>(ServiceType.Global, MsgType._Global_GetServiceConfigs, msg);
+            return await this.Request(ServiceType.Global, MsgType._Global_GetServiceConfigs, msg);
         }
 
         #endregion auto_proxy

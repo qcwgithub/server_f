@@ -213,7 +213,7 @@ public class Create_XInfo_Proxy
                     }
                     ff.BlockEnd();
                     ff.Push("\n");
-                    ff.TabPushF("var res = r.res.result;\n");
+                    ff.TabPushF("var res = r.CastRes<Res{0}>().result;\n", query.methodName);
 
                     if (!config.createPlaceholderWhenNull)
                     {

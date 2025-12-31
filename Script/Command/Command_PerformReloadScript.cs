@@ -72,14 +72,15 @@ namespace Script
                 msgReload.pdbBytes = pdbBytes;
             }
 
-            var r = await this.service.commandConnectToOtherService.Request<MsgReloadScript, ResReloadScript>(serviceId, MsgType._Service_ReloadScript, msgReload);
+            var r = await this.service.commandConnectToOtherService.Request(serviceId, MsgType._Service_ReloadScript, msgReload);
+            var resLoad = r.CastRes<ResReloadScript>();
             if (r.e != ECode.Success)
             {
-                this.service.logger.ErrorFormat("reload script failed, message: {0}", r.res.message);
+                this.service.logger.ErrorFormat("reload script failed, message: {0}", resLoad.message);
                 return r.e;
             }
 
-            this.service.logger.InfoFormat("reload script ok, message: {0}", r.res.message);
+            this.service.logger.InfoFormat("reload script ok, message: {0}", resLoad.message);
             return r.e;
         }
     }

@@ -83,34 +83,17 @@ namespace Script
             return string.Join(", ", list.Select(x => x.Item1.ToString() + "*" + x.Item2));
         }
 
-        public async Task<MyResponse<Res>> Dispatch<Msg, Res>(MessageContext context, MsgType msgType, Msg msg)
-            where Res : class
+        public async Task<MyResponse> Dispatch(MessageContext context, MsgType msgType, object msg)
         {
             IHandler? handler = this.GetHandler(msgType);
             if (handler == null)
             {
                 this.service.logger.ErrorFormat("no handler for message {0}", msgType);
-                return new MyResponse<Res>(ECode.Error, null);
+                return new MyResponse(ECode.Error);
             }
 
             (ECode e, object res) = await this.DispatchImpl(context, handler, msgType, msg);
-            return new MyResponse<Res>(e, (Res)res);
-        }
-
-        public async Task<(ECode, ArraySegment<byte>)> Dispatch(MessageContext context, MsgType msgType, ArraySegment<byte> msgData)
-        {
-            IHandler? handler = this.GetHandler(msgType);
-            if (handler == null)
-            {
-                this.service.logger.ErrorFormat("no handler for message {0}", msgType);
-                return (ECode.Error, []);
-            }
-
-            object msg = handler.DeserializeMsg(msgData);
-            (ECode e, object res) = await this.DispatchImpl(context, handler, msgType, msg);
-
-            ArraySegment<byte> resBytes = handler.SerializeRes(res);
-            return (e, resBytes);
+            return new MyResponse(e, res);
         }
 
         protected virtual void BeforePostHandle(MessageContext context, MsgType type, object msg, ECode e, object res)

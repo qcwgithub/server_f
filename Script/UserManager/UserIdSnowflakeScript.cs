@@ -19,7 +19,9 @@ namespace Script
                 return r.e;
             }
 
-            long maxUserId = r.res.result;
+            var resDb = r.CastRes<ResQuery_UserInfo_maxOf_userId>();
+
+            long maxUserId = resDb.result;
             if (!Decode(maxUserId, out long preStamp, out long preWorkerId, out long preSeq))
             {
                 return ECode.Error;

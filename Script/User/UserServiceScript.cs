@@ -27,7 +27,9 @@ namespace Script
                 return (r.e, null);
             }
 
-            UserInfo? userInfo = r.res.result;
+            var resDb = r.CastRes<ResQuery_UserInfo_by_userId>();
+
+            UserInfo? userInfo = resDb.result;
             if (userInfo != null)
             {
                 if (userInfo.userId != userId)

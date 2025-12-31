@@ -18,8 +18,9 @@ namespace Script
                 this.service.logger.Error($"InitSnowflakeData r.e {r.e}");
                 return r.e;
             }
+            var resDb = r.CastRes<ResQuery_RoomInfo_maxOf_roomId>();
 
-            long maxRoomId = r.res.result;
+            long maxRoomId = resDb.result;
             if (!Decode(maxRoomId, out long preStamp, out long preWorkerId, out long preSeq))
             {
                 return ECode.Error;

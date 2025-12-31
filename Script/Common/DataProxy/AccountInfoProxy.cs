@@ -75,7 +75,7 @@ namespace Script
                 return (r.e, null);
             }
 
-            var res = r.res.result;
+            var res = r.CastRes<ResQuery_AccountInfo_by_channel_channelUserId>().result;
             return (ECode.Success, res);
         }
 

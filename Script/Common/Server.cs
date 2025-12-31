@@ -269,7 +269,7 @@ namespace Script
             {
                 if (service.serviceId == serviceId)
                 {
-                    service.dispatcher.Dispatch<object, object>(default, msgType, msg).Forget();
+                    service.dispatcher.Dispatch(default, msgType, msg).Forget();
                     found = true;
                     break;
                 }

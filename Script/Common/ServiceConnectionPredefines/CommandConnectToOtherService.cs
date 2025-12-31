@@ -10,16 +10,15 @@ namespace Script
             this.self = self;
         }
 
-        public async Task<MyResponse<Res>> Request<Msg, Res>(int serviceId, MsgType msgType, Msg msg)
-            where Res : class, new()
+        public async Task<MyResponse> Request(int serviceId, MsgType msgType, object msg)
         {
             IConnection? connection = this.self.data.GetOtherServiceConnection(serviceId);
             if (connection == null || !connection.IsConnected())
             {
-                return new MyResponse<Res>(ECode.Server_NotConnected, null);
+                return new MyResponse(ECode.Server_NotConnected);
             }
 
-            return await connection.Request<Msg, Res>(msgType, msg);
+            return await connection.Request(msgType, msg);
         }
     }
 }

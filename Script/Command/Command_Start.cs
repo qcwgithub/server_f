@@ -289,7 +289,7 @@ namespace Script
                                 msgReload.files = new List<string>();
                                 msgReload.files.AddRange(array);
                             }
-                            var r = await this.service.commandConnectToOtherService.Request<MsgReloadConfigs, ResReloadConfigs>(serviceId, MsgType._Service_ReloadConfigs, msgReload);
+                            var r = await this.service.commandConnectToOtherService.Request(serviceId, MsgType._Service_ReloadConfigs, msgReload);
                             e = r.e;
                         }
                         break;
@@ -297,14 +297,15 @@ namespace Script
                     case "getReloadConfigOptions":
                         {
                             var msgGet = new MsgGetReloadConfigOptions();
-                            var r = await this.service.commandConnectToOtherService.Request<MsgGetReloadConfigOptions, ResGetReloadConfigOptions>(serviceId, MsgType._Service_GetReloadConfigOptions, msgGet);
+                            var r = await this.service.commandConnectToOtherService.Request(serviceId, MsgType._Service_GetReloadConfigOptions, msgGet);
                             e = r.e;
 
                             if (e == ECode.Success)
                             {
-                                for (int i = 0; i < r.res.files.Count; i++)
+                                var resGet = r.CastRes<ResGetReloadConfigOptions>();
+                                for (int i = 0; i < resGet.files.Count; i++)
                                 {
-                                    this.service.logger.InfoFormat("{0}) {1}", i + 1, r.res.files[i]);
+                                    this.service.logger.InfoFormat("{0}) {1}", i + 1, resGet.files[i]);
                                 }
                             }
                         }
@@ -314,7 +315,7 @@ namespace Script
                     case "gc":
                         {
                             var msgGc = new MsgGC();
-                            var r = await this.service.commandConnectToOtherService.Request<MsgGC, ResGC>(serviceId, MsgType._Service_GC, msgGc);
+                            var r = await this.service.commandConnectToOtherService.Request(serviceId, MsgType._Service_GC, msgGc);
                             e = r.e;
                         }
                         break;
@@ -335,7 +336,7 @@ namespace Script
                                 msg.saveIntervalS = i;
                             }
 
-                            var r = await this.service.commandConnectToOtherService.Request<MsgUserServiceAction, ResUserServiceAction>(serviceId, MsgType._User_ServerAction, msg);
+                            var r = await this.service.commandConnectToOtherService.Request(serviceId, MsgType._User_ServerAction, msg);
                             e = r.e;
                         }
                         break;
@@ -349,7 +350,7 @@ namespace Script
                                 msg.destroyTimeoutS = i;
                             }
 
-                            var r = await this.service.commandConnectToOtherService.Request<MsgGatewayServiceAction, ResGatewayServiceAction>(serviceId, MsgType._Gateway_ServerAction, msg);
+                            var r = await this.service.commandConnectToOtherService.Request(serviceId, MsgType._Gateway_ServerAction, msg);
                             e = r.e;
                         }
                         break;
@@ -410,12 +411,13 @@ namespace Script
                     case "showUserCount":
                         {
                             var msg2 = new MsgGetUserCount();
-                            var r = await this.service.commandConnectToOtherService.Request<MsgGetUserCount, ResGetUserCount>(serviceId, MsgType._User_GetUserCount, msg2);
+                            var r = await this.service.commandConnectToOtherService.Request(serviceId, MsgType._User_GetUserCount, msg2);
                             e = r.e;
 
                             if (e == ECode.Success)
                             {
-                                foreach (var kv in r.res.dict)
+                                var res2 = r.CastRes<ResGetUserCount>();
+                                foreach (var kv in res2.dict)
                                 {
                                     this.service.logger.Info($"{kv.Key} = {kv.Value}");
                                 }

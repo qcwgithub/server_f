@@ -54,7 +54,7 @@ namespace Script
                 var rLoad = await this.service.roomManagerServiceProxy.LoadRoom(msgLoad);
                 if (rLoad.e == ECode.Success)
                 {
-                    ResRoomManagerLoadRoom resLoad = rLoad.res;
+                    var resLoad = rLoad.CastRes<ResRoomManagerLoadRoom>();
                     location = resLoad.location;
 
                     this.service.roomLocator.CacheLocation(msg.roomId, location);

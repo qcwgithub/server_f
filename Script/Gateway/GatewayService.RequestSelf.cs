@@ -6,9 +6,9 @@ namespace Script
     {
         #region auto
 
-        public async Task<MyResponse<ResGatewayDestroyUser>> DestroyUser(MsgGatewayDestroyUser msg)
+        public async Task<MyResponse> DestroyUser(MsgGatewayDestroyUser msg)
         {
-            return await this.dispatcher.Dispatch<MsgGatewayDestroyUser, ResGatewayDestroyUser>(default, MsgType._Gateway_DestroyUser, msg);
+            return await this.dispatcher.Dispatch(default, MsgType._Gateway_DestroyUser, msg);
         }
 
         #endregion auto

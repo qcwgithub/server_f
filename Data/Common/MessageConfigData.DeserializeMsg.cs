@@ -4,7 +4,7 @@ namespace Data
 {
     public partial class MessageConfigData
     {
-        public object DeserializeMsg(MsgType msgType, ArraySegment<byte> msg)
+        public static object DeserializeMsg(MsgType msgType, ArraySegment<byte> msg)
         {
             switch (msgType)
             {

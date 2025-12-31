@@ -58,10 +58,16 @@ namespace Script
                 connection = connection,
             };
 
-            (ECode e, ArraySegment<byte> resBytes) = await this.service.dispatcher.Dispatch(context, msgType, msgBytes);
+            var msg = MessageConfigData.DeserializeMsg(msgType, msgBytes);
+            var r = await this.service.dispatcher.Dispatch(context, msgType, msg);
             if (reply != null)
             {
-                reply(e, resBytes);
+                ArraySegment<byte> resBytes = default;
+                if (r.res != null)
+                {
+                    resBytes = MessageConfigData.SerializeRes(msgType, r.res);
+                }
+                reply(r.e, resBytes);
             }
         }
 

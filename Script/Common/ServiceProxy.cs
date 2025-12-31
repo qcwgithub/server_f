@@ -12,80 +12,78 @@ namespace Script
             this.to = to;
         }
 
-        protected async Task<MyResponse<Res>> Request<Msg, Res>(ServiceType serviceType, MsgType msgType, Msg msg)
-            where Res : class
+        protected async Task<MyResponse> Request(ServiceType serviceType, MsgType msgType, object msg)
         {
             IConnection? connection = this.self.protocolClientScriptForS.RandomOtherServiceConnection(serviceType);
             if (connection == null)
             {
-                return new MyResponse<Res>(ECode.Server_NotConnected, null);
+                return new MyResponse(ECode.Server_NotConnected);
             }
 
-            return await connection.Request<Msg, Res>(msgType, msg);
+            return await connection.Request(msgType, msg);
         }
 
-        protected async Task<MyResponse<Res>> Request<Msg, Res>(int serviceId, MsgType msgType, Msg msg)
-            where Res : class
+        protected async Task<MyResponse> Request(int serviceId, MsgType msgType, object msg)
         {
             IConnection? connection = this.self.data.GetOtherServiceConnection(serviceId);
             if (connection == null || !connection.IsConnected())
             {
-                return new MyResponse<Res>(ECode.Server_NotConnected, null);
+                return new MyResponse(ECode.Server_NotConnected);
             }
 
             if (connection == null)
             {
-                return new MyResponse<Res>(ECode.Server_NotConnected, null);
+                return new MyResponse(ECode.Server_NotConnected);
             }
 
-            return await connection.Request<Msg, Res>(msgType, msg);
+            return await connection.Request(msgType, msg);
         }
 
         #region auto_proxy
 
-        public async Task<MyResponse<ResReloadScript>> ReloadScript(int serviceId, MsgReloadScript msg)
+        public async Task<MyResponse> ReloadScript(int serviceId, MsgReloadScript msg)
         {
-            return await this.Request<MsgReloadScript, ResReloadScript>(serviceId, MsgType._Service_ReloadScript, msg);
+            return await this.Request(serviceId, MsgType._Service_ReloadScript, msg);
         }
-        public async Task<MyResponse<ResConnectorInfo>> ConnectorInfo(int serviceId, MsgConnectorInfo msg)
+        public async Task<MyResponse> ConnectorInfo(int serviceId, MsgConnectorInfo msg)
         {
-            return await this.Request<MsgConnectorInfo, ResConnectorInfo>(serviceId, MsgType._Service_ConnectorInfo, msg);
+            return await this.Request(serviceId, MsgType._Service_ConnectorInfo, msg);
         }
-        public async Task<MyResponse<ResGetPendingMsgList>> GetPendingMessageList(int serviceId, MsgGetPendingMsgList msg)
+        public async Task<MyResponse> GetPendingMessageList(int serviceId, MsgGetPendingMsgList msg)
         {
-            return await this.Request<MsgGetPendingMsgList, ResGetPendingMsgList>(serviceId, MsgType._Service_GetPendingMessageList, msg);
+            return await this.Request(serviceId, MsgType._Service_GetPendingMessageList, msg);
         }
-        public async Task<MyResponse<ResGetScriptVersion>> GetScriptVersion(int serviceId, MsgGetScriptVersion msg)
+        public async Task<MyResponse> GetScriptVersion(int serviceId, MsgGetScriptVersion msg)
         {
-            return await this.Request<MsgGetScriptVersion, ResGetScriptVersion>(serviceId, MsgType._Service_GetScriptVersion, msg);
+            return await this.Request(serviceId, MsgType._Service_GetScriptVersion, msg);
         }
-        public async Task<MyResponse<ResReloadConfigs>> ReloadConfigs(int serviceId, MsgReloadConfigs msg)
+        public async Task<MyResponse> ReloadConfigs(int serviceId, MsgReloadConfigs msg)
         {
-            return await this.Request<MsgReloadConfigs, ResReloadConfigs>(serviceId, MsgType._Service_ReloadConfigs, msg);
+            return await this.Request(serviceId, MsgType._Service_ReloadConfigs, msg);
         }
-        public async Task<MyResponse<ResGC>> GC(int serviceId, MsgGC msg)
+        public async Task<MyResponse> GC(int serviceId, MsgGC msg)
         {
-            return await this.Request<MsgGC, ResGC>(serviceId, MsgType._Service_GC, msg);
+            return await this.Request(serviceId, MsgType._Service_GC, msg);
         }
-        public async Task<MyResponse<ResRemoteWillShutdown>> RemoteWillShutdown(int serviceId, MsgRemoteWillShutdown msg)
+        public async Task<MyResponse> RemoteWillShutdown(int serviceId, MsgRemoteWillShutdown msg)
         {
-            return await this.Request<MsgRemoteWillShutdown, ResRemoteWillShutdown>(serviceId, MsgType._Service_RemoteWillShutdown, msg);
+            return await this.Request(serviceId, MsgType._Service_RemoteWillShutdown, msg);
         }
-        public async Task<MyResponse<ResGetServiceState>> GetServiceState(int serviceId, MsgGetServiceState msg)
+        public async Task<MyResponse> GetServiceState(int serviceId, MsgGetServiceState msg)
         {
-            return await this.Request<MsgGetServiceState, ResGetServiceState>(serviceId, MsgType._Service_GetServiceState, msg);
+            return await this.Request(serviceId, MsgType._Service_GetServiceState, msg);
         }
-        public async Task<MyResponse<ResGetReloadConfigOptions>> GetReloadConfigOptions(int serviceId, MsgGetReloadConfigOptions msg)
+        public async Task<MyResponse> GetReloadConfigOptions(int serviceId, MsgGetReloadConfigOptions msg)
         {
-            return await this.Request<MsgGetReloadConfigOptions, ResGetReloadConfigOptions>(serviceId, MsgType._Service_GetReloadConfigOptions, msg);
+            return await this.Request(serviceId, MsgType._Service_GetReloadConfigOptions, msg);
         }
-        public async Task<MyResponse<ResGetConnectedInfos>> GetConnectedInfos(int serviceId, MsgGetConnectedInfos msg)
+        public async Task<MyResponse> GetConnectedInfos(int serviceId, MsgGetConnectedInfos msg)
         {
-            return await this.Request<MsgGetConnectedInfos, ResGetConnectedInfos>(serviceId, MsgType._Service_GetConnectedInfos, msg);
+            return await this.Request(serviceId, MsgType._Service_GetConnectedInfos, msg);
         }
-        public async Task<MyResponse<ResViewMongoDumpList>> ViewMongoDumpList(int serviceId, MsgViewMongoDumpList msg)
+        public async Task<MyResponse> ViewMongoDumpList(int serviceId, MsgViewMongoDumpList msg)
         {
-            return await this.Request<MsgViewMongoDumpList, ResViewMongoDumpList>(serviceId, MsgType._Service_ViewMongoDumpList, msg);
+            return await this.Request(serviceId, MsgType._Service_ViewMongoDumpList, msg);
         }
 
         #endregion auto_proxy

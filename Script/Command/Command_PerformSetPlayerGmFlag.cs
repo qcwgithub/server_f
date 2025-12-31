@@ -24,12 +24,16 @@ namespace Script
             msgSet.startUserId = startId;
             msgSet.endUserId = endId;
 
-            var r = await this.service.commandConnectToOtherService.Request<MsgSetGmFlag, ResSetGmFlag>(serviceId, MsgType._User_SetGmFlag, msgSet);
-            if (r.res.listUser != null)
+            var r = await this.service.commandConnectToOtherService.Request(serviceId, MsgType._User_SetGmFlag, msgSet);
+            if (r.res != null)
             {
-                foreach (var item in r.res.listUser)
+                var resSet = r.CastRes<ResSetGmFlag>();
+                if (resSet.listUser != null)
                 {
-                    this.service.logger.InfoFormat("{0} success set GM!", item);
+                    foreach (var item in resSet.listUser)
+                    {
+                        this.service.logger.InfoFormat("{0} success set GM!", item);
+                    }
                 }
             }
             return r.e;

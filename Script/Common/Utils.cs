@@ -15,7 +15,7 @@ namespace Script
             return MessagePackSerializer.Deserialize<T>(msg);
         }
 
-        public static async Task<MyResponse<Res>> Request<Msg, Res>(this IConnection connection, MsgType msgType, byte[] msgBytes) where Res : class
+        public static async Task<MyResponse> Request(this IConnection connection, MsgType msgType, byte[] msgBytes)
         {
             var cs = new TaskCompletionSource<(ECode, ArraySegment<byte>)>();
 
@@ -31,8 +31,8 @@ namespace Script
     
             (ECode e, ArraySegment<byte> segment) = await cs.Task;
 
-            Res res = Deserialize<Res>(segment);
-            return new MyResponse<Res>(e, res);
+            object res = MessageConfigData.DeserializeRes(msgType, segment);
+            return new MyResponse(e, res);
         }
 
         public static void SendBytes(this IConnection connection, MsgType msgType, byte[] msgBytes, ReplyCallback? cb, int? pTimeoutS)
@@ -40,15 +40,15 @@ namespace Script
             connection.SendBytes(msgType, msgBytes, cb, pTimeoutS);
         }
 
-        public static async Task<MyResponse<Res>> Request<Msg, Res>(this IConnection connection, MsgType msgType, Msg msg) where Res : class
+        public static async Task<MyResponse> Request(this IConnection connection, MsgType msgType, object msg)
         {
-            byte[] msgBytes = Serialize<Msg>(msg);
-            return await Request<Msg, Res>(connection, msgType, msgBytes);
+            byte[] msgBytes = MessageConfigData.SerializeMsg(msgType, msg);
+            return await Request(connection, msgType, msgBytes);
         }
 
-        public static void Send<Msg>(this IConnection connection, MsgType msgType, Msg msg, ReplyCallback? cb, int? pTimeoutS)
+        public static void Send(this IConnection connection, MsgType msgType, object msg, ReplyCallback? cb, int? pTimeoutS)
         {
-            byte[] msgBytes = Serialize<Msg>(msg);
+            byte[] msgBytes = MessageConfigData.SerializeMsg(msgType, msg);
             connection.SendBytes(msgType, msgBytes, cb, pTimeoutS);
         }
 

@@ -5,11 +5,17 @@ public class Create_MessageConfigData
         var init = new FileFormatter();
         init.AddTab(3);
 
-        var deserialize = new FileFormatter();
-        deserialize.AddTab(4);
+        var serializeMsg = new FileFormatter();
+        serializeMsg.AddTab(4);
 
-        var serialize = new FileFormatter();
-        serialize.AddTab(4);
+        var deserializeMsg = new FileFormatter();
+        deserializeMsg.AddTab(4);
+
+        var serializeRes = new FileFormatter();
+        serializeRes.AddTab(4);
+        
+        var deserializeRes = new FileFormatter();
+        deserializeRes.AddTab(4);
 
         for (int i = 0; i < configs.Count; i++)
         {
@@ -31,40 +37,78 @@ public class Create_MessageConfigData
 
             ////
 
-            deserialize.TabPushF("case MsgType.{0}:\n", config.msgType);
-            deserialize.AddTab(1);
+            serializeMsg.TabPushF("case MsgType.{0}:\n", config.msgType);
+            serializeMsg.AddTab(1);
             if (!string.IsNullOrEmpty(config.msg))
             {
-                deserialize.TabPushF("return MessagePackSerializer.Deserialize<{0}>(msg);\n", config.msg);
+                serializeMsg.TabPushF("return MessagePackSerializer.Serialize(({0})msg);\n", config.msg);
             }
             else
             {
-                deserialize.TabPushF("throw new Exception(\"Missing config for MsgType.{0}\");\n", config.msgType);
+                serializeMsg.TabPushF("throw new Exception(\"Missing config for MsgType.{0}\");\n", config.msgType);
             }
-            deserialize.AddTab(-1);
+            serializeMsg.AddTab(-1);
 
             if (i < configs.Count - 1)
             {
-                deserialize.Push("\n");
+                serializeMsg.Push("\n");
             }
 
             ////
 
-            serialize.TabPushF("case MsgType.{0}:\n", config.msgType);
-            serialize.AddTab(1);
+            deserializeMsg.TabPushF("case MsgType.{0}:\n", config.msgType);
+            deserializeMsg.AddTab(1);
             if (!string.IsNullOrEmpty(config.msg))
             {
-                serialize.TabPushF("return MessagePackSerializer.Serialize<{0}>(({0})res);\n", config.msg);
+                deserializeMsg.TabPushF("return MessagePackSerializer.Deserialize<{0}>(msg);\n", config.msg);
             }
             else
             {
-                serialize.TabPushF("throw new Exception(\"Missing config for MsgType.{0}\");\n", config.msgType);
+                deserializeMsg.TabPushF("throw new Exception(\"Missing config for MsgType.{0}\");\n", config.msgType);
             }
-            serialize.AddTab(-1);
+            deserializeMsg.AddTab(-1);
 
             if (i < configs.Count - 1)
             {
-                serialize.Push("\n");
+                deserializeMsg.Push("\n");
+            }
+
+            ////
+
+            serializeRes.TabPushF("case MsgType.{0}:\n", config.msgType);
+            serializeRes.AddTab(1);
+            if (!string.IsNullOrEmpty(config.msg))
+            {
+                serializeRes.TabPushF("return MessagePackSerializer.Serialize(({0})res);\n", config.res);
+            }
+            else
+            {
+                serializeRes.TabPushF("throw new Exception(\"Missing config for MsgType.{0}\");\n", config.msgType);
+            }
+            serializeRes.AddTab(-1);
+
+            if (i < configs.Count - 1)
+            {
+                serializeRes.Push("\n");
+            }
+
+            ////
+
+            deserializeRes.TabPushF("case MsgType.{0}:\n", config.msgType);
+            deserializeRes.AddTab(1);
+            if (!string.IsNullOrEmpty(config.msg))
+            {
+                deserializeRes.TabPushF("return MessagePackSerializer.Deserialize<{0}>(res);\n", config.res);
+            }
+            else
+            {
+                deserializeRes.TabPushF("throw new Exception(\"Missing config for MsgType.{0}\");\n", config.msgType);
+            }
+            deserializeRes.AddTab(-1);
+
+            if (i < configs.Count - 1)
+            {
+                deserializeRes.Push("\n");
             }
         }
 
@@ -73,14 +117,24 @@ public class Create_MessageConfigData
             new Mark { startMark = "#region auto", text = init.GetString() },
         });
 
+        XInfoProgram.ReplaceFile("Data/Common/MessageConfigData.SerializeMsg.cs", new Mark[]
+        {
+            new Mark { startMark = "#region auto", text = serializeMsg.GetString() },
+        });
+
         XInfoProgram.ReplaceFile("Data/Common/MessageConfigData.DeserializeMsg.cs", new Mark[]
         {
-            new Mark { startMark = "#region auto", text = deserialize.GetString() },
+            new Mark { startMark = "#region auto", text = deserializeMsg.GetString() },
         });
 
         XInfoProgram.ReplaceFile("Data/Common/MessageConfigData.SerializeRes.cs", new Mark[]
         {
-            new Mark { startMark = "#region auto", text = serialize.GetString() },
+            new Mark { startMark = "#region auto", text = serializeRes.GetString() },
+        });
+
+        XInfoProgram.ReplaceFile("Data/Common/MessageConfigData.DeserializeRes.cs", new Mark[]
+        {
+            new Mark { startMark = "#region auto", text = deserializeRes.GetString() },
         });
     }
 }

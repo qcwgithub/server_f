@@ -115,7 +115,7 @@ namespace Script
                 return rU.e;
             }
 
-            ResUserLoginSuccess resU = rU.res;
+            var resU = rU.CastRes<ResUserLoginSuccess>();
 
             ////
 

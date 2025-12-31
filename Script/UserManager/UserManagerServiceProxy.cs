@@ -10,9 +10,9 @@ namespace Script
 
         #region auto_proxy
 
-        public async Task<MyResponse<ResUserManagerUserLogin>> UserLogin(MsgUserManagerUserLogin msg)
+        public async Task<MyResponse> UserLogin(MsgUserManagerUserLogin msg)
         {
-            return await this.Request<MsgUserManagerUserLogin, ResUserManagerUserLogin>(ServiceType.UserManager, MsgType._UserManager_UserLogin, msg);
+            return await this.Request(ServiceType.UserManager, MsgType._UserManager_UserLogin, msg);
         }
 
         #endregion auto_proxy

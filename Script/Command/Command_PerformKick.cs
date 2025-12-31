@@ -25,7 +25,7 @@ namespace Script
             msgKick.userId = userId;
             msgKick.logoutSdk = true;
 
-            var r = await this.service.commandConnectToOtherService.Request<MsgGatewayServerKick, ResGatewayServerKick>(serviceId, MsgType._Gateway_ServerKick, msgKick);
+            var r = await this.service.commandConnectToOtherService.Request(serviceId, MsgType._Gateway_ServerKick, msgKick);
             return r.e;
         }
     }

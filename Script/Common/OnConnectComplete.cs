@@ -22,7 +22,7 @@ namespace Script
                 // 连上去之后立即向他报告是我的身份
                 var msgInfo = new MsgConnectorInfo();
                 msgInfo.connectorInfo = this.service.CreateConnectorInfo();
-                await serviceConnection.Request<MsgConnectorInfo, ResConnectorInfo>(MsgType._Service_ConnectorInfo, msgInfo);
+                await serviceConnection.Request(MsgType._Service_ConnectorInfo, msgInfo);
             }
 
             return ECode.Success;

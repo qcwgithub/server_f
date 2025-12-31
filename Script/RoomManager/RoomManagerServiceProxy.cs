@@ -10,9 +10,9 @@ namespace Script
 
         #region auto_proxy
 
-        public async Task<MyResponse<ResRoomManagerLoadRoom>> LoadRoom(MsgRoomManagerLoadRoom msg)
+        public async Task<MyResponse> LoadRoom(MsgRoomManagerLoadRoom msg)
         {
-            return await this.Request<MsgRoomManagerLoadRoom, ResRoomManagerLoadRoom>(ServiceType.RoomManager, MsgType._RoomManager_LoadRoom, msg);
+            return await this.Request(ServiceType.RoomManager, MsgType._RoomManager_LoadRoom, msg);
         }
 
         #endregion auto_proxy

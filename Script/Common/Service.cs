@@ -211,13 +211,13 @@ namespace Script
             msg.fromServiceId = this.data.serviceId;
             msg.why = why;
 
-            var r = await connection.Request<MsgGetServiceConfigs, ResGetServiceConfigs>(MsgType._Global_GetServiceConfigs, msg);
+            var r = await connection.Request(MsgType._Global_GetServiceConfigs, msg);
             if (r.e != ECode.Success)
             {
                 return null;
             }
 
-            return r.res;
+            return r.CastRes<ResGetServiceConfigs>();
         }
 
         protected bool CheckResGetServiceConfigs(ResGetServiceConfigs res, out ServiceConfig? myServiceConfig, out string message)
@@ -346,12 +346,12 @@ namespace Script
                 }
 
                 var msg = new MsgGetServiceState();
-                MyResponse<ResGetServiceState> r;
+                MyResponse r;
 
                 int sid = this.data.GetFirstConnected(serviceProxy.to);
                 if (sid == 0)
                 {
-                    r = new MyResponse<ResGetServiceState>(ECode.Server_NotConnected, null);
+                    r = new MyResponse(ECode.Server_NotConnected);
                 }
                 else
                 {
@@ -363,7 +363,8 @@ namespace Script
                     continue;
                 }
 
-                if (r.res.serviceState != ServiceState.Started)
+                var res = r.CastRes<ResGetServiceState>();
+                if (res.serviceState != ServiceState.Started)
                 {
                     await Task.Delay(100);
                     continue;

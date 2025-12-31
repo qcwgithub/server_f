@@ -6,13 +6,13 @@ namespace Script
     {
         #region auto
 
-        public async Task<MyResponse<ResRoomDestroyRoom>> DestroyRoom(MsgRoomDestroyRoom msg)
+        public async Task<MyResponse> DestroyRoom(MsgRoomDestroyRoom msg)
         {
-            return await this.dispatcher.Dispatch<MsgRoomDestroyRoom, ResRoomDestroyRoom>(default, MsgType._Room_DestroyRoom, msg);
+            return await this.dispatcher.Dispatch(default, MsgType._Room_DestroyRoom, msg);
         }
-        public async Task<MyResponse<ResSaveRoom>> SaveRoom(MsgSaveRoom msg)
+        public async Task<MyResponse> SaveRoom(MsgSaveRoom msg)
         {
-            return await this.dispatcher.Dispatch<MsgSaveRoom, ResSaveRoom>(default, MsgType._Room_SaveRoom, msg);
+            return await this.dispatcher.Dispatch(default, MsgType._Room_SaveRoom, msg);
         }
 
         #endregion auto

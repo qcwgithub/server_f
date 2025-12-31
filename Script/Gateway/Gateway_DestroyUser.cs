@@ -25,7 +25,7 @@ namespace Script
 
             if (msg.msgKick != null && user.connection != null && user.connection.IsConnected())
             {
-                user.connection.Send<MsgKick>(MsgType.Kick, msg.msgKick, null, null);
+                user.connection.Send(MsgType.Kick, msg.msgKick, null, null);
             }
 
             if (user.connection != null && user.connection.IsConnected())

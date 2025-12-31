@@ -60,7 +60,7 @@ public class Create_ServiceProxy
                     f = proxyDict[serviceType];
                 }
 
-                f.TabPush($"public async Task<MyResponse<{config.res}>> {methodName}(");
+                f.TabPush($"public async Task<MyResponse> {methodName}(");
                 if (config.arg_serviceId)
                 {
                     f.Push($"int serviceId, ");
@@ -68,7 +68,7 @@ public class Create_ServiceProxy
                 f.Push($"{config.msg} msg)\n");
 
                 f.BlockStart();
-                f.TabPush($"return await this.Request<{config.msg}, {config.res}>(");
+                f.TabPush($"return await this.Request(");
                 if (config.arg_serviceId)
                 {
                     f.Push($"serviceId, ");
@@ -96,9 +96,9 @@ public class Create_ServiceProxy
                     f = selfDict[serviceType];
                 }
 
-                f.TabPush($"public async Task<MyResponse<{config.res}>> {methodName}({config.msg} msg)\n");
+                f.TabPush($"public async Task<MyResponse> {methodName}({config.msg} msg)\n");
                 f.BlockStart();
-                f.TabPush($"return await this.dispatcher.Dispatch<{config.msg}, {config.res}>(default, MsgType.{config.msgType}, msg);\n");
+                f.TabPush($"return await this.dispatcher.Dispatch(default, MsgType.{config.msgType}, msg);\n");
                 f.BlockEnd();
             }
         }

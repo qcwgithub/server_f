@@ -18,11 +18,11 @@ namespace Script
             int serviceId = (int)msg.GetLong("serviceId");
 
             var msg2 = new MsgGetScriptVersion();
-            var r = await this.service.commandConnectToOtherService.Request<MsgGetScriptVersion, ResGetScriptVersion>(serviceId, MsgType._Service_GetScriptVersion, msg2);
+            var r = await this.service.commandConnectToOtherService.Request(serviceId, MsgType._Service_GetScriptVersion, msg2);
 
             if (r.e == ECode.Success)
             {
-                this.service.logger.Info("version: " + r.res.version);
+                this.service.logger.Info("version: " + r.CastRes<ResGetScriptVersion>().version);
             }
 
             return r.e;

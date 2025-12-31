@@ -6,37 +6,37 @@ namespace Script
     {
         #region auto
 
-        public async Task<MyResponse<ResCommon>> PerformReloadScript(MsgCommon msg)
+        public async Task<MyResponse> PerformReloadScript(MsgCommon msg)
         {
-            return await this.dispatcher.Dispatch<MsgCommon, ResCommon>(default, MsgType._Command_PerformReloadScript, msg);
+            return await this.dispatcher.Dispatch(default, MsgType._Command_PerformReloadScript, msg);
         }
-        public async Task<MyResponse<ResCommon>> PerformSaveUserInfoToFile(MsgCommon msg)
+        public async Task<MyResponse> PerformSaveUserInfoToFile(MsgCommon msg)
         {
-            return await this.dispatcher.Dispatch<MsgCommon, ResCommon>(default, MsgType._Command_PerformSaveUserInfoToFile, msg);
+            return await this.dispatcher.Dispatch(default, MsgType._Command_PerformSaveUserInfoToFile, msg);
         }
-        public async Task<MyResponse<ResCommon>> PerformShowScriptVersion(MsgCommon msg)
+        public async Task<MyResponse> PerformShowScriptVersion(MsgCommon msg)
         {
-            return await this.dispatcher.Dispatch<MsgCommon, ResCommon>(default, MsgType._Command_PerformShowScriptVersion, msg);
+            return await this.dispatcher.Dispatch(default, MsgType._Command_PerformShowScriptVersion, msg);
         }
-        public async Task<MyResponse<ResCommon>> PerformGetPendingMsgList(MsgCommon msg)
+        public async Task<MyResponse> PerformGetPendingMsgList(MsgCommon msg)
         {
-            return await this.dispatcher.Dispatch<MsgCommon, ResCommon>(default, MsgType._Command_PerformGetPendingMsgList, msg);
+            return await this.dispatcher.Dispatch(default, MsgType._Command_PerformGetPendingMsgList, msg);
         }
-        public async Task<MyResponse<ResCommon>> PerformShutdown(MsgCommon msg)
+        public async Task<MyResponse> PerformShutdown(MsgCommon msg)
         {
-            return await this.dispatcher.Dispatch<MsgCommon, ResCommon>(default, MsgType._Command_PerformShutdown, msg);
+            return await this.dispatcher.Dispatch(default, MsgType._Command_PerformShutdown, msg);
         }
-        public async Task<MyResponse<ResCommon>> PerformPlayerGM(MsgCommon msg)
+        public async Task<MyResponse> PerformPlayerGM(MsgCommon msg)
         {
-            return await this.dispatcher.Dispatch<MsgCommon, ResCommon>(default, MsgType._Command_PerformPlayerGM, msg);
+            return await this.dispatcher.Dispatch(default, MsgType._Command_PerformPlayerGM, msg);
         }
-        public async Task<MyResponse<ResCommon>> PerformKick(MsgCommon msg)
+        public async Task<MyResponse> PerformKick(MsgCommon msg)
         {
-            return await this.dispatcher.Dispatch<MsgCommon, ResCommon>(default, MsgType._Command_PerformKick, msg);
+            return await this.dispatcher.Dispatch(default, MsgType._Command_PerformKick, msg);
         }
-        public async Task<MyResponse<ResCommon>> PerformSetPlayerGmFlag(MsgCommon msg)
+        public async Task<MyResponse> PerformSetPlayerGmFlag(MsgCommon msg)
         {
-            return await this.dispatcher.Dispatch<MsgCommon, ResCommon>(default, MsgType._Command_PerformSetPlayerGmFlag, msg);
+            return await this.dispatcher.Dispatch(default, MsgType._Command_PerformSetPlayerGmFlag, msg);
         }
 
         #endregion auto

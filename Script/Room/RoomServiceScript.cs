@@ -22,7 +22,9 @@ namespace Script
                 return (r.e, null);
             }
 
-            RoomInfo? roomInfo = r.res.result;
+            var resDb = r.CastRes<ResQuery_RoomInfo_by_roomId>();
+
+            RoomInfo? roomInfo = resDb.result;
             if (roomInfo != null)
             {
                 if (roomInfo.roomId != roomId)

@@ -21,10 +21,10 @@ namespace Script
 
             var msg2 = new MsgSaveUserInfoToFile();
             msg2.userId = userId;
-            var r = await this.service.commandConnectToOtherService.Request<MsgSaveUserInfoToFile, ResSaveUserInfoToFile>(serviceId, MsgType._User_SaveUserInfoToFile, msg2);
+            var r = await this.service.commandConnectToOtherService.Request(serviceId, MsgType._User_SaveUserInfoToFile, msg2);
             if (r.e == ECode.Success)
             {
-                this.service.logger.Info("save user info to file ok, file name: " + r.res.fileName);
+                this.service.logger.Info("save user info to file ok, file name: " + r.CastRes<ResSaveUserInfoToFile>().fileName);
             }
             return r.e;
         }
