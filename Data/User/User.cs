@@ -56,9 +56,6 @@ namespace Data
 
         public bool isGm = false;
 
-        public Dictionary<MsgType, int> processingMsgs { get; } = new Dictionary<MsgType, int>();
-        public int accumDelayLoginS; // 已经延迟登录多久了
-
         public long roomId;
     }
 }

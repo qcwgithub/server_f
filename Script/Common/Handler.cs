@@ -19,18 +19,17 @@ namespace Script
 
         public abstract MsgType msgType { get; }
 
-        public async Task<(ECode, object)> Handle(MessageContext context, object msg)
+        public async Task<MyResponse> Handle(MessageContext context, object msg)
         {
             Res res = new Res();
             ECode e = await this.Handle(context, (Msg)msg, res);
-            return (e, res);
+            return new MyResponse(e, res);
         }
 
         public abstract Task<ECode> Handle(MessageContext context, Msg msg, Res res);
-        public virtual (ECode, object) PostHandle(MessageContext context, object msg, ECode e, object res)
+        public virtual void PostHandle(MessageContext context, object msg, MyResponse r)
         {
-            this.PostHandle(context, (Msg)msg, e, (Res)res);
-            return (e, res);
+            this.PostHandle(context, (Msg)msg, r.e, (Res)r.res);
         }
 
         public virtual void PostHandle(MessageContext context, Msg msg, ECode e, Res res)

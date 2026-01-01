@@ -27,15 +27,14 @@ namespace Script
             return ECode.Success;
         }
 
-        public override (ECode, object) PostHandle(MessageContext context, object msg, ECode e, object res)
+        public override void PostHandle(MessageContext context, object msg, MyResponse r)
         {
             if (this.service.data.state >= ServiceState.ShuttingDown)
             {
-                return (e, res);
+                return;
             }
 
             this.service.data.timer_CheckConnections_Loop = this.server.timerScript.SetTimer(this.service.serviceId, this.service.data.state == ServiceState.Started ? INTERVAL_S_SLOW : INTERVAL_S_QUICK, this.msgType, null);
-            return (e, res);
         }
     }
 }

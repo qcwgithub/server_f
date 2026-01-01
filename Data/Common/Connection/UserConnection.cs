@@ -5,7 +5,6 @@ namespace Data
         public readonly int gatewayServiceId;
         public readonly User user;
         public readonly UserServiceData sd;
-        public MsgType msgProcessing;
         public UserConnection(int gatewayServiceId, User user, UserServiceData sd)
         {
             this.gatewayServiceId = gatewayServiceId;

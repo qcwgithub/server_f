@@ -35,7 +35,5 @@ namespace Data
         public UserInfo userInfo;
         [Key(2)]
         public bool kickOther;
-        [Key(3)]
-        public int delayS;
     }
 }

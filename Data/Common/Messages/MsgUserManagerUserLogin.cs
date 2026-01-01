@@ -39,8 +39,6 @@ namespace Data
         [Key(2)]
         public bool kickOther;
         [Key(3)]
-        public int delayS;
-        [Key(4)]
         public int userServiceId;
     }
 }

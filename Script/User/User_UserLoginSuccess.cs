@@ -67,14 +67,6 @@ namespace Script
                 this.service.ss.SetSaveTimer(user);
             }
 
-            int delayS = this.NeedDelayLogin(user);
-            if (delayS > 0)
-            {
-                this.logger.Info(message0 + ": delayS > 0, should wait");
-                res.delayS = delayS;
-                return ECode.DelayLogin;
-            }
-
             bool kickOther = this.HandleOldConnection(user, msg.gatewayServiceId);
 
             if (user.connection == null)
@@ -125,35 +117,6 @@ namespace Script
             }
 
             return true;
-        }
-
-        int NeedDelayLogin(User user)
-        {
-            if (user.processingMsgs.Count == 0)
-            {
-                user.accumDelayLoginS = 0;
-                return 0;
-            }
-
-            if (user.accumDelayLoginS >= 10)
-            {
-                user.accumDelayLoginS = 0;
-                return 0;
-            }
-
-            bool need = user.processingMsgs.Any(kv => kv.Key.DelayLoginIfHandling());
-            if (need)
-            {
-                const int D = 1;
-                user.accumDelayLoginS += D;
-                this.service.logger.ErrorFormat("{0} userId {1} delay login, accumDelayLoginS {2}", this.msgType, user.userId, user.accumDelayLoginS);
-                return D;
-            }
-            else
-            {
-                user.accumDelayLoginS = 0;
-                return 0;
-            }
         }
 
         void AddUserToDict(User user)

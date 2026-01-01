@@ -59,7 +59,6 @@ namespace Script
             res.isNewUser = resUM.isNewUser;
             res.userInfo = resUM.userInfo;
             res.kickOther = resUM.kickOther;
-            res.delayS = resUM.delayS;
             return ECode.Success;
         }
 

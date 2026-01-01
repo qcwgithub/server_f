@@ -30,28 +30,6 @@ namespace Script
             return this.handlers.Remove(type);
         }
 
-        public List<MsgType> recentMsgTypes = new List<MsgType>();
-        protected virtual ECode BeforeHandle(MessageContext context, MsgType type, object msg)
-        {
-            if (this.recentMsgTypes.Count > 10000)
-            {
-                // 防错而已
-                this.recentMsgTypes.Clear();
-            }
-            this.recentMsgTypes.Add(type);
-
-            return ECode.Success;
-        }
-
-        protected virtual void AfterHandle(MessageContext context, MsgType type, object msg, ECode e, object res)
-        {
-            if (e != ECode.Success && type.LogErrorIfNotSuccess())
-            {
-                // 已知 oldConnection 会走到这，不是错误
-                this.service.logger.InfoFormat("{0} ECode.{1}", type, e);
-            }
-        }
-
         public virtual void OnFps(int fps)
         {
             if (fps < 5)
@@ -83,6 +61,38 @@ namespace Script
             return string.Join(", ", list.Select(x => x.Item1.ToString() + "*" + x.Item2));
         }
 
+        public List<MsgType> recentMsgTypes = new List<MsgType>();
+        protected virtual ECode BeforeHandle(MessageContext context, MsgType type, object msg)
+        {
+            if (this.recentMsgTypes.Count > 10000)
+            {
+                // 防错而已
+                this.recentMsgTypes.Clear();
+            }
+            this.recentMsgTypes.Add(type);
+
+            return ECode.Success;
+        }
+
+        protected virtual void AfterHandle(MessageContext context, MsgType type, object msg, MyResponse r)
+        {
+            if (r.e != ECode.Success && type.LogErrorIfNotSuccess())
+            {
+                // 已知 oldConnection 会走到这，不是错误
+                this.service.logger.InfoFormat("{0} ECode.{1}", type, r.e);
+            }
+        }
+
+        protected virtual void BeforePostHandle(MessageContext context, MsgType type, object msg, MyResponse r)
+        {
+
+        }
+
+        protected virtual void AfterPostHandle(MessageContext context, MsgType type, object msg, MyResponse r)
+        {
+
+        }
+
         public async Task<MyResponse> Dispatch(MessageContext context, MsgType msgType, object msg)
         {
             IHandler? handler = this.GetHandler(msgType);
@@ -92,26 +102,10 @@ namespace Script
                 return new MyResponse(ECode.Error);
             }
 
-            (ECode e, object res) = await this.DispatchImpl(context, handler, msgType, msg);
-            return new MyResponse(e, res);
-        }
-
-        protected virtual void BeforePostHandle(MessageContext context, MsgType type, object msg, ECode e, object res)
-        {
-
-        }
-
-        protected virtual void AfterPostHandle(MessageContext context, MsgType type, object msg, ECode e, object res)
-        {
-
-        }
-
-        protected virtual async Task<(ECode, object)> DispatchImpl(MessageContext context, IHandler handler, MsgType type, object msg)
-        {
             if (this.service.detached)
             {
                 string message = string.Format("{0}.Disaptch MsgType.{1} server.detaching({2}) server.detached({3})",
-                    this.GetType().Name, type, this.service.detaching, this.service.detached);
+                    this.GetType().Name, msgType, this.service.detaching, this.service.detached);
 
                 Console.WriteLine(message);
 
@@ -121,10 +115,9 @@ namespace Script
                 }
             }
 
-            ECode e = default;
-            object res = default;
+            MyResponse r;
 
-            int busyIndex = this.service.data.AddToBusyList((int)type);
+            int busyIndex = this.service.data.AddToBusyList((int)msgType);
             if (this.service.data.busyCount >= this.service.data.lastErrorBusyCount + 100)
             {
                 this.service.data.lastErrorBusyCount = this.service.data.busyCount;
@@ -133,28 +126,28 @@ namespace Script
 
             try
             {
-                this.BeforeHandle(context, type, msg);
-                (e, res) = await handler.Handle(context, msg);
-                this.AfterHandle(context, type, msg, e, res);
+                this.BeforeHandle(context, msgType, msg);
+                r = await handler.Handle(context, msg);
+                this.AfterHandle(context, msgType, msg, r);
             }
             catch (Exception ex)
             {
-                this.service.logger.Fatal("disaptch exception 1! msgType: " + type, ex);
-                e = ECode.Exception;
+                this.service.logger.Fatal("disaptch exception 1! msgType: " + msgType, ex);
+                r = ECode.Exception;
             }
 
             try
             {
                 this.service.data.RemoveFromBusyList(busyIndex);
-                this.BeforePostHandle(context, type, msg, e, res);
-                (e, res) = handler.PostHandle(context, msg, e, res);
-                this.AfterPostHandle(context, type, msg, e, res);
-                return (e, res);
+                this.BeforePostHandle(context, msgType, msg, r);
+                handler.PostHandle(context, msg, r);
+                this.AfterPostHandle(context, msgType, msg, r);
+                return r;
             }
             catch (Exception ex)
             {
-                this.service.logger.Fatal("disaptch exception 2! msgType: " + type, ex);
-                return (ECode.Exception, null);
+                this.service.logger.Fatal("disaptch exception 2! msgType: " + msgType, ex);
+                return ECode.Exception;
             }
         }
     }

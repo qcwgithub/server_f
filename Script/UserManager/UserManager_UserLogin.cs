@@ -122,7 +122,6 @@ namespace Script
             res.isNewUser = isNewUser;
             res.userInfo = resU.userInfo;
             res.kickOther = resU.kickOther;
-            res.delayS = resU.delayS;
             res.userServiceId = location.serviceId;
 
             return ECode.Success;
