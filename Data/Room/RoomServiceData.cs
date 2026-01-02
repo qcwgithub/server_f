@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using log4net;
-
 namespace Data
 {
     public sealed class RoomServiceData : ServiceData
@@ -79,5 +75,16 @@ namespace Data
         }
 
         public ITimer timer_tick_loop;
+
+        public class LockedRoom
+        {
+            public object? owner;
+            public List<TaskCompletionSource>? waiting;
+        }
+        public readonly Dictionary<long, LockedRoom> lockedRoomDict = new();
+        public bool IsRoomLocked(long roomId)
+        {
+            return this.lockedRoomDict.TryGetValue(roomId, out var lockedRoom) && lockedRoom.owner != null;
+        }
     }
 }

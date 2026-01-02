@@ -18,38 +18,46 @@ namespace Script
             this.data.StopListenForServer_Tcp();
 
             //// kick players
-            List<long> kickList = new List<long>();
+            List<Room> kickList = new();
             this.logger.InfoFormat("start kick all roomss, total {0}", this.sd.roomCount);
             List<Task> tasks = new List<Task>();
             while (true)
             {
                 foreach (var kv in this.sd.roomDict)
                 {
-                    kickList.Add(kv.Key);
+                    if (this.sd.IsRoomLocked(kv.Key))
+                    {
+                        continue;
+                    }
+                    Room room = kv.Value;
+                    kickList.Add(room);
                     if (kickList.Count >= 10)
                     {
                         break;
                     }
                 }
 
-                if (kickList.Count == 0)
+                if (kickList.Count > 0)
                 {
-                    break;
+                    foreach (Room room in kickList)
+                    {
+                        tasks.Add(this.DestroyRoom(room, RoomDestroyRoomReason.Shutdown));
+                    }
+
+                    await Task.WhenAll(tasks);
+
+                    kickList.Clear();
+                    tasks.Clear();
                 }
-
-                foreach (long roomId in kickList)
-                {
-                    tasks.Add(this.DestroyRoom(roomId, RoomDestroyRoomReason.Shutdown));
-                }
-
-                await Task.WhenAll(tasks);
-
-                kickList.Clear();
-                tasks.Clear();
 
                 await Task.Delay(100);
 
                 this.logger.InfoFormat("left {0} rooms to kick", this.sd.roomCount);
+
+                if (this.sd.roomCount == 0)
+                {
+                    break;
+                }
             }
 
             ////

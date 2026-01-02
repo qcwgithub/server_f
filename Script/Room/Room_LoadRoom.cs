@@ -11,7 +11,7 @@ namespace Script
         public override MsgType msgType => MsgType._Room_LoadRoom;
         public override async Task<ECode> Handle(MessageContext context, MsgRoomLoadRoom msg, ResRoomLoadRoom res)
         {
-            Room? room = this.service.sd.GetRoom(msg.roomId);
+            Room? room = await this.service.LockRoom(msg.roomId, context);
             if (room != null)
             {
                 if (room.destroying)
@@ -67,6 +67,13 @@ namespace Script
             // 这句会修改 roomInfo，必须放在 lastRoomInfo.DeepCopyFrom 后面
             // this.gameScripts.CallInit(room);
             this.service.CheckUpdateRuntimeInfo().Forget();
+        }
+
+        public override void PostHandle(MessageContext context, MsgRoomLoadRoom msg, ECode e, ResRoomLoadRoom res)
+        {
+            this.service.TryUnlockRoom(msg.roomId, context);
+
+            base.PostHandle(context, msg, e, res);
         }
     }
 }

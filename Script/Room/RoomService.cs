@@ -72,5 +72,72 @@ namespace Script
                 await this.UpdateRuntimeInfo();
             }
         }
+
+        public async Task<Room?> LockRoom(long roomId, object owner)
+        {
+            MyDebug.Assert(owner != null);
+
+            Room? room = this.sd.GetRoom(roomId);
+
+            if (!this.sd.lockedRoomDict.TryGetValue(roomId, out var lockedRoom))
+            {
+                this.sd.lockedRoomDict[roomId] = new RoomServiceData.LockedRoom
+                {
+                    owner = owner,
+                };
+                return room;
+            }
+
+            if (lockedRoom.owner == null)
+            {
+                lockedRoom.owner = owner;
+                return room;
+            }
+
+            if (lockedRoom.owner == owner)
+            {
+                return room;
+            }
+
+            if (lockedRoom.waiting == null)
+            {
+                lockedRoom.waiting = new List<TaskCompletionSource>();
+            }
+
+            var tcs = new TaskCompletionSource();
+            lockedRoom.waiting.Add(tcs);
+            await tcs.Task;
+
+            MyDebug.Assert(lockedRoom.owner == null);
+            lockedRoom.owner = owner;
+            return room;
+        }
+
+        public void TryUnlockRoom(long roomId, object owner)
+        {
+            MyDebug.Assert(owner != null);
+
+            if (!this.sd.lockedRoomDict.TryGetValue(roomId, out var lockedRoom))
+            {
+                MyDebug.Assert(false);
+                return;
+            }
+
+            if (lockedRoom.owner == owner)
+            {
+                lockedRoom.owner = null;
+
+                if (lockedRoom.waiting != null && lockedRoom.waiting.Count > 0)
+                {
+                    var tcs = lockedRoom.waiting[0];
+                    lockedRoom.waiting.RemoveAt(0);
+                    tcs.SetResult();
+                }
+            }
+            else
+            {
+                MyDebug.Assert(false);
+            }
+        }
     }
 }

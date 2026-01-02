@@ -70,6 +70,7 @@ namespace Script
             this.dispatcher.AddHandler(new OnGetConnectedInfos<S>(this.server, (S)this));
             this.dispatcher.AddHandler(new OnReloadScript<S>(this.server, (S)this));
             this.dispatcher.AddHandler(new OnReloadConfigs<S>(this.server, (S)this));
+            this.dispatcher.AddHandler(new OnTimer<S>(this.server, (S)this));
             this.dispatcher.AddHandler(new OnGetReloadConfigOptions<S>(this.server, (S)this));
             this.dispatcher.AddHandler(new OnGC<S>(this.server, (S)this));
 

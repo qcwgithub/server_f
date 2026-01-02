@@ -4,20 +4,13 @@ namespace Script
 {
     public partial class RoomService
     {
-        public async Task<ECode> SaveRoom(long roomId, string reason)
+        public async Task<ECode> SaveRoom(Room room, string reason)
         {
-            Room? room = this.sd.GetRoom(roomId);
-            if (room == null)
-            {
-                this.logger.ErrorFormat("SaveRoom roomId {0}, reason {1}, room == null!!", roomId, reason);
-                return ECode.RoomNotExist;
-            }
-
-            await this.server.roomLocationRedisW.WriteLocation(roomId, this.serviceId, this.sd.saveIntervalS + 60);
+            await this.server.roomLocationRedisW.WriteLocation(room.roomId, this.serviceId, this.sd.saveIntervalS + 60);
 
             var msgDb = new MsgSave_RoomInfo
             {
-                roomId = roomId,
+                roomId = room.roomId,
                 roomInfoNullable = new RoomInfoNullable()
             };
             var infoNullable = msgDb.roomInfoNullable;
@@ -62,7 +55,7 @@ namespace Script
             {
                 fieldsStr = string.Join(", ", buffer.ToArray());
 
-                this.logger.InfoFormat("SaveRoom roomId {0}, reason {1}, fields [{2}]", roomId, reason, fieldsStr);
+                this.logger.InfoFormat("SaveRoom roomId {0}, reason {1}, fields [{2}]", room.roomId, reason, fieldsStr);
             }
 
             if (buffer != null)
@@ -74,7 +67,7 @@ namespace Script
                 var r = await this.dbServiceProxy.Save_RoomInfo(msgDb);
                 if (r.e != ECode.Success)
                 {
-                    this.logger.ErrorFormat("{0} error: {1}, roomId {2}", MsgType._Save_RoomInfo, r.e, roomId);
+                    this.logger.ErrorFormat("{0} error: {1}, roomId {2}", MsgType._Save_RoomInfo, r.e, room.roomId);
                     return r.e;
                 }
             }
