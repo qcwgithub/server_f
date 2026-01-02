@@ -1,23 +1,14 @@
-using System.Linq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Data;
-using System;
 
 namespace Script
 {
-    public abstract class OnShutdown<S> : Handler<S, MsgShutdown, ResShutdown>
-        where S : Service
+    public partial class Service
     {
-        protected OnShutdown(Server server, S service) : base(server, service)
-        {
-        }
-
-
-        public override MsgType msgType => MsgType._Service_Shutdown;
-
         // 每个服务需要实现此接口，把自己的业务结束掉
-        protected abstract Task StopBusinesses();
+        protected virtual async Task StopBusinesses()
+        {
+
+        }
 
         protected void ClearTimer(ref Data.ITimer timer)
         {
@@ -47,46 +38,46 @@ namespace Script
                 foreach (var kv in serverData.timerSData.timerDict)
                 {
                     TimerInfo timerInfo = kv.Value;
-                    if (timerInfo.serviceId == this.service.serviceId)
+                    if (timerInfo.serviceId == this.serviceId)
                     {
-                        this.service.logger.ErrorFormat("timer is still running! {0}", JsonUtils.stringify(timerInfo));
+                        this.logger.ErrorFormat("timer is still running! {0}", JsonUtils.stringify(timerInfo));
                     }
                 }
             }
         }
 
-        public sealed override async Task<ECode> Handle(MessageContext context, MsgShutdown msg, ResShutdown res)
+        public async Task<ECode> Shutdown(bool force)
         {
-            this.service.logger.Info($"{this.msgType} force {msg.force}");
+            this.logger.Info($"Shutdown force {force}");
 
-            if (this.service.data.state >= ServiceState.ShuttingDown)
+            if (this.data.state >= ServiceState.ShuttingDown)
             {
-                this.service.logger.Info($"state is already >= {this.service.data.state}");
+                this.logger.Info($"state is already >= {this.data.state}");
                 return ECode.Success;
             }
 
-            if (!msg.force)
+            if (!force)
             {
-                if (this.service.data.GetPassivelyConnections().Count > 0)
+                if (this.data.GetPassivelyConnections().Count > 0)
                 {
-                    this.service.data.markedShutdown = true;
-                    this.service.logger.Info("set markedShutdown = true");
+                    this.data.markedShutdown = true;
+                    this.logger.Info("set markedShutdown = true");
                     return ECode.Success;
                 }
             }
 
-            this.ClearTimer(ref this.service.data.timer_shutdown);
+            this.ClearTimer(ref this.data.timer_shutdown);
 
             //
-            this.service.SetState(ServiceState.ShuttingDown);
+            this.SetState(ServiceState.ShuttingDown);
 
             //----------------------------------------------
             // 关闭给别人提供的服务
-            this.service.data.StopListenForServer_Tcp();
+            this.data.StopListenForServer_Tcp();
             // this.service.data.StopListenForServer_Ws();
             try
             {
-                this.service.data.StopListen_Http();
+                this.data.StopListen_Http();
             }
             catch (Exception ex)
             {
@@ -101,10 +92,10 @@ namespace Script
                     throw ex;
                 }
             }
-            this.service.data.StopListenForClient_Tcp();
+            this.data.StopListenForClient_Tcp();
             try
             {
-                this.service.data.StopListenForClient_Ws();
+                this.data.StopListenForClient_Ws();
             }
             catch (Exception ex)
             {
@@ -123,7 +114,7 @@ namespace Script
 
             await this.StopBusinesses();
 
-            this.ClearTimer(ref this.service.data.timer_CheckConnections_Loop);
+            this.ClearTimer(ref this.data.timer_CheckConnections_Loop);
 
             this.CheckTimer();
 
@@ -131,14 +122,14 @@ namespace Script
             while (true)
             {
                 bool busy = false;
-                for (int i = 0; i < this.service.data.busyList.Count; i++)
+                for (int i = 0; i < this.data.busyList.Count; i++)
                 {
-                    int v = this.service.data.busyList[i];
+                    int v = this.data.busyList[i];
                     if (v != -1 &&
                         v != (int)MsgType._Service_Shutdown &&
                         v != (int)MsgType._Service_Start)
                     {
-                        this.service.logger.InfoFormat("{0} is being handled, wait for it", (MsgType)v);
+                        this.logger.InfoFormat("{0} is being handled, wait for it", (MsgType)v);
                         busy = true;
                     }
                 }
@@ -155,10 +146,10 @@ namespace Script
             this.CheckTimer();
 
             // 关闭所有主动发起的连接
-            await this.service.data.CloseProactiveConnections();
+            await this.data.CloseProactiveConnections();
 
-            this.service.SetState(ServiceState.ReadyToShutdown);
-            this.server.feiShuMessenger.SendEventMessage(this.service.data.serviceTypeAndId.ToString() + " ReadyToShutdown");
+            this.SetState(ServiceState.ReadyToShutdown);
+            this.server.feiShuMessenger.SendEventMessage(this.data.serviceTypeAndId.ToString() + " ReadyToShutdown");
             this.server.OnServiceSetStateToShutdown();
             return ECode.Success;
         }

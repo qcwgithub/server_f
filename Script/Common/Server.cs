@@ -262,14 +262,14 @@ namespace Script
             Environment.Exit(0);
         }
 
-        public void OnTimer(int serviceId, MsgType msgType, object msg)
+        public void OnTimer(int serviceId, TimerType msgType, object data)
         {
             bool found = false;
             foreach (var service in this.services)
             {
                 if (service.serviceId == serviceId)
                 {
-                    service.dispatcher.Dispatch(default, msgType, msg).Forget();
+                    service.dispatcher.Dispatch(default, msgType, data).Forget();
                     found = true;
                     break;
                 }

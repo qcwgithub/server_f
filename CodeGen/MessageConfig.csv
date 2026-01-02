@@ -1,10 +1,5 @@
 msgType,value,msg,res,queue,getQueueKey,external,arg_serviceId,internal
-_Service_Start,1,MsgStart,ResStart,,,,,1
-_Service_Shutdown,2,MsgShutdown,ResShutdown,,,,,1
-_Service_OnConnectComplete,3,MsgOnConnectComplete,ResOnConnectComplete,,,,,1
-_Service_OnConnectionClose,4,MsgOnConnectionClose,ResOnConnectionClose,,,,,1
 _Service_ReloadScript,5,MsgReloadScript,ResReloadScript,,,1,1,
-_Service_CheckConnections,6,MsgCheckConnections,ResCheckConnections,,,,,1
 _Service_CheckConnections_Loop,7,MsgCheckConnections_Loop,ResCheckConnections_Loop,,,,,
 _Service_ConnectorInfo,8,MsgConnectorInfo,ResConnectorInfo,,,1,1,
 _Service_GetPendingMessageList,9,MsgGetPendingMsgList,ResGetPendingMsgList,,,1,1,

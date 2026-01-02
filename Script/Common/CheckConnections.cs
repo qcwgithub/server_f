@@ -2,35 +2,25 @@ using Data;
 
 namespace Script
 {
-    // 连接的发起方，保持连接。每隔一段时间检查一下
-    public class CheckConnections<S> : Handler<S, MsgCheckConnections, ResCheckConnections>
-        where S : Service
+    public partial class Service
     {
-        public CheckConnections(Server server, S service) : base(server, service)
+        public virtual async Task<ECode> CheckConnections()
         {
-        }
-
-
-        public override MsgType msgType => MsgType._Service_CheckConnections;
-
-        public override async Task<ECode> Handle(MessageContext context, MsgCheckConnections msg, ResCheckConnections res)
-        {
-            ServiceData sd = this.service.data;
-            if (sd.connectToServiceTypes.Count == 0)
+            if (this.data.connectToServiceTypes.Count == 0)
             {
                 return ECode.Success;
             }
 
-            foreach (ServiceType to_serviceType in sd.connectToServiceTypes)
+            foreach (ServiceType to_serviceType in this.data.connectToServiceTypes)
             {
-                sd.current_resGetServiceConfigs.VisitServiceConfig(to_serviceType, sc =>
+                this.data.current_resGetServiceConfigs.VisitServiceConfig(to_serviceType, sc =>
                 {
-                    if (sc.serviceId == sd.serviceId)
+                    if (sc.serviceId == this.data.serviceId)
                     {
                         return;
                     }
 
-                    this.service.GetServiceConnectionOrConnect(sc.serviceType, sc.serviceId, sc.inIp, sc.inPort);
+                    this.GetServiceConnectionOrConnect(sc.serviceType, sc.serviceId, sc.inIp, sc.inPort);
                 });
             }
 

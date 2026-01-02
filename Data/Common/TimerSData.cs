@@ -23,8 +23,8 @@ namespace Data
         public int serviceId;
         public int timeoutS;
         public long nextTimeS;
-        public MsgType msgType;
-        public object msg;
+        public TimerType timerType;
+        public object? data;
         public bool loop;
     }
 
@@ -38,17 +38,17 @@ namespace Data
 
     public partial class TimerSData
     {
-        Action<int, MsgType, object> callback;
-        public void SetTimerCallback(Action<int, MsgType, object> callback)
+        Action<int, TimerType, object> callback;
+        public void SetTimerCallback(Action<int, TimerType, object> callback)
         {
             this.callback = callback;
         }
 
         public long nextId = 1;
 
-        public List<(int, MsgType, object)> tempList = new List<(int, MsgType, object)>();
-        public SortedDictionary<long, List<TimerInfo>> triggerDict = new SortedDictionary<long, List<TimerInfo>>(new TimerDataComparer());
-        public Dictionary<long, TimerInfo> timerDict = new Dictionary<long, TimerInfo>();
+        public readonly List<(int, TimerType, object)> tempList = new();
+        public readonly SortedDictionary<long, List<TimerInfo>> triggerDict = new SortedDictionary<long, List<TimerInfo>>(new TimerDataComparer());
+        public readonly Dictionary<long, TimerInfo> timerDict = new();
         
         public long minTimeS = long.MaxValue;
 

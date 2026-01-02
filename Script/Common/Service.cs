@@ -328,7 +328,7 @@ namespace Script
             return connectorInfo;
         }
 
-        public async Task<ECode> WaitServiceConnectedAndStarted(ServiceProxy serviceProxy, MsgType msgType)
+        public async Task<ECode> WaitServiceConnectedAndStarted(ServiceProxy serviceProxy)
         {
             int counter = 0;
 
@@ -342,7 +342,7 @@ namespace Script
                 counter++;
                 if (counter == 2)
                 {
-                    this.logger.InfoFormat("{0} Wait connect to {1}...", msgType, serviceProxy.to);
+                    this.logger.InfoFormat("Wait connect to {0}...", serviceProxy.to);
                 }
 
                 var msg = new MsgGetServiceState();
@@ -372,7 +372,7 @@ namespace Script
 
                 if (counter >= 2)
                 {
-                    this.logger.InfoFormat("{0} Wait connect to {1}...Done", msgType, serviceProxy.to);
+                    this.logger.InfoFormat("Wait connect to {0}...Done", serviceProxy.to);
                 }
                 break;
             }
@@ -389,6 +389,31 @@ namespace Script
         {
             this.data.state = s;
             this.logger.Info(s);
+        }
+        
+
+        protected async Task OnErrorExit(ECode e)
+        {
+            Console.WriteLine("Error: {0}, Process is exiting", e);
+            this.logger.FatalFormat("Error: {0}, Process is exiting", e);
+            await Task.Delay(1000);
+            System.Environment.Exit(1);
+        }
+
+        /*
+        protected async Task OnErrorExit(string message)
+        {
+            this.service.logger.ErrorFormat("{0} Error: {1}, Process is exiting", this.msgType, message);
+            await Task.Delay(1000);
+            System.Environment.Exit(1);
+        }
+        */
+
+        protected async Task OnErrorExit(Exception ex)
+        {
+            this.logger.Fatal(string.Format("Exception, Process is exiting"), ex);
+            await Task.Delay(1000);
+            System.Environment.Exit(1);
         }
     }
 }

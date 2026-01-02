@@ -57,5 +57,10 @@ namespace Data
         public bool isGm = false;
 
         public long roomId;
+
+        public MsgType busyMsgType;
+
+        public long lockedKey;
+        public List<TaskCompletionSource> waiting;        
     }
 }

@@ -51,8 +51,11 @@ namespace Script
             SEC = 3;
 #endif
 
-            var msg = new MsgSaveRoom { roomId = room.roomId, reason = "SetSaveTimer" };
-            room.saveTimer = server.timerScript.SetLoopTimer(this.service.serviceId, SEC, MsgType._Room_SaveRoom, msg);
+            room.saveTimer = server.timerScript.SetLoopTimer(this.service.serviceId, SEC, TimerType.SaveRoom, new TimerSaveRoom
+            {
+                roomId = room.roomId,
+                ReadOnlySpan = "SetSaveTimer",
+            });
         }
 
         public void ClearSaveTimer(Room room)
@@ -83,8 +86,12 @@ namespace Script
 
             room.destroyTimer = this.server.timerScript.SetTimer(
                 this.service.serviceId,
-                SEC, MsgType._Room_DestroyRoom,
-                new MsgRoomDestroyRoom { roomId = room.roomId, reason = reason });
+                SEC, TimerType.DestroyRoom,
+                new TimerDestroyRoom
+                {
+                    roomId = room.roomId,
+                    reason = reason
+                });
         }
 
         public void ClearDestroyTimer(Room room, RoomClearDestroyTimerReason reason)

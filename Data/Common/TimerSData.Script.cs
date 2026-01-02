@@ -21,7 +21,7 @@ namespace Data
             this.tempList.Clear();
             foreach (TimerInfo info in list)
             {
-                this.tempList.Add((info.serviceId, info.msgType, info.msg));
+                this.tempList.Add((info.serviceId, info.timerType, info.data));
             }
 
             // reset minTimeS to a big value
@@ -76,7 +76,7 @@ namespace Data
             list.Add(info);
         }
 
-        public ITimer SetTimer(int serviceId, int timeoutS, MsgType msgType, object msg, bool loop)
+        public ITimer SetTimer(int serviceId, int timeoutS, TimerType timerType, object? data, bool loop)
         {
             if (timeoutS < 0)
             {
@@ -93,8 +93,8 @@ namespace Data
                 serviceId = serviceId,
                 timeoutS = timeoutS,
                 nextTimeS = TimeUtils.GetTimeS() + timeoutS,
-                msgType = msgType,
-                msg = msg,
+                timerType = timerType,
+                data = data,
                 loop = loop
             };
             this.timerDict.Add(info.timerId, info);

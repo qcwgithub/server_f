@@ -55,9 +55,11 @@ namespace Script
 #if DEBUG
             SEC = 3;
 #endif
-
-            var msg = new MsgSaveUser { userId = user.userId, reason = "SetSaveTimer" };
-            user.saveTimer = server.timerScript.SetLoopTimer(this.service.serviceId, SEC, MsgType._User_SaveUser, msg);
+            user.saveTimer = server.timerScript.SetLoopTimer(this.service.serviceId, SEC, TimerType.SaveUser, new TimerSaveUser
+            {
+                userId = user.userId,
+                reason = "SetSaveTimer"
+            });
         }
 
         public void ClearSaveTimer(User user)
@@ -88,8 +90,12 @@ namespace Script
 
             user.destroyTimer = this.server.timerScript.SetTimer(
                 this.service.serviceId,
-                SEC, MsgType._User_DestroyUser,
-                new MsgUserDestroyUser { userId = user.userId, reason = reason});
+                SEC, TimerType.DestroyUser,
+                new TimerDestroyUser
+                {
+                    userId = user.userId,
+                    reason = reason
+                });
         }
 
         public void ClearDestroyTimer(User user, UserClearDestroyTimerReason reason)

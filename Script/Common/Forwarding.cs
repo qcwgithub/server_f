@@ -79,16 +79,31 @@ namespace Script
 
             User? user = userService.sd.GetUser(userId);
 
-            MyDebug.Assert(user != null);
-            MyDebug.Assert(user.connection != null);
-            MyDebug.Assert(user.connection.gatewayServiceId == serviceConnection.serviceId);
+            if (user == null)
+            {
+                MyDebug.Assert(false);
+                return true;
+            }
+
+            if (user.connection == null)
+            {
+                MyDebug.Assert(false);
+                return true;
+            }
+
+            if (user.connection.gatewayServiceId != serviceConnection.serviceId)
+            {
+                MyDebug.Assert(false);
+                return true;
+            }
 
             var context = new MessageContext
             {
                 connection = serviceConnection,
                 user = user
             };
-            var r = await userService.dispatcher.Dispatch(context, msgType, msgBytes2);
+            var msg = MessageConfigData.DeserializeMsg(msgType, msgBytes2);
+            var r = await userService.dispatcher.Dispatch(context, msgType, msg);
             if (reply != null)
             {
                 ArraySegment<byte> resBytes = default;

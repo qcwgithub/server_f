@@ -20,14 +20,10 @@ namespace Script
                 return ECode.Success;
             }
 
-            var msgD = new MsgUserDestroyUser();
-            msgD.userId = msg.userId;
-            msgD.reason = UserDestroyUserReason.ServerKick;
-
-            var r = await this.service.DestroyUser(msgD);
-            if (r.e != ECode.Success)
+            ECode e = await this.service.DestroyUser(msg.userId, UserDestroyUserReason.ServerKick);
+            if (e != ECode.Success)
             {
-                return r.e;
+                return e;
             }
 
             res.kicked = true;

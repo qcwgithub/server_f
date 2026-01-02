@@ -83,5 +83,6 @@ namespace Data
         }
 
         public ITimer timer_tick_loop;
+        public long userLockKey;
     }
 }

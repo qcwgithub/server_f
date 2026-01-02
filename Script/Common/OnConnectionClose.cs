@@ -3,40 +3,31 @@ using Data;
 
 namespace Script
 {
-    public class OnConnectionClose<S> : Handler<S, MsgOnConnectionClose, ResOnConnectionClose>
-        where S : Service
+    public partial class Service
     {
-        public OnConnectionClose(Server server, S service) : base(server, service)
+        public virtual async Task<ECode> OnConnectionClose(IConnection connection)
         {
-        }
-
-        public override MsgType msgType => MsgType._Service_OnConnectionClose;
-
-        public override async Task<ECode> Handle(MessageContext context, MsgOnConnectionClose msg, ResOnConnectionClose res)
-        {
-            if (context.connection is ServiceConnection serviceConnection)
+            if (connection is ServiceConnection serviceConnection)
             {
-                var sd = this.service.data;
-
-                if (sd.state < ServiceState.ShuttingDown &&
+                if (this.data.state < ServiceState.ShuttingDown &&
                     !serviceConnection.remoteWillShutdown &&
                     serviceConnection.closeReason != ProtocolClientData.CloseReason.OnConnectComplete_false &&
-                    sd.serviceType.ShouldLogErrorWhenDisconnectFrom(serviceConnection.serviceType))
+                    this.data.serviceType.ShouldLogErrorWhenDisconnectFrom(serviceConnection.serviceType))
                 {
-                    this.service.logger.FatalFormat("SocketClose {0} reason {1}", serviceConnection.tai, serviceConnection.closeReason);
+                    this.logger.FatalFormat("SocketClose {0} reason {1}", serviceConnection.tai, serviceConnection.closeReason);
                 }
                 else
                 {
-                    this.service.logger.InfoFormat("SocketClose {0} reason {1}", serviceConnection.tai, serviceConnection.closeReason);
+                    this.logger.InfoFormat("SocketClose {0} reason {1}", serviceConnection.tai, serviceConnection.closeReason);
                 }
 
-                if (sd.state < ServiceState.ShuttingDown &&
-                    sd.markedShutdown &&
-                    sd.GetPassivelyConnections().Count == 0 &&
-                    !sd.timer_shutdown.IsAlive())
+                if (this.data.state < ServiceState.ShuttingDown &&
+                    this.data.markedShutdown &&
+                    this.data.GetPassivelyConnections().Count == 0 &&
+                    !this.data.timer_shutdown.IsAlive())
                 {
-                    sd.timer_shutdown = this.server.timerScript.SetTimer(this.service.serviceId, 0, MsgType._Service_Shutdown, new MsgShutdown { force = false });
-                    this.service.logger.Info("0 passive connections, shutdown in 0 second...");
+                    this.data.timer_shutdown = this.server.timerScript.SetTimer(this.serviceId, 0, MsgType._Service_Shutdown, new MsgShutdown { force = false });
+                    this.logger.Info("0 passive connections, shutdown in 0 second...");
                 }
             }
 

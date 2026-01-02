@@ -20,8 +20,13 @@ namespace Script
 
             user.destroyTimer = this.server.timerScript.SetTimer(
                 this.service.serviceId,
-                SEC, MsgType._Gateway_DestroyUser,
-                new MsgGatewayDestroyUser { userId = user.userId, reason = reason, msgKick = null });
+                SEC, TimerType.DestroyUser,
+                new TimerGatewayDestroyUser
+                {
+                    userId = user.userId,
+                    reason = reason,
+                    msgKick = null
+                });
         }
 
         public void ClearDestroyTimer(GatewayUser user, GatewayClearDestroyTimerReason reason)

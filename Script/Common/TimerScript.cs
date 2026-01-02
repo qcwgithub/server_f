@@ -12,14 +12,14 @@ namespace Script
 
         public TimerSData timerSData => this.server.data.timerSData;
         
-        public Data.ITimer SetTimer(int serviceId, int timeoutS, MsgType msgType, object msg)
+        public Data.ITimer SetTimer(int serviceId, int timeoutS, TimerType timerType, object? data)
         {
-            return this.timerSData.SetTimer(serviceId, timeoutS, msgType, msg, false);
+            return this.timerSData.SetTimer(serviceId, timeoutS, timerType, data, false);
         }
 
-        public Data.ITimer SetLoopTimer(int serviceId, int timeoutS, MsgType msgType, object msg)
+        public Data.ITimer SetLoopTimer(int serviceId, int timeoutS, TimerType timerType, object? data)
         {
-            return this.timerSData.SetTimer(serviceId, timeoutS, msgType, msg, true);
+            return this.timerSData.SetTimer(serviceId, timeoutS, timerType, data, true);
         }
 
         public void ClearTimer(Data.ITimer timer)

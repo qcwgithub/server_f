@@ -1,8 +1,9 @@
 namespace Data
 {
-    public struct MessageContext
+    public class MessageContext
     {
         public IConnection connection;
-        public User user;
+        public User lockedUser;
+        public long userLockedKey;
     }
 }
