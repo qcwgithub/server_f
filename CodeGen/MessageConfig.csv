@@ -1,6 +1,6 @@
 msgType,value,msg,res,external,arg_serviceId
 _Service_Timer,1,MsgTimer,ResTimer,,
-_Service_Shutdown,2,MsgShutdown,ResShutdown,,
+_Service_Shutdown,2,MsgShutdown,ResShutdown,1,1
 _Service_ReloadScript,5,MsgReloadScript,ResReloadScript,1,1
 _Service_ConnectorInfo,8,MsgConnectorInfo,ResConnectorInfo,1,1
 _Service_GetPendingMessageList,9,MsgGetPendingMsgList,ResGetPendingMsgList,1,1
@@ -41,14 +41,6 @@ _Room_SaveRoomImmediately,607,MsgSaveRoomImmediately,ResSaveRoomImmediately,1,1
 #,,,,,
 _RoomManager_LoadRoom,800,MsgRoomManagerLoadRoom,ResRoomManagerLoadRoom,1,0
 #,,,,,
-_Command_PerformReloadScript,900,MsgCommon,ResCommon,,
-_Command_PerformSaveUserInfoToFile,901,MsgCommon,ResCommon,,
-_Command_PerformShowScriptVersion,902,MsgCommon,ResCommon,,
-_Command_PerformGetPendingMsgList,903,MsgCommon,ResCommon,,
-_Command_PerformShutdown,904,MsgCommon,ResCommon,,
-_Command_PerformPlayerGM,905,MsgCommon,ResCommon,,
-_Command_PerformKick,906,MsgCommon,ResCommon,,
-_Command_PerformSetPlayerGmFlag,907,MsgCommon,ResCommon,,
 #,,,,,
 _Save_AccountInfo,5000,MsgSave_AccountInfo,ResSave_AccountInfo,1,0
 _Query_AccountInfo_byElementOf_userIds,5001,MsgQuery_AccountInfo_byElementOf_userIds,ResQuery_AccountInfo_byElementOf_userIds,1,0
@@ -69,3 +61,4 @@ Login,10001,MsgLogin,ResLogin,,
 Kick,10002,MsgKick,ResKick,,
 EnterRoom,10003,MsgEnterRoom,ResEnterRoom,,
 LeaveRoom,10004,MsgLeaveRoom,ResLeaveRoom,,
+RoomChat,10005,MsgRoomChat,ResRoomChat,,

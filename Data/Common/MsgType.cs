@@ -39,14 +39,6 @@ namespace Data
         _Room_LoadRoom = 606,
         _Room_SaveRoomImmediately = 607,
         _RoomManager_LoadRoom = 800,
-        _Command_PerformReloadScript = 900,
-        _Command_PerformSaveUserInfoToFile = 901,
-        _Command_PerformShowScriptVersion = 902,
-        _Command_PerformGetPendingMsgList = 903,
-        _Command_PerformShutdown = 904,
-        _Command_PerformPlayerGM = 905,
-        _Command_PerformKick = 906,
-        _Command_PerformSetPlayerGmFlag = 907,
         _Save_AccountInfo = 5000,
         _Query_AccountInfo_byElementOf_userIds = 5001,
         _Query_AccountInfo_by_channelUserId = 5002,
@@ -65,6 +57,7 @@ namespace Data
         Kick = 10002,
         EnterRoom = 10003,
         LeaveRoom = 10004,
+        RoomChat = 10005,
 
         #endregion auto
     }

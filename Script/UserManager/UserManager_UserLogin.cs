@@ -17,11 +17,11 @@ namespace Script
         {
             if (!MyChannels.IsValidChannel(msg.channel) || !this.server.data.serverConfig.generalConfig.allowChannels.Contains(msg.channel))
             {
-                this.logger.ErrorFormat("{0} channel:{1}, channelUserId:{2} invalid channel!", this.msgType, msg.channel, msg.channelUserId);
+                this.service.logger.ErrorFormat("{0} channel:{1}, channelUserId:{2} invalid channel!", this.msgType, msg.channel, msg.channelUserId);
                 return ECode.InvalidChannel;
             }
 
-            this.logger.Info($"{this.msgType} version {msg.version} platform {msg.platform}" +
+            this.service.logger.Info($"{this.msgType} version {msg.version} platform {msg.platform}" +
                 $" channel {msg.channel} channelUserId {msg.channelUserId} verifyData {msg.verifyData}" +
                 $" addressFamily {msg.addressFamily} ip {msg.ip}");
 
@@ -39,8 +39,8 @@ namespace Script
                 return e;
             }
 
-            msg.lockValue = await this.server.lockRedis.LockAccount(msg.channel, msg.channelUserId, this.service.logger);
-            if (msg.lockValue == null)
+            context.lockValue = await this.server.lockRedis.LockAccount(msg.channel, msg.channelUserId, this.service.logger);
+            if (context.lockValue == null)
             {
                 this.service.logger.ErrorFormat("{0} lock failed, channel {1} channelUserId {2}", this.msgType, msg.channel, msg.channelUserId);
                 return ECode.RedisLockFail;
@@ -73,11 +73,11 @@ namespace Script
                 e = await this.service.ss.InsertUserInfo(newUserInfo);
                 if (e != ECode.Success)
                 {
-                    this.logger.Error($"Create user info {userId} e = {e}");
+                    this.service.logger.Error($"Create user info {userId} e = {e}");
                     return e;
                 }
 
-                this.logger.Info($"Create user info {userId} e = {e}");
+                this.service.logger.Info($"Create user info {userId} e = {e}");
                 accountInfo.userIds.Add(userId);
             }
             else
@@ -154,9 +154,9 @@ namespace Script
 
         public override void PostHandle(MessageContext context, MsgUserManagerUserLogin msg, ECode e, ResUserManagerUserLogin res)
         {
-            if (msg.lockValue != null)
+            if (context.lockValue != null)
             {
-                this.server.lockRedis.UnlockAccount(msg.channel, msg.channelUserId, msg.lockValue).Forget(this.service);
+                this.server.lockRedis.UnlockAccount(msg.channel, msg.channelUserId, context.lockValue).Forget(this.service);
             }
         }
     }

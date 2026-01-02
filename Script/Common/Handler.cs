@@ -1,8 +1,4 @@
-using System;
-using System.Collections;
-using System.Threading.Tasks;
 using Data;
-using MessagePack;
 
 namespace Script
 {
@@ -15,8 +11,6 @@ namespace Script
         {
         }
 
-        public log4net.ILog logger => this.service.logger;
-
         public abstract MsgType msgType { get; }
 
         public async Task<MyResponse> Handle(MessageContext context, object msg)
@@ -27,6 +21,7 @@ namespace Script
         }
 
         public abstract Task<ECode> Handle(MessageContext context, Msg msg, Res res);
+
         public virtual void PostHandle(MessageContext context, object msg, MyResponse r)
         {
             this.PostHandle(context, (Msg)msg, r.e, (Res)r.res);

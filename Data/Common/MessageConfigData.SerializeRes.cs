@@ -115,30 +115,6 @@ namespace Data
                 case MsgType._RoomManager_LoadRoom:
                     return MessagePackSerializer.Serialize((ResRoomManagerLoadRoom)res);
 
-                case MsgType._Command_PerformReloadScript:
-                    return MessagePackSerializer.Serialize((ResCommon)res);
-
-                case MsgType._Command_PerformSaveUserInfoToFile:
-                    return MessagePackSerializer.Serialize((ResCommon)res);
-
-                case MsgType._Command_PerformShowScriptVersion:
-                    return MessagePackSerializer.Serialize((ResCommon)res);
-
-                case MsgType._Command_PerformGetPendingMsgList:
-                    return MessagePackSerializer.Serialize((ResCommon)res);
-
-                case MsgType._Command_PerformShutdown:
-                    return MessagePackSerializer.Serialize((ResCommon)res);
-
-                case MsgType._Command_PerformPlayerGM:
-                    return MessagePackSerializer.Serialize((ResCommon)res);
-
-                case MsgType._Command_PerformKick:
-                    return MessagePackSerializer.Serialize((ResCommon)res);
-
-                case MsgType._Command_PerformSetPlayerGmFlag:
-                    return MessagePackSerializer.Serialize((ResCommon)res);
-
                 case MsgType._Save_AccountInfo:
                     return MessagePackSerializer.Serialize((ResSave_AccountInfo)res);
 
@@ -192,6 +168,9 @@ namespace Data
 
                 case MsgType.LeaveRoom:
                     return MessagePackSerializer.Serialize((ResLeaveRoom)res);
+
+                case MsgType.RoomChat:
+                    return MessagePackSerializer.Serialize((ResRoomChat)res);
 
                 #endregion auto
 

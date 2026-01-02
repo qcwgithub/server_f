@@ -185,46 +185,6 @@ namespace Data
                 queue = MessageQueue.None,
             };
 
-            dict[MsgType._Command_PerformReloadScript] = new stMessageConfig
-            {
-                queue = MessageQueue.None,
-            };
-
-            dict[MsgType._Command_PerformSaveUserInfoToFile] = new stMessageConfig
-            {
-                queue = MessageQueue.None,
-            };
-
-            dict[MsgType._Command_PerformShowScriptVersion] = new stMessageConfig
-            {
-                queue = MessageQueue.None,
-            };
-
-            dict[MsgType._Command_PerformGetPendingMsgList] = new stMessageConfig
-            {
-                queue = MessageQueue.None,
-            };
-
-            dict[MsgType._Command_PerformShutdown] = new stMessageConfig
-            {
-                queue = MessageQueue.None,
-            };
-
-            dict[MsgType._Command_PerformPlayerGM] = new stMessageConfig
-            {
-                queue = MessageQueue.None,
-            };
-
-            dict[MsgType._Command_PerformKick] = new stMessageConfig
-            {
-                queue = MessageQueue.None,
-            };
-
-            dict[MsgType._Command_PerformSetPlayerGmFlag] = new stMessageConfig
-            {
-                queue = MessageQueue.None,
-            };
-
             dict[MsgType._Save_AccountInfo] = new stMessageConfig
             {
                 queue = MessageQueue.None,
@@ -311,6 +271,11 @@ namespace Data
             };
 
             dict[MsgType.LeaveRoom] = new stMessageConfig
+            {
+                queue = MessageQueue.None,
+            };
+
+            dict[MsgType.RoomChat] = new stMessageConfig
             {
                 queue = MessageQueue.None,
             };

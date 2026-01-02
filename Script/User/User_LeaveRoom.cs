@@ -11,7 +11,7 @@ namespace Script
 
         public override async Task<ECode> Handle(MessageContext context, MsgLeaveRoom msg, ResLeaveRoom res)
         {
-            User? user = await this.service.LockUser(context.userId, context);
+            User? user = await this.service.LockUser(context.msg_userId, context);
             if (user == null)
             {
                 return ECode.UserNotExist;
@@ -49,7 +49,7 @@ namespace Script
 
         public override void PostHandle(MessageContext context, MsgLeaveRoom msg, ECode e, ResLeaveRoom res)
         {
-            this.service.TryUnlockUser(context.userId, context);
+            this.service.TryUnlockUser(context.msg_userId, context);
 
             base.PostHandle(context, msg, e, res);
         }

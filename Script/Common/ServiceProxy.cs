@@ -41,6 +41,10 @@ namespace Script
 
         #region auto_proxy
 
+        public async Task<MyResponse> Shutdown(int serviceId, MsgShutdown msg)
+        {
+            return await this.Request(serviceId, MsgType._Service_Shutdown, msg);
+        }
         public async Task<MyResponse> ReloadScript(int serviceId, MsgReloadScript msg)
         {
             return await this.Request(serviceId, MsgType._Service_ReloadScript, msg);

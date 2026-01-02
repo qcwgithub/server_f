@@ -11,21 +11,23 @@ namespace Script
 
         public override async Task<ECode> Handle(MessageContext context, MsgEnterRoom msg, ResEnterRoom res)
         {
-            User? user = await this.service.LockUser(context.userId, context);
-            if (user == null)
-            {
-                return ECode.UserNotExist;
-            }
-
             if (msg.roomId <= 0)
             {
                 return ECode.InvalidParam;
+            }
+
+            User? user = await this.service.LockUser(context.msg_userId, context);
+            if (user == null)
+            {
+                return ECode.UserNotExist;
             }
 
             if (msg.roomId == user.roomId)
             {
                 return ECode.Success;
             }
+
+            MyResponse r;
 
             stObjectLocation location;
             if (user.roomId != 0)
@@ -41,10 +43,10 @@ namespace Script
                 msgLeave.userId = user.userId;
                 msgLeave.roomId = msg.roomId;
 
-                var rLeave = await this.service.roomServiceProxy.UserLeave(location.serviceId, msgLeave);
-                if (rLeave.e != ECode.Success)
+                r = await this.service.roomServiceProxy.UserLeave(location.serviceId, msgLeave);
+                if (r.e != ECode.Success)
                 {
-                    return rLeave.e;
+                    return r.e;
                 }
 
                 user.roomId = 0;
@@ -56,15 +58,15 @@ namespace Script
                 var msgLoad = new MsgRoomManagerLoadRoom();
                 msgLoad.roomId = msg.roomId;
 
-                var rLoad = await this.service.roomManagerServiceProxy.LoadRoom(msgLoad);
-                if (rLoad.e == ECode.Success)
+                r = await this.service.roomManagerServiceProxy.LoadRoom(msgLoad);
+                if (r.e == ECode.Success)
                 {
-                    var resLoad = rLoad.CastRes<ResRoomManagerLoadRoom>();
+                    var resLoad = r.CastRes<ResRoomManagerLoadRoom>();
                     location = resLoad.location;
 
                     this.service.roomLocator.CacheLocation(msg.roomId, location);
                 }
-                else if (rLoad.e == ECode.Retry)
+                else if (r.e == ECode.Retry)
                 {
                     for (int i = 1; i <= 3; i++)
                     {
@@ -81,18 +83,19 @@ namespace Script
                 }
                 else
                 {
-                    return rLoad.e;
+                    return r.e;
                 }
             }
 
             var msgEnter = new MsgRoomUserEnter();
             msgEnter.userId = user.userId;
             msgEnter.roomId = msg.roomId;
+            msgEnter.gatewayServiceId = user.gatewayServiceId;
 
-            var rEnter = await this.service.roomServiceProxy.UserEnter(location.serviceId, msgEnter);
-            if (rEnter.e != ECode.Success)
+            r = await this.service.roomServiceProxy.UserEnter(location.serviceId, msgEnter);
+            if (r.e != ECode.Success)
             {
-                return rEnter.e;
+                return r.e;
             }
 
             user.roomId = msg.roomId;
@@ -102,7 +105,7 @@ namespace Script
 
         public override void PostHandle(MessageContext context, MsgEnterRoom msg, ECode e, ResEnterRoom res)
         {
-            this.service.TryUnlockUser(context.userId, context);
+            this.service.TryUnlockUser(context.msg_userId, context);
 
             base.PostHandle(context, msg, e, res);
         }

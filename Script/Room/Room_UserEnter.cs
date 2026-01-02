@@ -17,6 +17,15 @@ namespace Script
                 return ECode.RoomNotExist;
             }
 
+            RoomUser? user = room.GetUser(msg.userId);
+            if (user == null)
+            {
+                user = new RoomUser();
+                user.userId = msg.userId;
+                room.AddUser(user);
+            }
+
+            user.gatewayServiceId = msg.gatewayServiceId;
             return ECode.Success;
         }
 

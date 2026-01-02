@@ -12,7 +12,7 @@ namespace Script
 
         public override async Task<ECode> Handle(MessageContext context, MsgUserServiceAction msg, ResUserServiceAction res)
         {
-            this.logger.Info(this.msgType);
+            this.service.logger.Info(this.msgType);
             var sd = this.service.sd;
 
             if (msg.allowNewUser != null)
@@ -20,7 +20,7 @@ namespace Script
                 bool pre = sd.allowNewUser;
                 bool curr = msg.allowNewUser.Value;
 
-                this.logger.InfoFormat("allowNewUser {0} -> {1}", pre, curr);
+                this.service.logger.InfoFormat("allowNewUser {0} -> {1}", pre, curr);
 
                 if (pre != curr)
                 {
@@ -33,7 +33,7 @@ namespace Script
                 int pre = sd.saveIntervalS;
                 int curr = msg.saveIntervalS.Value;
 
-                this.logger.InfoFormat("saveIntervalS {0} -> {1}", pre, curr);
+                this.service.logger.InfoFormat("saveIntervalS {0} -> {1}", pre, curr);
 
                 if (pre != curr)
                 {

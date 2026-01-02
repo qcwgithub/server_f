@@ -8,10 +8,7 @@ namespace Script
         {
             this.logger.InfoFormat("DestroyRoom roomId {0}, reason {1}, preCount {2}", room.roomId, reason, this.sd.roomCount);
 
-
             this.ss.ClearSaveTimer(room);
-
-            room.destroying = true;
 
             // Save once
             ECode e = await this.SaveRoom(room, "DestroyRoom");

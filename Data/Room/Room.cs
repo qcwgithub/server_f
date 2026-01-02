@@ -16,12 +16,29 @@ namespace Data
             }
         }
 
-        public bool destroying;
         public ITimer? destroyTimer;
-
         public ITimer? saveTimer;
-
-        //// 2 ////
         public RoomInfo? lastRoomInfo;
+
+        public Dictionary<long, RoomUser> userDict = new();
+        public int userCount
+        {
+            get
+            {
+                return this.userDict.Count;
+            }
+        }
+        public RoomUser? GetUser(long userId)
+        {
+            return this.userDict.TryGetValue(userId, out RoomUser? user) ? user : null;
+        }
+        public bool RemoveUser(long userId)
+        {
+            return this.userDict.Remove(userId);
+        }
+        public void AddUser(RoomUser user)
+        {
+            this.userDict.Add(user.userId, user);
+        }
     }
 }

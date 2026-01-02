@@ -9,14 +9,17 @@ namespace Script
         }
 
         public override MsgType msgType => MsgType._Room_UserLeave;
+
         public override async Task<ECode> Handle(MessageContext context, MsgRoomUserLeave msg, ResRoomUserLeave res)
         {
             Room? room = await this.service.LockRoom(msg.roomId, context);
             if (room == null)
             {
-                this.logger.ErrorFormat("{0} roomId {1} roomId {2}, room == null!", this.msgType, msg.roomId, msg.roomId);
+                this.service.logger.ErrorFormat("{0} roomId {1} roomId {2}, room == null!", this.msgType, msg.roomId, msg.roomId);
                 return ECode.RoomNotExist;
             }
+
+            room.RemoveUser(msg.userId);
 
             return ECode.Success;
         }

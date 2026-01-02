@@ -12,7 +12,7 @@ namespace Script
 
         public override async Task<ECode> Handle(MessageContext context, MsgRoomServiceAction msg, ResRoomServiceAction res)
         {
-            this.logger.Info(this.msgType);
+            this.service.logger.Info(this.msgType);
             var sd = this.service.sd;
 
             if (msg.allowNewRoom != null)
@@ -20,7 +20,7 @@ namespace Script
                 bool pre = sd.allowNewRoom;
                 bool curr = msg.allowNewRoom.Value;
 
-                this.logger.InfoFormat("allowNewRoom {0} -> {1}", pre, curr);
+                this.service.logger.InfoFormat("allowNewRoom {0} -> {1}", pre, curr);
 
                 if (pre != curr)
                 {
@@ -33,7 +33,7 @@ namespace Script
                 int pre = sd.saveIntervalS;
                 int curr = msg.saveIntervalS.Value;
 
-                this.logger.InfoFormat("saveIntervalS {0} -> {1}", pre, curr);
+                this.service.logger.InfoFormat("saveIntervalS {0} -> {1}", pre, curr);
 
                 if (pre != curr)
                 {

@@ -16,7 +16,7 @@ namespace Script
 
             if (this.service.data.state != ServiceState.Started)
             {
-                this.logger.Info(message0 + ": server not ready");
+                this.service.logger.Info(message0 + ": server not ready");
                 return ECode.ServerNotReady;
             }
 
@@ -65,7 +65,7 @@ namespace Script
                 user.connection = new UserConnection(msg.gatewayServiceId, user, this.service.sd);
             }
 
-            this.logger.Info(message0 + ": check ok");
+            this.service.logger.Info(message0 + ": check ok");
 
             this.service.ss.ClearDestroyTimer(user, UserClearDestroyTimerReason.UserLoginSuccess);
 

@@ -12,16 +12,7 @@ namespace Script
         public override async Task<ECode> Handle(MessageContext context, MsgRoomLoadRoom msg, ResRoomLoadRoom res)
         {
             Room? room = await this.service.LockRoom(msg.roomId, context);
-            if (room != null)
-            {
-                if (room.destroying)
-                {
-                    // 其实不是错误，但是想要知道一下有没有触发这种情况
-                    this.service.logger.ErrorFormat("{0} roomId {1} destroying", this.msgType, room.roomId);
-                    return ECode.RoomDestroying;
-                }
-            }
-            else
+            if (room == null)
             {
                 (ECode e, RoomInfo? roomInfo) = await this.service.ss.QueryRoomInfo(msg.roomId);
                 if (e != ECode.Success)

@@ -3,19 +3,19 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class MsgRoomUserEnter
+    public class MsgRoomChat
     {
         [Key(0)]
-        public long userId;
-        [Key(1)]
         public long roomId;
+        [Key(1)]
+        public ChatMessageType chatMessageType;
         [Key(2)]
-        public int gatewayServiceId;
+        public string content;
     }
 
     [MessagePackObject]
-    public class ResRoomUserEnter
+    public class ResRoomChat
     {
-        
+
     }
 }

@@ -25,8 +25,6 @@ namespace Data
         public string addressFamily;
         [Key(8)]
         public string ip;
-        [Key(9)]
-        public string? lockValue;
     }
 
     [MessagePackObject]

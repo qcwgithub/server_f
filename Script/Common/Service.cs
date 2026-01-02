@@ -37,6 +37,10 @@ namespace Script
         }
 
         public readonly Dictionary<ServiceType, ServiceProxy> serviceProxyDict;
+        public ServiceProxy GetServiceProxy(ServiceType serviceType)
+        {
+            return this.serviceProxyDict[serviceType];
+        }
 
         public Service(Server server, int serviceId)
         {
@@ -56,7 +60,7 @@ namespace Script
 
             this.dispatcher = this.CreateMessageDispatcher();
 
-            this.serviceProxyDict = new Dictionary<ServiceType, ServiceProxy>();
+            this.serviceProxyDict = new();
         }
 
         protected void AddHandler<S>()
@@ -195,7 +199,7 @@ namespace Script
         {
             var location = this.server.data.globalServiceLocation;
 
-            IConnection connection = this.GetServiceConnectionOrConnect(ServiceType.Global, location.serviceId, location.inIp, location.inPort);
+            ServiceConnection connection = this.GetServiceConnectionOrConnect(ServiceType.Global, location.serviceId, location.inIp, location.inPort);
             if (connection == null || !connection.IsConnected())
             {
                 return null;
@@ -206,7 +210,7 @@ namespace Script
             msg.fromServiceId = this.data.serviceId;
             msg.why = why;
 
-            var r = await connection.Request(MsgType._Global_GetServiceConfigs, msg);
+            var r = await ((GlobalServiceProxy)this.GetServiceProxy(ServiceType.Global)).GetServiceConfigs(msg);
             if (r.e != ECode.Success)
             {
                 return null;

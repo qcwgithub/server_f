@@ -37,5 +37,6 @@ namespace Data
         NoAvailableRoomService = 93,
         Retry = 94,
         RetryFailed = 95,
+        WrongRoomId = 96,
     }
 }

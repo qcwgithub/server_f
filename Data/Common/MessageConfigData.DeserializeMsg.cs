@@ -115,30 +115,6 @@ namespace Data
                 case MsgType._RoomManager_LoadRoom:
                     return MessagePackSerializer.Deserialize<MsgRoomManagerLoadRoom>(msgBytes);
 
-                case MsgType._Command_PerformReloadScript:
-                    return MessagePackSerializer.Deserialize<MsgCommon>(msgBytes);
-
-                case MsgType._Command_PerformSaveUserInfoToFile:
-                    return MessagePackSerializer.Deserialize<MsgCommon>(msgBytes);
-
-                case MsgType._Command_PerformShowScriptVersion:
-                    return MessagePackSerializer.Deserialize<MsgCommon>(msgBytes);
-
-                case MsgType._Command_PerformGetPendingMsgList:
-                    return MessagePackSerializer.Deserialize<MsgCommon>(msgBytes);
-
-                case MsgType._Command_PerformShutdown:
-                    return MessagePackSerializer.Deserialize<MsgCommon>(msgBytes);
-
-                case MsgType._Command_PerformPlayerGM:
-                    return MessagePackSerializer.Deserialize<MsgCommon>(msgBytes);
-
-                case MsgType._Command_PerformKick:
-                    return MessagePackSerializer.Deserialize<MsgCommon>(msgBytes);
-
-                case MsgType._Command_PerformSetPlayerGmFlag:
-                    return MessagePackSerializer.Deserialize<MsgCommon>(msgBytes);
-
                 case MsgType._Save_AccountInfo:
                     return MessagePackSerializer.Deserialize<MsgSave_AccountInfo>(msgBytes);
 
@@ -192,6 +168,9 @@ namespace Data
 
                 case MsgType.LeaveRoom:
                     return MessagePackSerializer.Deserialize<MsgLeaveRoom>(msgBytes);
+
+                case MsgType.RoomChat:
+                    return MessagePackSerializer.Deserialize<MsgRoomChat>(msgBytes);
 
                 #endregion auto
 

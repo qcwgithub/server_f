@@ -12,8 +12,8 @@ namespace Script
 
         public override async Task<ECode> Handle(MessageContext context, MsgRoomManagerLoadRoom msg, ResRoomManagerLoadRoom res)
         {
-            msg.lockValue = await this.server.lockRedis.LockRoom(msg.roomId, this.service.logger);
-            if (msg.lockValue != null)
+            context.lockValue = await this.server.lockRedis.LockRoom(msg.roomId, this.service.logger);
+            if (context.lockValue != null)
             {
                 return ECode.Retry;
             }
@@ -35,9 +35,9 @@ namespace Script
 
         public override void PostHandle(MessageContext context, MsgRoomManagerLoadRoom msg, ECode e, ResRoomManagerLoadRoom res)
         {
-            if (msg.lockValue != null)
+            if (context.lockValue != null)
             {
-                this.server.lockRedis.UnlockRoom(msg.roomId, msg.lockValue).Forget(this.service);
+                this.server.lockRedis.UnlockRoom(msg.roomId, context.lockValue).Forget(this.service);
             }
         }
     }

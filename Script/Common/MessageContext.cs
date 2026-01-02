@@ -3,6 +3,9 @@ namespace Data
     public class MessageContext
     {
         public IConnection connection;
-        public long userId;
+        public long msg_userId;
+
+        // temp
+        public string? lockValue;
     }
 }

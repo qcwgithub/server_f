@@ -2,7 +2,7 @@ namespace Data
 {
     public sealed class GatewayServiceData : ServiceData
     {
-        public readonly Dictionary<long, GatewayUser> userDict;
+        public readonly Dictionary<long, GatewayUser> userDict = new();
         public int userCount
         {
             get
@@ -22,10 +22,10 @@ namespace Data
         {
             this.userDict.Add(user.userId, user);
         }
-    
+
         public int destroyTimeoutS = 600;
-        public readonly ObjectLocatorData userLocatorData;
-        public readonly ObjectLocationAssignmentData userServiceAllocatorData;
+        public readonly ObjectLocatorData userLocatorData = new();
+        public readonly ObjectLocationAssignmentData userServiceAllocatorData = new();
 
         public static readonly List<ServiceType> s_connectToServiceIds = new List<ServiceType>
         {
@@ -38,16 +38,12 @@ namespace Data
         public GatewayServiceData(ServiceTypeAndId serviceTypeAndId)
             : base(serviceTypeAndId, s_connectToServiceIds)
         {
-            this.userDict = new Dictionary<long, GatewayUser>();
-            this.userLocatorData = new ObjectLocatorData();
-            this.userServiceAllocatorData = new ObjectLocationAssignmentData();
-
             this.LoadConfigs();
         }
 
         void LoadConfigs()
         {
-            
+
         }
 
         public override void ReloadConfigs(bool all, List<string> files)
@@ -58,7 +54,7 @@ namespace Data
             }
             else
             {
-                
+
             }
         }
 

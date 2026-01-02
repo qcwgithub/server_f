@@ -50,13 +50,9 @@ namespace Data
 
         public ITimer? saveTimer;
 
-        //// 2 ////
         public UserInfo? lastUserInfo;
 
         public bool isGm = false;
-
-        public long roomId;
-
-        public MsgType busyMsgType;        
+        public long roomId;        
     }
 }
