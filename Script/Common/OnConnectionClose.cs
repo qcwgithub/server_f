@@ -26,7 +26,7 @@ namespace Script
                     this.data.GetPassivelyConnections().Count == 0 &&
                     !this.data.timer_shutdown.IsAlive())
                 {
-                    this.data.timer_shutdown = this.server.timerScript.SetTimer(this.serviceId, 0, MsgType._Service_Shutdown, new MsgShutdown { force = false });
+                    this.data.timer_shutdown = this.server.timerScript.SetTimer(this.serviceId, 0, TimerType.Shutdown, false);
                     this.logger.Info("0 passive connections, shutdown in 0 second...");
                 }
             }

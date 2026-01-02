@@ -84,7 +84,7 @@ namespace Script
             }
         }
 
-        public async Task<User?> LockUser(MessageContext context, long userId)
+        public async Task<User?> LockUser(long userId)
         {
             User? user = this.sd.GetUser(userId);
             if (user == null)
@@ -94,19 +94,9 @@ namespace Script
 
             if (user.lockedKey == 0)
             {
-                MyDebug.Assert(context.userLockedKey == 0);
-
                 user.lockedKey = ++this.sd.userLockKey;
-                context.userLockedKey = user.lockedKey;
                 return user;
             }
-
-            if (context.userLockedKey == user.lockedKey)
-            {
-                return user;
-            }
-
-            MyDebug.Assert(context.userLockedKey == 0);
 
             if (user.waiting == null)
             {
@@ -119,22 +109,14 @@ namespace Script
 
             MyDebug.Assert(user.lockedKey == 0);
             user.lockedKey = ++this.sd.userLockKey;
-            context.userLockedKey = user.lockedKey;
             return user;
         }
 
-        public void UnlockUser(MessageContext context, User user)
+        public void UnlockUser(User user, long key)
         {
-            if (context.userLockedKey == 0)
-            {
-                return;
-            }
-
-            MyDebug.Assert(context.userLockedKey == user.lockedKey);
-            if (context.userLockedKey == user.lockedKey)
+            if (key == user.lockedKey)
             {
                 user.lockedKey = 0;
-                context.userLockedKey = 0;
             }
 
             if (user.waiting != null && user.waiting.Count > 0)

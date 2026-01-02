@@ -100,7 +100,7 @@ namespace Script
             var context = new MessageContext
             {
                 connection = serviceConnection,
-                user = user
+                userId = userId
             };
             var msg = MessageConfigData.DeserializeMsg(msgType, msgBytes2);
             var r = await userService.dispatcher.Dispatch(context, msgType, msg);

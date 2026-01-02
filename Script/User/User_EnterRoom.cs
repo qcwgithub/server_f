@@ -11,7 +11,12 @@ namespace Script
 
         public override async Task<ECode> Handle(MessageContext context, MsgEnterRoom msg, ResEnterRoom res)
         {
-            User user = context.user;
+            User? user = this.service.sd.GetUser(context.userId);
+            if (user == null)
+            {
+                return ECode.UserNotExist;
+            }
+
             if (msg.roomId <= 0)
             {
                 return ECode.InvalidParam;

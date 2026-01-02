@@ -2,7 +2,8 @@ namespace Data
 {
     public enum TimerType
     {
-        CheckConnections_Loop,
+        Shutdown,
+        CheckConnections,
         SaveUser,
         DestroyUser,
         SaveRoom,

@@ -10,11 +10,11 @@ namespace Data
             {
                 #region auto
 
+                case MsgType._Service_Shutdown:
+                    return MessagePackSerializer.Serialize((ResShutdown)res);
+
                 case MsgType._Service_ReloadScript:
                     return MessagePackSerializer.Serialize((ResReloadScript)res);
-
-                case MsgType._Service_CheckConnections_Loop:
-                    return MessagePackSerializer.Serialize((ResCheckConnections_Loop)res);
 
                 case MsgType._Service_ConnectorInfo:
                     return MessagePackSerializer.Serialize((ResConnectorInfo)res);

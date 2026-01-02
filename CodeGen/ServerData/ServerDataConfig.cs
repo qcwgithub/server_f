@@ -92,7 +92,7 @@ public class ServerDataConfig
                     serviceType = "Db",
                     serviceClassName = "DbService",
                     scriptFolder = "Db",
-                    scriptOnStart = "Db_Start",
+                    scriptOnStart = "DbService.Start",
                     PersistenceTaskQueueHandler_class = "PersistenceTaskQueueHandler",
                     PersistenceTaskQueueHandler_path = "Script/Db/PersistenceTask/PersistenceTaskQueueHandler.cs",
                     PersistenceTaskQueueHandler_path2 = (xinfoType, postfix) => $"Script/Db/PersistenceTask/PersistenceTaskQueueHandler.{xinfoType}{postfix}.cs",

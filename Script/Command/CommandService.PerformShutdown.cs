@@ -11,7 +11,7 @@ namespace Script
 
             var msgShutdown = new MsgShutdown();
             msgShutdown.force = force == 1;
-            var r = await this.service.commandConnectToOtherService.Request(serviceId, MsgType._Service_Shutdown, msgShutdown);
+            var r = await this.commandConnectToOtherService.Request(serviceId, MsgType._Service_Shutdown, msgShutdown);
             return r.e;
         }
     }

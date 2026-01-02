@@ -434,7 +434,7 @@ namespace Data
             return this.busyCount == 0;
         }
 
-        public ITimer timer_CheckConnections_Loop;
+        public ITimer timer_CheckConnections;
 
         // 自己的 service-config
         public ServiceConfig serviceConfig;

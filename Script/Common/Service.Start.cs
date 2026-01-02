@@ -6,8 +6,8 @@ namespace Script
     {
         void StartKeepConnections()
         {
-            MyDebug.Assert(!this.data.timer_CheckConnections_Loop.IsAlive());
-            this.data.timer_CheckConnections_Loop = this.server.timerScript.SetTimer(this.serviceId, 0, TimerType.CheckConnections_Loop, null);
+            MyDebug.Assert(!this.data.timer_CheckConnections.IsAlive());
+            this.data.timer_CheckConnections = this.server.timerScript.SetTimer(this.serviceId, 0, TimerType.CheckConnections, null);
         }
 
         public virtual async Task<ECode> Start()

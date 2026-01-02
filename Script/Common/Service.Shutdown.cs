@@ -114,7 +114,7 @@ namespace Script
 
             await this.StopBusinesses();
 
-            this.ClearTimer(ref this.data.timer_CheckConnections_Loop);
+            this.ClearTimer(ref this.data.timer_CheckConnections);
 
             this.CheckTimer();
 
@@ -126,8 +126,7 @@ namespace Script
                 {
                     int v = this.data.busyList[i];
                     if (v != -1 &&
-                        v != (int)MsgType._Service_Shutdown &&
-                        v != (int)MsgType._Service_Start)
+                        v != (int)MsgType._Service_Shutdown)
                     {
                         this.logger.InfoFormat("{0} is being handled, wait for it", (MsgType)v);
                         busy = true;

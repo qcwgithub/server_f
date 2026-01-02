@@ -10,12 +10,12 @@ namespace Data
 
             #region auto_init
 
-            dict[MsgType._Service_ReloadScript] = new stMessageConfig
+            dict[MsgType._Service_Shutdown] = new stMessageConfig
             {
                 queue = MessageQueue.None,
             };
 
-            dict[MsgType._Service_CheckConnections_Loop] = new stMessageConfig
+            dict[MsgType._Service_ReloadScript] = new stMessageConfig
             {
                 queue = MessageQueue.None,
             };

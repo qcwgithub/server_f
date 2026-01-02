@@ -11,9 +11,7 @@ namespace Script
 
         public void OnReceiveHttpRequest(HttpListenerContext context)
         {
-            var msg = new MsgOnHttpRequest();
-            msg.context = context;
-            this.service.OnHttpRequest(msg).Forget();
+            this.service.OnHttpRequest(context);
         }
 
         public log4net.ILog GetLogger() => this.service.logger;

@@ -4,8 +4,8 @@ namespace Data
     {
         #region auto
 
+        _Service_Shutdown = 2,
         _Service_ReloadScript = 5,
-        _Service_CheckConnections_Loop = 7,
         _Service_ConnectorInfo = 8,
         _Service_GetPendingMessageList = 9,
         _Service_GetScriptVersion = 10,

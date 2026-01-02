@@ -43,7 +43,7 @@ public class Create_CallCreateIndex
     {
         if (config.createCollectionCs && config.index.Count > 0)
         {
-            obj.ff.TabPushF("await this.service.{0}{1}.CreateIndex();\n", config.className, config.postfix);
+            obj.ff.TabPushF("await this.{0}{1}.CreateIndex();\n", config.className, config.postfix);
         }
     }
 }

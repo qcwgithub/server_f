@@ -65,23 +65,17 @@ namespace Script
             this.dispatcher.AddHandler(new OnRemoteWillShutdown<S>(this.server, (S)this));
             this.dispatcher.AddHandler(new OnGetServiceState<S>(this.server, (S)this));
 
-            this.dispatcher.AddHandler(new OnConnectComplete<S>(this.server, (S)this));
             this.dispatcher.AddHandler(new OnConnectorInfo<S>(this.server, (S)this));
             this.dispatcher.AddHandler(new OnResGetServiceConfigs<S>(this.server, (S)this));
             this.dispatcher.AddHandler(new OnGetConnectedInfos<S>(this.server, (S)this));
-            this.dispatcher.AddHandler(new OnConnectionClose<S>(this.server, (S)this));
             this.dispatcher.AddHandler(new OnReloadScript<S>(this.server, (S)this));
             this.dispatcher.AddHandler(new OnReloadConfigs<S>(this.server, (S)this));
             this.dispatcher.AddHandler(new OnGetReloadConfigOptions<S>(this.server, (S)this));
             this.dispatcher.AddHandler(new OnGC<S>(this.server, (S)this));
 
-            this.dispatcher.AddHandler(new CheckConnections_Loop<S>(this.server, (S)this));
-            this.dispatcher.AddHandler(new CheckConnections<S>(this.server, (S)this));
-
             this.dispatcher.AddHandler(new OnGetPendingMsgList<S>(this.server, (S)this));
             this.dispatcher.AddHandler(new OnGetScriptVersion<S>(this.server, (S)this));
 
-            this.dispatcher.AddHandler(new OnWaitTask<S>(this.server, (S)this));
             this.dispatcher.AddHandler(new OnViewMongoDumpList<S>(this.server, (S)this));
         }
 
