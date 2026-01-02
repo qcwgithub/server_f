@@ -20,17 +20,8 @@ namespace Script
                 return ECode.ServerNotReady;
             }
 
-            User? user = this.service.sd.GetUser(msg.userId);
-            if (user != null)
-            {
-                if (user.destroying)
-                {
-                    // 其实不是错误，但是想要知道一下有没有触发这种情况
-                    this.service.logger.ErrorFormat("{0} userId {1} destroying", this.msgType, user.userId);
-                    return ECode.UserDestroying;
-                }
-            }
-            else
+            User? user = await this.service.LockUser(msg.userId, context);
+            if (user == null)
             {
                 UserInfo? userInfo;
                 if (msg.isNewUser)
@@ -134,6 +125,13 @@ namespace Script
             // 这句会修改 userInfo，必须放在 lastUserInfo.DeepCopyFrom 后面
             // this.gameScripts.CallInit(user);
             this.service.CheckUpdateRuntimeInfo().Forget();
+        }
+
+        public override void PostHandle(MessageContext context, MsgUserLoginSuccess msg, ECode e, ResUserLoginSuccess res)
+        {
+            this.service.TryUnlockUser(msg.userId, context);
+
+            base.PostHandle(context, msg, e, res);
         }
     }
 }

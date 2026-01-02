@@ -10,6 +10,11 @@ namespace Data
 
             #region auto_init
 
+            dict[MsgType._Service_Timer] = new stMessageConfig
+            {
+                queue = MessageQueue.None,
+            };
+
             dict[MsgType._Service_Shutdown] = new stMessageConfig
             {
                 queue = MessageQueue.None,
@@ -107,7 +112,7 @@ namespace Data
 
             dict[MsgType._User_UserLoginSuccess] = new stMessageConfig
             {
-                queue = MessageQueue.User,
+                queue = MessageQueue.None,
             };
 
             dict[MsgType._User_ServerKick] = new stMessageConfig
@@ -122,7 +127,7 @@ namespace Data
 
             dict[MsgType._User_SaveUserImmediately] = new stMessageConfig
             {
-                queue = MessageQueue.User,
+                queue = MessageQueue.None,
             };
 
             dict[MsgType._User_GetUserCount] = new stMessageConfig
@@ -132,7 +137,7 @@ namespace Data
 
             dict[MsgType._User_SaveUserInfoToFile] = new stMessageConfig
             {
-                queue = MessageQueue.User,
+                queue = MessageQueue.None,
             };
 
             dict[MsgType._User_SetGmFlag] = new stMessageConfig
@@ -157,22 +162,22 @@ namespace Data
 
             dict[MsgType._Room_UserEnter] = new stMessageConfig
             {
-                queue = MessageQueue.Room,
+                queue = MessageQueue.None,
             };
 
             dict[MsgType._Room_UserLeave] = new stMessageConfig
             {
-                queue = MessageQueue.Room,
+                queue = MessageQueue.None,
             };
 
             dict[MsgType._Room_LoadRoom] = new stMessageConfig
             {
-                queue = MessageQueue.Room,
+                queue = MessageQueue.None,
             };
 
             dict[MsgType._Room_SaveRoomImmediately] = new stMessageConfig
             {
-                queue = MessageQueue.Room,
+                queue = MessageQueue.None,
             };
 
             dict[MsgType._RoomManager_LoadRoom] = new stMessageConfig
@@ -302,12 +307,12 @@ namespace Data
 
             dict[MsgType.EnterRoom] = new stMessageConfig
             {
-                queue = MessageQueue.User,
+                queue = MessageQueue.None,
             };
 
             dict[MsgType.LeaveRoom] = new stMessageConfig
             {
-                queue = MessageQueue.User,
+                queue = MessageQueue.None,
             };
 
             #endregion auto_init

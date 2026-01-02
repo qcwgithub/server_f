@@ -13,14 +13,14 @@ namespace Script
 
         public override async Task<ECode> Handle(MessageContext context, MsgUserServerKick msg, ResUserServerKick res)
         {
-            User? user = this.service.sd.GetUser(msg.userId);
+            User? user = await this.service.LockUser(msg.userId, context);
             if (user == null)
             {
                 res.kicked = false;
                 return ECode.Success;
             }
 
-            ECode e = await this.service.DestroyUser(msg.userId, UserDestroyUserReason.ServerKick);
+            ECode e = await this.service.DestroyUser(user, UserDestroyUserReason.ServerKick);
             if (e != ECode.Success)
             {
                 return e;
@@ -28,6 +28,13 @@ namespace Script
 
             res.kicked = true;
             return ECode.Success;
+        }
+
+        public override void PostHandle(MessageContext context, MsgUserServerKick msg, ECode e, ResUserServerKick res)
+        {
+            this.service.TryUnlockUser(msg.userId, context);
+
+            base.PostHandle(context, msg, e, res);
         }
     }
 }

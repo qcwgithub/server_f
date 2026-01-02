@@ -4,6 +4,7 @@ namespace Data
     {
         #region auto
 
+        _Service_Timer = 1,
         _Service_Shutdown = 2,
         _Service_ReloadScript = 5,
         _Service_ConnectorInfo = 8,

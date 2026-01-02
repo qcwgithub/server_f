@@ -4,20 +4,13 @@ namespace Script
 {
     public partial class UserService
     {
-        public async Task<ECode> SaveUser(long userId, string reason)
+        public async Task<ECode> SaveUser(User user, string reason)
         {
-            User? user = this.sd.GetUser(userId);
-            if (user == null)
-            {
-                this.logger.ErrorFormat("SaveUser userId {0}, reason {1}, user == null!!", userId, reason);
-                return ECode.UserNotExist;
-            }
-
-            await this.server.userLocationRedisW.WriteLocation(userId, this.serviceId, this.sd.saveIntervalS + 60);
+            await this.server.userLocationRedisW.WriteLocation(user.userId, this.serviceId, this.sd.saveIntervalS + 60);
 
             var msgDb = new MsgSave_UserInfo
             {
-                userId = userId,
+                userId = user.userId,
                 userInfoNullable = new UserInfoNullable()
             };
             var infoNullable = msgDb.userInfoNullable;
@@ -77,7 +70,7 @@ namespace Script
                 fieldsStr = string.Join(", ", buffer.ToArray());
 
                 // buffer 不为 null 才打印，不然太多了
-                this.logger.InfoFormat("SaveUser userId {0}, reason {1}, fields [{2}]", userId, reason, fieldsStr);
+                this.logger.InfoFormat("SaveUser userId {0}, reason {1}, fields [{2}]", user.userId, reason, fieldsStr);
             }
 
             if (buffer != null)
@@ -89,7 +82,7 @@ namespace Script
                 var r = await this.dbServiceProxy.Save_UserInfo(msgDb);
                 if (r.e != ECode.Success)
                 {
-                    this.logger.ErrorFormat("Save_UserInfo e {1}, userId {2}", r.e, userId);
+                    this.logger.ErrorFormat("Save_UserInfo e {0}, userId {1}", r.e, user.userId);
                     return r.e;
                 }
             }

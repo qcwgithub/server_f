@@ -12,8 +12,8 @@ namespace Script
 
         public override async Task<ECode> Handle(MessageContext context, MsgSaveUserInfoToFile msg, ResSaveUserInfoToFile res)
         {
+            User? user = await this.service.LockUser(msg.userId, context);
             UserInfo? userInfo = null;
-            User? user = this.service.sd.GetUser(msg.userId);
             if (user != null)
             {
                 userInfo = user.userInfo;
@@ -37,9 +37,16 @@ namespace Script
             string json = JsonUtils.stringify(userInfo);
             string fileName = "user_info_" + msg.userId + ".json";
             File.WriteAllText(fileName, json);
-            
+
             res.fileName = fileName;
             return ECode.Success;
+        }
+
+        public override void PostHandle(MessageContext context, MsgSaveUserInfoToFile msg, ECode e, ResSaveUserInfoToFile res)
+        {
+            this.service.TryUnlockUser(msg.userId, context);
+
+            base.PostHandle(context, msg, e, res);
         }
     }
 }

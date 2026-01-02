@@ -5,29 +5,20 @@ namespace Script
 {
     public partial class UserService
     {
-        public async Task<ECode> DestroyUser(long userId, UserDestroyUserReason reason)
+        public async Task<ECode> DestroyUser(User user, UserDestroyUserReason reason)
         {
-            this.logger.InfoFormat("DestroyUser userId {0}, reason {1}, preCount {2}", userId, reason, this.sd.userCount);
-
-            User? user = this.sd.GetUser(userId);
-            if (user == null)
-            {
-                logger.InfoFormat("DestroyUser user not exist, userId: {0}", userId);
-                return ECode.UserNotExist;
-            }
+            this.logger.InfoFormat("DestroyUser userId {0}, reason {1}, preCount {2}", user.userId, reason, this.sd.userCount);
 
             this.ss.ClearSaveTimer(user);
 
-            user.destroying = true;
-
             // Save once
-            ECode e = await this.SaveUser(userId, "DestroyUser");
+            ECode e = await this.SaveUser(user, "DestroyUser");
             if (e != ECode.Success)
             {
                 return e;
             }
 
-            this.sd.RemoveUser(userId);
+            this.sd.RemoveUser(user.userId);
             this.CheckUpdateRuntimeInfo().Forget();
             return ECode.Success;
         }

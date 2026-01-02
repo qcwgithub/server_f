@@ -43,7 +43,6 @@ namespace Data
             return msg != null;
         }
 
-        public bool destroying;
         public ITimer? destroyTimer;
 
         public long onlineTimeS;
@@ -58,9 +57,6 @@ namespace Data
 
         public long roomId;
 
-        public MsgType busyMsgType;
-
-        public long lockedKey;
-        public List<TaskCompletionSource> waiting;        
+        public MsgType busyMsgType;        
     }
 }

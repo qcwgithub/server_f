@@ -10,6 +10,9 @@ namespace Data
             {
                 #region auto
 
+                case MsgType._Service_Timer:
+                    return MessagePackSerializer.Deserialize<MsgTimer>(msgBytes);
+
                 case MsgType._Service_Shutdown:
                     return MessagePackSerializer.Deserialize<MsgShutdown>(msgBytes);
 

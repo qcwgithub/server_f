@@ -18,38 +18,45 @@ namespace Script
             this.data.StopListenForServer_Tcp();
 
             //// kick players
-            List<long> kickList = new List<long>();
+            List<User> kickList = new();
             this.logger.InfoFormat("start kick all userss, total {0}", this.sd.userCount);
             List<Task> tasks = new List<Task>();
             while (true)
             {
                 foreach (var kv in this.sd.userDict)
                 {
-                    kickList.Add(kv.Key);
+                    if (this.sd.IsUserLocked(kv.Key))
+                    {
+                        continue;
+                    }
+
+                    User user = kv.Value;
+                    kickList.Add(user);
                     if (kickList.Count >= 10)
                     {
                         break;
                     }
                 }
 
-                if (kickList.Count == 0)
+                if (kickList.Count > 0)
+                {
+                    foreach (User user in kickList)
+                    {
+                        tasks.Add(this.DestroyUser(user, UserDestroyUserReason.Shutdown));
+                    }
+
+                    await Task.WhenAll(tasks);
+
+                    kickList.Clear();
+                    tasks.Clear();
+                }
+                await Task.Delay(100);
+                this.logger.InfoFormat("left {0} users to kick", this.sd.userCount);
+
+                if (this.sd.userCount == 0)
                 {
                     break;
                 }
-
-                foreach (long userId in kickList)
-                {
-                    tasks.Add(this.DestroyUser(userId, UserDestroyUserReason.Shutdown));
-                }
-
-                await Task.WhenAll(tasks);
-
-                kickList.Clear();
-                tasks.Clear();
-
-                await Task.Delay(100);
-
-                this.logger.InfoFormat("left {0} users to kick", this.sd.userCount);
             }
 
             ////
@@ -63,10 +70,8 @@ namespace Script
                 {
                     break;
                 }
-                else
-                {
-                    await Task.Delay(1000);
-                }
+
+                await Task.Delay(1000);
             }
         }
     }

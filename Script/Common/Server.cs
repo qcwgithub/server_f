@@ -269,7 +269,12 @@ namespace Script
             {
                 if (service.serviceId == serviceId)
                 {
-                    service.OnTimer(timerType, data).Forget();
+                    service.dispatcher.Dispatch(new MessageContext(), MsgType._Service_Timer, new MsgTimer
+                    {
+                        timerType = timerType,
+                        data = data
+                    })
+                    .Forget();
                     found = true;
                     break;
                 }

@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using log4net;
-
 namespace Data
 {
     public sealed class UserServiceData : ServiceData
@@ -83,6 +79,16 @@ namespace Data
         }
 
         public ITimer timer_tick_loop;
-        public long userLockKey;
+
+        public class LockedUser
+        {
+            public object? owner;
+            public List<TaskCompletionSource>? waiting;
+        }
+        public readonly Dictionary<long, LockedUser> lockedUserDict = new();
+        public bool IsUserLocked(long userId)
+        {
+            return this.lockedUserDict.TryGetValue(userId, out var lockedUser) && lockedUser.owner != null;
+        }
     }
 }

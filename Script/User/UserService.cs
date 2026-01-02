@@ -84,46 +84,70 @@ namespace Script
             }
         }
 
-        public async Task<User?> LockUser(long userId)
+        public async Task<User?> LockUser(long userId, object owner)
         {
-            User? user = this.sd.GetUser(userId);
-            if (user == null)
-            {
-                return null;
-            }
+            MyDebug.Assert(owner != null);
 
-            if (user.lockedKey == 0)
+            User? user = this.sd.GetUser(userId);
+
+            if (!this.sd.lockedUserDict.TryGetValue(userId, out var lockedUser))
             {
-                user.lockedKey = ++this.sd.userLockKey;
+                this.sd.lockedUserDict[userId] = new UserServiceData.LockedUser
+                {
+                    owner = owner,
+                };
                 return user;
             }
 
-            if (user.waiting == null)
+            if (lockedUser.owner == null)
             {
-                user.waiting = new();
+                lockedUser.owner = owner;
+                return user;
+            }
+
+            if (lockedUser.owner == owner)
+            {
+                return user;
+            }
+
+            if (lockedUser.waiting == null)
+            {
+                lockedUser.waiting = new List<TaskCompletionSource>();
             }
 
             var tcs = new TaskCompletionSource();
-            user.waiting.Add(tcs);
+            lockedUser.waiting.Add(tcs);
             await tcs.Task;
 
-            MyDebug.Assert(user.lockedKey == 0);
-            user.lockedKey = ++this.sd.userLockKey;
+            MyDebug.Assert(lockedUser.owner == null);
+            lockedUser.owner = owner;
             return user;
         }
 
-        public void UnlockUser(User user, long key)
+        public void TryUnlockUser(long userId, object owner)
         {
-            if (key == user.lockedKey)
+            MyDebug.Assert(owner != null);
+
+            if (!this.sd.lockedUserDict.TryGetValue(userId, out var lockedUser))
             {
-                user.lockedKey = 0;
+                MyDebug.Assert(false);
+                return;
             }
 
-            if (user.waiting != null && user.waiting.Count > 0)
+            if (lockedUser.owner == owner)
             {
-                var tcs = user.waiting[0];
-                user.waiting.RemoveAt(0);
-                tcs.SetResult();
+                lockedUser.owner = null;
+
+                if (lockedUser.waiting != null && lockedUser.waiting.Count > 0)
+                {
+                    var tcs = lockedUser.waiting[0];
+                    lockedUser.waiting.RemoveAt(0);
+                    tcs.SetResult();
+                }
+            }
+            else
+            {
+                MyDebug.Assert(false);
             }
         }
     }
