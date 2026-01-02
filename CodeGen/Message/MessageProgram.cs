@@ -14,7 +14,6 @@ public class MessageProgram
             c.queue = helper.ReadString("queue");
             c.external = helper.ReadString("external") == "1";
             c.arg_serviceId = helper.ReadString("arg_serviceId") == "1";
-            c.internal_ = helper.ReadString("internal") == "1";
 
 
             list.Add(c);

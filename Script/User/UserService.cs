@@ -47,17 +47,11 @@ namespace Script
             base.AddHandler<UserService>();
 
             this.dispatcher.AddHandler(new User_Action(this.server, this));
-            this.dispatcher.AddHandler(new User_DestroyUser(this.server, this));
-            this.dispatcher.AddHandler(new User_OnConnectComplete(this.server, this), true);
-            this.dispatcher.AddHandler(new User_OnConnectionClose(this.server, this), true);
             this.dispatcher.AddHandler(new User_OnReloadConfigs(this.server, this), true);
-            this.dispatcher.AddHandler(new User_SaveUser(this.server, this));
             this.dispatcher.AddHandler(new User_SaveUserImmediately(this.server, this));
             this.dispatcher.AddHandler(new User_SaveUserInfoToFile(this.server, this));
             this.dispatcher.AddHandler(new User_ServerKick(this.server, this));
             this.dispatcher.AddHandler(new User_SetGmFlag(this.server, this));
-            this.dispatcher.AddHandler(new User_Shutdown(this.server, this));
-            this.dispatcher.AddHandler(new User_Start(this.server, this));
             this.dispatcher.AddHandler(new User_UserDisconnectFromGateway(this.server, this));
             this.dispatcher.AddHandler(new User_UserLoginSuccess(this.server, this));
         }

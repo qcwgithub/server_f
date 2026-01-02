@@ -7,5 +7,6 @@ namespace Data
         DestroyUser,
         SaveRoom,
         DestroyRoom,
+        PersistenceTaskQueueHandler_Loop,
     }
 }

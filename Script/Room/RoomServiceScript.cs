@@ -54,7 +54,7 @@ namespace Script
             room.saveTimer = server.timerScript.SetLoopTimer(this.service.serviceId, SEC, TimerType.SaveRoom, new TimerSaveRoom
             {
                 roomId = room.roomId,
-                ReadOnlySpan = "SetSaveTimer",
+                reason = "SetSaveTimer",
             });
         }
 

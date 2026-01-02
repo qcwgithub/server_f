@@ -3,7 +3,6 @@ public class Create_ServiceProxy
     public static void Create(List<MessageConfig> configs)
     {
         var proxyDict = new Dictionary<string, FileFormatter>();
-        var selfDict = new Dictionary<string, FileFormatter>();
 
         for (int i = 0; i < configs.Count; i++)
         {
@@ -80,27 +79,6 @@ public class Create_ServiceProxy
                 f.Push($"MsgType.{config.msgType}, msg);\n");
                 f.BlockEnd();
             }
-
-            // RequestSelf
-            if (config.internal_)
-            {
-                FileFormatter f;
-                if (!selfDict.ContainsKey(serviceType))
-                {
-                    f = new FileFormatter();
-                    f.AddTab(2);
-                    selfDict.Add(serviceType, f);
-                }
-                else
-                {
-                    f = selfDict[serviceType];
-                }
-
-                f.TabPush($"public async Task<MyResponse> {methodName}({config.msg} msg)\n");
-                f.BlockStart();
-                f.TabPush($"return await this.dispatcher.Dispatch(default, MsgType.{config.msgType}, msg);\n");
-                f.BlockEnd();
-            }
         }
 
         foreach (var kv in proxyDict)
@@ -115,26 +93,6 @@ public class Create_ServiceProxy
             else
             {
                 path = $"Script/{serviceType}/{serviceType}ServiceProxy.cs";
-            }
-
-            XInfoProgram.ReplaceFile(path, new Mark[]
-            {
-                new Mark { startMark = "#region auto", text = kv.Value.GetString() },
-            });
-        }
-
-        foreach (var kv in selfDict)
-        {
-            string serviceType = kv.Key;
-
-            string path;
-            if (string.IsNullOrEmpty(serviceType))
-            {
-                path = $"Script/Common/Service.RequestSelf.cs";
-            }
-            else
-            {
-                path = $"Script/{serviceType}/{serviceType}Service.RequestSelf.cs";
             }
 
             XInfoProgram.ReplaceFile(path, new Mark[]

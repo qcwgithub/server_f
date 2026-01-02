@@ -40,13 +40,9 @@ namespace Script
             base.AddHandler<RoomService>();
 
             this.dispatcher.AddHandler(new Room_Action(this.server, this));
-            this.dispatcher.AddHandler(new Room_DestroyRoom(this.server, this));
             this.dispatcher.AddHandler(new Room_OnReloadConfigs(this.server, this), true);
-            this.dispatcher.AddHandler(new Room_SaveRoom(this.server, this));
             this.dispatcher.AddHandler(new Room_SaveRoomImmediately(this.server, this));
             this.dispatcher.AddHandler(new Room_SaveRoomInfoToFile(this.server, this));
-            this.dispatcher.AddHandler(new Room_Shutdown(this.server, this));
-            this.dispatcher.AddHandler(new Room_Start(this.server, this));
         }
 
         public override async Task Detach()

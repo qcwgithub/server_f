@@ -26,7 +26,7 @@ namespace Script
         {
             return await this.Request(serviceId, MsgType._User_UserDisconnectFromGateway, msg);
         }
-        public async Task<MyResponse> SaveUserImmediately(int serviceId, MsgSaveUser msg)
+        public async Task<MyResponse> SaveUserImmediately(int serviceId, MsgSaveUserImmediately msg)
         {
             return await this.Request(serviceId, MsgType._User_SaveUserImmediately, msg);
         }

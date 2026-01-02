@@ -26,8 +26,6 @@ namespace Script
 
             MongoRegister.Init();
 
-            this.dispatcher.AddHandler(new Global_Start(this.server, this));
-            this.dispatcher.AddHandler(new Global_Shutdown(this.server, this));
             this.dispatcher.AddHandler(new Global_GetServiceConfigs(this.server, this));
             this.dispatcher.AddHandler(this.global_OnReladConfigs, true);
         }

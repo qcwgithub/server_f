@@ -10,23 +10,8 @@ namespace Data
             {
                 #region auto
 
-                case MsgType._Service_Start:
-                    return MessagePackSerializer.Deserialize<MsgStart>(msgBytes);
-
-                case MsgType._Service_Shutdown:
-                    return MessagePackSerializer.Deserialize<MsgShutdown>(msgBytes);
-
-                case MsgType._Service_OnConnectComplete:
-                    return MessagePackSerializer.Deserialize<MsgOnConnectComplete>(msgBytes);
-
-                case MsgType._Service_OnConnectionClose:
-                    return MessagePackSerializer.Deserialize<MsgOnConnectionClose>(msgBytes);
-
                 case MsgType._Service_ReloadScript:
                     return MessagePackSerializer.Deserialize<MsgReloadScript>(msgBytes);
-
-                case MsgType._Service_CheckConnections:
-                    return MessagePackSerializer.Deserialize<MsgCheckConnections>(msgBytes);
 
                 case MsgType._Service_CheckConnections_Loop:
                     return MessagePackSerializer.Deserialize<MsgCheckConnections_Loop>(msgBytes);
@@ -40,9 +25,6 @@ namespace Data
                 case MsgType._Service_GetScriptVersion:
                     return MessagePackSerializer.Deserialize<MsgGetScriptVersion>(msgBytes);
 
-                case MsgType._Service_OnHttpRequest:
-                    return MessagePackSerializer.Deserialize<MsgOnHttpRequest>(msgBytes);
-
                 case MsgType._Service_ReloadConfigs:
                     return MessagePackSerializer.Deserialize<MsgReloadConfigs>(msgBytes);
 
@@ -51,9 +33,6 @@ namespace Data
 
                 case MsgType._Service_RemoteWillShutdown:
                     return MessagePackSerializer.Deserialize<MsgRemoteWillShutdown>(msgBytes);
-
-                case MsgType._Service_WaitTask:
-                    return MessagePackSerializer.Deserialize<MsgWaitTask>(msgBytes);
 
                 case MsgType._Service_GetServiceState:
                     return MessagePackSerializer.Deserialize<MsgGetServiceState>(msgBytes);
@@ -82,9 +61,6 @@ namespace Data
                 case MsgType._Gateway_ServerAction:
                     return MessagePackSerializer.Deserialize<MsgGatewayServiceAction>(msgBytes);
 
-                case MsgType._Gateway_DestroyUser:
-                    return MessagePackSerializer.Deserialize<MsgGatewayDestroyUser>(msgBytes);
-
                 case MsgType._Gateway_ServerKick:
                     return MessagePackSerializer.Deserialize<MsgGatewayServerKick>(msgBytes);
 
@@ -100,20 +76,14 @@ namespace Data
                 case MsgType._User_UserDisconnectFromGateway:
                     return MessagePackSerializer.Deserialize<MsgUserDisconnectFromGateway>(msgBytes);
 
-                case MsgType._User_DestroyUser:
-                    return MessagePackSerializer.Deserialize<MsgUserDestroyUser>(msgBytes);
-
                 case MsgType._User_SaveUserImmediately:
-                    return MessagePackSerializer.Deserialize<MsgSaveUser>(msgBytes);
+                    return MessagePackSerializer.Deserialize<MsgSaveUserImmediately>(msgBytes);
 
                 case MsgType._User_GetUserCount:
                     return MessagePackSerializer.Deserialize<MsgGetUserCount>(msgBytes);
 
                 case MsgType._User_SaveUserInfoToFile:
                     return MessagePackSerializer.Deserialize<MsgSaveUserInfoToFile>(msgBytes);
-
-                case MsgType._User_SaveUser:
-                    return MessagePackSerializer.Deserialize<MsgSaveUser>(msgBytes);
 
                 case MsgType._User_SetGmFlag:
                     return MessagePackSerializer.Deserialize<MsgSetGmFlag>(msgBytes);
@@ -123,12 +93,6 @@ namespace Data
 
                 case MsgType._Room_ServerAction:
                     return MessagePackSerializer.Deserialize<MsgRoomServiceAction>(msgBytes);
-
-                case MsgType._Room_DestroyRoom:
-                    return MessagePackSerializer.Deserialize<MsgRoomDestroyRoom>(msgBytes);
-
-                case MsgType._Room_SaveRoom:
-                    return MessagePackSerializer.Deserialize<MsgSaveRoom>(msgBytes);
 
                 case MsgType._Room_SaveRoomInfoToFile:
                     return MessagePackSerializer.Deserialize<MsgSaveRoomInfoToFile>(msgBytes);
@@ -143,7 +107,7 @@ namespace Data
                     return MessagePackSerializer.Deserialize<MsgRoomLoadRoom>(msgBytes);
 
                 case MsgType._Room_SaveRoomImmediately:
-                    return MessagePackSerializer.Deserialize<MsgSaveRoom>(msgBytes);
+                    return MessagePackSerializer.Deserialize<MsgSaveRoomImmediately>(msgBytes);
 
                 case MsgType._RoomManager_LoadRoom:
                     return MessagePackSerializer.Deserialize<MsgRoomManagerLoadRoom>(msgBytes);

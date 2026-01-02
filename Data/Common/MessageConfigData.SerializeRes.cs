@@ -10,23 +10,8 @@ namespace Data
             {
                 #region auto
 
-                case MsgType._Service_Start:
-                    return MessagePackSerializer.Serialize((ResStart)res);
-
-                case MsgType._Service_Shutdown:
-                    return MessagePackSerializer.Serialize((ResShutdown)res);
-
-                case MsgType._Service_OnConnectComplete:
-                    return MessagePackSerializer.Serialize((ResOnConnectComplete)res);
-
-                case MsgType._Service_OnConnectionClose:
-                    return MessagePackSerializer.Serialize((ResOnConnectionClose)res);
-
                 case MsgType._Service_ReloadScript:
                     return MessagePackSerializer.Serialize((ResReloadScript)res);
-
-                case MsgType._Service_CheckConnections:
-                    return MessagePackSerializer.Serialize((ResCheckConnections)res);
 
                 case MsgType._Service_CheckConnections_Loop:
                     return MessagePackSerializer.Serialize((ResCheckConnections_Loop)res);
@@ -40,9 +25,6 @@ namespace Data
                 case MsgType._Service_GetScriptVersion:
                     return MessagePackSerializer.Serialize((ResGetScriptVersion)res);
 
-                case MsgType._Service_OnHttpRequest:
-                    return MessagePackSerializer.Serialize((ResOnHttpRequest)res);
-
                 case MsgType._Service_ReloadConfigs:
                     return MessagePackSerializer.Serialize((ResReloadConfigs)res);
 
@@ -51,9 +33,6 @@ namespace Data
 
                 case MsgType._Service_RemoteWillShutdown:
                     return MessagePackSerializer.Serialize((ResRemoteWillShutdown)res);
-
-                case MsgType._Service_WaitTask:
-                    return MessagePackSerializer.Serialize((ResWaitTask)res);
 
                 case MsgType._Service_GetServiceState:
                     return MessagePackSerializer.Serialize((ResGetServiceState)res);
@@ -82,9 +61,6 @@ namespace Data
                 case MsgType._Gateway_ServerAction:
                     return MessagePackSerializer.Serialize((ResGatewayServiceAction)res);
 
-                case MsgType._Gateway_DestroyUser:
-                    return MessagePackSerializer.Serialize((ResGatewayDestroyUser)res);
-
                 case MsgType._Gateway_ServerKick:
                     return MessagePackSerializer.Serialize((ResGatewayServerKick)res);
 
@@ -100,20 +76,14 @@ namespace Data
                 case MsgType._User_UserDisconnectFromGateway:
                     return MessagePackSerializer.Serialize((ResUserDisconnectFromGateway)res);
 
-                case MsgType._User_DestroyUser:
-                    return MessagePackSerializer.Serialize((ResUserDestroyUser)res);
-
                 case MsgType._User_SaveUserImmediately:
-                    return MessagePackSerializer.Serialize((ResSaveUser)res);
+                    return MessagePackSerializer.Serialize((ResSaveUserImmediately)res);
 
                 case MsgType._User_GetUserCount:
                     return MessagePackSerializer.Serialize((ResGetUserCount)res);
 
                 case MsgType._User_SaveUserInfoToFile:
                     return MessagePackSerializer.Serialize((ResSaveUserInfoToFile)res);
-
-                case MsgType._User_SaveUser:
-                    return MessagePackSerializer.Serialize((ResSaveUser)res);
 
                 case MsgType._User_SetGmFlag:
                     return MessagePackSerializer.Serialize((ResSetGmFlag)res);
@@ -123,12 +93,6 @@ namespace Data
 
                 case MsgType._Room_ServerAction:
                     return MessagePackSerializer.Serialize((ResRoomServiceAction)res);
-
-                case MsgType._Room_DestroyRoom:
-                    return MessagePackSerializer.Serialize((ResRoomDestroyRoom)res);
-
-                case MsgType._Room_SaveRoom:
-                    return MessagePackSerializer.Serialize((ResSaveRoom)res);
 
                 case MsgType._Room_SaveRoomInfoToFile:
                     return MessagePackSerializer.Serialize((ResSaveRoomInfoToFile)res);
@@ -143,7 +107,7 @@ namespace Data
                     return MessagePackSerializer.Serialize((ResRoomLoadRoom)res);
 
                 case MsgType._Room_SaveRoomImmediately:
-                    return MessagePackSerializer.Serialize((ResSaveRoom)res);
+                    return MessagePackSerializer.Serialize((ResSaveRoomImmediately)res);
 
                 case MsgType._RoomManager_LoadRoom:
                     return MessagePackSerializer.Serialize((ResRoomManagerLoadRoom)res);

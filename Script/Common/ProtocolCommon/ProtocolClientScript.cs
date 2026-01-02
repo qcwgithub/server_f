@@ -85,9 +85,7 @@ namespace Script
                 return;
             }
 
-            var msg = new MsgOnConnectComplete();
-            msg.connection = (IConnection)data.customData;
-            this.service.OnConnectComplete(msg).Forget();
+            this.service.OnConnectComplete((IConnection)data.customData).Forget();
         }
 
         public void OnCloseComplete(ProtocolClientData data)
@@ -97,9 +95,7 @@ namespace Script
                 return;
             }
 
-            var msg = new MsgOnConnectionClose();
-            msg.connection = (IConnection)data.customData;
-            this.service.OnConnectionClose(msg).Forget();
+            this.service.OnConnectionClose((IConnection)data.customData).Forget();
         }
     }
 }

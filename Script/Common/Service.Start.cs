@@ -10,7 +10,7 @@ namespace Script
             this.data.timer_CheckConnections_Loop = this.server.timerScript.SetTimer(this.serviceId, 0, TimerType.CheckConnections_Loop, null);
         }
 
-        public async Task<ECode> Start()
+        public virtual async Task<ECode> Start()
         {
             try
             {

@@ -187,7 +187,7 @@ namespace Script
 
             foreach (var service in this.services)
             {
-                service.Start(new MsgStart()).Forget();
+                service.Start().Forget();
             }
         }
 
@@ -262,14 +262,14 @@ namespace Script
             Environment.Exit(0);
         }
 
-        public void OnTimer(int serviceId, TimerType msgType, object data)
+        public void OnTimer(int serviceId, TimerType timerType, object data)
         {
             bool found = false;
             foreach (var service in this.services)
             {
                 if (service.serviceId == serviceId)
                 {
-                    service.dispatcher.Dispatch(default, msgType, data).Forget();
+                    service.OnTimer(timerType, data).Forget();
                     found = true;
                     break;
                 }
@@ -277,7 +277,7 @@ namespace Script
 
             if (!found)
             {
-                Data.Program.LogError(string.Format("ScriptEntry.OnTimer !found serviceId({0}) msgType({1})", serviceId, msgType), null);
+                Data.Program.LogError(string.Format("ScriptEntry.OnTimer !found serviceId({0}) msgType({1})", serviceId, timerType), null);
             }
         }
 
@@ -305,11 +305,9 @@ namespace Script
                 // Console.WriteLine(JsonUtils.stringify(allServices.Select(s => s.data.serviceType.ToString()).ToArray()));
                 // return;
 
-                var msgShutdown = new MsgShutdown();
-                msgShutdown.force = false;
                 foreach (var baseService in allServices)
                 {
-                    await baseService.Shutdown(msgShutdown);
+                    await baseService.Shutdown(false);
                     await Task.Delay(100);
                 }
             }

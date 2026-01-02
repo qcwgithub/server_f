@@ -33,19 +33,13 @@ namespace Script
             }
 
             {
-                var msgD = new MsgGatewayDestroyUser();
-                msgD.userId = msg.userId;
-                msgD.reason = GatewayDestroyUserReason.ServerKick;
-
-                msgD.msgKick = new MsgKick
+                ECode e = await this.service.DestroyUser(msg.userId, GatewayDestroyUserReason.ServerKick, new MsgKick
                 {
                     flags = msg.logoutSdk ? LogoutFlags.LogoutSdk : LogoutFlags.None,
-                };
-
-                var r = await this.service.DestroyUser(msgD);
-                if (r.e != ECode.Success)
+                });
+                if (e != ECode.Success)
                 {
-                    return r.e;
+                    return e;
                 }
             }
 

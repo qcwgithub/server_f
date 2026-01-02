@@ -30,7 +30,7 @@ namespace Script
         {
             return await this.Request(serviceId, MsgType._Room_LoadRoom, msg);
         }
-        public async Task<MyResponse> SaveRoomImmediately(int serviceId, MsgSaveRoom msg)
+        public async Task<MyResponse> SaveRoomImmediately(int serviceId, MsgSaveRoomImmediately msg)
         {
             return await this.Request(serviceId, MsgType._Room_SaveRoomImmediately, msg);
         }

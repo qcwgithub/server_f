@@ -37,9 +37,6 @@ namespace Script
         {
             base.Attach();
             base.AddHandler<RoomManagerService>();
-
-            this.dispatcher.AddHandler(new RoomManager_Start(this.server, this));
-            this.dispatcher.AddHandler(new RoomManager_Shutdown(this.server, this));
         }
     }
 }

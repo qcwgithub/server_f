@@ -10,32 +10,7 @@ namespace Data
 
             #region auto_init
 
-            dict[MsgType._Service_Start] = new stMessageConfig
-            {
-                queue = MessageQueue.None,
-            };
-
-            dict[MsgType._Service_Shutdown] = new stMessageConfig
-            {
-                queue = MessageQueue.None,
-            };
-
-            dict[MsgType._Service_OnConnectComplete] = new stMessageConfig
-            {
-                queue = MessageQueue.None,
-            };
-
-            dict[MsgType._Service_OnConnectionClose] = new stMessageConfig
-            {
-                queue = MessageQueue.None,
-            };
-
             dict[MsgType._Service_ReloadScript] = new stMessageConfig
-            {
-                queue = MessageQueue.None,
-            };
-
-            dict[MsgType._Service_CheckConnections] = new stMessageConfig
             {
                 queue = MessageQueue.None,
             };
@@ -60,11 +35,6 @@ namespace Data
                 queue = MessageQueue.None,
             };
 
-            dict[MsgType._Service_OnHttpRequest] = new stMessageConfig
-            {
-                queue = MessageQueue.None,
-            };
-
             dict[MsgType._Service_ReloadConfigs] = new stMessageConfig
             {
                 queue = MessageQueue.None,
@@ -76,11 +46,6 @@ namespace Data
             };
 
             dict[MsgType._Service_RemoteWillShutdown] = new stMessageConfig
-            {
-                queue = MessageQueue.None,
-            };
-
-            dict[MsgType._Service_WaitTask] = new stMessageConfig
             {
                 queue = MessageQueue.None,
             };
@@ -130,11 +95,6 @@ namespace Data
                 queue = MessageQueue.None,
             };
 
-            dict[MsgType._Gateway_DestroyUser] = new stMessageConfig
-            {
-                queue = MessageQueue.None,
-            };
-
             dict[MsgType._Gateway_ServerKick] = new stMessageConfig
             {
                 queue = MessageQueue.None,
@@ -160,11 +120,6 @@ namespace Data
                 queue = MessageQueue.None,
             };
 
-            dict[MsgType._User_DestroyUser] = new stMessageConfig
-            {
-                queue = MessageQueue.User,
-            };
-
             dict[MsgType._User_SaveUserImmediately] = new stMessageConfig
             {
                 queue = MessageQueue.User,
@@ -176,11 +131,6 @@ namespace Data
             };
 
             dict[MsgType._User_SaveUserInfoToFile] = new stMessageConfig
-            {
-                queue = MessageQueue.User,
-            };
-
-            dict[MsgType._User_SaveUser] = new stMessageConfig
             {
                 queue = MessageQueue.User,
             };
@@ -198,16 +148,6 @@ namespace Data
             dict[MsgType._Room_ServerAction] = new stMessageConfig
             {
                 queue = MessageQueue.None,
-            };
-
-            dict[MsgType._Room_DestroyRoom] = new stMessageConfig
-            {
-                queue = MessageQueue.Room,
-            };
-
-            dict[MsgType._Room_SaveRoom] = new stMessageConfig
-            {
-                queue = MessageQueue.Room,
             };
 
             dict[MsgType._Room_SaveRoomInfoToFile] = new stMessageConfig
