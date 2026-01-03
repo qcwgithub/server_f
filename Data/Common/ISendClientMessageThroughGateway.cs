@@ -1,6 +1,3 @@
-using System.Net;
-using System.Net.WebSockets;
-
 namespace Data
 {
     public interface ISendClientMessageThroughGateway : IDataCallback

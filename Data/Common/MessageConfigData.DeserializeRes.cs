@@ -175,6 +175,9 @@ namespace Data
                 case MsgType.SendRoomChat:
                     return MessagePackSerializer.Deserialize<ResSendRoomChat>(resBytes);
 
+                case MsgType.A_RoomChat:
+                    throw new Exception("Missing config for MsgType.A_RoomChat");
+
                 #endregion auto
 
                 default:

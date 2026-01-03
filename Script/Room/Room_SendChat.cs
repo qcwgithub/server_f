@@ -24,6 +24,27 @@ namespace Script
                 return ECode.UserNotInRoom;
             }
 
+            Dictionary<int, List<RoomUser>> dict = room.userDict
+                .GroupBy(pair => pair.Value.gatewayServiceId, pair => pair.Value)
+                .ToDictionary(group => group.Key, group => group.ToList());
+            foreach (var pair in dict)
+            {
+                int gatewayServiceId = pair.Key;
+                List<RoomUser> roomUsers = pair.Value;
+
+                ServiceConnection? gatewayConnection = this.service.data.GetOtherServiceConnection(gatewayServiceId);
+                if (gatewayConnection == null || !gatewayConnection.IsConnected())
+                {
+                    this.service.logger.Warn($"{this.msgType} gatewayServiceId {gatewayServiceId} is not connected");
+                    continue;
+                }
+
+                List<long> userIds = roomUsers.Select(x => x.userId).ToList();
+                var broadcast = new A_MsgRoomChat();
+                byte[] bytes = MessageConfigData.SerializeMsg(MsgType.A_RoomChat, broadcast);
+                Forwarding.SendClientMessageThroughGateway(gatewayConnection, userIds, MsgType.A_RoomChat, bytes, null, null);
+            }
+
             return ECode.Success;
         }
 

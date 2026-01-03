@@ -175,6 +175,9 @@ namespace Data
                 case MsgType.SendRoomChat:
                     return MessagePackSerializer.Serialize((MsgSendRoomChat)msg);
 
+                case MsgType.A_RoomChat:
+                    return MessagePackSerializer.Serialize((A_MsgRoomChat)msg);
+
                 #endregion auto
 
                 default:

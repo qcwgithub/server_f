@@ -59,6 +59,7 @@ namespace Data
         EnterRoom = 10003,
         LeaveRoom = 10004,
         SendRoomChat = 10005,
+        A_RoomChat = 10006,
 
         #endregion auto
     }

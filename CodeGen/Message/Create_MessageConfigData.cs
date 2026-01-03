@@ -77,7 +77,7 @@ public class Create_MessageConfigData
 
             serializeRes.TabPushF("case MsgType.{0}:\n", config.msgType);
             serializeRes.AddTab(1);
-            if (!string.IsNullOrEmpty(config.msg))
+            if (!string.IsNullOrEmpty(config.res))
             {
                 serializeRes.TabPushF("return MessagePackSerializer.Serialize(({0})res);\n", config.res);
             }
@@ -96,7 +96,7 @@ public class Create_MessageConfigData
 
             deserializeRes.TabPushF("case MsgType.{0}:\n", config.msgType);
             deserializeRes.AddTab(1);
-            if (!string.IsNullOrEmpty(config.msg))
+            if (!string.IsNullOrEmpty(config.res))
             {
                 deserializeRes.TabPushF("return MessagePackSerializer.Deserialize<{0}>(resBytes);\n", config.res);
             }

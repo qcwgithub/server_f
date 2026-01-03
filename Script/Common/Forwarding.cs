@@ -121,12 +121,26 @@ namespace Script
         // S:->G->C
         public static void SendClientMessageThroughGateway(ServiceConnection serviceConnection, long userId, MsgType msgType, byte[] msg, ReplyCallback reply, int? pTimeoutS)
         {
+            SendClientMessageThroughGateway(serviceConnection, new List<long> { userId }, msgType, msg, reply, pTimeoutS);
+        }
+
+        public static void SendClientMessageThroughGateway(ServiceConnection serviceConnection, List<long> userIds, MsgType msgType, byte[] msg, ReplyCallback reply, int? pTimeoutS)
+        {
             MyDebug.Assert(serviceConnection.serviceType == ServiceType.Gateway);
 
-            // +userId
-            byte[] msgBytes = new byte[8 + msg.Length];
-            BinaryMessagePacker.WriteLong(msgBytes, 0, userId);
-            msg.CopyTo(msgBytes, 8);
+            byte[] msgBytes = new byte[4 + 8 * userIds.Count + msg.Length];
+            int offset = 0;
+
+            BinaryMessagePacker.WriteInt(msgBytes, offset, userIds.Count);
+            offset += 4;
+
+            foreach (long userId in userIds)
+            {
+                BinaryMessagePacker.WriteLong(msgBytes, offset, userId);
+                offset += 8;
+            }
+
+            msg.CopyTo(msgBytes, offset);
 
             if (reply != null)
             {
@@ -150,26 +164,52 @@ namespace Script
                 return false;
             }
 
-            long userId = BinaryMessagePacker.ReadLong(msgBytes, 0);
-            var msgBytes2 = new ArraySegment<byte>(msgBytes.Array!, msgBytes.Offset + 8, msgBytes.Count - 8);
+            int offset = 0;
 
-            GatewayUser? user = gatewayService.sd.GetUser(userId);
-            if (user == null || user.connection == null || !user.connection.IsConnected())
+            int count = BinaryMessagePacker.ReadInt(msgBytes, offset);
+            offset += 4;
+
+            List<long> userIds = new();
+            for (int i = 0; i < count; i++)
             {
-                return true;
+                long userId = BinaryMessagePacker.ReadLong(msgBytes, offset);
+                offset += 8;
+
+                userIds.Add(userId);
             }
 
-            if (reply != null)
+            var msgBytes2 = new ArraySegment<byte>(msgBytes.Array!, msgBytes.Offset + offset, msgBytes.Count - offset);
+            var msgBytes3 = msgBytes2.ToArray();
+
+            if (userIds.Count > 1)
             {
-                user.connection.SendBytes(msgType, msgBytes2.ToArray(), (e, segment) =>
+                if (reply != null)
                 {
-                    reply(e, segment.ToArray());
-                },
-                null);
+                    gatewayService.logger.Error("GatewayTryForwardClientMessageToClient() replay should be null when userIds.Count > 1");
+                    reply = null;
+                }
             }
-            else
+
+            foreach (long userId in userIds)
             {
-                user.connection.SendBytes(msgType, msgBytes2.ToArray(), null, null);
+                GatewayUser? user = gatewayService.sd.GetUser(userId);
+                if (user == null || user.connection == null || !user.connection.IsConnected())
+                {
+                    continue;
+                }
+
+                if (reply != null)
+                {
+                    user.connection.SendBytes(msgType, msgBytes3, (e, segment) =>
+                    {
+                        reply(e, segment.ToArray());
+                    },
+                    null);
+                }
+                else
+                {
+                    user.connection.SendBytes(msgType, msgBytes3, null, null);
+                }
             }
             return true;
         }

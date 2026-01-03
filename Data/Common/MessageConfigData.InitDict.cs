@@ -285,6 +285,11 @@ namespace Data
                 queue = MessageQueue.None,
             };
 
+            dict[MsgType.A_RoomChat] = new stMessageConfig
+            {
+                queue = MessageQueue.None,
+            };
+
             #endregion auto_init
         }
     }
