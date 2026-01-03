@@ -2,14 +2,14 @@ using Data;
 
 namespace Script
 {
-    public class User_RoomChat : User_ClientHandler<MsgRoomChat, ResRoomChat>
+    public class User_SendRoomChat : User_ClientHandler<MsgSendRoomChat, ResSendRoomChat>
     {
-        public override MsgType msgType => MsgType.RoomChat;
-        public User_RoomChat(Server server, UserService service) : base(server, service)
+        public override MsgType msgType => MsgType.SendRoomChat;
+        public User_SendRoomChat(Server server, UserService service) : base(server, service)
         {
         }
 
-        public override async Task<ECode> Handle(MessageContext context, MsgRoomChat msg, ResRoomChat res)
+        public override async Task<ECode> Handle(MessageContext context, MsgSendRoomChat msg, ResSendRoomChat res)
         {
             if (msg.roomId <= 0)
             {
@@ -35,23 +35,24 @@ namespace Script
                 return ECode.RoomLocationNotFound;
             }
 
-            var msgEnter = new MsgRoomUserEnter();
-            msgEnter.userId = user.userId;
-            msgEnter.roomId = msg.roomId;
-            msgEnter.gatewayServiceId = user.gatewayServiceId;
+            var msgR = new MsgRoomSendChat();
+            msgR.roomId = msg.roomId;
+            msgR.userId = user.userId;
+            msgR.chatMessageType = msg.chatMessageType;
+            msgR.content = msg.content;
 
-            r = await this.service.roomServiceProxy.UserEnter(location.serviceId, msgEnter);
+            r = await this.service.roomServiceProxy.SendChat(location.serviceId, msgR);
             if (r.e != ECode.Success)
             {
                 return r.e;
             }
 
-            user.roomId = msg.roomId;
+            var resR = r.CastRes<ResRoomSendChat>();
 
             return ECode.Success;
         }
 
-        public override void PostHandle(MessageContext context, MsgRoomChat msg, ECode e, ResRoomChat res)
+        public override void PostHandle(MessageContext context, MsgSendRoomChat msg, ECode e, ResSendRoomChat res)
         {
             this.service.TryUnlockUser(context.msg_userId, context);
 

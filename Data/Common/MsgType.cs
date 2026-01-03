@@ -38,6 +38,7 @@ namespace Data
         _Room_UserLeave = 605,
         _Room_LoadRoom = 606,
         _Room_SaveRoomImmediately = 607,
+        _Room_SendChat = 608,
         _RoomManager_LoadRoom = 800,
         _Save_AccountInfo = 5000,
         _Query_AccountInfo_byElementOf_userIds = 5001,
@@ -57,7 +58,7 @@ namespace Data
         Kick = 10002,
         EnterRoom = 10003,
         LeaveRoom = 10004,
-        RoomChat = 10005,
+        SendRoomChat = 10005,
 
         #endregion auto
     }

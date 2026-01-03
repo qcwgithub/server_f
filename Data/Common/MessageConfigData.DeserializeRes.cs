@@ -112,6 +112,9 @@ namespace Data
                 case MsgType._Room_SaveRoomImmediately:
                     return MessagePackSerializer.Deserialize<ResSaveRoomImmediately>(resBytes);
 
+                case MsgType._Room_SendChat:
+                    return MessagePackSerializer.Deserialize<ResRoomSendChat>(resBytes);
+
                 case MsgType._RoomManager_LoadRoom:
                     return MessagePackSerializer.Deserialize<ResRoomManagerLoadRoom>(resBytes);
 
@@ -169,8 +172,8 @@ namespace Data
                 case MsgType.LeaveRoom:
                     return MessagePackSerializer.Deserialize<ResLeaveRoom>(resBytes);
 
-                case MsgType.RoomChat:
-                    return MessagePackSerializer.Deserialize<ResRoomChat>(resBytes);
+                case MsgType.SendRoomChat:
+                    return MessagePackSerializer.Deserialize<ResSendRoomChat>(resBytes);
 
                 #endregion auto
 

@@ -180,6 +180,11 @@ namespace Data
                 queue = MessageQueue.None,
             };
 
+            dict[MsgType._Room_SendChat] = new stMessageConfig
+            {
+                queue = MessageQueue.None,
+            };
+
             dict[MsgType._RoomManager_LoadRoom] = new stMessageConfig
             {
                 queue = MessageQueue.None,
@@ -275,7 +280,7 @@ namespace Data
                 queue = MessageQueue.None,
             };
 
-            dict[MsgType.RoomChat] = new stMessageConfig
+            dict[MsgType.SendRoomChat] = new stMessageConfig
             {
                 queue = MessageQueue.None,
             };

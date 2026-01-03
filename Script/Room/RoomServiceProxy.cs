@@ -34,6 +34,10 @@ namespace Script
         {
             return await this.Request(serviceId, MsgType._Room_SaveRoomImmediately, msg);
         }
+        public async Task<MyResponse> SendChat(int serviceId, MsgRoomSendChat msg)
+        {
+            return await this.Request(serviceId, MsgType._Room_SendChat, msg);
+        }
 
         #endregion auto_proxy
     }
