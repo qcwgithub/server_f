@@ -1,6 +1,6 @@
 public class Create_MsgType
 {
-    public static void Create(List<MessageConfig> configs)
+    public static void Create(List<MessageTypeConfig> configs)
     {
         var f = new FileFormatter();
         f.AddTab(2);

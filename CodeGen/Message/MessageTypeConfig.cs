@@ -1,4 +1,4 @@
-public class MessageConfig
+public class MessageTypeConfig
 {
     public string msgType;
     public int value;

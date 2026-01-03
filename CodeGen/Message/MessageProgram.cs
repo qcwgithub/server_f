@@ -2,11 +2,11 @@ public class MessageProgram
 {
     public static void MainX()
     {
-        Script.CsvHelper helper = Script.CsvUtils.Parse(CodeGen.Program.ReadAllText("CodeGen/MessageConfig.csv"));
-        var list = new List<MessageConfig>();
+        Script.CsvHelper helper = Script.CsvUtils.Parse(CodeGen.Program.ReadAllText("CodeGen/MessageTypeConfig.csv"));
+        var list = new List<MessageTypeConfig>();
         while (helper.ReadRow())
         {
-            var c = new MessageConfig();
+            var c = new MessageTypeConfig();
             c.msgType = helper.ReadString("msgType");
             c.value = helper.ReadInt("value");
             c.msg = helper.ReadString("msg");

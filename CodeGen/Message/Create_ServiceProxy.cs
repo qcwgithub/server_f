@@ -1,6 +1,6 @@
 public class Create_ServiceProxy
 {
-    public static void Create(List<MessageConfig> configs)
+    public static void Create(List<MessageTypeConfig> configs)
     {
         var proxyDict = new Dictionary<string, FileFormatter>();
 
