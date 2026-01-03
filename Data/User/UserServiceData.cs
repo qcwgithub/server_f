@@ -2,7 +2,7 @@ namespace Data
 {
     public sealed class UserServiceData : ServiceData
     {
-        public readonly Dictionary<long, User> userDict;
+        public readonly Dictionary<long, User> userDict = new();
         public int userCount
         {
             get
@@ -48,8 +48,6 @@ namespace Data
         public UserServiceData(ServiceTypeAndId serviceTypeAndId)
             : base(serviceTypeAndId, s_connectToServiceIds)
         {
-            this.userDict = new Dictionary<long, User>();
-
             this.LoadConfigs();
 
             this.allowNewUser = true;

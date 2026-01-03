@@ -4,7 +4,7 @@ namespace Script
 {
     public static class Utils
     {
-        public static async Task<MyResponse> Request(this IConnection connection, MsgType msgType, byte[] msgBytes)
+        static async Task<MyResponse> Request(this IConnection connection, MsgType msgType, byte[] msgBytes)
         {
             var cs = new TaskCompletionSource<(ECode, ArraySegment<byte>)>();
 
