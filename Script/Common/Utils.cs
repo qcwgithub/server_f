@@ -24,10 +24,12 @@ namespace Script
             return new MyResponse(e, res);
         }
 
+        /*
         public static void SendBytes(this IConnection connection, MsgType msgType, byte[] msgBytes, ReplyCallback? cb, int? pTimeoutS)
         {
             connection.SendBytes(msgType, msgBytes, cb, pTimeoutS);
         }
+        */
 
         public static async Task<MyResponse> Request(this IConnection connection, MsgType msgType, object msg)
         {
