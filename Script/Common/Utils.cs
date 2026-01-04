@@ -20,7 +20,7 @@ namespace Script
     
             (ECode e, ArraySegment<byte> resSegment) = await cs.Task;
 
-            object res = MessageConfigData.DeserializeRes(msgType, resSegment);
+            object res = MessageTypeConfigData.DeserializeRes(msgType, resSegment);
             return new MyResponse(e, res);
         }
 
@@ -33,13 +33,13 @@ namespace Script
 
         public static async Task<MyResponse> Request(this IConnection connection, MsgType msgType, object msg)
         {
-            byte[] msgBytes = MessageConfigData.SerializeMsg(msgType, msg);
+            byte[] msgBytes = MessageTypeConfigData.SerializeMsg(msgType, msg);
             return await Request(connection, msgType, msgBytes);
         }
 
         public static void Send(this IConnection connection, MsgType msgType, object msg, ReplyCallback? cb, int? pTimeoutS)
         {
-            byte[] msgBytes = MessageConfigData.SerializeMsg(msgType, msg);
+            byte[] msgBytes = MessageTypeConfigData.SerializeMsg(msgType, msg);
             connection.SendBytes(msgType, msgBytes, cb, pTimeoutS);
         }
 

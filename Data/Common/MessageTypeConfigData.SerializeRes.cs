@@ -2,7 +2,7 @@ using MessagePack;
 
 namespace Data
 {
-    public partial class MessageConfigData
+    public partial class MessageTypeConfigData
     {
         public static byte[] SerializeRes(MsgType msgType, object res)
         {

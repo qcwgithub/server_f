@@ -102,14 +102,14 @@ namespace Script
                 connection = serviceConnection,
                 msg_userId = userId
             };
-            var msg = MessageConfigData.DeserializeMsg(msgType, msgBytes2);
+            var msg = MessageTypeConfigData.DeserializeMsg(msgType, msgBytes2);
             var r = await userService.dispatcher.Dispatch(context, msgType, msg);
             if (reply != null)
             {
                 ArraySegment<byte> resBytes = default;
                 if (r.res != null)
                 {
-                    resBytes = MessageConfigData.SerializeRes(msgType, r.res);
+                    resBytes = MessageTypeConfigData.SerializeRes(msgType, r.res);
                 }
 
                 reply(r.e, resBytes);

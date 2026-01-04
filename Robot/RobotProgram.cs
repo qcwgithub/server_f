@@ -1,7 +1,107 @@
-﻿public class RobotProgram
+﻿using Data;
+
+namespace Robot
 {
-    public static void Main(string[] args)
+    public class RobotProgram : IProtocolClientCallbackProvider, IProtocolClientCallback
     {
-        
+        public static void Main(string[] args)
+        {
+            new RobotProgram();
+        }
+
+        TcpClientData socket;
+        BinaryMessagePacker binaryMessagePacker = new();
+        int socketId = 1;
+        int msgSeq = 1;
+        public RobotProgram()
+        {
+            this.socket = new TcpClientData();
+            this.socket.ConnectorInit(this, "localhost", 8001);
+            this.socket.Connect();
+        }
+
+        public IProtocolClientCallback? GetProtocolClientCallback(ProtocolClientData protocolClientData)
+        {
+            return this;
+        }
+
+        public IMessagePacker GetMessagePacker()
+        {
+            return this.binaryMessagePacker;
+        }
+
+        public void LogError(ProtocolClientData data, string str)
+        {
+            Console.WriteLine(str);
+        }
+
+        public void LogError(ProtocolClientData data, string str, Exception ex)
+        {
+            Console.WriteLine(str, ex);
+        }
+
+        public void LogInfo(ProtocolClientData data, string str)
+        {
+            Console.WriteLine(str);
+        }
+
+        public int nextSocketId
+        {
+            get
+            {
+                return this.socketId++;
+            }
+        }
+
+        public int nextMsgSeq
+        {
+            get
+            {
+                return this.msgSeq++;
+            }
+        }
+
+        public virtual async void ReceiveFromNetwork(ProtocolClientData socket, int seq, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback? reply)
+        {
+            var msg = MessageTypeConfigData.DeserializeMsg(msgType, msgBytes);
+
+        }
+
+        public async void OnConnectComplete(ProtocolClientData socket, bool success)
+        {
+            if (!success)
+            {
+                socket.Close(ProtocolClientData.CloseReason.OnConnectComplete_false);
+                return;
+            }
+
+            await Task.Delay(1000);
+
+            var msg = new MsgLogin();
+            msg.version = string.Empty;
+            msg.platform = "Windows";
+            msg.channel = MyChannels.uuid;
+            msg.channelUserId = "1000";
+
+            byte[] msgBytes = MessageTypeConfigData.SerializeMsg(MsgType.Login, msg);
+
+            socket.SendBytes(MsgType.Login, msgBytes, (ECode e, ArraySegment<byte> segments) =>
+            {
+                if (e == ECode.Success)
+                {
+                    var res = (ResLogin)MessageTypeConfigData.DeserializeRes(MsgType.Login, segments);
+                    //
+                }
+            },
+            null);
+        }
+
+        public void OnCloseComplete(ProtocolClientData socket)
+        {
+            if (socket.customData == null)
+            {
+                return;
+            }
+        }
     }
 }

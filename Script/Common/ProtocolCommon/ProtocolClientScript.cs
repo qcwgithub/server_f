@@ -58,14 +58,14 @@ namespace Script
                 connection = connection,
             };
 
-            var msg = MessageConfigData.DeserializeMsg(msgType, msgBytes);
+            var msg = MessageTypeConfigData.DeserializeMsg(msgType, msgBytes);
             var r = await this.service.dispatcher.Dispatch(context, msgType, msg);
             if (reply != null)
             {
                 ArraySegment<byte> resBytes = default;
                 if (r.res != null)
                 {
-                    resBytes = MessageConfigData.SerializeRes(msgType, r.res);
+                    resBytes = MessageTypeConfigData.SerializeRes(msgType, r.res);
                 }
                 reply(r.e, resBytes);
             }

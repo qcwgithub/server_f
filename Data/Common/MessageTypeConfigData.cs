@@ -1,6 +1,6 @@
 namespace Data
 {
-    public partial class MessageConfigData
+    public partial class MessageTypeConfigData
     {
     }
 }
