@@ -18,6 +18,7 @@ namespace Script
         public readonly GatewayServiceProxy gatewayServiceProxy;
         public readonly RoomServiceProxy roomServiceProxy;
         public readonly RoomManagerServiceProxy roomManagerServiceProxy;
+        public readonly UserManagerServiceProxy userManagerServiceProxy;
 
         protected override MessageDispatcher CreateMessageDispatcher()
         {
@@ -35,6 +36,7 @@ namespace Script
             this.AddServiceProxy(this.gatewayServiceProxy = new GatewayServiceProxy(this));
             this.AddServiceProxy(this.roomServiceProxy = new RoomServiceProxy(this));
             this.AddServiceProxy(this.roomManagerServiceProxy = new RoomManagerServiceProxy(this));
+            this.AddServiceProxy(this.userManagerServiceProxy = new UserManagerServiceProxy(this));
 
             this.ss = new UserServiceScript(this.server, this);
 

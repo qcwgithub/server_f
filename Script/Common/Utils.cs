@@ -4,11 +4,11 @@ namespace Script
 {
     public static class Utils
     {
-        static async Task<MyResponse> Request(this IConnection connection, MsgType msgType, byte[] msgBytes)
+        public static async Task<MyResponse> Request(this IConnection connection, MsgType msgType, object msg)
         {
             var cs = new TaskCompletionSource<(ECode, ArraySegment<byte>)>();
 
-            connection.SendBytes(msgType, msgBytes, (e, segment) =>
+            connection.Send(msgType, msg, (e, segment) =>
             {
                 bool success = cs.TrySetResult((e, segment));
                 if (!success)
@@ -22,25 +22,6 @@ namespace Script
 
             object res = MessageTypeConfigData.DeserializeRes(msgType, resSegment);
             return new MyResponse(e, res);
-        }
-
-        /*
-        public static void SendBytes(this IConnection connection, MsgType msgType, byte[] msgBytes, ReplyCallback? cb, int? pTimeoutS)
-        {
-            connection.SendBytes(msgType, msgBytes, cb, pTimeoutS);
-        }
-        */
-
-        public static async Task<MyResponse> Request(this IConnection connection, MsgType msgType, object msg)
-        {
-            byte[] msgBytes = MessageTypeConfigData.SerializeMsg(msgType, msg);
-            return await Request(connection, msgType, msgBytes);
-        }
-
-        public static void Send(this IConnection connection, MsgType msgType, object msg, ReplyCallback? cb, int? pTimeoutS)
-        {
-            byte[] msgBytes = MessageTypeConfigData.SerializeMsg(msgType, msg);
-            connection.SendBytes(msgType, msgBytes, cb, pTimeoutS);
         }
 
         public static bool IsWindows()

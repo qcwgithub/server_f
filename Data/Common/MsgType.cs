@@ -54,12 +54,13 @@ namespace Data
         _Insert_RoomInfo = 5011,
         _Save_RoomInfo = 5012,
         ClientStart = 10000,
-        Login = 10001,
-        Kick = 10002,
-        EnterRoom = 10003,
-        LeaveRoom = 10004,
-        SendRoomChat = 10005,
-        A_RoomChat = 10006,
+        Forward = 10001,
+        Login = 10002,
+        Kick = 10003,
+        EnterRoom = 10004,
+        LeaveRoom = 10005,
+        SendRoomChat = 10006,
+        A_RoomChat = 10007,
 
         #endregion auto
     }

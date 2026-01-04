@@ -29,9 +29,9 @@ namespace Data
             return this.socketConnection.IsConnecting();
         }
 
-        public override void SendBytes(MsgType msgType, byte[] msg, ReplyCallback? cb, int? pTimeoutS)
+        public override void Send(MsgType msgType, object msg, ReplyCallback? cb, int? pTimeoutS)
         {
-            this.socketConnection.SendBytes(msgType, msg, cb, pTimeoutS);
+            this.socketConnection.Send(msgType, msg, cb, pTimeoutS);
         }
 
         public override void Close(string reason)

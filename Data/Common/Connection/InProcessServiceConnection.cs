@@ -26,7 +26,7 @@ namespace Data
             return false;
         }
 
-        public override void SendBytes(MsgType msgType, byte[] msg, ReplyCallback? cb, int? pTimeoutS)
+        public override void Send(MsgType msgType, object msg, ReplyCallback? cb, int? pTimeoutS)
         {
 
         }

@@ -28,7 +28,7 @@ namespace Data
             return serviceConnection != null && serviceConnection.IsConnected();
         }
 
-        public void SendBytes(MsgType msgType, byte[] msg, ReplyCallback? cb, int? pTimeoutS)
+        public void Send(MsgType msgType, object msg, ReplyCallback? cb, int? pTimeoutS)
         {
             MyDebug.Assert(cb == null && pTimeoutS == null);
 

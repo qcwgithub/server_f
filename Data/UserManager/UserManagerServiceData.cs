@@ -5,6 +5,7 @@ namespace Data
         public static readonly List<ServiceType> s_connectToServiceIds = new List<ServiceType>
         {
             ServiceType.Global,
+            ServiceType.Db,
         };
 
         public readonly SnowflakeData userIdSnowflakeData;

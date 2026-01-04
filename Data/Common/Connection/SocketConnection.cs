@@ -57,9 +57,10 @@ namespace Data
             }
         }
 
-        public void SendBytes(MsgType msgType, byte[] msg, ReplyCallback? cb, int? pTimeoutS)
+        public void Send(MsgType msgType, object msg, ReplyCallback? cb, int? pTimeoutS)
         {
-            this.socket.SendBytes(msgType, msg, cb, pTimeoutS);
+            byte[] msgBytes = MessageTypeConfigData.SerializeMsg(msgType, msg);
+            this.socket.SendBytes(msgType, msgBytes, cb, pTimeoutS);
         }
     }
 }

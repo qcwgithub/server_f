@@ -24,7 +24,8 @@ public class Create_MessageTypeConfigData
             serializeMsg.AddTab(1);
             if (!string.IsNullOrEmpty(config.msg))
             {
-                serializeMsg.TabPushF("return MessagePackSerializer.Serialize(({0})msg);\n", config.msg);
+                serializeMsg.TabPushF("msgBytes = MessagePackSerializer.Serialize(({0})msg);\n", config.msg);
+                serializeMsg.TabPushF("break;\n");
             }
             else
             {
@@ -43,7 +44,8 @@ public class Create_MessageTypeConfigData
             deserializeMsg.AddTab(1);
             if (!string.IsNullOrEmpty(config.msg))
             {
-                deserializeMsg.TabPushF("return MessagePackSerializer.Deserialize<{0}>(msgBytes);\n", config.msg);
+                deserializeMsg.TabPushF("ob = MessagePackSerializer.Deserialize<{0}>(msgBytes);\n", config.msg);
+                deserializeMsg.TabPushF("break;\n");
             }
             else
             {
@@ -62,7 +64,8 @@ public class Create_MessageTypeConfigData
             serializeRes.AddTab(1);
             if (!string.IsNullOrEmpty(config.res))
             {
-                serializeRes.TabPushF("return MessagePackSerializer.Serialize(({0})res);\n", config.res);
+                serializeRes.TabPushF("msgBytes = MessagePackSerializer.Serialize(({0})res);\n", config.res);
+                serializeRes.TabPushF("break;\n");
             }
             else
             {
@@ -81,7 +84,8 @@ public class Create_MessageTypeConfigData
             deserializeRes.AddTab(1);
             if (!string.IsNullOrEmpty(config.res))
             {
-                deserializeRes.TabPushF("return MessagePackSerializer.Deserialize<{0}>(resBytes);\n", config.res);
+                deserializeRes.TabPushF("ob = MessagePackSerializer.Deserialize<{0}>(resBytes);\n", config.res);
+                deserializeRes.TabPushF("break;\n");
             }
             else
             {

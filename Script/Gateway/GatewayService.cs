@@ -12,6 +12,7 @@ namespace Script
             }
         }
 
+        public readonly GlobalServiceProxy globalServiceProxy;
         public readonly UserManagerServiceProxy userManagerServiceProxy;
         public readonly UserServiceProxy userServiceProxy;
         protected override TcpListenerScript CreateTcpListenerScriptForC()
@@ -32,6 +33,7 @@ namespace Script
 
         public GatewayService(Server server, int serviceId) : base(server, serviceId)
         {
+            this.AddServiceProxy(this.globalServiceProxy = new GlobalServiceProxy(this));
             this.AddServiceProxy(this.userManagerServiceProxy = new UserManagerServiceProxy(this));
             this.AddServiceProxy(this.userServiceProxy = new UserServiceProxy(this));
 

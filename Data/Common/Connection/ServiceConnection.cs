@@ -24,7 +24,7 @@ namespace Data
         public abstract void Connect();
         public abstract bool IsConnected();
         public abstract bool IsConnecting();
-        public abstract void SendBytes(MsgType msgType, byte[] msg, ReplyCallback? cb, int? pTimeoutS);
+        public abstract void Send(MsgType msgType, object msg, ReplyCallback? cb, int? pTimeoutS);
         public abstract void Close(string reason);
         public abstract bool IsClosed();
         public abstract string? closeReason { get; }

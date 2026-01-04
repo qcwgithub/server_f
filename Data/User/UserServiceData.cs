@@ -41,6 +41,8 @@ namespace Data
             ServiceType.Db,
             ServiceType.Global,
             ServiceType.UserManager,
+            ServiceType.Room,
+            ServiceType.RoomManager,
         };
 
         public readonly ObjectLocatorData roomLocatorData;

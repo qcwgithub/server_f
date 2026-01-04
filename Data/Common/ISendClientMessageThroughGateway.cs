@@ -2,7 +2,7 @@ namespace Data
 {
     public interface ISendClientMessageThroughGateway : IDataCallback
     {
-        void SendClientMessageThroughGateway(ServiceConnection serviceConnection, long userId, MsgType msgType, byte[] msg, ReplyCallback reply, int? pTimeoutS);
+        void SendClientMessageThroughGateway(ServiceConnection serviceConnection, long userId, MsgType msgType, object msg, ReplyCallback reply, int? pTimeoutS);
     }
 
     public interface ISendClientMessageThroughGatewayProvider : IDataCallbackProvider

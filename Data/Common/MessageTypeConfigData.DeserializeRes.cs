@@ -6,174 +6,231 @@ namespace Data
     {
         public static object DeserializeRes(MsgType msgType, ArraySegment<byte> resBytes)
         {
+            object ob;
             switch (msgType)
             {
                 #region auto
 
                 case MsgType._Service_Timer:
-                    return MessagePackSerializer.Deserialize<ResTimer>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResTimer>(resBytes);
+                    break;
 
                 case MsgType._Service_Shutdown:
-                    return MessagePackSerializer.Deserialize<ResShutdown>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResShutdown>(resBytes);
+                    break;
 
                 case MsgType._Service_ReloadScript:
-                    return MessagePackSerializer.Deserialize<ResReloadScript>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResReloadScript>(resBytes);
+                    break;
 
                 case MsgType._Service_ConnectorInfo:
-                    return MessagePackSerializer.Deserialize<ResConnectorInfo>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResConnectorInfo>(resBytes);
+                    break;
 
                 case MsgType._Service_GetPendingMessageList:
-                    return MessagePackSerializer.Deserialize<ResGetPendingMsgList>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResGetPendingMsgList>(resBytes);
+                    break;
 
                 case MsgType._Service_GetScriptVersion:
-                    return MessagePackSerializer.Deserialize<ResGetScriptVersion>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResGetScriptVersion>(resBytes);
+                    break;
 
                 case MsgType._Service_ReloadConfigs:
-                    return MessagePackSerializer.Deserialize<ResReloadConfigs>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResReloadConfigs>(resBytes);
+                    break;
 
                 case MsgType._Service_GC:
-                    return MessagePackSerializer.Deserialize<ResGC>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResGC>(resBytes);
+                    break;
 
                 case MsgType._Service_RemoteWillShutdown:
-                    return MessagePackSerializer.Deserialize<ResRemoteWillShutdown>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResRemoteWillShutdown>(resBytes);
+                    break;
 
                 case MsgType._Service_GetServiceState:
-                    return MessagePackSerializer.Deserialize<ResGetServiceState>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResGetServiceState>(resBytes);
+                    break;
 
                 case MsgType._Service_PersistenceTaskQueueHandler:
-                    return MessagePackSerializer.Deserialize<ResPersistence>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResPersistence>(resBytes);
+                    break;
 
                 case MsgType._Service_PersistenceTaskQueueHandler_Loop:
                     throw new Exception("Missing config for MsgType._Service_PersistenceTaskQueueHandler_Loop");
 
                 case MsgType._Service_GetReloadConfigOptions:
-                    return MessagePackSerializer.Deserialize<ResGetReloadConfigOptions>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResGetReloadConfigOptions>(resBytes);
+                    break;
 
                 case MsgType._Service_GetConnectedInfos:
-                    return MessagePackSerializer.Deserialize<ResGetConnectedInfos>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResGetConnectedInfos>(resBytes);
+                    break;
 
                 case MsgType._Service_ViewMongoDumpList:
-                    return MessagePackSerializer.Deserialize<ResViewMongoDumpList>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResViewMongoDumpList>(resBytes);
+                    break;
 
                 case MsgType._Service_A_ResGetServiceConfigs:
-                    return MessagePackSerializer.Deserialize<ResNull>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResNull>(resBytes);
+                    break;
 
                 case MsgType._Global_GetServiceConfigs:
-                    return MessagePackSerializer.Deserialize<ResGetServiceConfigs>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResGetServiceConfigs>(resBytes);
+                    break;
 
                 case MsgType._Gateway_ServerAction:
-                    return MessagePackSerializer.Deserialize<ResGatewayServiceAction>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResGatewayServiceAction>(resBytes);
+                    break;
 
                 case MsgType._Gateway_ServerKick:
-                    return MessagePackSerializer.Deserialize<ResGatewayServerKick>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResGatewayServerKick>(resBytes);
+                    break;
 
                 case MsgType._User_ServerAction:
-                    return MessagePackSerializer.Deserialize<ResUserServiceAction>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResUserServiceAction>(resBytes);
+                    break;
 
                 case MsgType._User_UserLoginSuccess:
-                    return MessagePackSerializer.Deserialize<ResUserLoginSuccess>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResUserLoginSuccess>(resBytes);
+                    break;
 
                 case MsgType._User_ServerKick:
-                    return MessagePackSerializer.Deserialize<ResUserServerKick>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResUserServerKick>(resBytes);
+                    break;
 
                 case MsgType._User_UserDisconnectFromGateway:
-                    return MessagePackSerializer.Deserialize<ResUserDisconnectFromGateway>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResUserDisconnectFromGateway>(resBytes);
+                    break;
 
                 case MsgType._User_SaveUserImmediately:
-                    return MessagePackSerializer.Deserialize<ResSaveUserImmediately>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResSaveUserImmediately>(resBytes);
+                    break;
 
                 case MsgType._User_GetUserCount:
-                    return MessagePackSerializer.Deserialize<ResGetUserCount>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResGetUserCount>(resBytes);
+                    break;
 
                 case MsgType._User_SaveUserInfoToFile:
-                    return MessagePackSerializer.Deserialize<ResSaveUserInfoToFile>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResSaveUserInfoToFile>(resBytes);
+                    break;
 
                 case MsgType._User_SetGmFlag:
-                    return MessagePackSerializer.Deserialize<ResSetGmFlag>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResSetGmFlag>(resBytes);
+                    break;
 
                 case MsgType._UserManager_UserLogin:
-                    return MessagePackSerializer.Deserialize<ResUserManagerUserLogin>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResUserManagerUserLogin>(resBytes);
+                    break;
 
                 case MsgType._Room_ServerAction:
-                    return MessagePackSerializer.Deserialize<ResRoomServiceAction>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResRoomServiceAction>(resBytes);
+                    break;
 
                 case MsgType._Room_SaveRoomInfoToFile:
-                    return MessagePackSerializer.Deserialize<ResSaveRoomInfoToFile>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResSaveRoomInfoToFile>(resBytes);
+                    break;
 
                 case MsgType._Room_UserEnter:
-                    return MessagePackSerializer.Deserialize<ResRoomUserEnter>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResRoomUserEnter>(resBytes);
+                    break;
 
                 case MsgType._Room_UserLeave:
-                    return MessagePackSerializer.Deserialize<ResRoomUserLeave>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResRoomUserLeave>(resBytes);
+                    break;
 
                 case MsgType._Room_LoadRoom:
-                    return MessagePackSerializer.Deserialize<ResRoomLoadRoom>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResRoomLoadRoom>(resBytes);
+                    break;
 
                 case MsgType._Room_SaveRoomImmediately:
-                    return MessagePackSerializer.Deserialize<ResSaveRoomImmediately>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResSaveRoomImmediately>(resBytes);
+                    break;
 
                 case MsgType._Room_SendChat:
-                    return MessagePackSerializer.Deserialize<ResRoomSendChat>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResRoomSendChat>(resBytes);
+                    break;
 
                 case MsgType._RoomManager_LoadRoom:
-                    return MessagePackSerializer.Deserialize<ResRoomManagerLoadRoom>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResRoomManagerLoadRoom>(resBytes);
+                    break;
 
                 case MsgType._Save_AccountInfo:
-                    return MessagePackSerializer.Deserialize<ResSave_AccountInfo>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResSave_AccountInfo>(resBytes);
+                    break;
 
                 case MsgType._Query_AccountInfo_byElementOf_userIds:
-                    return MessagePackSerializer.Deserialize<ResQuery_AccountInfo_byElementOf_userIds>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResQuery_AccountInfo_byElementOf_userIds>(resBytes);
+                    break;
 
                 case MsgType._Query_AccountInfo_by_channelUserId:
-                    return MessagePackSerializer.Deserialize<ResQuery_AccountInfo_by_channelUserId>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResQuery_AccountInfo_by_channelUserId>(resBytes);
+                    break;
 
                 case MsgType._Query_AccountInfo_by_channel_channelUserId:
-                    return MessagePackSerializer.Deserialize<ResQuery_AccountInfo_by_channel_channelUserId>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResQuery_AccountInfo_by_channel_channelUserId>(resBytes);
+                    break;
 
                 case MsgType._Query_listOf_AccountInfo_byElementOf_userIds:
-                    return MessagePackSerializer.Deserialize<ResQuery_listOf_AccountInfo_byElementOf_userIds>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResQuery_listOf_AccountInfo_byElementOf_userIds>(resBytes);
+                    break;
 
                 case MsgType._Query_UserInfo_by_userId:
-                    return MessagePackSerializer.Deserialize<ResQuery_UserInfo_by_userId>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResQuery_UserInfo_by_userId>(resBytes);
+                    break;
 
                 case MsgType._Save_UserInfo:
-                    return MessagePackSerializer.Deserialize<ResSave_UserInfo>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResSave_UserInfo>(resBytes);
+                    break;
 
                 case MsgType._Insert_UserInfo:
-                    return MessagePackSerializer.Deserialize<ResInsert_UserInfo>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResInsert_UserInfo>(resBytes);
+                    break;
 
                 case MsgType._Query_UserInfo_maxOf_userId:
-                    return MessagePackSerializer.Deserialize<ResQuery_UserInfo_maxOf_userId>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResQuery_UserInfo_maxOf_userId>(resBytes);
+                    break;
 
                 case MsgType._Query_RoomInfo_by_roomId:
-                    return MessagePackSerializer.Deserialize<ResQuery_RoomInfo_by_roomId>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResQuery_RoomInfo_by_roomId>(resBytes);
+                    break;
 
                 case MsgType._Query_RoomInfo_maxOf_roomId:
-                    return MessagePackSerializer.Deserialize<ResQuery_RoomInfo_maxOf_roomId>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResQuery_RoomInfo_maxOf_roomId>(resBytes);
+                    break;
 
                 case MsgType._Insert_RoomInfo:
-                    return MessagePackSerializer.Deserialize<ResInsert_RoomInfo>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResInsert_RoomInfo>(resBytes);
+                    break;
 
                 case MsgType._Save_RoomInfo:
-                    return MessagePackSerializer.Deserialize<ResSave_RoomInfo>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResSave_RoomInfo>(resBytes);
+                    break;
 
                 case MsgType.ClientStart:
                     throw new Exception("Missing config for MsgType.ClientStart");
 
+                case MsgType.Forward:
+                    throw new Exception("Missing config for MsgType.Forward");
+
                 case MsgType.Login:
-                    return MessagePackSerializer.Deserialize<ResLogin>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResLogin>(resBytes);
+                    break;
 
                 case MsgType.Kick:
-                    return MessagePackSerializer.Deserialize<ResKick>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResKick>(resBytes);
+                    break;
 
                 case MsgType.EnterRoom:
-                    return MessagePackSerializer.Deserialize<ResEnterRoom>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResEnterRoom>(resBytes);
+                    break;
 
                 case MsgType.LeaveRoom:
-                    return MessagePackSerializer.Deserialize<ResLeaveRoom>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResLeaveRoom>(resBytes);
+                    break;
 
                 case MsgType.SendRoomChat:
-                    return MessagePackSerializer.Deserialize<ResSendRoomChat>(resBytes);
+                    ob = MessagePackSerializer.Deserialize<ResSendRoomChat>(resBytes);
+                    break;
 
                 case MsgType.A_RoomChat:
                     throw new Exception("Missing config for MsgType.A_RoomChat");
@@ -183,6 +240,8 @@ namespace Data
                 default:
                     throw new Exception("Not handled MsgType." + msgType);
             }
+
+            return ob;
         }
     }
 }

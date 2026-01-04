@@ -8,7 +8,7 @@ namespace Script
         {
         }
 
-        public void SendClientMessageThroughGateway(ServiceConnection serviceConnection, long userId, MsgType msgType, byte[] msg, ReplyCallback reply, int? pTimeoutS)
+        public void SendClientMessageThroughGateway(ServiceConnection serviceConnection, long userId, MsgType msgType, object msg, ReplyCallback reply, int? pTimeoutS)
         {
             Forwarding.SendClientMessageThroughGateway(serviceConnection, userId, msgType, msg, reply, pTimeoutS);
         }

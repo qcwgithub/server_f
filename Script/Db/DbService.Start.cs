@@ -14,8 +14,7 @@ namespace Script
 
             #endregion auto_callCreateIndex
 
-            this.logger.Error("NEED RESTORE HERE");
-            // await this.service.collection_user_info.CreateIndex();
+            await this.collection_user_info.CreateIndex();
 
             sd.timer_persistence_taskQueueHandler_Loop = this.server.timerScript.SetTimer(this.serviceId, 0,  TimerType.PersistenceTaskQueueHandler_Loop, null);
             return ECode.Success;

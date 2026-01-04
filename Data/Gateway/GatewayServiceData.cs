@@ -29,7 +29,6 @@ namespace Data
 
         public static readonly List<ServiceType> s_connectToServiceIds = new List<ServiceType>
         {
-            ServiceType.Db,
             ServiceType.Global,
             ServiceType.User,
             ServiceType.UserManager,

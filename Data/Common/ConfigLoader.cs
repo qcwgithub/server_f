@@ -209,6 +209,9 @@ namespace Data
                 config.outIp = helper.ReadString(nameof(config.outIp));
                 config.outPort = helper.ReadInt(nameof(config.outPort));
 
+                config.userIdSnowflakeWorkerId = helper.ReadInt(nameof(config.userIdSnowflakeWorkerId));
+                config.roomIdSnowflakeWorkerId = helper.ReadInt(nameof(config.roomIdSnowflakeWorkerId));
+
                 allServiceConfigs.Add(config);
             }
 

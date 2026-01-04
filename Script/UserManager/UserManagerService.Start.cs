@@ -10,7 +10,13 @@ namespace Script
 
             if (serviceConfig.userIdSnowflakeWorkerId < SnowflakeScript<Service>.MIN_WORKER_ID)
             {
-                this.logger.Error("serviceConfig.userIdSnowflakeWorkerId < SnowflakeScript.MIN_WORKER_ID");
+                this.logger.Error($"serviceConfig.userIdSnowflakeWorkerId < {SnowflakeScript<Service>.MIN_WORKER_ID}");
+                return ECode.ServiceConfigError;
+            }
+
+            if (serviceConfig.userIdSnowflakeWorkerId > SnowflakeScript<Service>.MAX_WORKER_ID)
+            {
+                this.logger.Error($"serviceConfig.userIdSnowflakeWorkerId > {SnowflakeScript<Service>.MAX_WORKER_ID}");
                 return ECode.ServiceConfigError;
             }
 

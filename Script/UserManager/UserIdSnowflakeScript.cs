@@ -15,7 +15,7 @@ namespace Script
             var r = await this.service.dbServiceProxy.Query_UserInfo_maxOf_userId(msgDb);
             if (r.e != ECode.Success)
             {
-                this.service.logger.Error($"InitSnowflakeData r.e {r.e}");
+                this.service.logger.Error($"Query_UserInfo_maxOf_userId ECode.{r.e}");
                 return r.e;
             }
 
@@ -24,17 +24,20 @@ namespace Script
             long maxUserId = resDb.result;
             if (!Decode(maxUserId, out long preStamp, out long preWorkerId, out long preSeq))
             {
+                this.service.logger.Error($"!Decode(maxUserId {maxUserId}, ...)");
                 return ECode.Error;
             }
 
             long stamp = this.NowSnowflakeStamp();
             if (stamp < preStamp)
             {
+                this.service.logger.Error($"stamp {stamp} < preStamp {preStamp}");
                 return ECode.Error;
             }
 
             if (!base.InitSnowflakeData(stamp, workerId))
             {
+                this.service.logger.Error($"!base.InitSnowflakeData(stamp {stamp}, workerId {workerId})");
                 return ECode.Error;
             }
 

@@ -25,13 +25,17 @@ namespace Script
                 {
                     // this.service.logger.InfoFormat("{0} StartKeepConnections", this.msgType);
                     this.StartKeepConnections();
+                }
 
+                if (e == ECode.Success)
+                {
                     foreach (var serviceType in this.data.connectToServiceTypes)
                     {
                         if (!this.serviceProxyDict.TryGetValue(serviceType, out ServiceProxy? serviceProxy) || serviceProxy == null)
                         {
-                            MyDebug.Assert(false);
-                            continue;
+                            this.logger.Error($"{this.data.serviceType} Missing service proxy definition for {serviceType}");
+                            e = ECode.Error;
+                            break;
                         }
 
                         // 代码中写着要连接，但是服务器配置里却没有启动这个服务，此时不需要等

@@ -190,7 +190,7 @@ namespace Data
                     if (connection.IsConnected())
                     {
                         total++;
-                        connection.SendBytes(MsgType._Service_RemoteWillShutdown, [], (e, segment) =>
+                        connection.Send(MsgType._Service_RemoteWillShutdown, new MsgRemoteWillShutdown(), (e, segment) =>
                         {
                             finish++;
                         },
@@ -233,7 +233,7 @@ namespace Data
                 if (connection.IsConnected())
                 {
                     total++;
-                    connection.SendBytes(MsgType._Service_RemoteWillShutdown, [], (e, segment) =>
+                    connection.Send(MsgType._Service_RemoteWillShutdown, new MsgRemoteWillShutdown(), (e, segment) =>
                     {
                         finish++;
                     }, pTimeoutS: 5);

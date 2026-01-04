@@ -21,8 +21,7 @@ namespace Script
                 return ECode.Server_NotConnected;
             }
 
-            byte[] bytes = MessageTypeConfigData.SerializeMsg(msgType, msg);
-            Forwarding.SendClientMessageThroughGateway(connection, userIds, MsgType.A_RoomChat, bytes, null, null);
+            Forwarding.SendClientMessageThroughGateway(connection, userIds, MsgType.A_RoomChat, msg, null, null);
             return ECode.Success;
         }
 
