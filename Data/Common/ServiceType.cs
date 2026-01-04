@@ -30,16 +30,6 @@ namespace Data
             return true;
         }
 
-        public static bool ShouldSendFeiShuWhenLogError(this ServiceType self)
-        {
-            if (self.IsCommand())
-            {
-                return false;
-            }
-
-            return true;
-        }
-
         public static bool IsCommand(this ServiceType self)
         {
             return self == ServiceType.Command;

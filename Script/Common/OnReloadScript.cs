@@ -60,7 +60,6 @@ namespace Script
             string newVersion = Data.Program.s_assemblyLoadContextRefs[Data.Program.s_assemblyLoadContextRefs.Count - 1].iserver.GetScriptDllVersion().ToString();
 
             string message = $"{this.service.data.serviceConfig.Tai()} reload script success, {preVersion} -> {newVersion}";
-            this.server.feiShuMessenger.SendEventMessage(message);
             this.service.logger.Info(message);
 
             return ECode.Success;

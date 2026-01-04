@@ -39,33 +39,6 @@ namespace Data
         public GeneralConfig generalConfig;
 
         ////
-        public class FeiShuConfig
-        {
-            //
-            public int fatal_limitTimeS;
-            public int fatal_limitCount;
-            public string fatal_webhook;
-
-            //
-            public int error_limitTimeS;
-            public int error_limitCount;
-            public string error_webhook;
-
-            //
-            public bool event_enabled;
-            public string event_webhook;
-
-            //
-            public bool chat_enabled;
-            public string chat_webhook;
-            public void Init()
-            {
-
-            }
-        }
-
-        public FeiShuConfig feiShuConfig;
-        ////
         public class RedisConfig
         {
             public string redisConn;
@@ -127,7 +100,6 @@ namespace Data
         public void Init()
         {
             this.generalConfig.Init(this);
-            this.feiShuConfig.Init();
             this.redisConfig.Init();
             this.mongoDBConfig.Init(this);
         }

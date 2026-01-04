@@ -79,7 +79,6 @@ namespace Script
                 this.logger.InfoFormat("waitS({0}s) selfS({1}s)", start2S - startS, endS - start2S);
 
                 this.SetState(ServiceState.Started);
-                this.server.feiShuMessenger.SendEventMessage(this.data.serviceTypeAndId.ToString() + " Started");
 
                 return ECode.Success;
             }

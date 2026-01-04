@@ -16,7 +16,6 @@ namespace Script
         public List<Service> services { get; protected set; }
         public readonly TimerScript timerScript;
         public readonly LockRedis lockRedis;
-        public readonly FeiShuMessenger feiShuMessenger;
         // public abstract PersistenceTaskQueueRedis persistence_taskQueueRedis { get; }
         public readonly IMessageSerializer messageSerializer;
         public readonly IMessagePacker messagePacker;
@@ -33,7 +32,6 @@ namespace Script
 
             this.timerScript = new TimerScript(this);
             this.lockRedis = new LockRedis(this);
-            this.feiShuMessenger = new FeiShuMessenger(this);
             this.persistence_taskQueueRedis = new PersistenceTaskQueueRedis(this, DbKey.PersistenceTaskQueueList, DbKey.PersistenceTaskQueueSortedSet);
 
             this.userLocationRedisW = new ObjectLocationRedisW(this, UserKey.Location);
@@ -91,8 +89,6 @@ namespace Script
         {
             this.seq = seq;
             this.data = data;
-            this.data.feiShuSendErrorMessage = this.feiShuMessenger.SendErrorMessage;
-            this.data.feiShuSendFatalMessage = this.feiShuMessenger.SendFatalMessage;
 
             if (seq == 1)
             {
@@ -161,6 +157,15 @@ namespace Script
 
                 case ServiceType.Command:
                     return new CommandService(this, serviceId);
+
+                case ServiceType.UserManager:
+                    return new UserManagerService(this, serviceId);
+
+                case ServiceType.Room:
+                    return new RoomService(this, serviceId);
+
+                case ServiceType.RoomManager:
+                    return new RoomManagerService(this, serviceId);
 
                 default:
                     throw new Exception("Not handled ServiceType: " + typeAndId.serviceType);

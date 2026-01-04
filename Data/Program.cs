@@ -509,57 +509,6 @@ namespace Data
             return argMap;
         }
 
-        static bool s_sending = false;
-        public static void FeiShuLogAppender_Send(log4net.Core.LoggingEvent e)
-        {
-            if (s_serverData == null || s_serverData.feiShuSendErrorMessage == null || s_serverData.feiShuSendFatalMessage == null)
-            {
-                return;
-            }
-
-            if (s_sending)
-            {
-                // 防止循环
-                return;
-            }
-
-            s_sending = true;
-
-            // 如果下面出现了异常，就让 s_sending 永远是 false
-
-            bool shouldSend = false;
-            foreach (var kv in s_serverData.serviceTypeAndIds)
-            {
-                if (kv.serviceType.ShouldSendFeiShuWhenLogError())
-                {
-                    shouldSend = true;
-                    break;
-                }
-            }
-
-            if (shouldSend)
-            {
-                string title = $"[{s_serverData.serverConfig.purpose}]{e.LoggerName}";
-                string content = e.RenderedMessage;
-                if (e.ExceptionObject != null)
-                {
-                    content += "\n" + e.ExceptionObject.ToString();
-                }
-
-                if (e.Level >= Level.Fatal)
-                {
-                    s_serverData.feiShuSendFatalMessage(title, content);
-
-                }
-                else
-                {
-                    s_serverData.feiShuSendErrorMessage(title, content);
-                }
-            }
-
-            s_sending = false;
-        }
-
         static void GracefullyExit(object state)
         {
             LogInfo("GracefullyExit");

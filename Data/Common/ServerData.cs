@@ -28,10 +28,6 @@ namespace Data
         // public readonly Data.WheelTimer.WheelTimer timer;
 
         public readonly IOThread ioThread;
-        public List<long> error_feiShuSentTimeS = new List<long>();
-        public List<long> fatal_feiShuSentTimeS = new List<long>();
-        public Action<string, string> feiShuSendErrorMessage;
-        public Action<string, string> feiShuSendFatalMessage;
 
         public readonly bool loggerNameWithServer;
 
@@ -298,6 +294,15 @@ namespace Data
 
                 case ServiceType.Command:
                     return new CommandServiceData(typeAndId);
+
+                case ServiceType.UserManager:
+                    return new UserManagerServiceData(typeAndId);
+
+                case ServiceType.Room:
+                    return new RoomServiceData(typeAndId);
+
+                case ServiceType.RoomManager:
+                    return new RoomManagerServiceData(typeAndId);
 
                 default:
                     throw new Exception("Not handled serviceType: " + typeAndId.serviceType);

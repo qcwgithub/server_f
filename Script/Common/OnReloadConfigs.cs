@@ -16,7 +16,6 @@ namespace Script
         {
             string message = $"[{this.service.serviceId}]{this.msgType} all? {msg.all} files? {JsonUtils.stringify(msg.files)}";
             this.service.logger.Info(message);
-            this.server.feiShuMessenger.SendEventMessage(message);
 
             if (!msg.all)
             {

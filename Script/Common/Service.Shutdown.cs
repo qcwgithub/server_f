@@ -148,7 +148,6 @@ namespace Script
             await this.data.CloseProactiveConnections();
 
             this.SetState(ServiceState.ReadyToShutdown);
-            this.server.feiShuMessenger.SendEventMessage(this.data.serviceTypeAndId.ToString() + " ReadyToShutdown");
             this.server.OnServiceSetStateToShutdown();
             return ECode.Success;
         }
