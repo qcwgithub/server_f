@@ -22,7 +22,16 @@ namespace Script
             var resDb = r.CastRes<ResQuery_UserInfo_maxOf_userId>();
 
             long maxUserId = resDb.result;
-            if (!Decode(maxUserId, out long preStamp, out long preWorkerId, out long preSeq))
+
+            long preStamp;
+            long preWorkerId;
+            long preSeq;
+
+            if (maxUserId == 0)
+            {
+
+            }
+            else if (!Decode(maxUserId, out preStamp, out preWorkerId, out preSeq))
             {
                 this.service.logger.Error($"!Decode(maxUserId {maxUserId}, ...)");
                 return ECode.Error;
