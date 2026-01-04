@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using log4net;
-using MongoDB.Driver;
 
 namespace Data
 {
@@ -18,13 +14,11 @@ namespace Data
         public ServiceType serviceType => this.serviceTypeAndId.serviceType;
         public int serviceId => this.serviceTypeAndId.serviceId;
         public readonly ServiceTypeAndId serviceTypeAndId;
-        public readonly SelfConnection selfConnection;
         public ServiceState state = ServiceState.Initing;
 
         public ServiceData(ServiceTypeAndId serviceTypeAndId, List<ServiceType> connectToServiceIds)
         {
             this.serviceTypeAndId = serviceTypeAndId;
-            this.selfConnection = new SelfConnection();
 
             this.logger = ServerData.instance.log4netCreation.GetLogger(this.serviceTypeAndId.ToString());
 
