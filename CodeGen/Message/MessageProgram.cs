@@ -20,7 +20,7 @@ public class MessageProgram
         }
 
         Create_MsgType.Create(list);
-        Create_MessageConfigData.Create(list);
+        Create_MessageTypeConfigData.Create(list);
         Create_ServiceProxy.Create(list);
     }
 }
