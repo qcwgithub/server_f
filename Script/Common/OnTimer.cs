@@ -26,10 +26,6 @@ namespace Script
                     }
                     break;
 
-                case TimerType.PersistenceTaskQueueHandler_Loop:
-                    this.service.logger.Error("TimerType.PersistenceTaskQueueHandler_Loop TODO");
-                    break;
-
                 default:
                     throw new Exception("Not handled TimerType." + msg.timerType);
             }

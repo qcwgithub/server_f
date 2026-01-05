@@ -122,11 +122,9 @@ namespace Script
 
             stDirtyElement dirtyElement = this.DirtyElement(p1, p2);
 
-            throw new Exception("TODO");
-
             await Task.WhenAll(
-                this.SaveToRedis(p1, p2, data) // ,
-                                               // this.server.persistence_taskQueueRedis.RPushToTaskQueue(this.GetBelongTaskQueue(p1, p2), dirtyElement.ToString())
+                this.SaveToRedis(p1, p2, data),
+                this.server.persistence_taskQueueRedis.RPushToTaskQueue(this.GetBelongTaskQueue(p1, p2), dirtyElement.ToString())
             );
 
             // 2 *PERSIST*

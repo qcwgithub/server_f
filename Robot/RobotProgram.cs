@@ -1,6 +1,4 @@
-﻿using Data;
-
-namespace Robot
+﻿namespace Data
 {
     public class RobotProgram : IProtocolClientCallbackProvider, IProtocolClientCallback
     {
@@ -15,9 +13,21 @@ namespace Robot
         int msgSeq = 1;
         public RobotProgram()
         {
+            ET.ThreadSynchronizationContext.CreateInstance();
+            SynchronizationContext.SetSynchronizationContext(ET.ThreadSynchronizationContext.Instance);
+
             this.socket = new TcpClientData();
-            this.socket.ConnectorInit(this, "localhost", 8001);
+
+            string ip = "localhost";
+            int port = 8020;
+            Console.WriteLine($"Connect {ip}:{port}");
+            this.socket.ConnectorInit(this, ip, port);
             this.socket.Connect();
+            while (true)
+            {
+                Thread.Sleep(1);
+                ET.ThreadSynchronizationContext.Instance.Update();
+            }
         }
 
         public IProtocolClientCallback? GetProtocolClientCallback(ProtocolClientData protocolClientData)
@@ -69,6 +79,7 @@ namespace Robot
 
         public async void OnConnectComplete(ProtocolClientData socket, bool success)
         {
+            Console.WriteLine($"OnConnectComplete success? {success}");
             if (!success)
             {
                 socket.Close(ProtocolClientData.CloseReason.OnConnectComplete_false);
@@ -83,10 +94,14 @@ namespace Robot
             msg.channel = MyChannels.uuid;
             msg.channelUserId = "1000";
 
+            Console.WriteLine($"Login channelUserId {msg.channelUserId}");
+
             byte[] msgBytes = MessageTypeConfigData.SerializeMsg(MsgType.Login, msg);
 
             socket.SendBytes(MsgType.Login, msgBytes, (ECode e, ArraySegment<byte> segments) =>
             {
+                Console.WriteLine($"Login result, e = {e}");
+
                 if (e == ECode.Success)
                 {
                     var res = (ResLogin)MessageTypeConfigData.DeserializeRes(MsgType.Login, segments);
@@ -98,6 +113,8 @@ namespace Robot
 
         public void OnCloseComplete(ProtocolClientData socket)
         {
+            Console.WriteLine($"OnCloseComplete");
+
             if (socket.customData == null)
             {
                 return;

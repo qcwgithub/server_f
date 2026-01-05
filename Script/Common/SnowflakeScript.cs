@@ -15,13 +15,13 @@ namespace Script
         public const int SEQ_BITS = 12;
 
         public const long MIN_STAMP = 1;
-        public const long MAX_STAMP = (1 << STAMP_BITS) - 1;
+        public const long MAX_STAMP = (1L << STAMP_BITS) - 1;
 
         public const long MIN_WORKER_ID = 1; // 其实可以0，但是如果缺少配置也是0，干脆1
-        public const long MAX_WORKER_ID = (1 << WORKER_ID_BITS) - 1;
+        public const long MAX_WORKER_ID = (1L << WORKER_ID_BITS) - 1;
 
         public const long MIN_SEQ = 0;
-        public const long MAX_SEQ = (1 << SEQ_BITS) - 1;
+        public const long MAX_SEQ = (1L << SEQ_BITS) - 1;
 
         public static long Encode(long stamp, long workerId, long seq)
         {
@@ -102,7 +102,7 @@ namespace Script
             }
 
             long now = TimeUtils.GetTime();
-            return now - baseStamp;
+            return now - this.baseStamp;
         }
 
         protected long NextId()

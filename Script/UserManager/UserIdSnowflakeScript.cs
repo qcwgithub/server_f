@@ -23,13 +23,14 @@ namespace Script
 
             long maxUserId = resDb.result;
 
+            long stamp = this.NowSnowflakeStamp();
             long preStamp;
             long preWorkerId;
             long preSeq;
 
             if (maxUserId == 0)
             {
-
+                preStamp = stamp;
             }
             else if (!Decode(maxUserId, out preStamp, out preWorkerId, out preSeq))
             {
@@ -37,7 +38,6 @@ namespace Script
                 return ECode.Error;
             }
 
-            long stamp = this.NowSnowflakeStamp();
             if (stamp < preStamp)
             {
                 this.service.logger.Error($"stamp {stamp} < preStamp {preStamp}");

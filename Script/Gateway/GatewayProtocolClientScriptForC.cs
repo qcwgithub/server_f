@@ -13,17 +13,16 @@ namespace Script
         public override void ReceiveFromNetwork(ProtocolClientData data, int seq, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback? reply)
         {
             GatewayUserConnection? gatewayUserConnection = data.customData as GatewayUserConnection;
-            if (gatewayUserConnection == null)
+            if (gatewayUserConnection != null)
             {
-                this.service.logger.Error("gatewayUserConnection == null");
-                return;
+                ServiceType? serviceType = Forwarding.GatewayTryForwardClientMessageToOtherService(this.gatewayService, gatewayUserConnection, msgType, msgBytes, reply);
+                if (serviceType != null)
+                {
+                    return;
+                }
             }
 
-            ServiceType? serviceType = Forwarding.GatewayTryForwardClientMessageToOtherService(this.gatewayService, gatewayUserConnection, msgType, msgBytes, reply);
-            if (serviceType == null)
-            {
-                base.ReceiveFromNetwork(data, seq, msgType, msgBytes, reply);
-            }
+            base.ReceiveFromNetwork(data, seq, msgType, msgBytes, reply);
         }
     }
 }

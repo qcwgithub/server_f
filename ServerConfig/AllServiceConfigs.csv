@@ -1,9 +1,10 @@
 serviceTypeAndId,inIp,inPort,outIp,outPort,userIdSnowflakeWorkerId,roomIdSnowflakeWorkerId
 #,,,,,,
-Command4,localhost,3021,localhost,8021,,
-User5,localhost,3022,localhost,8022,,
-Db6,localhost,3023,localhost,8023,,
-Global7,localhost,3024,localhost,8024,,
-UserManager8,localhost,3025,localhost,8025,1,
-Room9,localhost,3026,localhost,8026,,
-RoomManager10,localhost,3027,localhost,8027,,2
+Command4,localhost,3021,localhost,,,
+User5,localhost,3022,localhost,,,
+Db6,localhost,3023,localhost,,,
+Global7,localhost,3024,localhost,,,
+UserManager8,localhost,3025,localhost,,1,
+Room9,localhost,3026,localhost,,,
+RoomManager10,localhost,3027,localhost,,,2
+Gateway100,localhost,3100,localhost,8020,,

@@ -48,7 +48,7 @@ namespace Script
             base.AddHandler<GatewayService>();
 
             this.dispatcher.AddHandler(new Gateway_Action(this.server, this));
-            this.dispatcher.AddHandler(new Gateway_ServerKick(this.server, this), true);
+            this.dispatcher.AddHandler(new Gateway_ServerKick(this.server, this));
             this.dispatcher.AddHandler(new Gateway_UserLogin(this.server, this));
         }
     }

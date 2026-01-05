@@ -20,7 +20,7 @@ namespace Data
             return DateTime.UtcNow;
         }
 
-        public static DateTime SecondsToDateTime(int s)
+        public static DateTime SecondsToDateTime(long s)
         {
             DateTime dt = s_baseDate.AddSeconds(s);
             AssertIsUtc(dt);
@@ -33,7 +33,7 @@ namespace Data
             return (long)(dt - s_baseDate).TotalSeconds;
         }
 
-        public static DateTime MillisecondsToDateTime(int s)
+        public static DateTime MillisecondsToDateTime(long s)
         {
             DateTime dt = s_baseDate.AddMilliseconds(s);
             AssertIsUtc(dt);
@@ -45,10 +45,10 @@ namespace Data
             return DateTimeToSeconds(GetDateTime());
         }
 
-        public static int DateTimeToMilliseconds(DateTime dt)
+        public static long DateTimeToMilliseconds(DateTime dt)
         {
             AssertIsUtc(dt);
-            return (int)(dt - s_baseDate).TotalMilliseconds;
+            return (long)(dt - s_baseDate).TotalMilliseconds;
         }
 
         public static DateTime CreateDateTime(int year, int month, int day)
