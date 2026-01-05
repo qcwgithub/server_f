@@ -33,7 +33,7 @@
                 return (long)value;
             }
         }
-        
+
         public static long ReadLong(ArraySegment<byte> buffer, int offset)
         {
             unchecked
@@ -163,8 +163,11 @@
             bufferOffset += sizeof(int);
 
             // c
-            msg.CopyTo(buffer, bufferOffset);
-            bufferOffset += msg.Count;
+            if (msg.Count > 0)
+            {
+                msg.CopyTo(buffer, bufferOffset);
+                bufferOffset += msg.Count;
+            }
 
             MyDebug.Assert(bufferOffset == buffer.Length);
             return buffer;

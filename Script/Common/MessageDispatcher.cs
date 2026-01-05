@@ -98,8 +98,8 @@ namespace Script
             IHandler? handler = this.GetHandler(msgType);
             if (handler == null)
             {
-                this.service.logger.ErrorFormat("no handler for message {0}", msgType);
-                return new MyResponse(ECode.Error);
+                this.service.logger.ErrorFormat("No handler for message {0}", msgType);
+                return ECode.NoHandler;
             }
 
             if (this.service.detached)

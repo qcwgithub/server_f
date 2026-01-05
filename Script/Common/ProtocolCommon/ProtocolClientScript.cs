@@ -62,11 +62,7 @@ namespace Script
             var r = await this.service.dispatcher.Dispatch(context, msgType, msg);
             if (reply != null)
             {
-                ArraySegment<byte> resBytes = default;
-                if (r.res != null)
-                {
-                    resBytes = MessageTypeConfigData.SerializeRes(msgType, r.res);
-                }
+                ArraySegment<byte> resBytes = MessageTypeConfigData.SerializeRes(msgType, r.res);
                 reply(r.e, resBytes);
             }
         }

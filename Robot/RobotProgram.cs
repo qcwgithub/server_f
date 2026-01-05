@@ -74,7 +74,6 @@
         public virtual async void ReceiveFromNetwork(ProtocolClientData socket, int seq, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback? reply)
         {
             var msg = MessageTypeConfigData.DeserializeMsg(msgType, msgBytes);
-
         }
 
         public async void OnConnectComplete(ProtocolClientData socket, bool success)
@@ -96,19 +95,40 @@
 
             Console.WriteLine($"Login channelUserId {msg.channelUserId}");
 
-            byte[] msgBytes = MessageTypeConfigData.SerializeMsg(MsgType.Login, msg);
+            ArraySegment<byte> msgBytes = MessageTypeConfigData.SerializeMsg(MsgType.Login, msg);
+            socket.SendBytes(MsgType.Login, msgBytes, this.OnLoginResult, null);
+        }
 
-            socket.SendBytes(MsgType.Login, msgBytes, (ECode e, ArraySegment<byte> segments) =>
+        void OnLoginResult(ECode e, ArraySegment<byte> segments)
+        {
+            Console.WriteLine($"OnLoginResult, e = {e}");
+
+            if (e != ECode.Success)
             {
-                Console.WriteLine($"Login result, e = {e}");
+                return;
+            }
 
-                if (e == ECode.Success)
-                {
-                    var res = (ResLogin)MessageTypeConfigData.DeserializeRes(MsgType.Login, segments);
-                    //
-                }
-            },
-            null);
+            var res = (ResLogin)MessageTypeConfigData.DeserializeRes(MsgType.Login, segments);
+            Console.WriteLine($"isNewUser? {res.isNewUser} userId {res.userInfo.userId} kickOther? {res.kickOther}");
+
+            long roomId = 1;
+            Console.WriteLine($"EnterRoom roomId {roomId}");
+
+            var msg = new MsgEnterRoom();
+            msg.roomId = roomId;
+
+            ArraySegment<byte> msgBytes = MessageTypeConfigData.SerializeMsg(MsgType.EnterRoom, msg);
+            this.socket.SendBytes(MsgType.EnterRoom, msgBytes, this.OnEnterRoomResult, null);
+        }
+
+        void OnEnterRoomResult(ECode e, ArraySegment<byte> segments)
+        {
+            Console.WriteLine($"OnEnterRoomResult, e = {e}");
+
+            if (e != ECode.Success)
+            {
+                return;
+            }
         }
 
         public void OnCloseComplete(ProtocolClientData socket)

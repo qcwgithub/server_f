@@ -6,6 +6,11 @@ namespace Data
     {
         public static object DeserializeMsg(MsgType msgType, ArraySegment<byte> msgBytes)
         {
+            if (msgBytes.Count == 0)
+            {
+                return null;
+            }
+
             object ob;
             switch (msgType)
             {

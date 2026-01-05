@@ -59,7 +59,7 @@ namespace Data
 
         public void Send(MsgType msgType, object msg, ReplyCallback? cb, int? pTimeoutS)
         {
-            byte[] msgBytes = MessageTypeConfigData.SerializeMsg(msgType, msg);
+            ArraySegment<byte> msgBytes = MessageTypeConfigData.SerializeMsg(msgType, msg);
             this.socket.SendBytes(msgType, msgBytes, cb, pTimeoutS);
         }
     }

@@ -4,8 +4,13 @@ namespace Data
 {
     public partial class MessageTypeConfigData
     {
-        public static byte[] SerializeMsg(MsgType msgType, object msg)
+        public static ArraySegment<byte> SerializeMsg(MsgType msgType, object msg)
         {
+            if (msg == null)
+            {
+                return default;
+            }
+
             byte[] msgBytes;
             switch (msgType)
             {

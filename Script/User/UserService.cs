@@ -24,6 +24,10 @@ namespace Script
         {
             return new UserMessageDispatcher(this.server, this);
         }
+        protected override ProtocolClientScriptForS CreateProtocolClientScriptForS()
+        {
+            return new UserProtocolClientScriptForS(this.server, this);
+        }
 
         public readonly UserServiceScript ss;
         public readonly ObjectLocator roomLocator;
@@ -49,6 +53,8 @@ namespace Script
             base.AddHandler<UserService>();
 
             this.dispatcher.AddHandler(new User_Action(this.server, this));
+            this.dispatcher.AddHandler(new User_EnterRoom(this.server, this));
+            this.dispatcher.AddHandler(new User_LeaveRoom(this.server, this));
             this.dispatcher.AddHandler(new User_OnReloadConfigs(this.server, this), true);
             this.dispatcher.AddHandler(new User_OnTimer(this.server, this), true);
             this.dispatcher.AddHandler(new User_SaveUserImmediately(this.server, this));

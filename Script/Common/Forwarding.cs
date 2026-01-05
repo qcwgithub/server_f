@@ -22,28 +22,31 @@ namespace Script
             ServiceType? serviceType = ShouldForwardClientMessage(msgType);
             if (serviceType == null)
             {
-                return serviceType;
+                gatewayService.logger.Info($"G_c_s() msgType {msgType} NO");
+                return null;
             }
 
             GatewayUser? user = connection.user;
             if (user == null)
             {
-                gatewayService.logger.Error("TryForwardToOtherService() connection.user == null");
+                gatewayService.logger.Error("G_c_s() connection.user == null");
                 return serviceType;
             }
 
             if (user.userServiceId == 0)
             {
-                gatewayService.logger.Error("TryForwardToOtherService() user.userServiceId == 0");
+                gatewayService.logger.Error("G_c_s() user.userServiceId == 0");
                 return serviceType;
             }
 
-            IConnection? serviceConnection = gatewayService.data.GetOtherServiceConnection(user.userServiceId);
+            ServiceConnection? serviceConnection = gatewayService.data.GetOtherServiceConnection(user.userServiceId);
             if (serviceConnection == null || !serviceConnection.IsConnected())
             {
-                gatewayService.logger.Error("TryForwardToOtherService() serviceConnection == null || !serviceConnection.IsConnected()");
+                gatewayService.logger.Error("G_c_s() serviceConnection == null || !serviceConnection.IsConnected()");
                 return serviceType;
             }
+
+            gatewayService.logger.Info($"G_c_s() msgType {msgType} -> {serviceConnection.tai}");
 
             var msgForward = new MsgForward();
             msgForward.userId = user.userId;
@@ -96,6 +99,7 @@ namespace Script
         {
             if (msgType != MsgType.Forward)
             {
+                userService.logger.Info($"c_g_S() msgType {msgType} Not Forward");
                 return false;
             }
 
@@ -108,19 +112,19 @@ namespace Script
 
             if (user == null)
             {
-                MyDebug.Assert(false);
+                userService.logger.Error($"c_g_S() msgType {msgType} user == null");
                 return true;
             }
 
             if (user.connection == null)
             {
-                MyDebug.Assert(false);
+                userService.logger.Error($"c_g_S() msgType {msgType} user.connection == null");
                 return true;
             }
 
             if (user.connection.gatewayServiceId != serviceConnection.serviceId)
             {
-                MyDebug.Assert(false);
+                userService.logger.Error($"c_g_S() msgType {msgType} user.connection.gatewayServiceId {user.connection.gatewayServiceId} != serviceConnection.serviceId {serviceConnection.serviceId}");
                 return true;
             }
 
@@ -130,15 +134,12 @@ namespace Script
                 msg_userId = msgForward.userId
             };
 
+            userService.logger.Info($"c_g_S() innerMsgType {msgForward.innerMsgType}");
+
             var r = await userService.dispatcher.Dispatch(context, msgForward.innerMsgType, innerMsg);
             if (reply != null)
             {
-                ArraySegment<byte> resBytes = default;
-                if (r.res != null)
-                {
-                    resBytes = MessageTypeConfigData.SerializeRes(msgType, r.res);
-                }
-
+                ArraySegment<byte> resBytes = MessageTypeConfigData.SerializeRes(msgForward.innerMsgType, r.res);
                 reply(r.e, resBytes);
             }
 

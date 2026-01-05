@@ -39,5 +39,6 @@ namespace Data
         RetryFailed = 95,
         WrongRoomId = 96,
         UserNotInRoom = 97,
+        NoHandler = 98,
     }
 }
