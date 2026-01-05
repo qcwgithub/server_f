@@ -14,7 +14,7 @@ namespace Script
 
         public readonly LockController lockController;
         public readonly GlobalServiceProxy globalServiceProxy;
-        public readonly PersistenceTaskQueueHandler persistenceTaskQueueHandler;
+        readonly TaskQueueOwnersRedis taskQueueOwnersRedis;
 
         #region auto_collection_var_decl
 
@@ -29,7 +29,7 @@ namespace Script
             this.lockController = new LockController(this.server, this, this.sd.lockControllerData, DbKey.TakeLockControl(), DbKey.LockedHash(), DbKey.LockPrefix());
 
             this.AddServiceProxy(this.globalServiceProxy = new GlobalServiceProxy(this));
-            this.persistenceTaskQueueHandler = new PersistenceTaskQueueHandler(this.server, this);
+            this.taskQueueOwnersRedis = new TaskQueueOwnersRedis(this.server, DbKey.PersistenceTaskQueueOwners());
 
             #region auto_collection_var_create
 

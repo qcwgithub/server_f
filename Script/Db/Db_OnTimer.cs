@@ -10,14 +10,18 @@ namespace Script
 
         public override async Task<ECode> Handle(MessageContext context, MsgTimer msg, ResTimer res)
         {
+            ECode e;
             switch (msg.timerType)
             {
-                case TimerType.PersistenceTaskQueueHandler_Loop:
+                case TimerType.Persistence:
+                    e = await this.service.Persistence(false);
                     break;
 
                 default:
-                    return await base.Handle(context, msg, res);
+                    e = await base.Handle(context, msg, res);
+                    break;
             }
+            return e;
         }
     }
 }

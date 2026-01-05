@@ -6,21 +6,21 @@ namespace Script
     {
         protected override async Task StopBusinesses()
         {
-            this.ClearTimer(ref this.sd.timer_persistence_taskQueueHandler_Loop);
+            if (this.sd.timer_persistence_taskQueueHandler_Loop != null)
+            {
+                this.ClearTimer(ref this.sd.timer_persistence_taskQueueHandler_Loop);
+            }
 
             while (this.sd.persistenceHandling)
             {
                 await Task.Delay(10);
             }
 
-            var msgPersistence = new MsgPersistence();
-            msgPersistence.isShuttingDownSaveAll = true;
-            // ECode e = await this.PersistenceTaskQueueHandler(msgPersistence);
-            // if (e != ECode.Success)
-            // {
-            //     this.logger.ErrorFormat("StopBusinesses save all r.err {0}", e);
-            // }
-            throw new Exception("TODO");
+            ECode e = await this.Persistence(true);
+            if (e != ECode.Success)
+            {
+                this.logger.Error($"Persistence ECode.{e}");
+            }
         }
     }
 }

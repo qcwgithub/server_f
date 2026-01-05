@@ -7,7 +7,7 @@ namespace Data
             ServiceType.Global,
         };
         public LockControllerData lockControllerData;
-        public ITimer timer_persistence_taskQueueHandler_Loop;
+        public ITimer? timer_persistence_taskQueueHandler_Loop;
         public long persistence_lastAssignTaskQueueOwnersTimeS;
         public List<int> persistence_ownTaskQueues;
         public bool persistenceHandling;

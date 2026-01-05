@@ -1,12 +1,8 @@
-using System.Threading.Tasks;
 using Data;
-using System.Diagnostics;
-using System;
-
 
 namespace Script
 {
-    public partial class PersistenceTaskQueueHandler
+    public partial class DbService
     {
         //// AUTO CREATED ////
         async Task<(ECode, bool)> SaveAccountInfo(stDirtyElement element)
@@ -19,7 +15,7 @@ namespace Script
             AccountInfo info = await this.server.accountInfoProxy.OnlyForSave_GetFromRedis(channel, channelUserId);
             if (info == null)
             {
-                this.service.logger.ErrorFormat("SaveAccountInfo {0} info==null", element);
+                this.logger.ErrorFormat("SaveAccountInfo {0} info==null", element);
                 return (ECode.Error, false);
             }
             MyDebug.Assert(info.channel == channel);
@@ -27,14 +23,14 @@ namespace Script
 
             if (info is ICanBePlaceholder h && h.IsPlaceholder())
             {
-                this.service.logger.ErrorFormat("SaveAccountInfo {0} info.IsPlaceholder()", element);
+                this.logger.ErrorFormat("SaveAccountInfo {0} info.IsPlaceholder()", element);
                 return (ECode.Error, false);
             }
 
-            ECode e = await this.service.collection_account_info.Save(info);
+            ECode e = await this.collection_account_info.Save(info);
             if (e != ECode.Success)
             {
-                this.service.logger.ErrorFormat("SaveAccountInfo {0} error {1}", element, e);
+                this.logger.ErrorFormat("SaveAccountInfo {0} error {1}", element, e);
                 return (e, true);
             }
 

@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Data;
 
 namespace Script
@@ -100,7 +97,7 @@ namespace Script
                     {
                         manager.offlineTimeS = 0;
                         save = true;
-                        input.logger.InfoFormat("{0} Set my offlineTimeS to 0", input.msgType);
+                        input.logger.InfoFormat("{0} Set my offlineTimeS to 0", input.who);
                     }
                     continue;
                 }
@@ -118,7 +115,7 @@ namespace Script
                 }
                 else if (nowS - manager.offlineTimeS >= 60)
                 {
-                    input.logger.WarnFormat("{0} Force-Release-Control serviceId {1} taskQueue {2}", input.msgType, manager.serviceId, queue);
+                    input.logger.WarnFormat("{0} Force-Release-Control serviceId {1} taskQueue {2}", input.who, manager.serviceId, queue);
                     manager.serviceId = 0;
                 }
             }
@@ -179,7 +176,7 @@ namespace Script
                     save = true;
                     kv.Value.serviceId = 0;
                     kv.Value.offlineTimeS = 0;
-                    input.logger.InfoFormat("{0} Self-Release-Control taskQueue {1}", input.msgType, kv.Key);
+                    input.logger.InfoFormat("{0} Self-Release-Control taskQueue {1}", input.who, kv.Key);
                 }
                 else if (kv.Value.serviceId == 0 && myCount < myTarget)
                 {
@@ -187,7 +184,7 @@ namespace Script
                     save = true;
                     kv.Value.serviceId = input.serviceId;
                     kv.Value.offlineTimeS = 0;
-                    input.logger.InfoFormat("{0} Take-Control taskQueue {1}", input.msgType, kv.Key);
+                    input.logger.InfoFormat("{0} Take-Control taskQueue {1}", input.who, kv.Key);
                 }
             }
 

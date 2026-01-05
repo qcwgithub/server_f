@@ -42,6 +42,8 @@ namespace Script
             return this.serviceProxyDict[serviceType];
         }
 
+        public readonly LockManuallyScript lockManuallyScript;
+
         public Service(Server server, int serviceId)
         {
             this.server = server;
@@ -61,6 +63,7 @@ namespace Script
             this.dispatcher = this.CreateMessageDispatcher();
 
             this.serviceProxyDict = new();
+            this.lockManuallyScript = new LockManuallyScript(this.server, this);
         }
 
         protected void AddHandler<S>()

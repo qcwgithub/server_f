@@ -16,7 +16,7 @@ namespace Script
 
             await this.collection_user_info.CreateIndex();
 
-            sd.timer_persistence_taskQueueHandler_Loop = this.server.timerScript.SetTimer(this.serviceId, 0,  TimerType.PersistenceTaskQueueHandler_Loop, null);
+            sd.timer_persistence_taskQueueHandler_Loop = this.server.timerScript.SetTimer(this.serviceId, 0,  TimerType.Persistence, null);
             return ECode.Success;
         }
     }

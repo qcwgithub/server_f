@@ -12,7 +12,7 @@ namespace Data
         public ServiceType serviceType;
         public int serviceId;
         public log4net.ILog logger;
-        public MsgType msgType;
+        public string who;
         public Func<LockOptionsManually, Task> Unlock;
     }
 }
