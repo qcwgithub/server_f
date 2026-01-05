@@ -7,6 +7,9 @@ namespace Data
         public SocketServiceConnection(ServiceType serviceType, int serviceId, ProtocolClientData socket, bool isConnector) : base(serviceType, serviceId)
         {
             this.socketConnection = new SocketConnection(socket, isConnector);
+
+            // !
+            socket.customData = this;
         }
 
         public override int GetConnectionId()

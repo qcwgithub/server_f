@@ -27,7 +27,11 @@ namespace Script
                 if (msg.isNewUser)
                 {
                     userInfo = msg.newUserInfo;
-                    MyDebug.Assert(userInfo != null);
+                    if (userInfo == null)
+                    {
+                        this.service.logger.Error($"{this.msgType} msg.isNewUser but newUserInfo is null");
+                        return ECode.UserInfoNotExist;
+                    }
                 }
                 else
                 {
@@ -42,15 +46,15 @@ namespace Script
                     {
                         return ECode.UserInfoNotExist;
                     }
-
-                    user = new User(userInfo);
-
-                    await this.server.userLocationRedisW.WriteLocation(msg.userId, this.service.serviceId, this.service.sd.saveIntervalS + 60);
-
-                    this.AddUserToDict(user);
-
-                    // 这里不再加东西了，要加得加到 AddPlayerToDict 里
                 }
+
+                user = new User(userInfo);
+
+                await this.server.userLocationRedisW.WriteLocation(msg.userId, this.service.serviceId, this.service.sd.saveIntervalS + 60);
+
+                this.AddUserToDict(user);
+
+                // 这里不再加东西了，要加得加到 AddPlayerToDict 里
             }
 
             if (!user.saveTimer.IsAlive())

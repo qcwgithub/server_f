@@ -81,11 +81,18 @@ namespace Script
 
             if (data.customData == null)
             {
-                MyDebug.Assert(false, "data.customData == null");
+                this.service.logger.Error("OnConnectComplete data.customData == null");
                 return;
             }
 
-            this.service.OnConnectComplete((IConnection)data.customData).Forget();
+            var serviceConnection = data.customData as ServiceConnection;
+            if (serviceConnection == null)
+            {
+                this.service.logger.ErrorFormat("OnConnectComplete data.customData is not ServiceConnection, it is {0}", data.customData.GetType().Name);
+                return;
+            }
+
+            this.service.OnConnectComplete(serviceConnection).Forget();
         }
 
         public void OnCloseComplete(ProtocolClientData data)
