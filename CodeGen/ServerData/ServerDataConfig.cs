@@ -11,9 +11,8 @@ public class DbFilesConfig
     public string scriptFolder;//DBPlayer,DBAccount
     public string scriptOnStart;
 
-    public string PersistenceTaskQueueHandler_class;
-    public string PersistenceTaskQueueHandler_path;
-    public Func<string, string, string> PersistenceTaskQueueHandler_path2;
+    public string Persistence_path;
+    public Func<string, string, string> Persistence_path2;
 }
 
 public class ServerDataConfig
@@ -93,9 +92,8 @@ public class ServerDataConfig
                     serviceClassName = "DbService",
                     scriptFolder = "Db",
                     scriptOnStart = "DbService.Start",
-                    PersistenceTaskQueueHandler_class = "PersistenceTaskQueueHandler",
-                    PersistenceTaskQueueHandler_path = "Script/Db/PersistenceTask/PersistenceTaskQueueHandler.cs",
-                    PersistenceTaskQueueHandler_path2 = (xinfoType, postfix) => $"Script/Db/PersistenceTask/PersistenceTaskQueueHandler.{xinfoType}{postfix}.cs",
+                    Persistence_path = "Script/Db/Persistence/DbService.Persistence.cs",
+                    Persistence_path2 = (xinfoType, postfix) => $"Script/Db/Persistence/DbService.Persistence.{xinfoType}{postfix}.cs",
                 };
             }
             return s_dbFilesConfigDict[this.dbName];

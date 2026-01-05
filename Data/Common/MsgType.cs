@@ -14,8 +14,6 @@ namespace Data
         _Service_GC = 13,
         _Service_RemoteWillShutdown = 14,
         _Service_GetServiceState = 16,
-        _Service_PersistenceTaskQueueHandler = 17,
-        _Service_PersistenceTaskQueueHandler_Loop = 18,
         _Service_GetReloadConfigOptions = 19,
         _Service_GetConnectedInfos = 20,
         _Service_ViewMongoDumpList = 21,

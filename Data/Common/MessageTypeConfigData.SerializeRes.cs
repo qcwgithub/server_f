@@ -51,13 +51,6 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((ResGetServiceState)res);
                     break;
 
-                case MsgType._Service_PersistenceTaskQueueHandler:
-                    msgBytes = MessagePackSerializer.Serialize((ResPersistence)res);
-                    break;
-
-                case MsgType._Service_PersistenceTaskQueueHandler_Loop:
-                    throw new Exception("Missing config for MsgType._Service_PersistenceTaskQueueHandler_Loop");
-
                 case MsgType._Service_GetReloadConfigOptions:
                     msgBytes = MessagePackSerializer.Serialize((ResGetReloadConfigOptions)res);
                     break;

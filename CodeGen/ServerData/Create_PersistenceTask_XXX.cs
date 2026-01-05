@@ -61,7 +61,7 @@ public class Create_PersistenceTask_XXX
 
         foreach (string dbName in ServerDataConfig.c_dbNames)
         {
-            XInfoProgram.ReplaceFile(ServerDataConfig.s_dbFilesConfigDict[dbName].PersistenceTaskQueueHandler_path, new Mark[]
+            XInfoProgram.ReplaceFile(ServerDataConfig.s_dbFilesConfigDict[dbName].Persistence_path, new Mark[]
             {
                 new Mark { startMark = "#region auto_callSave", text = f_callSaveDict[dbName].GetString() },
             });
@@ -183,7 +183,7 @@ public class Create_PersistenceTask_XXX
         ff.TabPush("namespace Script\n");
         ff.BlockStart();
         {
-            ff.TabPushF("public partial class {0}\n", ServerDataConfig.s_dbFilesConfigDict[config.dbName].PersistenceTaskQueueHandler_class);
+            ff.TabPushF("public partial class {0}\n", ServerDataConfig.s_dbFilesConfigDict[config.dbName].serviceClassName);
             ff.BlockStart();
             {
                 ff.TabPush("//// AUTO CREATED ////\n");
@@ -254,7 +254,7 @@ public class Create_PersistenceTask_XXX
                     }
                     else
                     {
-                        ff.TabPushF("{0} info = await this.server.{1}Redis{2}.OnlyForSave_GetFromRedis(this.service, {3});\n",
+                        ff.TabPushF("{0} info = await this.server.{1}Redis{2}.OnlyForSave_GetFromRedis(this, {3});\n",
                             config.xinfoType,
                             CodeGen.Program.FirstCharacterToLowercase(config.xinfoType),
                             config.postfix,
@@ -264,7 +264,7 @@ public class Create_PersistenceTask_XXX
                     ff.TabPush("if (info == null)\n");
                     ff.BlockStart();
                     {
-                        ff.TabPushF("this.service.logger.ErrorFormat(\"Save{0} {{0}} info==null\", element);\n", config.xinfoType);
+                        ff.TabPushF("this.logger.ErrorFormat(\"Save{0} {{0}} info==null\", element);\n", config.xinfoType);
                         ff.TabPush("return (ECode.Error, false);\n");
                     }
                     ff.BlockEnd();
@@ -278,7 +278,7 @@ public class Create_PersistenceTask_XXX
                     ff.TabPush("if (info is ICanBePlaceholder h && h.IsPlaceholder())\n");
                     ff.BlockStart();
                     {
-                        ff.TabPushF("this.service.logger.ErrorFormat(\"Save{0} {{0}} info.IsPlaceholder()\", element);\n", config.xinfoType);
+                        ff.TabPushF("this.logger.ErrorFormat(\"Save{0} {{0}} info.IsPlaceholder()\", element);\n", config.xinfoType);
                         ff.TabPush("return (ECode.Error, false);\n");
                     }
                     ff.BlockEnd();
@@ -296,7 +296,7 @@ public class Create_PersistenceTask_XXX
         }
         ff.BlockEnd();
 
-        string path = ServerDataConfig.s_dbFilesConfigDict[config.dbName].PersistenceTaskQueueHandler_path2(config.xinfoType, config.postfix);
+        string path = ServerDataConfig.s_dbFilesConfigDict[config.dbName].Persistence_path2(config.xinfoType, config.postfix);
         if (!File.Exists(path))
         {
             File.WriteAllText(path, string.Empty);
@@ -307,11 +307,11 @@ public class Create_PersistenceTask_XXX
 
     public static void SaveToDBSelf(ServerDataConfig config, FileFormatter ff)
     {
-        ff.TabPushF("ECode e = await this.service.{0}{1}.{2}(info);\n", config.fileName, config.postfix, "Save");
+        ff.TabPushF("ECode e = await this.{0}{1}.{2}(info);\n", config.fileName, config.postfix, "Save");
         ff.TabPush("if (e != ECode.Success)\n");
         ff.BlockStart();
         {
-            ff.TabPushF("this.service.logger.ErrorFormat(\"Save{0} {{0}} error {{1}}\", element, e);\n", config.xinfoType);
+            ff.TabPushF("this.logger.ErrorFormat(\"Save{0} {{0}} error {{1}}\", element, e);\n", config.xinfoType);
             ff.TabPush("return (e, true);\n");
         }
         ff.BlockEnd();

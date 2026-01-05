@@ -9,8 +9,6 @@ _Service_ReloadConfigs,12,MsgReloadConfigs,ResReloadConfigs,1,1
 _Service_GC,13,MsgGC,ResGC,1,1
 _Service_RemoteWillShutdown,14,MsgRemoteWillShutdown,ResRemoteWillShutdown,1,1
 _Service_GetServiceState,16,MsgGetServiceState,ResGetServiceState,1,1
-_Service_PersistenceTaskQueueHandler,17,MsgPersistence,ResPersistence,,
-_Service_PersistenceTaskQueueHandler_Loop,18,,,,
 _Service_GetReloadConfigOptions,19,MsgGetReloadConfigOptions,ResGetReloadConfigOptions,1,1
 _Service_GetConnectedInfos,20,MsgGetConnectedInfos,ResGetConnectedInfos,1,1
 _Service_ViewMongoDumpList,21,MsgViewMongoDumpList,ResViewMongoDumpList,1,1
