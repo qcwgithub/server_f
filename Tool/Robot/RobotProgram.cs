@@ -2,11 +2,6 @@
 {
     public class RobotProgram : IProtocolClientCallbackProvider, IProtocolClientCallback
     {
-        public static void Main(string[] args)
-        {
-            new RobotProgram();
-        }
-
         TcpClientData socket;
         BinaryMessagePacker binaryMessagePacker = new();
         int socketId = 1;
