@@ -81,15 +81,7 @@ namespace Data
                 {
                     if (old.IsConnected() || old.IsConnecting())
                     {
-                        // Commander 不要报了
-                        if (old.serviceType.IsCommand())
-                        {
-
-                        }
-                        else
-                        {
-                            this.logger.Error($"SetOtherServiceSocket tai {serviceType}{serviceId} old.IsConnected() || old.IsConnecting()");
-                        }
+                        this.logger.Error($"SetOtherServiceSocket tai {serviceType}{serviceId} old.IsConnected() || old.IsConnecting()");
                     }
                 }
             }
@@ -139,11 +131,6 @@ namespace Data
             for (ServiceType serviceType = 0; serviceType < ServiceType.Count; serviceType++)
             {
                 if (this.connectToServiceTypes.Contains(serviceType))
-                {
-                    continue;
-                }
-
-                if (serviceType.IsCommand())
                 {
                     continue;
                 }

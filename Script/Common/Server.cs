@@ -155,9 +155,6 @@ namespace Script
                 case ServiceType.Global:
                     return new GlobalService(this, serviceId);
 
-                case ServiceType.Command:
-                    return new CommandService(this, serviceId);
-
                 case ServiceType.UserManager:
                     return new UserManagerService(this, serviceId);
 

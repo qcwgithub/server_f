@@ -156,7 +156,6 @@ namespace Data
 
                 this.serviceTypeAndIds = list
                     .Select(sc => sc.Tai())
-                    .Where(tai => !tai.serviceType.IsCommand())
                     .ToList();
             }
             else
@@ -292,9 +291,6 @@ namespace Data
                 case ServiceType.Global:
                     return new GlobalServiceData(typeAndId);
 
-                case ServiceType.Command:
-                    return new CommandServiceData(typeAndId);
-
                 case ServiceType.UserManager:
                     return new UserManagerServiceData(typeAndId);
 
@@ -324,9 +320,6 @@ namespace Data
 
                 case ServiceType.Global:
                     return GlobalServiceData.s_connectToServiceIds;
-
-                case ServiceType.Command:
-                    return CommandServiceData.s_connectToServiceIds;
 
                 case ServiceType.UserManager:
                     return UserManagerServiceData.s_connectToServiceIds;

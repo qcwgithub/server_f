@@ -6,7 +6,6 @@ namespace Data
         Db,
         User,
         Global,
-        Command,
         UserManager,
         Room,
         RoomManager,
@@ -17,30 +16,11 @@ namespace Data
     {
         public static bool ShouldLogErrorWhenDisconnectFrom(this ServiceType self, ServiceType remote)
         {
-            if (self.IsCommand())
-            {
-                return false;
-            }
-
-            if (remote.IsCommand())
-            {
-                return false;
-            }
-
             return true;
-        }
-
-        public static bool IsCommand(this ServiceType self)
-        {
-            return self == ServiceType.Command;
         }
 
         public static bool ReleaseModeLogToConsole(this ServiceType self)
         {
-            if (self.IsCommand())
-            {
-                return true;
-            }
             return false;
         }
 

@@ -259,19 +259,12 @@ namespace Script
                 return false;
             }
 
-            if (myServiceConfig.serviceType.IsCommand())
+            if (myServiceConfig.inIp != "localhost" &&
+                myServiceConfig.inIp != "127.0.0.1" &&
+                myServiceConfig.inIp != Data.Program.s_inIp)
             {
-                // command 不需要 ip 正确
-            }
-            else
-            {
-                if (myServiceConfig.inIp != "localhost" &&
-                    myServiceConfig.inIp != "127.0.0.1" &&
-                    myServiceConfig.inIp != Data.Program.s_inIp)
-                {
-                    message = $"myServiceConfig.inIp({myServiceConfig.inIp}) != Data.Program.s_inIp({Data.Program.s_inIp})";
-                    return false;
-                }
+                message = $"myServiceConfig.inIp({myServiceConfig.inIp}) != Data.Program.s_inIp({Data.Program.s_inIp})";
+                return false;
             }
 
             return true;
@@ -392,7 +385,7 @@ namespace Script
             this.data.state = s;
             this.logger.Info(s);
         }
-        
+
 
         protected async Task OnErrorExit(ECode e)
         {
