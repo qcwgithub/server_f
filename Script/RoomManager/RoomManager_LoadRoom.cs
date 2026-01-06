@@ -18,22 +18,24 @@ namespace Script
             }
 
             context.lockValue = await this.server.lockRedis.LockRoom(msg.roomId, this.service.logger);
-            if (context.lockValue != null)
+            if (context.lockValue == null)
             {
                 return ECode.Retry;
             }
 
-            stObjectLocation location = await this.service.roomLocator.GetLocation(msg.roomId);
-            if (!location.IsValid())
+            res.location = await this.service.roomLocator.GetLocation(msg.roomId);
+            if (res.location.IsValid())
             {
-                location = await this.service.roomLocationAssignment.AssignLocation(msg.roomId);
-                if (!location.IsValid())
-                {
-                    return ECode.NoAvailableRoomService;
-                }
-
-                this.service.roomLocator.CacheLocation(msg.roomId, res.location);
+                return ECode.Success;
             }
+
+            res.location = await this.service.roomLocationAssignment.AssignLocation(msg.roomId);
+            if (!res.location.IsValid())
+            {
+                return ECode.NoAvailableRoomService;
+            }
+
+            this.service.roomLocator.CacheLocation(msg.roomId, res.location);
 
             return ECode.Success;
         }
