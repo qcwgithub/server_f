@@ -4,7 +4,7 @@ using Data;
 
 namespace Script
 {
-    public class Gateway_UserLogin : GatewayHandler<MsgLogin, ResLogin>
+    public class Gateway_UserLogin : Handler<GatewayService, MsgLogin, ResLogin>
     {
         public Gateway_UserLogin(Server server, GatewayService service) : base(server, service)
         {

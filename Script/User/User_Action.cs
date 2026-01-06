@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    public class User_Action : UserHandler<MsgUserServiceAction, ResUserServiceAction>
+    public class User_Action : Handler<UserService, MsgUserServiceAction, ResUserServiceAction>
     {
         public User_Action(Server server, UserService service) : base(server, service)
         {

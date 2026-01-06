@@ -5,7 +5,7 @@ using Data;
 
 namespace Script
 {
-    public class UserManager_UserLogin : UserManagerHandler<MsgUserManagerUserLogin, ResUserManagerUserLogin>
+    public class UserManager_UserLogin : Handler<UserManagerService, MsgUserManagerUserLogin, ResUserManagerUserLogin>
     {
         public UserManager_UserLogin(Server server, UserManagerService service) : base(server, service)
         {

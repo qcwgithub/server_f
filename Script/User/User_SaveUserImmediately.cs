@@ -1,7 +1,7 @@
 using Data;
 namespace Script
 {
-    public class User_SaveUserImmediately : UserHandler<MsgSaveUserImmediately, ResSaveUserImmediately>
+    public class User_SaveUserImmediately : Handler<UserService, MsgSaveUserImmediately, ResSaveUserImmediately>
     {
         public User_SaveUserImmediately(Server server, UserService service) : base(server, service)
         {

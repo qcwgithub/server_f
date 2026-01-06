@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    public class User_EnterRoom : User_ClientHandler<MsgEnterRoom, ResEnterRoom>
+    public class User_EnterRoom : Handler<UserService, MsgEnterRoom, ResEnterRoom>
     {
         public override MsgType msgType => MsgType.EnterRoom;
         public User_EnterRoom(Server server, UserService service) : base(server, service)

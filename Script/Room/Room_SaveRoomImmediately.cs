@@ -1,7 +1,7 @@
 using Data;
 namespace Script
 {
-    public class Room_SaveRoomImmediately : RoomHandler<MsgSaveRoomImmediately, ResSaveRoomImmediately>
+    public class Room_SaveRoomImmediately : Handler<RoomService, MsgSaveRoomImmediately, ResSaveRoomImmediately>
     {
         public Room_SaveRoomImmediately(Server server, RoomService service) : base(server, service)
         {

@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    public class Room_SendChat : RoomHandler<MsgRoomSendChat, ResRoomSendChat>
+    public class Room_SendChat : Handler<RoomService, MsgRoomSendChat, ResRoomSendChat>
     {
         public Room_SendChat(Server server, RoomService service) : base(server, service)
         {

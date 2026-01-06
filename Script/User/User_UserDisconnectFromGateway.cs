@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    public class User_UserDisconnectFromGateway : UserHandler<MsgUserDisconnectFromGateway, ResUserDisconnectFromGateway>
+    public class User_UserDisconnectFromGateway : Handler<UserService, MsgUserDisconnectFromGateway, ResUserDisconnectFromGateway>
     {
         public User_UserDisconnectFromGateway(Server server, UserService service) : base(server, service)
         {

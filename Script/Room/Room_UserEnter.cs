@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    public class Room_UserEnter : RoomHandler<MsgRoomUserEnter, ResRoomUserEnter>
+    public class Room_UserEnter : Handler<RoomService, MsgRoomUserEnter, ResRoomUserEnter>
     {
         public Room_UserEnter(Server server, RoomService service) : base(server, service)
         {

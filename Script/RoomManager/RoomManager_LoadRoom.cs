@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    public class RoomManager_LoadRoom : RoomManagerHandler<MsgRoomManagerLoadRoom, ResRoomManagerLoadRoom>
+    public class RoomManager_LoadRoom : Handler<RoomManagerService, MsgRoomManagerLoadRoom, ResRoomManagerLoadRoom>
     {
         public RoomManager_LoadRoom(Server server, RoomManagerService service) : base(server, service)
         {

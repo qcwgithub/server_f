@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    public class Room_UserLeave : RoomHandler<MsgRoomUserLeave, ResRoomUserLeave>
+    public class Room_UserLeave : Handler<RoomService, MsgRoomUserLeave, ResRoomUserLeave>
     {
         public Room_UserLeave(Server server, RoomService service) : base(server, service)
         {

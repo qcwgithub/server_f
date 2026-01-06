@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    public class Gateway_Action : GatewayHandler<MsgGatewayServiceAction, ResGatewayServiceAction>
+    public class Gateway_Action : Handler<GatewayService, MsgGatewayServiceAction, ResGatewayServiceAction>
     {
         public Gateway_Action(Server server, GatewayService service) : base(server, service)
         {

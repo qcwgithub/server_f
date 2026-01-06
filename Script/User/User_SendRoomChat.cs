@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    public class User_SendRoomChat : User_ClientHandler<MsgSendRoomChat, ResSendRoomChat>
+    public class User_SendRoomChat : Handler<UserService, MsgSendRoomChat, ResSendRoomChat>
     {
         public override MsgType msgType => MsgType.SendRoomChat;
         public User_SendRoomChat(Server server, UserService service) : base(server, service)

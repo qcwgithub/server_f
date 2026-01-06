@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    public class User_LeaveRoom : User_ClientHandler<MsgLeaveRoom, ResLeaveRoom>
+    public class User_LeaveRoom : Handler<UserService, MsgLeaveRoom, ResLeaveRoom>
     {
         public override MsgType msgType => MsgType.LeaveRoom;
         public User_LeaveRoom(Server server, UserService service) : base(server, service)

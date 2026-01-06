@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    public class User_SaveUserInfoToFile : UserHandler<MsgSaveUserInfoToFile, ResSaveUserInfoToFile>
+    public class User_SaveUserInfoToFile : Handler<UserService, MsgSaveUserInfoToFile, ResSaveUserInfoToFile>
     {
         public User_SaveUserInfoToFile(Server server, UserService service) : base(server, service)
         {
