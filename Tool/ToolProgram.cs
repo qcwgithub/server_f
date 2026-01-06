@@ -1,27 +1,47 @@
 ﻿using Data;
 
-public class ToolProgram
+namespace Tool
 {
-
-    public static void Main(string[] args)
+    public class ToolProgram
     {
-        var argMap = ParseArguments(args);
-
-        string program = TryGetArg(argMap, "program");
-        if (program == null)
+        public static void Main(string[] args)
         {
-            AskHelp.AskSelect("which program?", "robot*", "server").OnAnswer((index, answer) =>
+            new ToolProgram(args);
+        }
+
+        public static ToolProgram Instance;
+        public readonly ArgMap argMap;
+        public ToolProgram(string[] args)
+        {
+            Instance = this;
+            ET.ThreadSynchronizationContext.CreateInstance();
+            SynchronizationContext.SetSynchronizationContext(ET.ThreadSynchronizationContext.Instance);
+
+            this.argMap = ArgMap.ParseArguments(args);
+
+            string? program = this.argMap.GetArg("program");
+            if (program == null)
             {
-                program = answer;
-            });
-        }
+                (_, program) = AskHelp.AskSelect("which program?", "robot*", "server", "linux").OnAnswer2(); 
+            }
 
-        if (program == "robot")
-        {
-            new RobotProgram();
-        }
-        else if (program == "server")
-        {
+            if (program == "robot")
+            {
+                new RobotProgram().Start();
+            }
+            else if (program == "server")
+            {
+            }
+            else if (program == "linux")
+            {
+                new LinuxProgram().Start();
+            }
+
+            while (true)
+            {
+                Thread.Sleep(1);
+                ET.ThreadSynchronizationContext.Instance.Update();
+            }
         }
     }
 }

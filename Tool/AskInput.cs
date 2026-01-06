@@ -8,11 +8,11 @@ public class AskInput
         this.question = question;
     }
 
-    public void OnAnswer(Action<string> action)
+    public string OnAnswer()
     {
         Console.Write(this.question);
 
         string answer = Console.ReadLine();
-        action(answer);
+        return answer;
     }
 }

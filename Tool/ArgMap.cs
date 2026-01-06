@@ -1,8 +1,10 @@
 public class ArgMap
 {
-    public static ArgMap Dictionary<string, string> FromArgs(string[] args)
+    Dictionary<string, string> dict = new();
+
+    public static ArgMap ParseArguments(string[] args)
     {
-        var dict = new Dictionary<string, string>();
+        var map = new ArgMap();
 
         for (int j = 0; j < args.Length; j++)
         {
@@ -25,15 +27,15 @@ public class ArgMap
             {
                 throw new Exception("BAD ARGUMENT " + arg);
             }
-            dict[arg.Substring(0, i)] = arg.Substring(i + 1);
+            map.dict[arg.Substring(0, i)] = arg.Substring(i + 1);
         }
-        return dict;
+        return map;
     }
 
-    static string TryGetArg(Dictionary<string, string> argMap, string key)
+    public string? GetArg(string key)
     {
         string value;
-        if (!argMap.TryGetValue(key, out value))
+        if (!this.dict.TryGetValue(key, out value))
         {
             return null;
         }

@@ -23,7 +23,7 @@ public class AskSelect
         }
     }
 
-    public void OnAnswer(Action<int> action)
+    public int OnAnswer()
     {
         for (int i = 0; i < this.options.Count; i++)
         {
@@ -36,20 +36,19 @@ public class AskSelect
         if (answer.Length == 0 && this.defaultIndex >= 0)
         {
             Console.WriteLine();
-            action(this.defaultIndex);
-            return;
+            return this.defaultIndex;
         }
 
         int select;
         if (!int.TryParse(answer, out select) || select - 1 < 0 || select - 1 >= this.options.Count)
         {
             // 重新问
-            OnAnswer(action);
+            return OnAnswer();
         }
         else
         {
             Console.WriteLine();
-            action(select - 1);
+            return select - 1;
         }
     }
 
@@ -89,9 +88,10 @@ public class AskSelect
         action(answers);
     }
 
-    public void OnAnswer(Action<int, string> action)
+    public (int, string) OnAnswer2()
     {
-        this.OnAnswer(index => action(index, this.options[index]));
+        int index = this.OnAnswer();
+        return (index, this.options[index]);
     }
 
     public void OnAnswers(Action<List<KeyValuePair<int, string>>> action)
