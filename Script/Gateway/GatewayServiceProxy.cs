@@ -21,7 +21,7 @@ namespace Script
                 return ECode.Server_NotConnected;
             }
 
-            Forwarding.SendClientMessageThroughGateway(connection, userIds, MsgType.A_RoomChat, msg, null, null);
+            Forwarding.S_to_G(connection, userIds, MsgType.A_RoomChat, msg, null, null);
             return ECode.Success;
         }
 

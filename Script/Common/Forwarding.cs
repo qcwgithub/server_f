@@ -16,37 +16,36 @@ namespace Script
             }
         }
 
-        // G:C->S
-        public static ServiceType? GatewayTryForwardClientMessageToOtherService(GatewayService gatewayService, GatewayUserConnection connection, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback? reply)
+        public static ServiceType? G_to_S(GatewayService gatewayService, GatewayUserConnection connection, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback? reply)
         {
             ServiceType? serviceType = ShouldForwardClientMessage(msgType);
             if (serviceType == null)
             {
-                gatewayService.logger.Info($"G_c_s() msgType {msgType} NO");
+                gatewayService.logger.Info($"G_to_S {msgType} Not Forward");
                 return null;
             }
 
             GatewayUser? user = connection.user;
             if (user == null)
             {
-                gatewayService.logger.Error("G_c_s() connection.user == null");
+                gatewayService.logger.Error("G_to_S connection.user == null");
                 return serviceType;
             }
 
             if (user.userServiceId == 0)
             {
-                gatewayService.logger.Error("G_c_s() user.userServiceId == 0");
+                gatewayService.logger.Error("G_to_S user.userServiceId == 0");
                 return serviceType;
             }
 
             ServiceConnection? serviceConnection = gatewayService.data.GetOtherServiceConnection(user.userServiceId);
             if (serviceConnection == null || !serviceConnection.IsConnected())
             {
-                gatewayService.logger.Error("G_c_s() serviceConnection == null || !serviceConnection.IsConnected()");
+                gatewayService.logger.Error("G_to_S serviceConnection == null || !serviceConnection.IsConnected()");
                 return serviceType;
             }
 
-            gatewayService.logger.Info($"G_c_s() msgType {msgType} -> {serviceConnection.tai}");
+            gatewayService.logger.Info($"G_to_S {msgType} -> {serviceConnection.tai}");
 
             var msgForward = new MsgForward();
             msgForward.userId = user.userId;
@@ -54,23 +53,11 @@ namespace Script
             msgForward.innerMsgType = msgType;
             msgForward.innerMsgBytes = msgBytes;
 
-            if (reply != null)
-            {
-                serviceConnection.Send(MsgType.Forward, msgForward, (e, segment) =>
-                {
-                    reply(e, segment.ToArray());
-                },
-                null);
-            }
-            else
-            {
-                serviceConnection.Send(MsgType.Forward, msgForward, null, null);
-            }
+            serviceConnection.Send(MsgType.Forward, msgForward, reply, null);
             return serviceType;
         }
 
-        // G:S->C
-        public static bool GatewayTryForwardClientMessageToClient(GatewayService gatewayService, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback? reply)
+        public static bool G_from_S(GatewayService gatewayService, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback? reply)
         {
             if (msgType != MsgType.Forward)
             {
@@ -94,12 +81,11 @@ namespace Script
             return true;
         }
 
-        // S:<-G<-C
-        public static async Task<bool> TryReceiveClientMessageFromGateway(UserService userService, ServiceConnection serviceConnection, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback? reply)
+        public static async Task<bool> S_from_G(UserService userService, ServiceConnection serviceConnection, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback? reply)
         {
             if (msgType != MsgType.Forward)
             {
-                userService.logger.Info($"c_g_S() msgType {msgType} Not Forward");
+                userService.logger.Info($"S_from_G {msgType} Not Forward");
                 return false;
             }
 
@@ -112,19 +98,19 @@ namespace Script
 
             if (user == null)
             {
-                userService.logger.Error($"c_g_S() msgType {msgType} user == null");
+                userService.logger.Error($"S_from_G {msgType} user == null");
                 return true;
             }
 
             if (user.connection == null)
             {
-                userService.logger.Error($"c_g_S() msgType {msgType} user.connection == null");
+                userService.logger.Error($"S_from_G {msgType} user.connection == null");
                 return true;
             }
 
             if (user.connection.gatewayServiceId != serviceConnection.serviceId)
             {
-                userService.logger.Error($"c_g_S() msgType {msgType} user.connection.gatewayServiceId {user.connection.gatewayServiceId} != serviceConnection.serviceId {serviceConnection.serviceId}");
+                userService.logger.Error($"S_from_G {msgType} user.connection.gatewayServiceId {user.connection.gatewayServiceId} != serviceConnection.serviceId {serviceConnection.serviceId}");
                 return true;
             }
 
@@ -134,7 +120,7 @@ namespace Script
                 msg_userId = msgForward.userId
             };
 
-            userService.logger.Info($"c_g_S() innerMsgType {msgForward.innerMsgType}");
+            userService.logger.Info($"S_from_G {msgForward.innerMsgType}");
 
             var r = await userService.dispatcher.Dispatch(context, msgForward.innerMsgType, innerMsg);
             if (reply != null)
@@ -146,8 +132,7 @@ namespace Script
             return true;
         }
 
-        // S:->G->C
-        public static void SendClientMessageThroughGateway(ServiceConnection serviceConnection, long userId, MsgType msgType, object msg, ReplyCallback reply, int? pTimeoutS)
+        public static void S_to_G(ServiceConnection serviceConnection, long userId, MsgType msgType, object msg, ReplyCallback? reply, int? pTimeoutS)
         {
             var msgForward = new MsgForward();
             msgForward.userId = userId;
@@ -155,10 +140,10 @@ namespace Script
             msgForward.innerMsgType = msgType;
             msgForward.innerMsgBytes = MessageTypeConfigData.SerializeMsg(msgType, msg);
 
-            SendClientMessageThroughGateway(serviceConnection, msgForward, reply, pTimeoutS);
+            S_to_G(serviceConnection, msgForward, reply, pTimeoutS);
         }
 
-        public static void SendClientMessageThroughGateway(ServiceConnection serviceConnection, List<long> userIds, MsgType msgType, object msg, ReplyCallback reply, int? pTimeoutS)
+        public static void S_to_G(ServiceConnection serviceConnection, List<long> userIds, MsgType msgType, object msg, ReplyCallback? reply, int? pTimeoutS)
         {
             var msgForward = new MsgForward();
             msgForward.userId = 0;
@@ -166,25 +151,14 @@ namespace Script
             msgForward.innerMsgType = msgType;
             msgForward.innerMsgBytes = MessageTypeConfigData.SerializeMsg(msgType, msg);
 
-            SendClientMessageThroughGateway(serviceConnection, msgForward, reply, pTimeoutS);
+            S_to_G(serviceConnection, msgForward, reply, pTimeoutS);
         }
 
-        static void SendClientMessageThroughGateway(ServiceConnection serviceConnection, MsgForward msgForward, ReplyCallback reply, int? pTimeoutS)
+        static void S_to_G(ServiceConnection serviceConnection, MsgForward msgForward, ReplyCallback? reply, int? pTimeoutS)
         {
             MyDebug.Assert(serviceConnection.serviceType == ServiceType.Gateway);
 
-            if (reply != null)
-            {
-                serviceConnection.Send(MsgType.Forward, msgForward, (e, segment) =>
-                {
-                    reply(e, segment.ToArray());
-                },
-                pTimeoutS);
-            }
-            else
-            {
-                serviceConnection.Send(MsgType.Forward, msgForward, null, null);
-            }
+            serviceConnection.Send(MsgType.Forward, msgForward, reply, pTimeoutS);
         }
 
         static void SendToClient(GatewayService gatewayService, long userId, MsgType msgType, object msg, ReplyCallback? reply)
@@ -195,18 +169,7 @@ namespace Script
                 return;
             }
 
-            if (reply != null)
-            {
-                user.connection.Send(msgType, msg, (e, segment) =>
-                {
-                    reply(e, segment.ToArray());
-                },
-                null);
-            }
-            else
-            {
-                user.connection.Send(msgType, msg, null, null);
-            }
+            user.connection.Send(msgType, msg, reply, null);
         }
     }
 }

@@ -37,7 +37,7 @@ namespace Script
                 return;
             }
 
-            bool received = await Forwarding.TryReceiveClientMessageFromGateway(this.userService, serviceConnection, msgType, msgBytes, reply);
+            bool received = await Forwarding.S_from_G(this.userService, serviceConnection, msgType, msgBytes, reply);
             if (!received)
             {
                 base.ReceiveFromNetwork(data, seq, msgType, msgBytes, reply);

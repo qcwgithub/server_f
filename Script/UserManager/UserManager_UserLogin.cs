@@ -73,11 +73,11 @@ namespace Script
                 e = await this.service.ss.InsertUserInfo(newUserInfo);
                 if (e != ECode.Success)
                 {
-                    this.service.logger.Error($"Create user info {userId} e = {e}");
+                    this.service.logger.Error($"Create user info {userId} {e}");
                     return e;
                 }
 
-                this.service.logger.Info($"Create user info {userId} e = {e}");
+                this.service.logger.Info($"Create user info {userId} {e}");
                 accountInfo.userIds.Add(userId);
             }
             else

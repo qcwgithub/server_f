@@ -14,7 +14,7 @@ namespace Script
         {
             var serviceConnection = (ServiceConnection)data.customData;
 
-            bool b = Forwarding.GatewayTryForwardClientMessageToClient(this.gatewayService, msgType, msgBytes, reply);
+            bool b = Forwarding.G_from_S(this.gatewayService, msgType, msgBytes, reply);
             if (!b)
             {
                 base.ReceiveFromNetwork(data, seq, msgType, msgBytes, reply);

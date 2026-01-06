@@ -63,7 +63,7 @@ namespace Data
         public WebSocketListenerData? webSocketListenerDataForClient;
 
         public ISendClientMessageThroughGateway? sendClientMessageThroughGateway;
-        public ISendClientMessageThroughGateway? GetSendClientMessageThroughGateway() => this.sendClientMessageThroughGateway;
+        public ISendClientMessageThroughGateway? Get_S_to_G() => this.sendClientMessageThroughGateway;
 
         // 需要连接到哪些服务器
         public readonly List<ServiceType> connectToServiceTypes = new List<ServiceType>();

@@ -15,7 +15,7 @@ namespace Script
             GatewayUserConnection? gatewayUserConnection = data.customData as GatewayUserConnection;
             if (gatewayUserConnection != null)
             {
-                ServiceType? serviceType = Forwarding.GatewayTryForwardClientMessageToOtherService(this.gatewayService, gatewayUserConnection, msgType, msgBytes, reply);
+                ServiceType? serviceType = Forwarding.G_to_S(this.gatewayService, gatewayUserConnection, msgType, msgBytes, reply);
                 if (serviceType != null)
                 {
                     return;

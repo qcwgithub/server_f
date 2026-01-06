@@ -35,7 +35,7 @@ namespace Data
             ServiceConnection? serviceConnection = this.sd.GetOtherServiceConnection(this.gatewayServiceId);
             if (serviceConnection != null && serviceConnection.IsConnected())
             {
-                this.sd.GetSendClientMessageThroughGateway().SendClientMessageThroughGateway(serviceConnection, this.user.userId, msgType, msg, cb, pTimeoutS);
+                this.sd.Get_S_to_G().S_to_G(serviceConnection, this.user.userId, msgType, msg, cb, pTimeoutS);
             }
         }
     }
