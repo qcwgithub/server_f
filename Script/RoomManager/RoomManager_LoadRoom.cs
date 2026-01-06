@@ -12,6 +12,11 @@ namespace Script
 
         public override async Task<ECode> Handle(MessageContext context, MsgRoomManagerLoadRoom msg, ResRoomManagerLoadRoom res)
         {
+            if (!SnowflakeScript<Service>.CheckValid(msg.roomId))
+            {
+                return ECode.InvalidRoomId;
+            }
+
             context.lockValue = await this.server.lockRedis.LockRoom(msg.roomId, this.service.logger);
             if (context.lockValue != null)
             {

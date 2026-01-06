@@ -40,5 +40,6 @@ namespace Data
         WrongRoomId = 96,
         UserNotInRoom = 97,
         NoHandler = 98,
+        InvalidRoomId = 99,
     }
 }

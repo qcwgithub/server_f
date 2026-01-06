@@ -20,7 +20,7 @@ namespace Script
         public const long MIN_WORKER_ID = 1; // 其实可以0，但是如果缺少配置也是0，干脆1
         public const long MAX_WORKER_ID = (1L << WORKER_ID_BITS) - 1;
 
-        public const long MIN_SEQ = 0;
+        public const long MIN_SEQ = 1;
         public const long MAX_SEQ = (1L << SEQ_BITS) - 1;
 
         public static long Encode(long stamp, long workerId, long seq)
@@ -71,6 +71,11 @@ namespace Script
             }
 
             return true;
+        }
+
+        public static bool CheckValid(long id)
+        {
+            return Decode(id, out long stamp, out long workerId, out long seq);
         }
 
         protected bool InitSnowflakeData(long stamp, long workerId)
