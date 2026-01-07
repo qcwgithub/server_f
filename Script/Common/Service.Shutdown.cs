@@ -46,6 +46,9 @@ namespace Script
             }
         }
 
+        // 1 OnShutdown
+        // 2 Timer
+        // 3 Ctrl-C
         public async Task<ECode> Shutdown(bool force)
         {
             this.logger.Info($"Shutdown force {force}");

@@ -172,6 +172,7 @@ namespace Data
                 int total = 0;
                 int finish = 0;
 
+                var tcs = new TaskCompletionSource();
                 foreach (ServiceConnection connection in connections)
                 {
                     if (connection.IsConnected())
@@ -180,14 +181,15 @@ namespace Data
                         connection.Send(MsgType._Service_RemoteWillShutdown, new MsgRemoteWillShutdown(), (e, segment) =>
                         {
                             finish++;
+                            if (finish >= total)
+                            {
+                                tcs.SetResult();
+                            }
                         },
                         pTimeoutS: 5);
                     }
                 }
-                while (finish < total)
-                {
-                    await Task.Delay(1000);
-                }
+                await tcs.Task;
 
                 List<int> serviceIds = new List<int>();
                 foreach (ServiceConnection connection in connections)

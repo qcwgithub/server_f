@@ -13,6 +13,7 @@ namespace Data
     public enum UserClearDestroyTimerReason
     {
         UserLoginSuccess,
+        Destroy,
     }
 
     [MessagePackObject]

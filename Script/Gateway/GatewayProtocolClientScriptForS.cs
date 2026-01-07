@@ -12,7 +12,12 @@ namespace Script
 
         public override void ReceiveFromNetwork(ProtocolClientData data, int seq, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback? reply)
         {
-            var serviceConnection = (ServiceConnection)data.customData;
+            var serviceConnection = data.customData as ServiceConnection;
+            if (serviceConnection == null) // when from tool
+            {
+                base.ReceiveFromNetwork(data, seq, msgType, msgBytes, reply);
+                return;
+            }
 
             bool b = Forwarding.G_from_S(this.gatewayService, msgType, msgBytes, reply);
             if (!b)

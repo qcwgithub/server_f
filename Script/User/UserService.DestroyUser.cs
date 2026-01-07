@@ -10,6 +10,7 @@ namespace Script
             this.logger.InfoFormat("DestroyUser userId {0}, reason {1}, preCount {2}", user.userId, reason, this.sd.userCount);
 
             this.ss.ClearSaveTimer(user);
+            this.ss.ClearDestroyTimer(user, UserClearDestroyTimerReason.Destroy);
 
             // Save once
             ECode e = await this.SaveUser(user, "DestroyUser");

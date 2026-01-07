@@ -94,6 +94,7 @@ namespace Script
 
             this.snowflakeData.stamp = stamp;
             this.snowflakeData.workerId = workerId;
+            this.snowflakeData.seq = MIN_SEQ;
             return true;
         }
 

@@ -1,2 +1,2 @@
-dotnet Robot\bin\Debug\net10.0\Robot.dll
+dotnet Tool\bin\Debug\net10.0\Tool.dll program=robot
 PAUSE

@@ -80,6 +80,7 @@ namespace Script
             this.dispatcher.AddHandler(new OnTimer<S>(this.server, (S)this));
             this.dispatcher.AddHandler(new OnGetReloadConfigOptions<S>(this.server, (S)this));
             this.dispatcher.AddHandler(new OnGC<S>(this.server, (S)this));
+            this.dispatcher.AddHandler(new OnShutdown<S>(this.server, (S)this));
 
             this.dispatcher.AddHandler(new OnGetPendingMsgList<S>(this.server, (S)this));
             this.dispatcher.AddHandler(new OnGetScriptVersion<S>(this.server, (S)this));

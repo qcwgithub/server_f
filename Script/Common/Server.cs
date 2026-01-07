@@ -182,8 +182,8 @@ namespace Script
             // 启动顺序与关闭顺序相反
             this.services.Sort((a, b) =>
             {
-                int a_order = this.data.shutdownServiceOrder.IndexOf(a.data.serviceType);
-                int b_order = this.data.shutdownServiceOrder.IndexOf(b.data.serviceType);
+                int a_order = ServerData.shutdownServiceOrder.IndexOf(a.data.serviceType);
+                int b_order = ServerData.shutdownServiceOrder.IndexOf(b.data.serviceType);
                 return b_order - a_order;
             });
 
@@ -299,7 +299,7 @@ namespace Script
             {
                 var allServices = new List<Service>(this.services);
 
-                var order = this.data.shutdownServiceOrder;
+                var order = ServerData.shutdownServiceOrder;
                 allServices.Sort((a, b) =>
                 {
                     if (a.data.serviceType == b.data.serviceType)

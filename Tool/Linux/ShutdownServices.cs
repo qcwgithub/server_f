@@ -34,10 +34,17 @@ namespace Tool
                 return;
             }
 
-            string[] array = joinedServices.Split(',');
-            for (int i = 0; i < array.Length; i++)
+            List<ServiceTypeAndId> tais = joinedServices.Split(',').Select(s => ServiceTypeAndId.FromString(s)).ToList();
+            tais.Sort((a, b) =>
             {
-                ServiceTypeAndId tai = ServiceTypeAndId.FromString(array[i]);
+                int a_order = ServerData.shutdownServiceOrder.IndexOf(a.serviceType);
+                int b_order = ServerData.shutdownServiceOrder.IndexOf(b.serviceType);
+                return a_order - b_order;
+            });
+
+            for (int i = 0; i < tais.Count; i++)
+            {
+                ServiceTypeAndId tai = tais[i];
                 ServiceConfig? serviceConfig = this.allServiceConfigs.Find(x => x.serviceType == tai.serviceType && x.serviceId == tai.serviceId);
                 if (serviceConfig == null)
                 {
@@ -45,6 +52,7 @@ namespace Tool
                     continue;
                 }
 
+                ConsoleEx.WriteLine(ConsoleColor.White, $"Connecting to {tai}...");
                 var connection = new ToolConnection();
                 bool success = await connection.Connect(serviceConfig.inIp, serviceConfig.inPort);
                 if (!success)
@@ -58,6 +66,8 @@ namespace Tool
                 var r = await connection.Request(msgType, new MsgShutdown { force = option == 3 });
                 ConsoleEx.WriteLine(r.e == ECode.Success ? ConsoleColor.Green : ConsoleColor.Red, $"Request {msgType} result {r.e}");
                 connection.Close();
+
+                Console.WriteLine();
             }
         }
     }

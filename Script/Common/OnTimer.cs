@@ -26,6 +26,10 @@ namespace Script
                     }
                     break;
 
+                case TimerType.Shutdown:
+                    this.service.Shutdown(false).Forget();
+                    break;
+
                 default:
                     throw new Exception("Not handled TimerType." + msg.timerType);
             }

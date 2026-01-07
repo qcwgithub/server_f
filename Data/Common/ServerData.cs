@@ -199,7 +199,7 @@ namespace Data
             this.msgConfigData = new MessageTypeConfigData();
 
             // Console.WriteLine(this.redis.GetServer().Version);
-            this.InitShutdownServiceOrder();
+            InitShutdownServiceOrder();
 
             this.serviceDatas = new Dictionary<int, ServiceData>();
             foreach (ServiceTypeAndId typeAndId in this.serviceTypeAndIds)
@@ -212,9 +212,25 @@ namespace Data
             this.timerSData.Start();
         }
 
-        public List<ServiceType> shutdownServiceOrder { get; private set; }
-        void InitShutdownServiceOrder()
+        static List<ServiceType>? _shutdownServiceOrder;
+        public static List<ServiceType> shutdownServiceOrder
         {
+            get
+            {
+                if (_shutdownServiceOrder == null)
+                {
+                    InitShutdownServiceOrder();
+                }
+                return _shutdownServiceOrder!;
+            }
+        }
+        public static void InitShutdownServiceOrder()
+        {
+            if (_shutdownServiceOrder != null)
+            {
+                return;
+            }
+
             for (ServiceType serviceType = 0; serviceType < ServiceType.Count; serviceType++)
             {
                 List<ServiceType> connects = GetConnectToServiceIds(serviceType);
@@ -272,7 +288,7 @@ namespace Data
                 }
             }
 
-            this.shutdownServiceOrder = dones;
+            _shutdownServiceOrder = dones;
         }
 
         static ServiceData CreateServiceData(ServiceTypeAndId typeAndId)
