@@ -216,6 +216,8 @@ namespace Data
             // -----------------------------------------------------------
             int total = 0;
             int finish = 0;
+
+            var tcs = new TaskCompletionSource();
             foreach (var kv in this.otherServiceConnections)
             {
                 ServiceConnection connection = kv.Value;
@@ -225,13 +227,14 @@ namespace Data
                     connection.Send(MsgType._Service_RemoteWillShutdown, new MsgRemoteWillShutdown(), (e, segment) =>
                     {
                         finish++;
+                        if (finish >= total)
+                        {
+                            tcs.SetResult();
+                        }
                     }, pTimeoutS: 5);
                 }
             }
-            while (finish < total)
-            {
-                await Task.Delay(1000);
-            }
+            await tcs.Task;
 
             // -----------------------------------------------------------
 
@@ -245,7 +248,9 @@ namespace Data
             foreach (var list in this.otherServiceConnections2)
             {
                 if (list != null)
+                {
                     list.Clear();
+                }
             }
         }
 
