@@ -40,6 +40,7 @@ namespace Data
         {
             ServiceType.Db,
             ServiceType.Global,
+            ServiceType.RoomManager,
         };
 
         public RoomServiceData(ServiceTypeAndId serviceTypeAndId)

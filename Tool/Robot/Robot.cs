@@ -50,6 +50,11 @@ namespace Tool
 
                     this.roomId = this.resGetRecommendedRooms.roomInfos[0].roomId;
                 }
+
+                while (true)
+                {
+                    await Task.Delay(1000);
+                }
             }
             while (false);
 

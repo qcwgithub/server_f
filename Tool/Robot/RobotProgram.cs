@@ -15,10 +15,13 @@ namespace Tool
                 this.robotDict.Add(robot.channelUserId, robot);
             }
 
+            var tasks = new List<Task>();
             foreach (var pair in robotDict)
             {
-                await pair.Value.Start();
+                tasks.Add(pair.Value.Start());
             }
+
+            await Task.WhenAll(tasks);
         }
     }
 }

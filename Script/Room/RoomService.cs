@@ -16,6 +16,7 @@ namespace Script
         public readonly DbServiceProxy dbServiceProxy;
         public readonly GlobalServiceProxy globalServiceProxy;
         public readonly GatewayServiceProxy gatewayServiceProxy;
+        public readonly RoomManagerServiceProxy roomManagerServiceProxy;
 
         protected override MessageDispatcher CreateMessageDispatcher()
         {
@@ -30,6 +31,7 @@ namespace Script
             this.AddServiceProxy(this.dbServiceProxy = new DbServiceProxy(this));
             this.AddServiceProxy(this.globalServiceProxy = new GlobalServiceProxy(this));
             this.AddServiceProxy(this.gatewayServiceProxy = new GatewayServiceProxy(this));
+            this.AddServiceProxy(this.roomManagerServiceProxy = new RoomManagerServiceProxy(this));
 
             this.ss = new RoomServiceScript(this.server, this);
         }
