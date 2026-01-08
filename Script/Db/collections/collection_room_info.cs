@@ -31,6 +31,8 @@ public partial  class collection_room_info : ServiceScript<DbService>
     public async Task CreateIndex()
     {
         await MongoHelper.CreateIndex(this.mongoClient, this.dbName, COLLECTION, nameof(RoomInfo.roomId), true, true, this.service.logger);
+        await MongoHelper.CreateIndex(this.mongoClient, this.dbName, COLLECTION, nameof(RoomInfo.title), true, false, this.service.logger);
+        await MongoHelper.CreateIndex(this.mongoClient, this.dbName, COLLECTION, nameof(RoomInfo.desc), true, false, this.service.logger);
     }
 
     //// AUTO CREATED ////

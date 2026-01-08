@@ -21,7 +21,7 @@ namespace Tool
 
         ConfigLoader configLoader = new();
         List<ServiceConfig> allServiceConfigs;
-        public async void Start()
+        public async Task Start()
         {
             if (!this.configLoader.LoadAllServiceConfigs(out this.allServiceConfigs, out string message))
             {
@@ -29,7 +29,8 @@ namespace Tool
                 return;
             }
 
-            while (true)
+            bool exit = false;
+            while (!exit)
             {
                 Action action = this.AskAction();
                 switch (action)
@@ -45,6 +46,14 @@ namespace Tool
 
                     case Action.ImportRoomConfig:
                         await this.ImportRoomConfig();
+                        break;
+
+                    case Action.SearchRoom:
+                        await this.SearchRoom();
+                        break;
+
+                    case Action.Exit:
+                        exit = true;
                         break;
                 }
             }

@@ -2,9 +2,28 @@ using Data;
 using MongoDB.Driver;
 using MongoDB.Bson;
 using Script;
+using System.Text.RegularExpressions;
 
 public partial class collection_room_info
 {
+    public async Task<List<RoomInfo>> Search(string keyword)
+    {
+        var collection = this.GetCollection();
+
+        // Regex.Escape(keyword) 防止用户输入特殊正则字符崩掉查询
+        var regex = new BsonRegularExpression(new Regex(Regex.Escape(keyword), RegexOptions.IgnoreCase));
+
+        var f_title = Builders<RoomInfo>.Filter.Regex(nameof(RoomInfo.title), regex);
+        var f_desc = Builders<RoomInfo>.Filter.Regex(nameof(RoomInfo.desc), regex);
+        var filter = Builders<RoomInfo>.Filter.Or(f_title, f_desc);
+
+        var find = collection.Find(filter)
+            .Limit(20); // 分页
+
+        var result = await find.ToListAsync();
+        return result;
+    }
+
     public IMongoCollection<RoomInfo_Db> GetCollection_Db()
     {
         // It’s ok if the database doesn’t yet exist. It will be created upon first use.

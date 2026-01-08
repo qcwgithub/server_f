@@ -155,24 +155,24 @@ namespace Script
             string indexName = await collection.Indexes.CreateOneAsync(
                     new CreateIndexModel<BsonDocument>(indexKeysDefinition, new CreateIndexOptions() { Unique = isUnique, Background = true }));
 
-            string? keysString = null;
-            if (keys.Count == 1)
-            {
-                keysString = keys[0];
-            }
-            else
-            {
-                keysString = "(";
-                for (int i = 0; i < keys.Count; i++)
-                {
-                    keysString += keys[i];
-                    if (i < keys.Count - 1)
-                    {
-                        keysString += ",";
-                    }
-                }
-                keysString += ")";
-            }
+            // string? keysString = null;
+            // if (keys.Count == 1)
+            // {
+            //     keysString = keys[0];
+            // }
+            // else
+            // {
+            //     keysString = "(";
+            //     for (int i = 0; i < keys.Count; i++)
+            //     {
+            //         keysString += keys[i];
+            //         if (i < keys.Count - 1)
+            //         {
+            //             keysString += ",";
+            //         }
+            //     }
+            //     keysString += ")";
+            // }
 
             // logger.InfoFormat("CreateIndex {0}.{1} => {2}", collectionName, keysString, indexName);
         }

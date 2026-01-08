@@ -66,6 +66,7 @@ namespace Script
 
             this.dispatcher.AddHandler(new Insert_RoomInfo(this.server, this));
             this.dispatcher.AddHandler(new Save_RoomInfo(this.server, this));
+            this.dispatcher.AddHandler(new Search_RoomInfo(this.server, this));
 
             this.dispatcher.AddHandler(new Db_OnTimer(this.server, this), true);
         }

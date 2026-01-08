@@ -16,6 +16,8 @@ namespace Tool
         USAction,
         TaskQueueLengthes,
         ImportRoomConfig,
+        SearchRoom,
+        Exit,
 
         Count,
     }
@@ -52,8 +54,12 @@ namespace Tool
                     return "US Action";
                 case Action.TaskQueueLengthes:
                     return "Task Queue Lengthes";
-                    case Action.ImportRoomConfig:
+                case Action.ImportRoomConfig:
                     return "Import Room Config";
+                case Action.SearchRoom:
+                    return "Search Room";
+                case Action.Exit:
+                    return "Exit";
                 default:
                     return string.Empty;
             }

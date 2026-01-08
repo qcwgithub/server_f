@@ -22,22 +22,23 @@ namespace Tool
             string? program = this.argMap.GetArg("program");
             if (program == null)
             {
-                (_, program) = AskHelp.AskSelect("which program?", "robot*", "server", "linux").OnAnswer2(); 
+                (_, program) = AskHelp.AskSelect("which program?", "robot*", "server", "linux").OnAnswer2();
             }
 
+            Task? task = null;
             if (program == "robot")
             {
-                new RobotProgram().Start();
+                task = new RobotProgram().Start();
             }
             else if (program == "server")
             {
             }
             else if (program == "linux")
             {
-                new LinuxProgram().Start();
+                task = new LinuxProgram().Start();
             }
 
-            while (true)
+            while (task != null && !task.IsCompleted)
             {
                 Thread.Sleep(1);
                 ET.ThreadSynchronizationContext.Instance.Update();

@@ -55,6 +55,7 @@ _Query_RoomInfo_by_roomId,5009,MsgQuery_RoomInfo_by_roomId,ResQuery_RoomInfo_by_
 _Query_RoomInfo_maxOf_roomId,5010,MsgQuery_RoomInfo_maxOf_roomId,ResQuery_RoomInfo_maxOf_roomId,1,0
 _Insert_RoomInfo,5011,MsgInsert_RoomInfo,ResInsert_RoomInfo,1,0
 _Save_RoomInfo,5012,MsgSave_RoomInfo,ResSave_RoomInfo,1,0
+_Search_RoomInfo,5013,MsgSearch_RoomInfo,ResSearch_RoomInfo,1,0
 #,,,,,
 ClientStart,10000,,,,
 Forward,10001,MsgForward,,,
@@ -64,3 +65,5 @@ EnterRoom,10004,MsgEnterRoom,ResEnterRoom,,
 LeaveRoom,10005,MsgLeaveRoom,ResLeaveRoom,,
 SendRoomChat,10006,MsgSendRoomChat,ResSendRoomChat,,
 A_RoomChat,10007,A_MsgRoomChat,,,
+SearchRoom,10008,MsgSearchRoom,ResSearchRoom,,
+GetRecommendedRooms,10009,MsgGetRecommendedRooms,ResGetRecommendedRooms,,

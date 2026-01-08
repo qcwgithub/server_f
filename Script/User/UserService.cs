@@ -54,11 +54,13 @@ namespace Script
 
             this.dispatcher.AddHandler(new User_Action(this.server, this));
             this.dispatcher.AddHandler(new User_EnterRoom(this.server, this));
+            this.dispatcher.AddHandler(new User_GetRecommendedRooms(this.server, this));
             this.dispatcher.AddHandler(new User_LeaveRoom(this.server, this));
             this.dispatcher.AddHandler(new User_OnReloadConfigs(this.server, this), true);
             this.dispatcher.AddHandler(new User_OnTimer(this.server, this), true);
             this.dispatcher.AddHandler(new User_SaveUserImmediately(this.server, this));
             this.dispatcher.AddHandler(new User_SaveUserInfoToFile(this.server, this));
+            this.dispatcher.AddHandler(new User_SearchRoom(this.server, this));
             this.dispatcher.AddHandler(new User_ServerKick(this.server, this));
             this.dispatcher.AddHandler(new User_SetGmFlag(this.server, this));
             this.dispatcher.AddHandler(new User_UserDisconnectFromGateway(this.server, this));

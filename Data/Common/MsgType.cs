@@ -52,6 +52,7 @@ namespace Data
         _Query_RoomInfo_maxOf_roomId = 5010,
         _Insert_RoomInfo = 5011,
         _Save_RoomInfo = 5012,
+        _Search_RoomInfo = 5013,
         ClientStart = 10000,
         Forward = 10001,
         Login = 10002,
@@ -60,6 +61,8 @@ namespace Data
         LeaveRoom = 10005,
         SendRoomChat = 10006,
         A_RoomChat = 10007,
+        SearchRoom = 10008,
+        GetRecommendedRooms = 10009,
 
         #endregion auto
     }

@@ -4,7 +4,7 @@ namespace Tool
 {
     public partial class LinuxProgram
     {
-        async Task<ECode> Connect_Request_Close(ServiceConfig serviceConfig, MsgType msgType, object msg)
+        async Task<MyResponse> Connect_Request_Close(ServiceConfig serviceConfig, MsgType msgType, object msg)
         {
             var tai = serviceConfig.tai;
 
@@ -22,7 +22,7 @@ namespace Tool
             connection.Close();
 
             Console.WriteLine();
-            return ECode.Success;
+            return r;
         }
 
         async Task Connect_Request_Close(List<ServiceConfig> serviceConfigs, MsgType msgType, object msg)

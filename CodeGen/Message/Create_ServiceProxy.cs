@@ -33,6 +33,7 @@ public class Create_ServiceProxy
                     case "Save":
                     case "Query":
                     case "Insert":
+                    case "Search":
                         serviceType = "Db";
                         methodName = key + "_" + config.msgType.Substring(index2 + 1);
                         break;
