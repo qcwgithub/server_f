@@ -14,6 +14,10 @@ namespace Script
         {
             return await this.Request(ServiceType.RoomManager, MsgType._RoomManager_LoadRoom, msg);
         }
+        public async Task<MyResponse> ImportRoomConfig(MsgRoomManagerImportRoomConfig msg)
+        {
+            return await this.Request(ServiceType.RoomManager, MsgType._RoomManager_ImportRoomConfig, msg);
+        }
 
         #endregion auto_proxy
     }

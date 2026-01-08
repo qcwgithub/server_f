@@ -48,6 +48,24 @@ public partial class collection_room_info
             updList.Add(upd);
         }
 
+        if (infoNullable.title != null)
+        {
+            var title_Db = XInfoHelper_Db.Copy_string(infoNullable.title);
+            var upd = title_Db != null
+                ? Builders<RoomInfo_Db>.Update.Set(nameof(RoomInfo_Db.title), title_Db)
+                : Builders<RoomInfo_Db>.Update.Unset(nameof(RoomInfo_Db.title));
+            updList.Add(upd);
+        }
+
+        if (infoNullable.desc != null)
+        {
+            var desc_Db = XInfoHelper_Db.Copy_string(infoNullable.desc);
+            var upd = desc_Db != null
+                ? Builders<RoomInfo_Db>.Update.Set(nameof(RoomInfo_Db.desc), desc_Db)
+                : Builders<RoomInfo_Db>.Update.Unset(nameof(RoomInfo_Db.desc));
+            updList.Add(upd);
+        }
+
 
         #endregion autoSave
 

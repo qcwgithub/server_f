@@ -152,6 +152,10 @@ namespace Data
                     ob = MessagePackSerializer.Deserialize<MsgRoomManagerLoadRoom>(msgBytes);
                     break;
 
+                case MsgType._RoomManager_ImportRoomConfig:
+                    ob = MessagePackSerializer.Deserialize<MsgRoomManagerImportRoomConfig>(msgBytes);
+                    break;
+
                 case MsgType._Save_AccountInfo:
                     ob = MessagePackSerializer.Deserialize<MsgSave_AccountInfo>(msgBytes);
                     break;

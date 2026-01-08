@@ -19,3 +19,5 @@ long_,,,,,lastLoginUserId,,
 @RoomInfo,,,,,,,Memory
 long_,,,,,roomId,,
 long_,,,,,createTimeS,,
+string_,,,,,title,,
+string_,,,,,desc,,

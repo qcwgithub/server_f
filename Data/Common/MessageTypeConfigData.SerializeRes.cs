@@ -152,6 +152,10 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((ResRoomManagerLoadRoom)res);
                     break;
 
+                case MsgType._RoomManager_ImportRoomConfig:
+                    msgBytes = MessagePackSerializer.Serialize((ResRoomManagerImportRoomConfig)res);
+                    break;
+
                 case MsgType._Save_AccountInfo:
                     msgBytes = MessagePackSerializer.Serialize((ResSave_AccountInfo)res);
                     break;

@@ -41,6 +41,20 @@ namespace Script
                 if (buffer == null) buffer = new List<string>();
                 buffer.Add("createTimeS");
             }
+            if (last.title != curr.title)
+            {
+                infoNullable.title = curr.title;
+                last.title = curr.title;
+                if (buffer == null) buffer = new List<string>();
+                buffer.Add("title");
+            }
+            if (last.desc != curr.desc)
+            {
+                infoNullable.desc = curr.desc;
+                last.desc = curr.desc;
+                if (buffer == null) buffer = new List<string>();
+                buffer.Add("desc");
+            }
 
             #endregion auto
 

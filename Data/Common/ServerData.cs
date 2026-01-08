@@ -155,7 +155,7 @@ namespace Data
                 List<ServiceConfig> list = ori_allServiceConfigs;
 
                 this.serviceTypeAndIds = list
-                    .Select(sc => sc.Tai())
+                    .Select(sc => sc.tai)
                     .ToList();
             }
             else

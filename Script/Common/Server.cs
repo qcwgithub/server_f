@@ -215,7 +215,7 @@ namespace Script
                 ServiceType serviceType = kv.Value.serviceType;
                 if (kv.Value.state != ServiceState.ReadyToShutdown)
                 {
-                    // Console.WriteLine("!canExit " + serviceType);
+                    Console.WriteLine("!canExit " + serviceType);
                     allServicesReadyToShutdown = false;
                     break;
                 }

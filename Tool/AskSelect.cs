@@ -52,7 +52,7 @@ public class AskSelect
         }
     }
 
-    public void OnAnswers(Action<List<int>> action)
+    public List<int> OnAnswers()
     {
         for (int i = 0; i < this.options.Count; i++)
         {
@@ -64,8 +64,7 @@ public class AskSelect
         if (answer.Length == 0)
         {
             // 重新问
-            OnAnswers(action);
-            return;
+            return OnAnswers();
         }
 
         List<string> answers_string = answer.Split(',').ToList();
@@ -79,13 +78,12 @@ public class AskSelect
         }))
         {
             // 重新问
-            OnAnswers(action);
-            return;
+            return OnAnswers();
         }
 
         List<int> answers = answers_string.Select(answer => int.Parse(answer) - 1).ToList();
         Console.WriteLine();
-        action(answers);
+        return answers;
     }
 
     public (int, string) OnAnswer2()
@@ -94,8 +92,9 @@ public class AskSelect
         return (index, this.options[index]);
     }
 
-    public void OnAnswers(Action<List<KeyValuePair<int, string>>> action)
+    public List<KeyValuePair<int, string>> OnAnswers2()
     {
-        this.OnAnswers(indexes => action(indexes.Select(i => new KeyValuePair<int, string>(i, this.options[i])).ToList()));
+        List<int> indexes = this.OnAnswers();
+        return indexes.Select(i => new KeyValuePair<int, string>(i, this.options[i])).ToList();
     }
 }

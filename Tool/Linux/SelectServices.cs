@@ -1,8 +1,9 @@
+using Data;
 namespace Tool
 {
     public partial class LinuxProgram
     {
-        async Task<string> SelectServices(string? question, bool groupByProcess)
+        List<ServiceConfig> SelectServices(string? question, bool groupByProcess)
         {
             var tcs = new TaskCompletionSource<string>();
 
@@ -12,24 +13,22 @@ namespace Tool
             }
 
             List<string[]> runningServices = this.GetRunningServices();
+            List<string> targets = new List<string>();
+
             if (groupByProcess)
             {
                 string[] options = runningServices.Select(array => string.Join(',', array)).ToArray();
 
-                AskHelp.AskSelect(question, options)
-                    .OnAnswers((List<KeyValuePair<int, string>> answers) =>
-                {
-                    List<string> targets = new List<string>();
-                    for (int i = 0; i < runningServices.Count; i++)
-                    {
-                        if (answers.Exists(a => a.Key == i))
-                        {
-                            targets.AddRange(runningServices[i]);
-                        }
-                    }
+                List<KeyValuePair<int, string>> answers = AskHelp.AskSelect(question, options)
+                    .OnAnswers2();
 
-                    tcs.SetResult(string.Join(",", targets));
-                });
+                for (int i = 0; i < runningServices.Count; i++)
+                {
+                    if (answers.Exists(a => a.Key == i))
+                    {
+                        targets.AddRange(runningServices[i]);
+                    }
+                }
             }
             else
             {
@@ -39,23 +38,19 @@ namespace Tool
                     options.AddRange(array);
                 }
 
-                AskHelp.AskSelect(question, options.ToArray())
-                    .OnAnswers((List<KeyValuePair<int, string>> answers) =>
-                {
-                    List<string> targets = new List<string>();
-                    for (int i = 0; i < runningServices.Count; i++)
-                    {
-                        if (answers.Exists(a => a.Key == i))
-                        {
-                            targets.AddRange(runningServices[i]);
-                        }
-                    }
+                List<KeyValuePair<int, string>> answers = AskHelp.AskSelect(question, options.ToArray())
+                    .OnAnswers2();
 
-                    tcs.SetResult(string.Join(",", targets));
-                });
+                for (int i = 0; i < runningServices.Count; i++)
+                {
+                    if (answers.Exists(a => a.Key == i))
+                    {
+                        targets.AddRange(runningServices[i]);
+                    }
+                }
             }
 
-            return await tcs.Task;
+            return this.FindServiceConfigs(targets);
         }
     }
 }

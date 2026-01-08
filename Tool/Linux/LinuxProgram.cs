@@ -42,6 +42,10 @@ namespace Tool
                     case Action.ShutdownServicesAll:
                         await this.ShutdownServices(action == Action.ShutdownServicesAll);
                         break;
+
+                    case Action.ImportRoomConfig:
+                        await this.ImportRoomConfig();
+                        break;
                 }
             }
         }

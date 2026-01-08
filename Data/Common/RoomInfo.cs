@@ -11,6 +11,10 @@ namespace Data
         public long roomId;
         [Key(1)]
         public long createTimeS;
+        [Key(2)]
+        public string title;
+        [Key(3)]
+        public string desc;
 
         public static RoomInfo Ensure(RoomInfo? p)
         {
@@ -24,6 +28,14 @@ namespace Data
 
         public void Ensure()
         {
+            if (this.title == null)
+            {
+                this.title = string.Empty;
+            }
+            if (this.desc == null)
+            {
+                this.desc = string.Empty;
+            }
         }
 
         public bool IsDifferent(RoomInfo other)
@@ -36,6 +48,14 @@ namespace Data
             {
                 return true;
             }
+            if (this.title != other.title)
+            {
+                return true;
+            }
+            if (this.desc != other.desc)
+            {
+                return true;
+            }
             return false;
         }
 
@@ -43,6 +63,8 @@ namespace Data
         {
             this.roomId = other.roomId;
             this.createTimeS = other.createTimeS;
+            this.title = other.title;
+            this.desc = other.desc;
         }
 
         #endregion auto

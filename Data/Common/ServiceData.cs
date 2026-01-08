@@ -189,6 +189,10 @@ namespace Data
                         pTimeoutS: 5);
                     }
                 }
+                if (total == 0)
+                {
+                    tcs.SetResult();
+                }
                 await tcs.Task;
 
                 List<int> serviceIds = new List<int>();
@@ -233,6 +237,10 @@ namespace Data
                         }
                     }, pTimeoutS: 5);
                 }
+            }
+            if (total == 0)
+            {
+                tcs.SetResult();
             }
             await tcs.Task;
 

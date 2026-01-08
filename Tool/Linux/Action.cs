@@ -15,6 +15,7 @@ namespace Tool
         RevokeChat,
         USAction,
         TaskQueueLengthes,
+        ImportRoomConfig,
 
         Count,
     }
@@ -51,6 +52,8 @@ namespace Tool
                     return "US Action";
                 case Action.TaskQueueLengthes:
                     return "Task Queue Lengthes";
+                    case Action.ImportRoomConfig:
+                    return "Import Room Config";
                 default:
                     return string.Empty;
             }

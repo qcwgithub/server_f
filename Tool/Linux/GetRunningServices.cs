@@ -70,7 +70,7 @@ namespace Tool
                     {
                         foreach (var item in this.allServiceConfigs)
                         {
-                            runningServices.Add([item.Tai().ToString()]);
+                            runningServices.Add([item.tai.ToString()]);
                         }
                         return runningServices;
                     }

@@ -13,6 +13,10 @@ namespace Data
         public long? roomId;
         [BsonIgnoreIfNull]
         public long? createTimeS;
+        [BsonIgnoreIfNull]
+        public string title;
+        [BsonIgnoreIfNull]
+        public string desc;
 
         public bool DeepCopyFrom(RoomInfo other)
         {
@@ -26,6 +30,18 @@ namespace Data
 
             this.createTimeS = XInfoHelper_Db.Copy_long(other.createTimeS);
             if (this.createTimeS != null)
+            {
+                empty = false;
+            }
+
+            this.title = XInfoHelper_Db.Copy_string(other.title);
+            if (this.title != null)
+            {
+                empty = false;
+            }
+
+            this.desc = XInfoHelper_Db.Copy_string(other.desc);
+            if (this.desc != null)
             {
                 empty = false;
             }

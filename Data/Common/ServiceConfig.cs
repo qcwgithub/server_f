@@ -26,9 +26,13 @@ namespace Data
         [Key(7)]
         public long roomIdSnowflakeWorkerId;
 
-        public ServiceTypeAndId Tai()
+        [IgnoreMember]
+        public ServiceTypeAndId tai
         {
-            return ServiceTypeAndId.Create(this.serviceType, this.serviceId);
+            get
+            {
+                return ServiceTypeAndId.Create(this.serviceType, this.serviceId);
+            }
         }
     }
 }

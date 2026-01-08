@@ -63,6 +63,10 @@ namespace Script
 
             this.dispatcher.AddHandler(new Insert_UserInfo(this.server, this));
             this.dispatcher.AddHandler(new Save_UserInfo(this.server, this));
+
+            this.dispatcher.AddHandler(new Insert_RoomInfo(this.server, this));
+            this.dispatcher.AddHandler(new Save_RoomInfo(this.server, this));
+
             this.dispatcher.AddHandler(new Db_OnTimer(this.server, this), true);
         }
     }

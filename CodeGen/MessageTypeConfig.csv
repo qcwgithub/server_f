@@ -39,6 +39,7 @@ _Room_SaveRoomImmediately,607,MsgSaveRoomImmediately,ResSaveRoomImmediately,1,1
 _Room_SendChat,608,MsgRoomSendChat,ResRoomSendChat,1,1
 #,,,,,
 _RoomManager_LoadRoom,800,MsgRoomManagerLoadRoom,ResRoomManagerLoadRoom,1,0
+_RoomManager_ImportRoomConfig,801,MsgRoomManagerImportRoomConfig,ResRoomManagerImportRoomConfig,1,0
 #,,,,,
 #,,,,,
 _Save_AccountInfo,5000,MsgSave_AccountInfo,ResSave_AccountInfo,1,0
