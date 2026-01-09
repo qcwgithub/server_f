@@ -11,10 +11,17 @@ namespace Script
         public override MsgType msgType => MsgType._Room_UserEnter;
         public override async Task<ECode> Handle(MessageContext context, MsgRoomUserEnter msg, ResRoomUserEnter res)
         {
+            this.service.logger.Info($"{this.msgType} userId {msg.userId} roomId {msg.roomId} gatewayServiceId {msg.gatewayServiceId}");
+
             Room? room = await this.service.LockRoom(msg.roomId, context);
             if (room == null)
             {
-                return ECode.RoomNotExist;
+                ECode e;
+                (e, room) = await this.service.ss.LoadRoom(msg.roomId);
+                if (e != ECode.Success)
+                {
+                    return e;
+                }
             }
 
             RoomUser? user = room.GetUser(msg.userId);

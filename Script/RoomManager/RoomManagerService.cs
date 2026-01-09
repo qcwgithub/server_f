@@ -19,6 +19,7 @@ namespace Script
         public readonly RoomManagerServiceScript ss;
         public readonly ObjectLocator roomLocator;
         public readonly ObjectLocationAssignment roomLocationAssignment;
+        public readonly RoomServiceProxy roomServiceProxy;
 
         public RoomManagerService(Server server, int serviceId) : base(server, serviceId)
         {
@@ -26,6 +27,7 @@ namespace Script
             this.AddServiceProxy(this.dbServiceProxy = new DbServiceProxy(this));
             this.AddServiceProxy(this.globalServiceProxy = new GlobalServiceProxy(this));
             this.AddServiceProxy(this.gatewayServiceProxy = new GatewayServiceProxy(this));
+            this.AddServiceProxy(this.roomServiceProxy = new RoomServiceProxy(this));
 
             this.roomIdSnowflakeScript = new RoomIdSnowflakeScript(this.server, this);
             this.ss = new RoomManagerServiceScript(this.server, this);

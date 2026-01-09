@@ -12,7 +12,5 @@ namespace Data
     [MessagePackObject]
     public class ResRoomLoadRoom
     {
-        [Key(0)]
-        public RoomInfo roomInfo;
     }
 }

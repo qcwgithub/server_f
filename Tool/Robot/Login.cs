@@ -6,23 +6,23 @@ namespace Tool
     {
         public async Task<(ECode, ResLogin?)> Login()
         {
-            var msgLogin = new MsgLogin();
-            msgLogin.version = string.Empty;
-            msgLogin.platform = "Windows";
-            msgLogin.channel = MyChannels.uuid;
-            msgLogin.channelUserId = this.channelUserId.ToString();
+            var msg = new MsgLogin();
+            msg.version = string.Empty;
+            msg.platform = "Windows";
+            msg.channel = MyChannels.uuid;
+            msg.channelUserId = this.channelUserId.ToString();
 
-            Console.WriteLine($"Login channelUserId {msgLogin.channelUserId}");
+            this.Log($"Login");
 
-            var r = await this.connection.Request(MsgType.Login, msgLogin);
-            Console.WriteLine($"Login result {r.e}");
+            var r = await this.connection.Request(MsgType.Login, msg);
+            this.Log($"Login result {r.e}");
             if (r.e != ECode.Success)
             {
                 return (r.e, null);
             }
 
             var resLogin = r.CastRes<ResLogin>();
-            Console.WriteLine($"isNewUser? {resLogin.isNewUser} userId {resLogin.userInfo.userId} kickOther? {resLogin.kickOther}");
+            this.Log($"isNewUser? {resLogin.isNewUser} userId {resLogin.userInfo.userId} kickOther? {resLogin.kickOther}");
             return (ECode.Success, resLogin);
         }
     }

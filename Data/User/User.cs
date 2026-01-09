@@ -16,7 +16,6 @@ namespace Data
             }
         }
 
-        public int gatewayServiceId;
         public UserConnection? connection;
         public bool IsConnected()
         {

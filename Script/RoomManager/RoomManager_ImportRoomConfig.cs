@@ -12,6 +12,13 @@ namespace Script
 
         public override async Task<ECode> Handle(MessageContext context, MsgRoomManagerImportRoomConfig msg, ResRoomManagerImportRoomConfig res)
         {
+            this.service.logger.Info($"{this.msgType} file {msg.file}");
+
+            if (string.IsNullOrEmpty(msg.file) || !File.Exists(msg.file))
+            {
+                return ECode.FileNotExist;
+            }
+
             string text = ConfigLoader.ReadAllText(msg.file);
 
             var helper = CsvUtils.Parse(text);

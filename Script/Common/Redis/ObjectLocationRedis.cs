@@ -49,7 +49,9 @@ namespace Script
                 return default;
             }
             string s = redisValue.ToString();
-            int dot = s.IndexOf('.');
+            int dot = s.IndexOf(',');
+            MyDebug.Assert(dot > 0);
+
             int serviceId = int.Parse(s.Substring(0, dot));
             long expiry = long.Parse(s.Substring(dot + 1));
             return new stObjectLocation { serviceId = serviceId, expiry = expiry };

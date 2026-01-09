@@ -9,9 +9,33 @@ namespace Tool
         Dictionary<string, Robot> robotDict = new();
         public async Task Start()
         {
-            for (int i = 0; i < 1; i++)
+            string range = AskHelp.AskInput("channelUserId?").OnAnswer();
+            int min;
+            int max;
+
+            if (string.IsNullOrEmpty(range))
             {
-                var robot = new Robot((1000 + i).ToString());
+                min = 1;
+                max = 1;
+            }
+            else
+            {
+                int index = range.IndexOf('-');
+                if (index > 0)
+                {
+                    min = int.Parse(range.Substring(0, index));
+                    max = Math.Max(min, int.Parse(range.Substring(index + 1)));
+                }
+                else
+                {
+                    min = int.Parse(range);
+                    max = min;
+                }
+            }
+
+            for (int id = min; id <= max; id++)
+            {
+                var robot = new Robot(id.ToString());
                 this.robotDict.Add(robot.channelUserId, robot);
             }
 

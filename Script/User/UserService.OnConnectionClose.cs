@@ -15,7 +15,7 @@ namespace Script
                 foreach (var kv in this.sd.userDict)
                 {
                     User user = kv.Value;
-                    if (user.gatewayServiceId == serviceConnection.serviceId)
+                    if (user.connection != null && user.connection.gatewayServiceId == serviceConnection.serviceId)
                     {
                         user.offlineTimeS = nowS;
                         this.ss.SetDestroyTimer(user, UserDestroyUserReason.DestroyTimer_GatewayDisconnect);

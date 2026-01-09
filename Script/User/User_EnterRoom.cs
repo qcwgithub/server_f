@@ -90,7 +90,7 @@ namespace Script
             var msgEnter = new MsgRoomUserEnter();
             msgEnter.userId = user.userId;
             msgEnter.roomId = msg.roomId;
-            msgEnter.gatewayServiceId = user.gatewayServiceId;
+            msgEnter.gatewayServiceId = user.connection.gatewayServiceId;
 
             r = await this.service.roomServiceProxy.UserEnter(location.serviceId, msgEnter);
             if (r.e != ECode.Success)

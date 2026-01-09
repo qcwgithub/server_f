@@ -12,7 +12,7 @@ _Service_GetServiceState,16,MsgGetServiceState,ResGetServiceState,1,1
 _Service_GetReloadConfigOptions,19,MsgGetReloadConfigOptions,ResGetReloadConfigOptions,1,1
 _Service_GetConnectedInfos,20,MsgGetConnectedInfos,ResGetConnectedInfos,1,1
 _Service_ViewMongoDumpList,21,MsgViewMongoDumpList,ResViewMongoDumpList,1,1
-_Service_A_ResGetServiceConfigs,22,A_ResGetServiceConfigs,ResNull,,
+_Service_A_ResGetServiceConfigs,22,A_ResGetServiceConfigs,,,
 #,,,,,
 _Global_GetServiceConfigs,100,MsgGetServiceConfigs,ResGetServiceConfigs,1,0
 #,,,,,

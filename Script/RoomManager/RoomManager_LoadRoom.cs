@@ -12,6 +12,8 @@ namespace Script
 
         public override async Task<ECode> Handle(MessageContext context, MsgRoomManagerLoadRoom msg, ResRoomManagerLoadRoom res)
         {
+            this.service.logger.Info($"{this.msgType} roomId {msg.roomId}");
+
             if (!SnowflakeScript<Service>.CheckValid(msg.roomId))
             {
                 return ECode.InvalidRoomId;
@@ -36,6 +38,17 @@ namespace Script
             }
 
             this.service.roomLocator.CacheLocation(msg.roomId, res.location);
+
+            var msgR = new MsgRoomLoadRoom();
+            msgR.roomId = msg.roomId;
+
+            var r = await this.service.roomServiceProxy.LoadRoom(res.location.serviceId, msgR);
+            if (r.e != ECode.Success)
+            {
+                return r.e;
+            }
+
+            // var resR = r.CastRes<ResRoomLoadRoom>();
 
             return ECode.Success;
         }

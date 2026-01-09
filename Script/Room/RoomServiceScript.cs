@@ -39,6 +39,51 @@ namespace Script
             return (ECode.Success, roomInfo);
         }
 
+        public async Task<(ECode, Room)> LoadRoom(long roomId)
+        {
+            (ECode e, RoomInfo? roomInfo) = await this.service.ss.QueryRoomInfo(roomId);
+            if (e != ECode.Success)
+            {
+                return (e, null);
+            }
+
+            if (roomInfo == null)
+            {
+                return (ECode.RoomNotExist, null);
+            }
+
+            var room = new Room(roomInfo);
+
+            await this.server.roomLocationRedisW.WriteLocation(roomId, this.service.serviceId, this.service.sd.saveIntervalS + 60);
+
+            this.AddRoomToDict(room);
+
+            if (!room.saveTimer.IsAlive())
+            {
+                this.service.ss.SetSaveTimer(room);
+            }
+
+            this.service.ss.ClearDestroyTimer(room, RoomClearDestroyTimerReason.RoomLoginSuccess);
+            return (ECode.Success, room);
+        }
+
+        void AddRoomToDict(Room room)
+        {
+            // runtime 初始化
+            this.service.sd.AddRoom(room);
+
+            // 有值就不能再赋值了，不然玩家上线下线就错了
+            MyDebug.Assert(room.lastRoomInfo == null);
+
+            room.lastRoomInfo = RoomInfo.Ensure(null);
+            room.lastRoomInfo.DeepCopyFrom(room.roomInfo);
+
+            // qiucw
+            // 这句会修改 roomInfo，必须放在 lastRoomInfo.DeepCopyFrom 后面
+            // this.gameScripts.CallInit(room);
+            this.service.CheckUpdateRuntimeInfo().Forget();
+        }
+
         public void SetSaveTimer(Room room)
         {
             if (room.saveTimer.IsAlive())

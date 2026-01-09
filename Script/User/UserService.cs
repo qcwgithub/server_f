@@ -61,6 +61,7 @@ namespace Script
             this.dispatcher.AddHandler(new User_SaveUserImmediately(this.server, this));
             this.dispatcher.AddHandler(new User_SaveUserInfoToFile(this.server, this));
             this.dispatcher.AddHandler(new User_SearchRoom(this.server, this));
+            this.dispatcher.AddHandler(new User_SendRoomChat(this.server, this));
             this.dispatcher.AddHandler(new User_ServerKick(this.server, this));
             this.dispatcher.AddHandler(new User_SetGmFlag(this.server, this));
             this.dispatcher.AddHandler(new User_UserDisconnectFromGateway(this.server, this));

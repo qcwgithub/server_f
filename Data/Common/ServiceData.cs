@@ -123,7 +123,7 @@ namespace Data
             return this.otherServiceConnections.TryGetValue(serviceId, out ServiceConnection? connection) ? connection : null;
         }
 
-        // 有没有被动连接还活着，要去掉 Command
+        // 有没有被动连接还活着
         public virtual List<ServiceTypeAndId> GetPassivelyConnections()
         {
             var list = new List<ServiceTypeAndId>();

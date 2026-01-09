@@ -6,13 +6,13 @@ namespace Tool
     {
         public async Task<ECode> EnterRoom(long roomId)
         {
-            Console.WriteLine($"EnterRoom roomId {roomId}");
+            this.Log($"EnterRoom roomId {roomId}");
 
-            var msgEnter = new MsgEnterRoom();
-            msgEnter.roomId = roomId;
+            var msg = new MsgEnterRoom();
+            msg.roomId = roomId;
 
-            var r = await this.connection.Request(MsgType.EnterRoom, msgEnter);
-            Console.WriteLine($"EnterRoom result {r.e}");
+            var r = await this.connection.Request(MsgType.EnterRoom, msg);
+            this.Log($"EnterRoom result {r.e}");
             if (r.e != ECode.Success)
             {
                 return r.e;

@@ -10,6 +10,16 @@ namespace Tool
             this.channelUserId = channelUserId;
         }
 
+        void Log(string format, params object?[] args)
+        {
+            Console.WriteLine("{0} {1}", this.channelUserId, string.Format(format, args));
+        }
+
+        void LogEx(ConsoleColor color, string format, params object?[] args)
+        {
+            ConsoleEx.WriteLine(color, string.Format("{0} {1}", this.channelUserId, string.Format(format, args)));
+        }
+
         ToolConnection connection;
         ResLogin resLogin;
         ResGetRecommendedRooms resGetRecommendedRooms;
@@ -40,15 +50,29 @@ namespace Tool
                     break;
                 }
 
-                if (this.resGetRecommendedRooms.roomInfos.Count > 0)
+                if (this.resGetRecommendedRooms.roomInfos.Count == 0)
                 {
-                    e = await this.EnterRoom(this.resGetRecommendedRooms.roomInfos[0].roomId);
-                    if (e != ECode.Success)
-                    {
-                        break;
-                    }
+                    break;
+                }
 
-                    this.roomId = this.resGetRecommendedRooms.roomInfos[0].roomId;
+                e = await this.EnterRoom(this.resGetRecommendedRooms.roomInfos[0].roomId);
+                if (e != ECode.Success)
+                {
+                    break;
+                }
+
+                this.roomId = this.resGetRecommendedRooms.roomInfos[0].roomId;
+
+                // e = await this.LeaveRoom(this.roomId);
+                // if (e != ECode.Success)
+                // {
+                //     break;
+                // }
+
+                e = await this.SendRoomChat(this.roomId, "Hello!");
+                if (e != ECode.Success)
+                {
+                    break;
                 }
 
                 while (true)

@@ -15,6 +15,7 @@ namespace Script
         public readonly GlobalServiceProxy globalServiceProxy;
         public readonly UserManagerServiceProxy userManagerServiceProxy;
         public readonly UserServiceProxy userServiceProxy;
+        public readonly RoomServiceProxy roomServiceProxy;
         protected override TcpListenerScript CreateTcpListenerScriptForC()
         {
             return new TcpListenerScript(this.server, this, false);
@@ -36,6 +37,7 @@ namespace Script
             this.AddServiceProxy(this.globalServiceProxy = new GlobalServiceProxy(this));
             this.AddServiceProxy(this.userManagerServiceProxy = new UserManagerServiceProxy(this));
             this.AddServiceProxy(this.userServiceProxy = new UserServiceProxy(this));
+            this.AddServiceProxy(this.roomServiceProxy = new RoomServiceProxy(this));
 
             this.ss = new GatewayServiceScript(this.server, this);
             this.userLocator = ObjectLocator.CreateUserLocator(this.server, this, this.sd.userLocatorData);

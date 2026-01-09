@@ -9,7 +9,7 @@ namespace Data
     public enum LoadUserNewestWhat
     {
         None = 0,
-        UserInfo = 1, // Command 使用
+        UserInfo = 1, // Tool 使用
     }
 
     [MessagePackObject]

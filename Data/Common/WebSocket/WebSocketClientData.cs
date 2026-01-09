@@ -176,6 +176,10 @@ namespace Data
             for (int i = 0; i < timeoutS; i++)
             {
                 await Task.Delay(1000);
+                if (this.closed)
+                {
+                    return;
+                }
 
                 if (!this.waitingResponseDict.ContainsKey(seq))
                 {

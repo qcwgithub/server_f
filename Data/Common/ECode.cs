@@ -41,5 +41,6 @@ namespace Data
         UserNotInRoom = 97,
         NoHandler = 98,
         InvalidRoomId = 99,
+        FileNotExist = 100,
     }
 }
