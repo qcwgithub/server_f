@@ -191,22 +191,12 @@ namespace Data
             if (this.waitingResponseDict.TryGetValue(seq, out st))
             {
                 this.waitingResponseDict.Remove(seq);
-                st.callback(ECode_Timeout, null);
+                st.callback(ECode.Timeout, null);
             }
         }
 
-        public override void SendBytes(MsgType msgType, ArraySegment<byte> msg, ReplyCallback? cb, int? pTimeoutS)
+        public override void SendBytes(MsgType msgType, ArraySegment<byte> msg, int seq, ReplyCallback? cb, int? pTimeoutS)
         {
-            if (!this.IsConnected())
-            {
-                if (cb != null)
-                {
-                    cb(ECode_NotConnected, null);
-                }
-                return;
-            }
-
-            var seq = this.callback.nextMsgSeq;
             if (cb != null)
             {
                 var st = new stWaitingResponse();
@@ -269,13 +259,6 @@ namespace Data
         {
             var bytes = this.callback.GetMessagePacker().Pack(msgTypeOrECode, msg, seq, requireResponse);
             this.SendPacket(bytes, CancellationToken.None);
-        }
-
-        protected override void SendRaw(byte[] buffer)
-        {
-            int seq = this.callback.nextMsgSeq;
-            this.callback.GetMessagePacker().ModifySeq(buffer, seq);
-            this.SendPacket(buffer, CancellationToken.None);
         }
 
         #endregion

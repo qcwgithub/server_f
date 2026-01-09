@@ -37,7 +37,7 @@ namespace Script
 
                 List<long> userIds = roomUsers.Select(x => x.userId).ToList();
                 ECode e = this.service.gatewayServiceProxy.BroadcastToClient(gatewayServiceId, userIds, MsgType.A_RoomChat, broadcast);
-                if (e == ECode.Server_NotConnected)
+                if (e == ECode.NotConnected)
                 {
                     this.service.logger.Warn($"{this.msgType} gatewayServiceId {gatewayServiceId} is not connected");
                 }

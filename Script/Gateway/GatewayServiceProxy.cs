@@ -13,12 +13,12 @@ namespace Script
             ServiceConnection? connection = this.self.data.GetOtherServiceConnection(serviceId);
             if (connection == null || !connection.IsConnected())
             {
-                return ECode.Server_NotConnected;
+                return ECode.NotConnected;
             }
 
             if (connection == null)
             {
-                return ECode.Server_NotConnected;
+                return ECode.NotConnected;
             }
 
             Forwarding.S_to_G(connection, userIds, MsgType.A_RoomChat, msg, null, null);

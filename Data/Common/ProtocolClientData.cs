@@ -12,35 +12,6 @@ namespace Data
 
     public abstract class ProtocolClientData
     {
-        public static MsgType MsgType_ClientStart
-        {
-            get
-            {
-                return MsgType.ClientStart;
-            }
-        }
-        public static ECode ECode_NotConnected
-        {
-            get
-            {
-                return ECode.Server_NotConnected;
-            }
-        }
-        public static ECode ECode_Timeout
-        {
-            get
-            {
-                return ECode.Server_Timeout;
-            }
-        }
-        public static ECode ECode_Exception
-        {
-            get
-            {
-                return ECode.Exception;
-            }
-        }
-
         public IProtocolClientCallbackProvider? callbackProvider;
         public IProtocolClientCallback? callback => this.callbackProvider?.GetProtocolClientCallback(this);
 
@@ -130,9 +101,8 @@ namespace Data
         #endregion
 
         #region send
-        public abstract void SendBytes(MsgType msgType, ArraySegment<byte> msg, ReplyCallback? cb, int? pTimeoutS);
+        public abstract void SendBytes(MsgType msgType, ArraySegment<byte> msg, int seq, ReplyCallback? cb, int? pTimeoutS);
         protected abstract void SendPacketIgnoreResult(int msgTypeOrECode, ArraySegment<byte> msg, int seq, bool requireResponse);
-        protected abstract void SendRaw(byte[] buffer);
 
         #endregion
 
@@ -155,12 +125,12 @@ namespace Data
                 if (seq > 0)
                 {
                     MsgType msgType = (MsgType)code;
-                    if (this.oppositeIsClient && msgType < MsgType_ClientStart)
+                    if (this.oppositeIsClient && msgType < MsgType.ClientStart)
                     {
                         this.callback!.LogError(this, "receive invalid message from client! " + msgType.ToString());
                         if (requireResponse)
                         {
-                            this.SendPacketIgnoreResult((int)ECode_Exception, null, -seq, false);
+                            this.SendPacketIgnoreResult((int)ECode.Exception, null, -seq, false);
                         }
                         return;
                     }
@@ -243,7 +213,7 @@ namespace Data
                 this.waitingResponseDict.Clear();
                 foreach (var reply in list)
                 {
-                    reply(ECode_Timeout, null);
+                    reply(ECode.Timeout, null);
                 }
             }
         }

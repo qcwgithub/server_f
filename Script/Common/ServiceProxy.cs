@@ -17,7 +17,7 @@ namespace Script
             IConnection? connection = this.self.protocolClientScriptForS.RandomOtherServiceConnection(serviceType);
             if (connection == null)
             {
-                return new MyResponse(ECode.Server_NotConnected);
+                return new MyResponse(ECode.NotConnected);
             }
 
             return await connection.Request(msgType, msg);
@@ -28,12 +28,12 @@ namespace Script
             IConnection? connection = this.self.data.GetOtherServiceConnection(serviceId);
             if (connection == null || !connection.IsConnected())
             {
-                return new MyResponse(ECode.Server_NotConnected);
+                return new MyResponse(ECode.NotConnected);
             }
 
             if (connection == null)
             {
-                return new MyResponse(ECode.Server_NotConnected);
+                return new MyResponse(ECode.NotConnected);
             }
 
             return await connection.Request(msgType, msg);

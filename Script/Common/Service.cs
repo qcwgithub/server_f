@@ -184,7 +184,7 @@ namespace Script
                 {
                     ProtocolClientData socket = this.protocolClientScriptForS.CreateConnector(this.data, inIp, inPort);
 
-                    connection = new SocketServiceConnection(to_serviceType, to_serviceId, socket, true);
+                    connection = new SocketServiceConnection(this.data, to_serviceType, to_serviceId, socket, true);
                     data.SaveOtherServiceConnection(connection);
 
                     if (!connection.IsConnected() && !connection.IsConnecting())
@@ -347,7 +347,7 @@ namespace Script
                 int sid = this.data.GetFirstConnected(serviceProxy.to);
                 if (sid == 0)
                 {
-                    r = new MyResponse(ECode.Server_NotConnected);
+                    r = new MyResponse(ECode.NotConnected);
                 }
                 else
                 {

@@ -41,14 +41,6 @@ namespace Tool
             }
         }
 
-        public int nextMsgSeq
-        {
-            get
-            {
-                return msgSeq++;
-            }
-        }
-
         TcpClientData? socket;
         TaskCompletionSource<bool> tcsConnectComplete;
         public async Task<bool> Connect(string ip, int port)
@@ -103,7 +95,7 @@ namespace Tool
             var tcs = new TaskCompletionSource<MyResponse>();
 
             ArraySegment<byte> msgBytes = MessageTypeConfigData.SerializeMsg(msgType, msg);
-            this.socket.SendBytes(msgType, msgBytes, (e, segment) =>
+            this.socket.SendBytes(msgType, msgBytes, msgSeq++, (e, segment) =>
             {
                 object res = MessageTypeConfigData.DeserializeRes(msgType, segment);
                 tcs.SetResult(new MyResponse(e, res));

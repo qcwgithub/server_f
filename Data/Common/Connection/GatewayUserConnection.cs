@@ -4,7 +4,7 @@ namespace Data
     {
         public readonly GatewayUser user;
 
-        public GatewayUserConnection(ProtocolClientData socket, GatewayUser user) : base(socket, false)
+        public GatewayUserConnection(ServiceData serviceData, ProtocolClientData socket, GatewayUser user) : base(serviceData, socket, false)
         {
             this.user = user;
         }

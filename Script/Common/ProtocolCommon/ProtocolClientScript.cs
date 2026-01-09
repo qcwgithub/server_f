@@ -36,14 +36,6 @@ namespace Script
             }
         }
 
-        public int nextMsgSeq
-        {
-            get
-            {
-                return this.service.data.msgSeq++;
-            }
-        }
-
         public virtual async void ReceiveFromNetwork(ProtocolClientData data, int seq, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback? reply)
         {
             IConnection? connection = data.customData as IConnection;

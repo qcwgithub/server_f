@@ -31,7 +31,7 @@ namespace Data
         public int socketId = 90000;
 
         public Random random = new Random();
-        public ILog logger;
+        public readonly ILog logger;
 
         // tcp listener
         public ITcpListenerCallback? tcpListenerCallbackForS;

@@ -13,7 +13,7 @@ namespace Tool
             if (!success)
             {
                 ConsoleEx.WriteLine(ConsoleColor.Red, $"Connect to {tai} failed");
-                return ECode.Server_NotConnected;
+                return ECode.NotConnected;
             }
             ConsoleEx.WriteLine(ConsoleColor.Green, $"Connect to {tai} ok");
 

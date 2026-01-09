@@ -38,7 +38,7 @@ namespace Script
             }
             socket.NoDelay = true;
 
-            var connection = new PendingSocketConnection(tcpClientData, this.forS);
+            var connection = new PendingSocketConnection(this.service.data, tcpClientData, this.forS);
             tcpClientData.customData = connection;
 
             tcpClientData.AcceptorInit(this.service.data, socket, tcpListener.isForClient);

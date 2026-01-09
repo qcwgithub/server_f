@@ -52,7 +52,7 @@ namespace Script
                 this.service.sd.AddUser(user);
             }
 
-            user.connection = new GatewayUserConnection(socket, user);
+            user.connection = new GatewayUserConnection(this.service.data, socket, user);
 
             ////
 

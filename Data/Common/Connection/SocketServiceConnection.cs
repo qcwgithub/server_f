@@ -4,9 +4,9 @@ namespace Data
     {
         public readonly SocketConnection socketConnection;
 
-        public SocketServiceConnection(ServiceType serviceType, int serviceId, ProtocolClientData socket, bool isConnector) : base(serviceType, serviceId)
+        public SocketServiceConnection(ServiceData serviceData, ServiceType serviceType, int serviceId, ProtocolClientData socket, bool isConnector) : base(serviceType, serviceId)
         {
-            this.socketConnection = new SocketConnection(socket, isConnector);
+            this.socketConnection = new SocketConnection(serviceData, socket, isConnector);
 
             // !
             socket.customData = this;
@@ -14,7 +14,7 @@ namespace Data
 
         public override int GetConnectionId()
         {
-            return this.socketConnection.GetConnectionId();            
+            return this.socketConnection.GetConnectionId();
         }
 
         public override void Connect()

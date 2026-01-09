@@ -5,7 +5,6 @@ namespace Data
         IMessagePacker GetMessagePacker();
 
         int nextSocketId { get; }
-        int nextMsgSeq { get; }
 
         void LogError(ProtocolClientData data, string str);
         void LogError(ProtocolClientData data, string str, Exception ex);
