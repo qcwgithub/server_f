@@ -47,10 +47,11 @@ namespace Data
             }
         }
 
-        public void ConnectorInit(IProtocolClientCallbackProvider callbackProvider, string ip, int port)
+        // Connector
+        public TcpClientData(IProtocolClientCallback callback, int socketId, string ip, int port) : base(callback, socketId, true, false)
         {
-            this.callbackProvider = callbackProvider;
-            this.isConnector = true;
+            MyDebug.Assert(!oppositeIsClient);
+
             this._initConnectSocket(ip, port);
 
             // this._cancellationTaskSource = new CancellationTokenSource();
@@ -60,20 +61,14 @@ namespace Data
             this._innArgs.Completed += this._onComplete;
             this._outArgs.Completed += this._onComplete;
 
-            this.socketId = this.callback.nextSocketId;
-            this.oppositeIsClient = false;
-
             this.connecting = false;
             this.connected = false;
-            this.sending = false;
             this.closed = false;
         }
 
-        public void AcceptorInit(IProtocolClientCallbackProvider callbackProvider, Socket socket, bool connectedFromClient)
+        // Acceptor
+        public TcpClientData(IProtocolClientCallback callback, int socketId, bool oppositeIsClient, Socket socket) : base(callback, socketId, false, oppositeIsClient)
         {
-            this.callbackProvider = callbackProvider;
-            this.isConnector = false;
-
             this.socket = socket;
             // this._cancellationTaskSource = new CancellationTokenSource();
             // this._cancellationToken = this._cancellationTaskSource.Token;
@@ -82,17 +77,14 @@ namespace Data
             this._innArgs.Completed += this._onComplete;
             this._outArgs.Completed += this._onComplete;
 
-            this.socketId = this.callback.nextSocketId;
-            this.oppositeIsClient = connectedFromClient;
-
             this.connecting = false;
             this.connected = true;
-            this.sending = false;
             this.closed = false;
 
             this.PerformRecv();
             this.PerformSend();
         }
+
         #endregion
 
         #region OnComplete entry
@@ -200,7 +192,7 @@ namespace Data
             }
             else
             {
-                
+
             }
         }
         #endregion
@@ -481,7 +473,6 @@ namespace Data
             this.waitingResponseDict = null;
             this.sendList = null;
             this.recvBuffer = null;
-            this.callbackProvider = null;
         }
 
         void OnDisconnectComplete(SocketAsyncEventArgs e)

@@ -11,7 +11,7 @@ namespace Data
         public long persistence_lastAssignTaskQueueOwnersTimeS;
         public List<int> persistence_ownTaskQueues;
         public bool persistenceHandling;
-        public DbServiceData(ServiceTypeAndId serviceTypeAndId) : base(serviceTypeAndId, s_connectToServiceIds)
+        public DbServiceData(ServerData serverData, ServiceTypeAndId serviceTypeAndId) : base(serverData, serviceTypeAndId, s_connectToServiceIds)
         {
             this.lockControllerData = new LockControllerData();
             this.persistence_lastAssignTaskQueueOwnersTimeS = 0;

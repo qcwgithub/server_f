@@ -63,10 +63,9 @@ namespace Data
 
         }
 
-        public void ConnectorInit(IProtocolClientCallbackProvider callbackProvider, string url, int connectTimeoutMs)
+        // Connector
+        public WebSocketClientData(IProtocolClientCallback callback, int socketId, string url, int connectTimeoutMs) : base(callback, socketId, true, false)
         {
-            this.callbackProvider = callbackProvider;
-            this.isConnector = true;
             this._initConnectSocket(url);
 
             this.url = url;
@@ -74,25 +73,14 @@ namespace Data
 
             ClientWebSocket clientWebSocket = new ClientWebSocket();
             this.webSocket = clientWebSocket;
-
-            this.socketId = this.callback.nextSocketId;
-            this.oppositeIsClient = false;
-
-            this.sending = false;
         }
 
-        public void AcceptorInit(IProtocolClientCallbackProvider callbackProvider, WebSocket webSocket, bool connectedFromClient, IPEndPoint remoteEndPoint)
+        // Acceptor
+        public WebSocketClientData(IProtocolClientCallback callback, int socketId, WebSocket webSocket, bool forClient, IPEndPoint remoteEndPoint) : base(callback, socketId, false, forClient)
         {
-            this.callbackProvider = callbackProvider;
-            this.isConnector = false;
-
             this.webSocket = webSocket;
             this.remoteEndPoint = remoteEndPoint;
 
-            this.socketId = this.callback.nextSocketId;
-            this.oppositeIsClient = connectedFromClient;
-
-            this.sending = false;
             this.StartRecv();
         }
 
@@ -482,7 +470,6 @@ namespace Data
             this.callback.OnCloseComplete(this);
             this.recvBuffer = null;
             this.recvOffset = 0;
-            this.callbackProvider = null;
         }
 
         public override void Close(string reason)

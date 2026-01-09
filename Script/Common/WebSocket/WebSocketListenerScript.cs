@@ -27,8 +27,8 @@ namespace Script
             // webSocket.tex
             //
 
-            var webSocketClientData = new WebSocketClientData();
-            webSocketClientData.AcceptorInit(this.service.data, webSocket, webSocketListener.isForClient, webSocketListener.remoteEndPoint);
+            // var webSocketClientData = new WebSocketClientData(this.service.data, this.service.data.socketId++, webSocket, webSocketListener.isForClient, webSocketListener.remoteEndPoint);
+            // 少一个 Connection 这里无法 New, TO DO
         }
 
         public log4net.ILog GetLogger() => this.service.logger;

@@ -24,7 +24,7 @@ namespace Script
                 return;
             }
 
-            if (data.customData is PendingSocketConnection)
+            if (data.customData is SocketConnection)
             {
                 base.ReceiveFromNetwork(data, seq, msgType, msgBytes, reply);
                 return;

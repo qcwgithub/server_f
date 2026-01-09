@@ -47,8 +47,8 @@ namespace Data
 
         public readonly ObjectLocatorData roomLocatorData;
 
-        public UserServiceData(ServiceTypeAndId serviceTypeAndId)
-            : base(serviceTypeAndId, s_connectToServiceIds)
+        public UserServiceData(ServerData serverData, ServiceTypeAndId serviceTypeAndId)
+            : base(serverData, serviceTypeAndId, s_connectToServiceIds)
         {
             this.LoadConfigs();
 

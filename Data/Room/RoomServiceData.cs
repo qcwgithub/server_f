@@ -43,8 +43,8 @@ namespace Data
             ServiceType.RoomManager,
         };
 
-        public RoomServiceData(ServiceTypeAndId serviceTypeAndId)
-            : base(serviceTypeAndId, s_connectToServiceIds)
+        public RoomServiceData(ServerData serverData, ServiceTypeAndId serviceTypeAndId)
+            : base(serverData, serviceTypeAndId, s_connectToServiceIds)
         {
             this.roomDict = new Dictionary<long, Room>();
 

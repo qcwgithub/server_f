@@ -29,7 +29,7 @@ namespace Script
                 this.service.logger.Error(message);
             }
 
-            var serviceConnection = new SocketServiceConnection(this.service.data, info.serviceType, info.serviceId, (context.connection as PendingSocketConnection).socket, false);
+            var serviceConnection = new SocketServiceConnection((SocketConnection)context.connection, info.serviceType, info.serviceId);
             this.service.data.SaveOtherServiceConnection(serviceConnection);
 
             return ECode.Success;

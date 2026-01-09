@@ -22,7 +22,7 @@ namespace Script
 
             if (user.connection != null && user.connection.IsConnected())
             {
-                user.connection.Close("Gateway_DestroyUser");
+                user.connection.socketConnection.Close("Gateway_DestroyUser");
             }
 
             this.ss.ClearDestroyTimer(user, GatewayClearDestroyTimerReason.Destroy);

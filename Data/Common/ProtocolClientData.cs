@@ -12,19 +12,18 @@ namespace Data
 
     public abstract class ProtocolClientData
     {
-        public IProtocolClientCallbackProvider? callbackProvider;
-        public IProtocolClientCallback? callback => this.callbackProvider?.GetProtocolClientCallback(this);
+        public readonly IProtocolClientCallback callback;
 
         #region variables
-        public bool isConnector;
+        public readonly bool isConnector;
         public bool isAcceptor => !this.isConnector;
         protected bool identityVerified;
 
         // 自定义的 id
-        public int socketId;
+        public readonly int socketId;
         public int GetSocketId() => this.socketId;
 
-        public bool oppositeIsClient;
+        public readonly bool oppositeIsClient;
 
         public abstract bool IsConnecting();
         public abstract bool IsConnected();
@@ -38,6 +37,16 @@ namespace Data
 
         public abstract System.Net.EndPoint RemoteEndPoint { get; }
         #endregion
+
+        public ProtocolClientData(IProtocolClientCallback callback, int socketId, bool isConnector, bool oppositeIsClient)
+        {
+            this.callback = callback;
+            this.socketId = socketId;
+            this.isConnector = isConnector;
+            this.oppositeIsClient = oppositeIsClient;
+
+            this.sending = false;
+        }
 
         public static string s_identity = "SceneHub";
         protected byte[]? SendIdentity()

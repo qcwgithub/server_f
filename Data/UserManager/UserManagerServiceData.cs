@@ -12,8 +12,8 @@ namespace Data
         public readonly ObjectLocatorData userLocatorData;
         public readonly ObjectLocationAssignmentData userServiceAllocatorData;
 
-        public UserManagerServiceData(ServiceTypeAndId serviceTypeAndId)
-            : base(serviceTypeAndId, s_connectToServiceIds)
+        public UserManagerServiceData(ServerData serverData, ServiceTypeAndId serviceTypeAndId)
+            : base(serverData, serviceTypeAndId, s_connectToServiceIds)
         {
             this.LoadConfigs(false);
             

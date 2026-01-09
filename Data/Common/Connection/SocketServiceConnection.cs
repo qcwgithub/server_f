@@ -4,12 +4,22 @@ namespace Data
     {
         public readonly SocketConnection socketConnection;
 
-        public SocketServiceConnection(ServiceData serviceData, ServiceType serviceType, int serviceId, ProtocolClientData socket, bool isConnector) : base(serviceType, serviceId)
+        // Connector
+        public SocketServiceConnection(ServiceData serviceData, string ip, int port, ServiceType serviceType, int serviceId) : base(serviceType, serviceId)
         {
-            this.socketConnection = new SocketConnection(serviceData, socket, isConnector);
+            this.socketConnection = new SocketConnection(serviceData, ip, port);
 
             // !
-            socket.customData = this;
+            socketConnection.socket.customData = this;
+        }
+
+        // Accectpor
+        public SocketServiceConnection(SocketConnection socketConnection, ServiceType serviceType, int serviceId) : base(serviceType, serviceId)
+        {
+            this.socketConnection = socketConnection;
+
+            // !
+            socketConnection.socket.customData = this;
         }
 
         public override int GetConnectionId()

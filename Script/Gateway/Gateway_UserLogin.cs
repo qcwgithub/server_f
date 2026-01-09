@@ -14,7 +14,7 @@ namespace Script
 
         public override async Task<ECode> Handle(MessageContext context, MsgLogin msg, ResLogin res)
         {
-            ProtocolClientData socket = (context.connection as PendingSocketConnection).socket;
+            ProtocolClientData socket = (context.connection as SocketConnection).socket;
 
             (AddressFamily family, string ip) = this.GetIp(socket);
 
@@ -52,7 +52,7 @@ namespace Script
                 this.service.sd.AddUser(user);
             }
 
-            user.connection = new GatewayUserConnection(this.service.data, socket, user);
+            user.connection = new GatewayUserConnection(context.connection as SocketConnection, user);
 
             ////
 

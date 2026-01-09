@@ -12,8 +12,8 @@ namespace Data
         public readonly ObjectLocatorData roomLocatorData;
         public readonly ObjectLocationAssignmentData roomLocationAssignmentData;
 
-        public RoomManagerServiceData(ServiceTypeAndId serviceTypeAndId)
-            : base(serviceTypeAndId, s_connectToServiceIds)
+        public RoomManagerServiceData(ServerData serverData, ServiceTypeAndId serviceTypeAndId)
+            : base(serverData, serviceTypeAndId, s_connectToServiceIds)
         {
             this.LoadConfigs(false);
             

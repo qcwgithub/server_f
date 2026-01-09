@@ -2,16 +2,11 @@ using Data;
 
 namespace Tool
 {
-    public class ToolConnection : IProtocolClientCallbackProvider, IProtocolClientCallback
+    public class ToolConnection : IProtocolClientCallback
     {
         static BinaryMessagePacker binaryMessagePacker = new();
         static int socketId = 1;
         static int msgSeq = 1;
-
-        public IProtocolClientCallback? GetProtocolClientCallback(ProtocolClientData protocolClientData)
-        {
-            return this;
-        }
 
         public IMessagePacker GetMessagePacker()
         {
@@ -33,14 +28,6 @@ namespace Tool
             Console.WriteLine(str);
         }
 
-        public int nextSocketId
-        {
-            get
-            {
-                return socketId++;
-            }
-        }
-
         TcpClientData? socket;
         TaskCompletionSource<bool> tcsConnectComplete;
         public async Task<bool> Connect(string ip, int port)
@@ -53,8 +40,7 @@ namespace Tool
 
             Console.WriteLine($"Connect {ip}:{port}");
 
-            this.socket = new TcpClientData();
-            this.socket.ConnectorInit(this, ip, port);
+            this.socket = new TcpClientData(this, socketId++, ip, port);
             this.socket.Connect();
 
             return await this.tcsConnectComplete.Task;

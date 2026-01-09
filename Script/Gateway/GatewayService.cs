@@ -18,7 +18,7 @@ namespace Script
         public readonly RoomServiceProxy roomServiceProxy;
         protected override TcpListenerScript CreateTcpListenerScriptForC()
         {
-            return new TcpListenerScript(this.server, this, false);
+            return new TcpListenerScript(this.server, this, true);
         }
         protected override ProtocolClientScriptForS CreateProtocolClientScriptForS()
         {

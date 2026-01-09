@@ -104,7 +104,7 @@ namespace Data
         static void InitializeMessagePack()
         {
             StaticCompositeResolver.Instance.Register(
-                //  MessagePack.Resolvers.GeneratedResolver.Instance,
+                 //  MessagePack.Resolvers.GeneratedResolver.Instance,
                  MessagePack.Resolvers.StandardResolver.Instance
             );
 
@@ -112,6 +112,7 @@ namespace Data
 
             MessagePackSerializer.DefaultOptions = option;
         }
+        public readonly IMessagePacker messagePacker;
 
         public ServerData(Dictionary<string, string> args)
         {
@@ -210,6 +211,8 @@ namespace Data
 
             this.timerSData = new TimerSData();
             this.timerSData.Start();
+
+            this.messagePacker = new BinaryMessagePacker();
         }
 
         static List<ServiceType>? _shutdownServiceOrder;
@@ -291,30 +294,30 @@ namespace Data
             _shutdownServiceOrder = dones;
         }
 
-        static ServiceData CreateServiceData(ServiceTypeAndId typeAndId)
+        ServiceData CreateServiceData(ServiceTypeAndId typeAndId)
         {
             switch (typeAndId.serviceType)
             {
                 case ServiceType.Gateway:
-                    return new GatewayServiceData(typeAndId);
+                    return new GatewayServiceData(this, typeAndId);
 
                 case ServiceType.Db:
-                    return new DbServiceData(typeAndId);
+                    return new DbServiceData(this, typeAndId);
 
                 case ServiceType.User:
-                    return new UserServiceData(typeAndId);
-                    
+                    return new UserServiceData(this, typeAndId);
+
                 case ServiceType.Global:
-                    return new GlobalServiceData(typeAndId);
+                    return new GlobalServiceData(this, typeAndId);
 
                 case ServiceType.UserManager:
-                    return new UserManagerServiceData(typeAndId);
+                    return new UserManagerServiceData(this, typeAndId);
 
                 case ServiceType.Room:
-                    return new RoomServiceData(typeAndId);
+                    return new RoomServiceData(this, typeAndId);
 
                 case ServiceType.RoomManager:
-                    return new RoomManagerServiceData(typeAndId);
+                    return new RoomManagerServiceData(this, typeAndId);
 
                 default:
                     throw new Exception("Not handled serviceType: " + typeAndId.serviceType);
@@ -327,7 +330,7 @@ namespace Data
             {
                 case ServiceType.Gateway:
                     return GatewayServiceData.s_connectToServiceIds;
-    
+
                 case ServiceType.Db:
                     return DbServiceData.s_connectToServiceIds;
 

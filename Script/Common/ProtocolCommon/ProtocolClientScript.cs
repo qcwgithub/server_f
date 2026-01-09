@@ -2,64 +2,13 @@ using Data;
 
 namespace Script
 {
-    public abstract class ProtocolClientScript : ServiceScript<Service>, IProtocolClientCallback
+    public abstract class ProtocolClientScript : ServiceScript<Service>, IConnectionCallback
     {
         public ProtocolClientScript(Server server, Service service) : base(server, service)
         {
         }
 
-        public IMessagePacker GetMessagePacker()
-        {
-            return this.server.messagePacker;
-        }
-
-        public void LogError(ProtocolClientData data, string str)
-        {
-            this.service.logger.Error(str);
-        }
-
-        public void LogError(ProtocolClientData data, string str, Exception ex)
-        {
-            this.service.logger.Error(str, ex);
-        }
-
-        public void LogInfo(ProtocolClientData data, string str)
-        {
-            this.service.logger.Info(str);
-        }
-
-        public int nextSocketId
-        {
-            get
-            {
-                return this.service.data.socketId++;
-            }
-        }
-
-        public virtual async void ReceiveFromNetwork(ProtocolClientData data, int seq, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback? reply)
-        {
-            IConnection? connection = data.customData as IConnection;
-            if (connection == null)
-            {
-                this.service.logger.Error("connection == null");
-                return;
-            }
-
-            var context = new MessageContext
-            {
-                connection = connection,
-            };
-
-            var msg = MessageTypeConfigData.DeserializeMsg(msgType, msgBytes);
-            var r = await this.service.dispatcher.Dispatch(context, msgType, msg);
-            if (reply != null)
-            {
-                ArraySegment<byte> resBytes = MessageTypeConfigData.SerializeRes(msgType, r.res);
-                reply(r.e, resBytes);
-            }
-        }
-
-        public void OnConnectComplete(ProtocolClientData data, bool success)
+        public void OnConnectComplete(IConnection connection, bool success)
         {
             if (!success)
             {
@@ -81,6 +30,22 @@ namespace Script
             }
 
             this.service.OnConnectComplete(serviceConnection).Forget();
+        }
+
+        public virtual async void OnMsg(IConnection connection, int seq, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback? reply)
+        {
+            var context = new MessageContext
+            {
+                connection = connection,
+            };
+
+            var msg = MessageTypeConfigData.DeserializeMsg(msgType, msgBytes);
+            var r = await this.service.dispatcher.Dispatch(context, msgType, msg);
+            if (reply != null)
+            {
+                ArraySegment<byte> resBytes = MessageTypeConfigData.SerializeRes(msgType, r.res);
+                reply(r.e, resBytes);
+            }
         }
 
         public void OnCloseComplete(ProtocolClientData data)

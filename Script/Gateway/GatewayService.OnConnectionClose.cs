@@ -12,7 +12,7 @@ namespace Script
             {
                 GatewayUser user = gatewayUserConnection.user;
 
-                this.logger.InfoFormat("OnConnectionClose userId {0} closeReason {1}", user.userId, gatewayUserConnection.closeReason);
+                this.logger.InfoFormat("OnConnectionClose userId {0} closeReason {1}", user.userId, gatewayUserConnection.socketConnection.closeReason);
 
                 long nowS = TimeUtils.GetTimeS();
                 user.offlineTimeS = nowS;

@@ -3,12 +3,12 @@ using log4net;
 namespace Data
 {
     public abstract class ServiceData :
-        IProtocolClientCallbackProvider,
         ITcpListenerCallbackProvider,
         IHttpListenerCallbackProvider,
         IWebSocketListenerCallbackProvider,
         ISendClientMessageThroughGatewayProvider
     {
+        public readonly ServerData serverData;
         public bool replyServerTime = true;
 
         public ServiceType serviceType => this.serviceTypeAndId.serviceType;
@@ -16,8 +16,9 @@ namespace Data
         public readonly ServiceTypeAndId serviceTypeAndId;
         public ServiceState state = ServiceState.Initing;
 
-        public ServiceData(ServiceTypeAndId serviceTypeAndId, List<ServiceType> connectToServiceIds)
+        public ServiceData(ServerData serverData, ServiceTypeAndId serviceTypeAndId, List<ServiceType> connectToServiceIds)
         {
+            this.serverData = serverData;
             this.serviceTypeAndId = serviceTypeAndId;
 
             this.logger = ServerData.instance.log4netCreation.GetLogger(this.serviceTypeAndId.ToString());
@@ -44,10 +45,6 @@ namespace Data
         // tcp client callback
         public IProtocolClientCallback? protocolClientCallbackForS;
         public IProtocolClientCallback? protocolClientCallbackForC;
-        public IProtocolClientCallback? GetProtocolClientCallback(ProtocolClientData protocolClientData)
-        {
-            return protocolClientData.oppositeIsClient ? this.protocolClientCallbackForC : this.protocolClientCallbackForS;
-        }
 
         public TcpListenerData? tcpListenerForServer;
         public TcpListenerData? tcpListenerForClient;

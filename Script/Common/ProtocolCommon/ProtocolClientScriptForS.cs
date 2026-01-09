@@ -8,13 +8,6 @@ namespace Script
         {
         }
 
-        public ProtocolClientData CreateConnector(IProtocolClientCallbackProvider callbackProvider, string ip, int port)
-        {
-            var socket = new TcpClientData();
-            socket.ConnectorInit(callbackProvider, ip, port);
-            return socket;
-        }
-
         public bool IsServiceConnected(int serviceId)
         {
             if (!this.service.data.otherServiceConnections.TryGetValue(serviceId, out var connection) || !connection.IsConnected())

@@ -4,8 +4,6 @@ namespace Data
     {
         IMessagePacker GetMessagePacker();
 
-        int nextSocketId { get; }
-
         void LogError(ProtocolClientData data, string str);
         void LogError(ProtocolClientData data, string str, Exception ex);
         void LogInfo(ProtocolClientData data, string str);
@@ -14,10 +12,5 @@ namespace Data
 
         void OnCloseComplete(ProtocolClientData data);
         void ReceiveFromNetwork(ProtocolClientData data, int seq, MsgType msgType, ArraySegment<byte> msg, ReplyCallback cb);
-    }
-
-    public interface IProtocolClientCallbackProvider : IDataCallbackProvider
-    {
-        IProtocolClientCallback? GetProtocolClientCallback(ProtocolClientData protocolClientData);
     }
 }

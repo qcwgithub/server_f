@@ -35,8 +35,8 @@ namespace Data
             ServiceType.Room,
         };
 
-        public GatewayServiceData(ServiceTypeAndId serviceTypeAndId)
-            : base(serviceTypeAndId, s_connectToServiceIds)
+        public GatewayServiceData(ServerData serverData, ServiceTypeAndId serviceTypeAndId)
+            : base(serverData, serviceTypeAndId, s_connectToServiceIds)
         {
             this.LoadConfigs();
         }

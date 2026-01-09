@@ -5,10 +5,10 @@ namespace Script
 {
     public class TcpListenerScript : ServiceScript<Service>, ITcpListenerCallback
     {
-        public readonly bool forS;
-        public TcpListenerScript(Server server, Service service, bool forS) : base(server, service)
+        public readonly bool forClient;
+        public TcpListenerScript(Server server, Service service, bool forClient) : base(server, service)
         {
-            this.forS = forS;
+            this.forClient = forClient;
         }
 
         public void LogError(string str)
@@ -29,19 +29,14 @@ namespace Script
                 return;
             }
 
-            var tcpClientData = new TcpClientData();
             Socket? socket = e.AcceptSocket;
             if (socket == null)
             {
                 this.service.logger.Error("socket == null");
                 return;
             }
-            socket.NoDelay = true;
 
-            var connection = new PendingSocketConnection(this.service.data, tcpClientData, this.forS);
-            tcpClientData.customData = connection;
-
-            tcpClientData.AcceptorInit(this.service.data, socket, tcpListener.isForClient);
+            new SocketConnection(this.service.data, socket, this.forClient);
         }
     }
 }

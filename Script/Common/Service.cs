@@ -50,7 +50,7 @@ namespace Script
             this.serviceId = serviceId;
             this.data = this.server.data.serviceDatas[this.serviceId];
 
-            this.tcpListenerScriptForS = new TcpListenerScript(this.server, this, true);
+            this.tcpListenerScriptForS = new TcpListenerScript(this.server, this, false);
             this.tcpListenerScriptForC = this.CreateTcpListenerScriptForC();
 
             this.protocolClientScriptForS = this.CreateProtocolClientScriptForS();
@@ -182,9 +182,7 @@ namespace Script
                 // }
                 // else
                 {
-                    ProtocolClientData socket = this.protocolClientScriptForS.CreateConnector(this.data, inIp, inPort);
-
-                    connection = new SocketServiceConnection(this.data, to_serviceType, to_serviceId, socket, true);
+                    connection = new SocketServiceConnection(this.data, inIp, inPort, to_serviceType, to_serviceId);
                     data.SaveOtherServiceConnection(connection);
 
                     if (!connection.IsConnected() && !connection.IsConnecting())

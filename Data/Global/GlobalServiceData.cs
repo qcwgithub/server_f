@@ -12,8 +12,8 @@ namespace Data
         };
         public ITimer timer_tick_Loop;
 
-        public GlobalServiceData(ServiceTypeAndId serviceTypeAndId)
-            : base(serviceTypeAndId, s_connectToServiceIds)
+        public GlobalServiceData(ServerData serverData, ServiceTypeAndId serviceTypeAndId)
+            : base(serverData, serviceTypeAndId, s_connectToServiceIds)
         {
             this.LoadConfigs(false);
         }
