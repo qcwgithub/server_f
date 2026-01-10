@@ -55,12 +55,12 @@ namespace Tool
             }
         }
 
-        public void ReceiveFromNetwork(int seq, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback? reply)
+        public void OnMsg(int seq, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback? reply)
         {
             // var msg = MessageTypeConfigData.DeserializeMsg(msgType, msgBytes);
         }
 
-        public void OnConnectComplete(bool success)
+        public void OnConnect(bool success)
         {
             Console.WriteLine($"OnConnectComplete success? {success}");
             if (!success)
@@ -72,7 +72,7 @@ namespace Tool
             this.tcsConnectComplete.SetResult(success);
         }
 
-        public void OnCloseComplete(ProtocolClientData socket)
+        public void OnClose()
         {
         }
 

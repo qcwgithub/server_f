@@ -142,11 +142,11 @@ namespace Data
 
                     if (!requireResponse)
                     {
-                        this.callback!.ReceiveFromNetwork(seq, msgType, msg, null);
+                        this.callback!.OnMsg(seq, msgType, msg, null);
                     }
                     else
                     {
-                        this.callback!.ReceiveFromNetwork(seq, msgType, msg,
+                        this.callback!.OnMsg(seq, msgType, msg,
                             (ECode e2, ArraySegment<byte> msg2) =>
                             {
                                 // 消息处理是异步的，在回复的时候，有可能已经断开了。因此这里要加个判断

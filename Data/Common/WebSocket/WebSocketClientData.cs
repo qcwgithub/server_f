@@ -139,9 +139,12 @@ namespace Data
             }
             else
             {
-                this.callback.OnConnectComplete(success);
-
-                if (success)
+                this.callback.OnConnect(success);
+                if (!success)
+                {
+                    this.Close(CloseReason.OnConnectComplete_false);
+                }
+                else
                 {
                     this.StartRecv();
                 }
@@ -460,7 +463,7 @@ namespace Data
             }
 
             this.TimeoutAllWaitings();
-            this.callback.OnCloseComplete(this);
+            this.callback.OnClose();
             this.recvBuffer = null;
             this.recvOffset = 0;
         }

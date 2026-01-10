@@ -178,21 +178,15 @@ namespace Data
                 }
             }
 
-            this.callback.OnConnectComplete(success);
-
-            if (this.closed)
+            this.callback.OnConnect(success);
+            if (!success)
             {
-                return;
-            }
-
-            if (success)
-            {
-                this.PerformRecv();
-                this.PerformSend();
+                this.Close(CloseReason.OnConnectComplete_false);
             }
             else
             {
-
+                this.PerformRecv();
+                this.PerformSend();
             }
         }
         #endregion
@@ -469,7 +463,7 @@ namespace Data
 
 
             this.TimeoutAllWaitings();
-            this.callback.OnCloseComplete(this);
+            this.callback.OnClose();
             this.waitingResponseDict = null;
             this.sendList = null;
             this.recvBuffer = null;

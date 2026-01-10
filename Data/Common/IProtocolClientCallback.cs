@@ -1,5 +1,6 @@
 namespace Data
 {
+    // 多线程调用
     public interface IProtocolClientCallback : IDataCallback
     {
         IMessagePacker GetMessagePacker();
@@ -8,9 +9,8 @@ namespace Data
         void LogError(string str, Exception ex);
         void LogInfo(string str);
 
-        void OnConnectComplete(bool success);
-
-        void OnCloseComplete(ProtocolClientData data);
-        void ReceiveFromNetwork(int seq, MsgType msgType, ArraySegment<byte> msg, ReplyCallback cb);
+        void OnConnect(bool success);
+        void OnMsg(int seq, MsgType msgType, ArraySegment<byte> msg, ReplyCallback cb);
+        void OnClose();
     }
 }

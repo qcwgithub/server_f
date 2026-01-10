@@ -74,20 +74,18 @@ namespace Data
         {
             this.serviceData.logger.Info(str);
         }
-        void IProtocolClientCallback.OnConnectComplete(bool success)
+        void IProtocolClientCallback.OnConnect(bool success)
         {
-            if (!success)
+            if (success)
             {
-                this.socket.Close(ProtocolClientData.CloseReason.OnConnectComplete_false);
-                return;
+                this.callback.OnConnectSuccess(this);
             }
-            this.callback.OnConnectComplete(this);
         }
-        void IProtocolClientCallback.OnCloseComplete(ProtocolClientData data)
+        void IProtocolClientCallback.OnClose()
         {
-            this.callback.OnCloseComplete(this);
+            this.callback.OnClose(this);
         }
-        void IProtocolClientCallback.ReceiveFromNetwork(int seq, MsgType msgType, ArraySegment<byte> msg, ReplyCallback cb)
+        void IProtocolClientCallback.OnMsg(int seq, MsgType msgType, ArraySegment<byte> msg, ReplyCallback cb)
         {
             this.callback.OnMsg(this, seq, msgType, msg, cb);
         }

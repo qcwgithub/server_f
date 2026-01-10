@@ -8,7 +8,7 @@ namespace Script
         {
         }
 
-        public void OnConnectComplete(IConnection connection)
+        public void OnConnectSuccess(IConnection connection)
         {
             var serviceConnection = connection as ServiceConnection;
             if (serviceConnection == null)
@@ -36,7 +36,7 @@ namespace Script
             }
         }
 
-        public void OnCloseComplete(IConnection connection)
+        public void OnClose(IConnection connection)
         {
             this.service.OnConnectionClose(connection).Forget();
         }
