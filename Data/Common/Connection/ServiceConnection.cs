@@ -20,7 +20,6 @@ namespace Data
             }
         }
 
-        public abstract int GetConnectionId();
         public abstract void Connect();
         public abstract bool IsConnected();
         public abstract bool IsConnecting();

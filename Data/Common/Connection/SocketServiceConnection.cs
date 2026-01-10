@@ -16,11 +16,6 @@ namespace Data
             this.socketConnection = socketConnection;
         }
 
-        public override int GetConnectionId()
-        {
-            return this.socketConnection.GetConnectionId();
-        }
-
         public override void Connect()
         {
             this.socketConnection.Connect();

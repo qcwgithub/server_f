@@ -11,11 +11,6 @@ namespace Data
             this.user = user;
         }
 
-        public int GetConnectionId()
-        {
-            return this.socketConnection.GetConnectionId();
-        }
-
         public bool IsConnected()
         {
             return this.socketConnection.IsConnected();

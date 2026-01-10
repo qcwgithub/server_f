@@ -17,11 +17,6 @@ namespace Data
             return this.user;
         }
 
-        public int GetConnectionId()
-        {
-            throw new NotImplementedException();
-        }
-
         public bool IsConnected()
         {
             ServiceConnection? serviceConnection = this.sd.GetOtherServiceConnection(this.gatewayServiceId);

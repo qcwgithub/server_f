@@ -6,11 +6,6 @@ namespace Data
         {
         }
 
-        public override int GetConnectionId()
-        {
-            return 0;
-        }
-
         public override void Connect()
         {
 
