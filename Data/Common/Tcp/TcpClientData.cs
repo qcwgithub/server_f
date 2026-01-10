@@ -239,7 +239,7 @@ namespace Data
         {
             try
             {
-                this._innArgs.SetBuffer(buffer, offset, buffer.Length - offset);
+                this._innArgs.SetBuffer(buffer, offset, count);
                 bool completed = !this.socket.ReceiveAsync(this._innArgs);
                 if (completed)
                 {
