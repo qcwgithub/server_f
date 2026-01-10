@@ -16,7 +16,7 @@ namespace Script
             }
         }
 
-        public static ServiceType? G_to_S(GatewayService gatewayService, GatewayUserConnection connection, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback? reply)
+        public static ServiceType? G_to_S(GatewayService gatewayService, GatewayUserConnection connection, MsgType msgType, byte[] msgBytes, ReplyCallback? reply)
         {
             ServiceType? serviceType = ShouldForwardClientMessage(msgType);
             if (serviceType == null)
@@ -57,7 +57,7 @@ namespace Script
             return serviceType;
         }
 
-        public static bool G_from_S(GatewayService gatewayService, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback? reply)
+        public static bool G_from_S(GatewayService gatewayService, MsgType msgType, byte[] msgBytes, ReplyCallback? reply)
         {
             if (msgType != MsgType.Forward)
             {
@@ -81,7 +81,7 @@ namespace Script
             return true;
         }
 
-        public static async Task<bool> S_from_G(UserService userService, ServiceConnection serviceConnection, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback? reply)
+        public static async Task<bool> S_from_G(UserService userService, ServiceConnection serviceConnection, MsgType msgType, byte[] msgBytes, ReplyCallback? reply)
         {
             if (msgType != MsgType.Forward)
             {
@@ -125,7 +125,7 @@ namespace Script
             var r = await userService.dispatcher.Dispatch(context, msgForward.innerMsgType, innerMsg);
             if (reply != null)
             {
-                ArraySegment<byte> resBytes = MessageTypeConfigData.SerializeRes(msgForward.innerMsgType, r.res);
+                byte[] resBytes = MessageTypeConfigData.SerializeRes(msgForward.innerMsgType, r.res);
                 reply(r.e, resBytes);
             }
 

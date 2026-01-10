@@ -14,9 +14,7 @@ namespace Script
 
         public override async Task<ECode> Handle(MessageContext context, MsgLogin msg, ResLogin res)
         {
-            ProtocolClientData socket = (context.connection as SocketConnection).socket;
-
-            (AddressFamily family, string ip) = this.GetIp(socket);
+            (AddressFamily family, string ip) = this.GetIp(context.connection);
 
             ////
 
@@ -83,23 +81,24 @@ namespace Script
             return true;
         }
 
-        (AddressFamily, string) GetIp(ProtocolClientData socket)
+        (AddressFamily, string) GetIp(IConnection connection)
         {
-            EndPoint endPoint = socket.RemoteEndPoint;
-            AddressFamily addressFamily = AddressFamily.Unknown;
-            string ip = string.Empty;
-            if (endPoint != null)
-            {
-                addressFamily = endPoint.AddressFamily;
+            return (default, "Unknown!");
+            // EndPoint endPoint = socket.RemoteEndPoint;
+            // AddressFamily addressFamily = AddressFamily.Unknown;
+            // string ip = string.Empty;
+            // if (endPoint != null)
+            // {
+            //     addressFamily = endPoint.AddressFamily;
 
-                IPEndPoint? ipEndPoint = endPoint as IPEndPoint;
-                if (ipEndPoint != null)
-                {
-                    ip = ipEndPoint.Address.MapToIPv4().ToString();
-                }
-            }
+            //     IPEndPoint? ipEndPoint = endPoint as IPEndPoint;
+            //     if (ipEndPoint != null)
+            //     {
+            //         ip = ipEndPoint.Address.MapToIPv4().ToString();
+            //     }
+            // }
 
-            return (addressFamily, ip);
+            // return (addressFamily, ip);
         }
     }
 }

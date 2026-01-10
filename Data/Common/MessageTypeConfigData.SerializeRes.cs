@@ -4,11 +4,11 @@ namespace Data
 {
     public partial class MessageTypeConfigData
     {
-        public static ArraySegment<byte> SerializeRes(MsgType msgType, object res)
+        public static byte[] SerializeRes(MsgType msgType, object res)
         {
             if (res == null)
             {
-                return default;
+                return [];
             }
 
             byte[] msgBytes;

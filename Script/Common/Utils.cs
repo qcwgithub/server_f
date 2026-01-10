@@ -6,7 +6,7 @@ namespace Script
     {
         public static async Task<MyResponse> Request(this IConnection connection, MsgType msgType, object msg)
         {
-            var cs = new TaskCompletionSource<(ECode, ArraySegment<byte>)>();
+            var cs = new TaskCompletionSource<(ECode, byte[])>();
 
             connection.Send(msgType, msg, (e, segment) =>
             {
@@ -18,7 +18,7 @@ namespace Script
             },
             pTimeoutS: null);
     
-            (ECode e, ArraySegment<byte> resSegment) = await cs.Task;
+            (ECode e, byte[] resSegment) = await cs.Task;
 
             object res = MessageTypeConfigData.DeserializeRes(msgType, resSegment);
             return new MyResponse(e, res);

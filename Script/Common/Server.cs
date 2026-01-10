@@ -17,7 +17,6 @@ namespace Script
         public readonly TimerScript timerScript;
         public readonly LockRedis lockRedis;
         // public abstract PersistenceTaskQueueRedis persistence_taskQueueRedis { get; }
-        public readonly IMessageSerializer messageSerializer;
         public readonly PersistenceTaskQueueRedis persistence_taskQueueRedis;
         public readonly ObjectLocationRedisW userLocationRedisW;
         public readonly ObjectLocationRedisW roomLocationRedisW;
@@ -26,8 +25,6 @@ namespace Script
 
         public Server()
         {
-            this.messageSerializer = new BinaryMessageSerializer();
-
             this.timerScript = new TimerScript(this);
             this.lockRedis = new LockRedis(this);
             this.persistence_taskQueueRedis = new PersistenceTaskQueueRedis(this, DbKey.PersistenceTaskQueueList, DbKey.PersistenceTaskQueueSortedSet);

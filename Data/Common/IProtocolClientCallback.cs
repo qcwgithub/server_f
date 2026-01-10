@@ -1,7 +1,7 @@
 namespace Data
 {
-    // 多线程调用
-    public interface IProtocolClientCallback : IDataCallback
+    // Called by socket thread
+    public interface IProtocolClientCallback
     {
         void LogError(string str);
         void LogError(string str, Exception ex);

@@ -10,7 +10,7 @@ namespace Script
             this.gatewayService = gatewayService;
         }
 
-        public override void OnMsg(IConnection connection, int seq, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback? reply)
+        public override void OnMsg(IConnection connection, int seq, MsgType msgType, byte[] msgBytes, ReplyCallback? reply)
         {
             GatewayUserConnection? gatewayUserConnection = connection as GatewayUserConnection;
             if (gatewayUserConnection != null)

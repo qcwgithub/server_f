@@ -1,11 +1,17 @@
+using System.Collections.Concurrent;
 using System.Net.Sockets;
 
 namespace Data
 {
     public class SocketConnection : IConnection, IProtocolClientCallback
     {
-        public readonly ServiceData serviceData;
-        public ProtocolClientData socket;
+        public struct stWaitingResponse
+        {
+            public ReplyCallback callback;
+        }
+
+        readonly IConnectionCallbackProvider callbackProvider;
+        public IProtocolClient socket;
         public readonly bool isConnector;
 
         public bool isAcceptor
@@ -17,11 +23,14 @@ namespace Data
         }
         public readonly bool forClient;
         Dictionary<int, stWaitingResponse> waitingResponseDict = new();
+        bool closed = false;
+        bool connecting = false;
+        bool connected = false;
 
         // Connector
-        public SocketConnection(ServiceData serviceData, string ip, int port)
+        public SocketConnection(IConnectionCallbackProvider callbackProvider, string ip, int port)
         {
-            this.serviceData = serviceData;
+            this.callbackProvider = callbackProvider;
 
             this.socket = new TcpClientData(this, ip, port);
 
@@ -30,9 +39,9 @@ namespace Data
         }
 
         // Acceptor
-        public SocketConnection(ServiceData serviceData, Socket socket, bool forClient)
+        public SocketConnection(IConnectionCallbackProvider callbackProvider, Socket socket, bool forClient)
         {
-            this.serviceData = serviceData;
+            this.callbackProvider = callbackProvider;
 
             // !
             socket.NoDelay = true;
@@ -47,59 +56,77 @@ namespace Data
         {
             get
             {
-                if (this.isConnector)
-                {
-                    return this.serviceData.connectionCallbackForS;
-                }
-                return this.forClient ? this.serviceData.connectionCallbackForC : this.serviceData.connectionCallbackForS;
+                return this.callbackProvider.GetConnectionCallback(this.forClient);
             }
+        }
+
+        public enum SocketEventType
+        {
+            Connect,
+            Receive,
+            Close,
+        }
+
+        public class SocketEvent
+        {
+            public SocketEventType eventType;
+            public object? eventData;
+
+            public SocketEvent(SocketEventType eventType, object? eventData)
+            {
+                this.eventType = eventType;
+                this.eventData = eventData;
+            }
+        }
+
+        ConcurrentQueue<SocketEvent> eventQueue = new();
+        void EnqueueSocketEvent(SocketEvent e)
+        {
+            this.eventQueue.Enqueue(e);
         }
 
         #region IProtocolClientCallback
 
-        IMessagePacker packer
-        {
-            get
-            {
-                return this.serviceData.serverData.messagePacker;
-            }
-        }
+        // NOTE: Called by socket thread
         void IProtocolClientCallback.LogError(string str)
         {
-            this.serviceData.logger.Error(str);
+            this.callback.LogError(str);
         }
+
+        // NOTE: Called by socket thread
         void IProtocolClientCallback.LogError(string str, Exception ex)
         {
-            this.serviceData.logger.Error(str, ex);
+            this.callback.LogError(str, ex);
         }
+
+        // NOTE: Called by socket thread
         void IProtocolClientCallback.LogInfo(string str)
         {
-            this.serviceData.logger.Info(str);
+            this.callback.LogInfo(str);
         }
+
+        // NOTE: Called by socket thread
         void IProtocolClientCallback.OnConnect(bool success)
         {
-            if (success)
-            {
-                this.callback.OnConnectSuccess(this);
-            }
+            this.EnqueueSocketEvent(new SocketEvent(SocketEventType.Connect, success));
         }
+
+        // NOTE: Called by socket thread
         void IProtocolClientCallback.OnClose()
         {
-            this.TimeoutAllWaitings();
-
-            this.callback.OnClose(this);
+            this.EnqueueSocketEvent(new SocketEvent(SocketEventType.Close, null));
         }
 
+        // NOTE: Called by socket thread
         int IProtocolClientCallback.OnReceive(byte[] buffer, int offset, int count)
         {
             int used = 0;
-            while (this.packer.IsCompeteMessage(buffer, offset, count, out int exactCount))
+            while (this.callback.messagePacker.IsCompeteMessage(buffer, offset, count, out int exactCount))
             {
-                UnpackResult r = this.packer.Unpack(buffer, offset, exactCount);
-                this.OnMsg(r.seq, r.code, r.msg, r.requireResponse);
+                UnpackResult r = this.callback.messagePacker.Unpack(buffer, offset, exactCount);
+                this.EnqueueSocketEvent(new SocketEvent(SocketEventType.Receive, r));
 
                 used += r.totalLength;
-
                 offset += r.totalLength;
                 count -= r.totalLength;
 
@@ -107,103 +134,72 @@ namespace Data
                 {
                     break;
                 }
-
-                if (this.closed)
-                {
-                    break;
-                }
             }
             return used;
         }
 
-        void OnMsg(int seq, int code, ArraySegment<byte> msg, bool requireResponse)
+        #endregion IProtocolClientCallback
+
+        void HandleSocketEvents()
         {
-            try
+            while (this.eventQueue.TryDequeue(out SocketEvent? socketEvent))
             {
-                if (seq > 0)
+                switch (socketEvent.eventType)
                 {
-                    MsgType msgType = (MsgType)code;
-                    if (this.forClient && msgType < MsgType.ClientStart)
-                    {
-                        this.serviceData.logger.Error("receive invalid message from client! " + msgType.ToString());
-                        if (requireResponse)
+                    case SocketEventType.Connect:
                         {
-                            this.socket.Send(this.packer.Pack((int)ECode.Exception, null, -seq, false));
+                            this.connecting = false;
+                            this.connected = (bool)socketEvent.eventData;
+                            this.callback.OnConnect(this, this.connected);
                         }
-                        return;
-                    }
+                        break;
 
-                    if (!requireResponse)
-                    {
-                        this.callback.OnMsg(this, seq, msgType, msg, null);
-                    }
-                    else
-                    {
-                        this.callback.OnMsg(this, seq, msgType, msg,
-                            (ECode e2, ArraySegment<byte> msg2) =>
+                    case SocketEventType.Receive:
+                        {
+                            if (socketEvent.eventData is UnpackResult r)
                             {
-                                // 消息处理是异步的，在回复的时候，有可能已经断开了。因此这里要加个判断
-                                if (!this.IsClosed())
-                                {
-                                    this.socket.Send(this.packer.Pack((int)e2, msg2, -seq, false));
-                                }
-                            });
-                    }
+                                this.OnMsg(r.seq, r.code, r.msgBytes, r.requireResponse);
+                            }
+                            else
+                            {
+                                throw new Exception("socketEvent.eventData is not UnpackResult");
+                            }
+                        }
+                        break;
+
+                    case SocketEventType.Close:
+                        {
+                            this.closed = true;
+                            this.TimeoutAllWaitings();
+                            this.callback.OnClose(this);
+                        }
+                        break;
+
+                    default:
+                        throw new Exception("Not handled socket event " + socketEvent.eventType);
                 }
-                //// 2 response message
-                else if (seq < 0)
-                {
-                    // this.server.logger.Info("recv response " + eCode + ", " + msg);
-
-                    ECode eCode = (ECode)code;
-
-                    stWaitingResponse st;
-                    if (this.waitingResponseDict.TryGetValue(-seq, out st))
-                    {
-                        this.waitingResponseDict.Remove(-seq);
-
-                        // st.source.Cancel();
-                        // st.source.Dispose();
-
-                        // Console.WriteLine("--waiting {0}, -seq = {1}", this.waitingResponses.Count, seq);
-                        st.callback(eCode, msg);
-                    }
-                    else
-                    {
-                        this.serviceData.logger.Error("No response fun for " + (-seq));
-                    }
-                }
-                else
-                {
-                    this.serviceData.logger.Error("onMsg wrong seq: " + seq);
-                }
-            }
-            catch (Exception ex)
-            {
-                this.serviceData.logger.Error("ProtocolClientData.OnMsg " + ex);
             }
         }
 
-        #endregion IProtocolClientCallback
-
         public void Connect()
         {
+            this.connecting = true;
             this.socket.Connect();
         }
 
         public bool IsConnecting()
         {
-            return this.socket.IsConnecting();
+            return this.connecting;
         }
 
         public bool IsConnected()
         {
-            return this.socket.IsConnected();
+            return this.connected;
         }
 
         public bool IsClosed()
         {
-            return this.socket.IsClosed();
+            return this.closed || this.socket.IsClosed();
         }
 
         public void Close(string reason)
@@ -219,6 +215,7 @@ namespace Data
             }
         }
 
+        // Called by Main thread
         async void TimeoutTrigger(int timeoutS, int seq)
         {
             for (int i = 0; i < timeoutS; i++)
@@ -243,6 +240,7 @@ namespace Data
             }
         }
 
+        // Called by Main thread
         public void Send(MsgType msgType, object msg, ReplyCallback? cb, int? pTimeoutS)
         {
             if (!this.IsConnected())
@@ -254,7 +252,7 @@ namespace Data
                 return;
             }
 
-            var seq = this.serviceData.msgSeq++;
+            var seq = this.callback.nextMsgSeq;
             if (seq <= 0)
             {
                 seq = 1;
@@ -274,9 +272,77 @@ namespace Data
 
             byte[] msgBytes = MessageTypeConfigData.SerializeMsg(msgType, msg);
 
-            IMessagePacker packer = this.serviceData.serverData.messagePacker;
-            var bytes = packer.Pack((int)msgType, msgBytes, seq, cb != null);
+            var bytes = this.callback.messagePacker.Pack((int)msgType, msgBytes, seq, cb != null);
             this.socket.Send(bytes);
+        }
+
+        // Called by Main thread
+        void OnMsg(int seq, int code, byte[] msgBytes, bool requireResponse)
+        {
+            try
+            {
+                if (seq > 0)
+                {
+                    MsgType msgType = (MsgType)code;
+                    if (this.forClient && msgType < MsgType.ClientStart)
+                    {
+                        this.callback.LogError("receive invalid message from client! " + msgType.ToString());
+                        if (requireResponse)
+                        {
+                            this.socket.Send(this.callback.messagePacker.Pack((int)ECode.Exception, null, -seq, false));
+                        }
+                        return;
+                    }
+
+                    if (!requireResponse)
+                    {
+                        this.callback.OnMsg(this, seq, msgType, msgBytes, null);
+                    }
+                    else
+                    {
+                        this.callback.OnMsg(this, seq, msgType, msgBytes,
+                            (ECode e2, byte[] msg2) =>
+                            {
+                                // 消息处理是异步的，在回复的时候，有可能已经断开了。因此这里要加个判断
+                                if (!this.IsClosed())
+                                {
+                                    this.socket.Send(this.callback.messagePacker.Pack((int)e2, msg2, -seq, false));
+                                }
+                            });
+                    }
+                }
+                //// 2 response message
+                else if (seq < 0)
+                {
+                    // this.server.logger.Info("recv response " + eCode + ", " + msg);
+
+                    ECode eCode = (ECode)code;
+
+                    stWaitingResponse st;
+                    if (this.waitingResponseDict.TryGetValue(-seq, out st))
+                    {
+                        this.waitingResponseDict.Remove(-seq);
+
+                        // st.source.Cancel();
+                        // st.source.Dispose();
+
+                        // Console.WriteLine("--waiting {0}, -seq = {1}", this.waitingResponses.Count, seq);
+                        st.callback(eCode, msgBytes);
+                    }
+                    else
+                    {
+                        this.callback.LogError("No response fun for " + (-seq));
+                    }
+                }
+                else
+                {
+                    this.callback.LogError("onMsg wrong seq: " + seq);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.callback.LogError("ProtocolClientData.OnMsg " + ex);
+            }
         }
 
         void TimeoutAllWaitings()

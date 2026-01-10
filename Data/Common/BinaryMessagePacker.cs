@@ -34,23 +34,6 @@
             }
         }
 
-        public static long ReadLong(ArraySegment<byte> buffer, int offset)
-        {
-            unchecked
-            {
-                ulong value = 0;
-                value += buffer[offset];
-                value += (((ulong)buffer[offset + 1]) << 8);
-                value += (((ulong)buffer[offset + 2]) << 16);
-                value += (((ulong)buffer[offset + 3]) << 24);
-                value += (((ulong)buffer[offset + 4]) << 32);
-                value += (((ulong)buffer[offset + 5]) << 40);
-                value += (((ulong)buffer[offset + 6]) << 48);
-                value += (((ulong)buffer[offset + 7]) << 56);
-                return (long)value;
-            }
-        }
-
         public static void WriteInt(byte[] buffer, int offset, int value_)
         {
             unchecked
@@ -62,7 +45,7 @@
                 buffer[offset + 3] = (byte)(value >> 24);
             }
         }
-        public static int ReadInt(ArraySegment<byte> buffer, int offset)
+        public static int ReadInt(byte[] buffer, int offset)
         {
             unchecked
             {
@@ -143,7 +126,7 @@
             bufferOffset++;
         }
 
-        public byte[] Pack(int msgTypeOrECode, ArraySegment<byte> msg, int seq, bool requireResponse)
+        public byte[] Pack(int msgTypeOrECode, byte[] msg, int seq, bool requireResponse)
         {
             byte[] buffer;
             int bufferOffset = 0;
@@ -152,28 +135,33 @@
             // b
             totalLength += sizeof(int);
 
+            int M = msg != null ? msg.Length : 0;
+
             // c
-            totalLength += msg.Count;
+            totalLength += M;
 
             buffer = new byte[totalLength];
             this.PackHeader(buffer, seq, msgTypeOrECode, requireResponse, ref bufferOffset);
 
             // b
-            WriteInt(buffer, bufferOffset, msg.Count);
-            bufferOffset += sizeof(int);
+            if (M > 0)
+            {
+                WriteInt(buffer, bufferOffset, M);
+                bufferOffset += sizeof(int);
+            }
 
             // c
-            if (msg.Count > 0)
+            if (M > 0)
             {
-                msg.CopyTo(buffer, bufferOffset);
-                bufferOffset += msg.Count;
+                Array.Copy(msg, 0, buffer, bufferOffset, M);
+                bufferOffset += M;
             }
 
             MyDebug.Assert(bufferOffset == buffer.Length);
             return buffer;
         }
 
-        void UnpackHeader(ref UnpackResult r, ArraySegment<byte> buffer, ref int offset, ref int count)
+        void UnpackHeader(ref UnpackResult r, byte[] buffer, ref int offset, ref int count)
         {
             // 4 = total length
             r.totalLength = ReadInt(buffer, offset);
@@ -207,7 +195,9 @@
             count -= sizeof(int);
 
             // c
-            r.msg = new ArraySegment<byte>(buffer, offset, length);
+            r.msgBytes = new byte[length];
+            Array.Copy(buffer, offset, r.msgBytes, 0, length);
+
             offset += length;
             count -= length;
 

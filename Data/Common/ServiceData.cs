@@ -3,6 +3,7 @@ using log4net;
 namespace Data
 {
     public abstract class ServiceData :
+        IConnectionCallbackProvider,
         ITcpListenerCallbackProvider,
         IHttpListenerCallbackProvider,
         IWebSocketListenerCallbackProvider,
@@ -44,6 +45,10 @@ namespace Data
         // tcp client callback
         public IConnectionCallback? connectionCallbackForS;
         public IConnectionCallback? connectionCallbackForC;
+        public IConnectionCallback GetConnectionCallback(bool forClient)
+        {
+            return forClient ? this.connectionCallbackForC! : this.connectionCallbackForS!;
+        }
 
         public TcpListenerData? tcpListenerForServer;
         public TcpListenerData? tcpListenerForClient;

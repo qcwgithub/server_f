@@ -12,6 +12,6 @@ namespace Data
         [Key(2)]
         public MsgType innerMsgType;
         [Key(3)]
-        public ArraySegment<byte> innerMsgBytes;
+        public byte[] innerMsgBytes;
     }
 }

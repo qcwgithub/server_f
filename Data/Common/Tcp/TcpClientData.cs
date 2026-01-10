@@ -1,5 +1,6 @@
 using System.Net.Sockets;
 using System.Net;
+using System.Collections.Concurrent;
 
 namespace Data
 {
@@ -8,30 +9,22 @@ namespace Data
         #region variables
         Socket socket;
 
-        ////
-        bool connecting;
-        public override bool IsConnecting() => this.connecting;
-
-        ////
-        bool connected;
-        public override bool IsConnected() => this.connected;
-        
-        public bool sending;
+        bool sending;
 
         ////        
         bool closed;
         public override bool IsClosed() => this.closed;
         public override EndPoint RemoteEndPoint => this.socket.RemoteEndPoint;
 
-        public IPEndPoint ipEndPointForConnector; // when isConnector == true
+        IPEndPoint ipEndPointForConnector; // when isConnector == true
         // public CancellationTokenSource _cancellationTaskSource;
         // public CancellationToken _cancellationToken;
-        public SocketAsyncEventArgs _innArgs;
-        public SocketAsyncEventArgs _outArgs;
+        SocketAsyncEventArgs _innArgs;
+        SocketAsyncEventArgs _outArgs;
 
-        public List<byte[]> sendList = new List<byte[]>();
-        public byte[] recvBuffer = new byte[8192];
-        public int recvOffset = 0;
+        public ConcurrentQueue<byte[]> sendQueue = new();
+        byte[] recvBuffer = new byte[8192];
+        int recvOffset = 0;
 
         #endregion
 
@@ -58,11 +51,9 @@ namespace Data
             // this._cancellationToken = this._cancellationTaskSource.Token;
             this._innArgs = new SocketAsyncEventArgs();
             this._outArgs = new SocketAsyncEventArgs();
-            this._innArgs.Completed += this._onComplete;
-            this._outArgs.Completed += this._onComplete;
+            this._innArgs.Completed += this.OnSomethingComplete;
+            this._outArgs.Completed += this.OnSomethingComplete;
 
-            this.connecting = false;
-            this.connected = false;
             this.sending = false;
             this.closed = false;
         }
@@ -75,11 +66,9 @@ namespace Data
             // this._cancellationToken = this._cancellationTaskSource.Token;
             this._innArgs = new SocketAsyncEventArgs();
             this._outArgs = new SocketAsyncEventArgs();
-            this._innArgs.Completed += this._onComplete;
-            this._outArgs.Completed += this._onComplete;
+            this._innArgs.Completed += this.OnSomethingComplete;
+            this._outArgs.Completed += this.OnSomethingComplete;
 
-            this.connecting = false;
-            this.connected = true;
             this.sending = false;
             this.closed = false;
 
@@ -91,13 +80,7 @@ namespace Data
 
         #region OnComplete entry
 
-        // 这个是多线程调用，因此需要放在 Data 这边
-        public void _onComplete(object sender, SocketAsyncEventArgs e)
-        {
-            ET.ThreadSynchronizationContext.Instance.Post(this.OnSomethingComplete, e);
-        }
-
-        void OnSomethingComplete(object _e)
+        void OnSomethingComplete(object? sender, SocketAsyncEventArgs e)
         {
             if (this.closed)
             {
@@ -105,7 +88,6 @@ namespace Data
             }
             try
             {
-                var e = (SocketAsyncEventArgs)_e;
                 switch (e.LastOperation)
                 {
                     case SocketAsyncOperation.Connect:
@@ -147,7 +129,6 @@ namespace Data
         {
             try
             {
-                this.connecting = true;
                 this._outArgs.RemoteEndPoint = this.ipEndPointForConnector;
                 bool completed = !this.socket.ConnectAsync(this._outArgs);
                 if (completed)
@@ -163,12 +144,7 @@ namespace Data
 
         void OnConnectComplete(SocketAsyncEventArgs e)
         {
-            this.connecting = false;
             e.RemoteEndPoint = null;
-            if (e.SocketError == SocketError.Success)
-            {
-                this.connected = true;
-            }
 
             bool success = e.SocketError == SocketError.Success;
             if (success)
@@ -176,7 +152,7 @@ namespace Data
                 byte[] bytes = this.SendIdentity();
                 if (bytes != null)
                 {
-                    this.sendList.Add(bytes);
+                    this.sendQueue.Enqueue(bytes);
                 }
             }
 
@@ -197,17 +173,17 @@ namespace Data
 
         void PerformSend()
         {
-            if (!this.connected || this.sending || this.sendList.Count == 0)
+            if (this.sending || this.sendQueue.Count == 0)
             {
                 return;
             }
 
             this.sending = true;
 
-            var bytes = this.sendList[0];
-            this.sendList.RemoveAt(0);
-
-            this.SendAsync(bytes, 0, bytes.Length);
+            if (this.sendQueue.TryDequeue(out byte[]? bytes))
+            {
+                this.SendAsync(bytes, 0, bytes.Length);
+            }
         }
 
         void SendAsync(byte[] buffer, int offset, int count)
@@ -230,7 +206,7 @@ namespace Data
 
         public override void Send(byte[] bytes)
         {
-            this.sendList.Add(bytes);
+            this.sendQueue.Enqueue(bytes);
             this.PerformSend();
         }
 
@@ -388,27 +364,25 @@ namespace Data
             }
             this.socket = null;
 
-            this.connected = false;
-            this.connecting = false;
             this.sending = false;
 
-            this._innArgs.Completed -= this._onComplete;
+            this._innArgs.Completed -= this.OnSomethingComplete;
             this._innArgs.Dispose();
             this._innArgs = null;
 
-            this._outArgs.Completed -= this._onComplete;
+            this._outArgs.Completed -= this.OnSomethingComplete;
             this._outArgs.Dispose();
             this._outArgs = null;
 
 
-            this.callback.OnClose();
-            this.sendList = null;
+            this.sendQueue = null;
             this.recvBuffer = null;
+
+            this.callback.OnClose();
         }
 
         void OnDisconnectComplete(SocketAsyncEventArgs e)
         {
-            this.connected = false;
             this.Close("onDisconnectComplete");
         }
 

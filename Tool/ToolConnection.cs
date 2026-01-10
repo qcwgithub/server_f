@@ -2,20 +2,22 @@ using Data;
 
 namespace Tool
 {
-    public class ToolConnection : IProtocolClientCallback
+    public class ToolConnection : IConnectionCallbackProvider, IConnectionCallback
     {
-        static BinaryMessagePacker binaryMessagePacker = new();
-        static int socketId = 1;
-        static int msgSeq = 1;
+        SocketConnection socketConnection;
+        public ToolConnection(string ip, int port)
+        {
+            this.socketConnection = new SocketConnection(this, ip, port);
+        }
 
         public void LogError(string str)
         {
-            Console.WriteLine(str);
+            ConsoleEx.WriteLine(ConsoleColor.Red, str);
         }
 
         public void LogError(string str, Exception ex)
         {
-            Console.WriteLine(str, ex);
+            ConsoleEx.WriteLine(ConsoleColor.Red, str);
         }
 
         public void LogInfo(string str)
@@ -23,51 +25,56 @@ namespace Tool
             Console.WriteLine(str);
         }
 
-        TcpClientData? socket;
-        TaskCompletionSource<bool> tcsConnectComplete;
-        public async Task<bool> Connect(string ip, int port)
+        TaskCompletionSource<bool> tcsConnect;
+
+        static BinaryMessagePacker s_binaryMessagePacker = new();
+        public IMessagePacker messagePacker
         {
-            if (this.socket != null)
+            get
             {
-                this.Close();
+                return s_binaryMessagePacker;
             }
-            tcsConnectComplete = new TaskCompletionSource<bool>();
+        }
 
-            Console.WriteLine($"Connect {ip}:{port}");
+        static int s_msgSeq = 1;
+        public int nextMsgSeq
+        {
+            get
+            {
+                int seq = s_msgSeq++;
+                if (seq <= 0)
+                {
+                    seq = 1;
+                }
+                return seq;
+            }
+        }
 
-            this.socket = new TcpClientData(this, socketId++, ip, port);
-            this.socket.Connect();
-
-            return await this.tcsConnectComplete.Task;
+        public async Task<bool> Connect()
+        {
+            tcsConnect = new TaskCompletionSource<bool>();
+            this.socketConnection.Connect();
+            return await this.tcsConnect.Task;
         }
 
         public void Close()
         {
-            if (this.socket != null)
-            {
-                this.socket.Close(string.Empty);
-                this.socket = null;
-            }
+            this.socketConnection.Close("doesn't matter");
         }
 
-        public void OnReceive(int seq, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback? reply)
+        void IConnectionCallback.OnMsg(IConnection _, int seq, MsgType msgType, byte[] msgBytes, ReplyCallback? reply)
         {
             // var msg = MessageTypeConfigData.DeserializeMsg(msgType, msgBytes);
         }
 
-        public void OnConnect(bool success)
+        void IConnectionCallback.OnConnect(IConnection _, bool success)
         {
-            Console.WriteLine($"OnConnectComplete success? {success}");
-            if (!success)
-            {
-                socket.Close(ProtocolClientData.CloseReason.OnConnectComplete_false);
-                this.socket = null;
-            }
+            Console.WriteLine($"OnConnect success? {success}");
 
-            this.tcsConnectComplete.SetResult(success);
+            this.tcsConnect.SetResult(success);
         }
 
-        public void OnClose()
+        void IConnectionCallback.OnClose(IConnection _)
         {
         }
 
@@ -75,8 +82,7 @@ namespace Tool
         {
             var tcs = new TaskCompletionSource<MyResponse>();
 
-            byte[] msgBytes = MessageTypeConfigData.SerializeMsg(msgType, msg);
-            this.socket.SendBytes(msgType, msgBytes, msgSeq++, (e, segment) =>
+            this.socketConnection.Send(msgType, msg, (e, segment) =>
             {
                 object res = MessageTypeConfigData.DeserializeRes(msgType, segment);
                 tcs.SetResult(new MyResponse(e, res));
@@ -84,6 +90,11 @@ namespace Tool
             null);
 
             return await tcs.Task;
+        }
+
+        IConnectionCallback IConnectionCallbackProvider.GetConnectionCallback(bool forClient)
+        {
+            return this;
         }
     }
 }

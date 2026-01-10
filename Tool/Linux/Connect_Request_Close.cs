@@ -8,8 +8,8 @@ namespace Tool
         {
             var tai = serviceConfig.tai;
 
-            var connection = new ToolConnection();
-            bool success = await connection.Connect(serviceConfig.inIp, serviceConfig.inPort);
+            var connection = new ToolConnection(serviceConfig.inIp, serviceConfig.inPort);
+            bool success = await connection.Connect();
             if (!success)
             {
                 ConsoleEx.WriteLine(ConsoleColor.Red, $"Connect to {tai} failed");

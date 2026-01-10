@@ -4,9 +4,9 @@ namespace Data
 {
     public partial class MessageTypeConfigData
     {
-        public static object DeserializeMsg(MsgType msgType, ArraySegment<byte> msgBytes)
+        public static object DeserializeMsg(MsgType msgType, byte[] msgBytes)
         {
-            if (msgBytes.Count == 0)
+            if (msgBytes == null || msgBytes.Length == 0)
             {
                 return null;
             }

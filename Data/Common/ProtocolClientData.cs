@@ -1,6 +1,6 @@
 namespace Data
 {
-    public abstract class ProtocolClientData
+    public abstract class ProtocolClientData : IProtocolClient
     {
         protected readonly IProtocolClientCallback callback;
 
@@ -8,17 +8,14 @@ namespace Data
         protected readonly bool isConnector;
         protected bool isAcceptor => !this.isConnector;
         protected bool identityVerified;
-
-        public abstract bool IsConnecting();
-        public abstract bool IsConnected();
         public abstract bool IsClosed();
 
         public abstract System.Net.EndPoint RemoteEndPoint { get; }
         #endregion
 
-        public ProtocolClientData(IProtocolClientCallback callback, bool isConnector)
+        public ProtocolClientData(IProtocolClientCallback output, bool isConnector)
         {
-            this.callback = callback;
+            this.callback = output;
             this.isConnector = isConnector;
         }
 
@@ -70,7 +67,7 @@ namespace Data
 
             if (r == VerifyIdentityResult.Failed)
             {
-                this.callback!.LogInfo($"{this.GetType().Name} verify identity failed, close socket!");
+                this.callback.LogInfo($"{this.GetType().Name} verify identity failed, close socket!");
             }
             else if (r == VerifyIdentityResult.Success)
             {

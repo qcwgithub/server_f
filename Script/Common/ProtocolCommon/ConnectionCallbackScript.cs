@@ -8,8 +8,49 @@ namespace Script
         {
         }
 
-        public void OnConnectSuccess(IConnection connection)
+        public IMessagePacker messagePacker
         {
+            get
+            {
+                return this.server.data.messagePacker;
+            }
+        }
+
+        public void LogError(string str)
+        {
+            this.service.logger.Error(str);
+        }
+
+        public void LogError(string str, Exception ex)
+        {
+            this.service.logger.Error(str, ex);
+        }
+
+        public void LogInfo(string str)
+        {
+            this.service.logger.Info(str);
+        }
+
+        public int nextMsgSeq
+        {
+            get
+            {
+                int seq = this.service.data.msgSeq++;
+                if (seq <= 0)
+                {
+                    seq = 1;
+                }
+                return seq;
+            }
+        }
+
+        public void OnConnect(IConnection connection, bool success)
+        {
+            if (!success)
+            {
+                return;
+            }
+
             var serviceConnection = connection as ServiceConnection;
             if (serviceConnection == null)
             {
@@ -20,7 +61,7 @@ namespace Script
             this.service.OnConnectComplete(serviceConnection).Forget();
         }
 
-        public virtual async void OnMsg(IConnection connection, int seq, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback? reply)
+        public virtual async void OnMsg(IConnection connection, int seq, MsgType msgType, byte[] msgBytes, ReplyCallback? reply)
         {
             var context = new MessageContext
             {
@@ -31,7 +72,7 @@ namespace Script
             var r = await this.service.dispatcher.Dispatch(context, msgType, msg);
             if (reply != null)
             {
-                ArraySegment<byte> resBytes = MessageTypeConfigData.SerializeRes(msgType, r.res);
+                byte[] resBytes = MessageTypeConfigData.SerializeRes(msgType, r.res);
                 reply(r.e, resBytes);
             }
         }

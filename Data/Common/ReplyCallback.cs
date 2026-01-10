@@ -1,3 +1,3 @@
 using Data;
 
-public delegate void ReplyCallback(ECode e, ArraySegment<byte> bytes);
+public delegate void ReplyCallback(ECode e, byte[] bytes);

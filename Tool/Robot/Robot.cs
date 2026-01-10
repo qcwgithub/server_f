@@ -26,9 +26,9 @@ namespace Tool
         long roomId;
         public async Task Start()
         {
-            this.connection = new ToolConnection();
+            this.connection = new ToolConnection("localhost", 8020);
 
-            bool success = await this.connection.Connect("localhost", 8020);
+            bool success = await this.connection.Connect();
             Console.WriteLine($"Connect result {success}");
             if (!success)
             {
