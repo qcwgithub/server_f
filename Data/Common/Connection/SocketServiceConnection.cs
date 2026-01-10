@@ -8,18 +8,12 @@ namespace Data
         public SocketServiceConnection(ServiceData serviceData, string ip, int port, ServiceType serviceType, int serviceId) : base(serviceType, serviceId)
         {
             this.socketConnection = new SocketConnection(serviceData, ip, port);
-
-            // !
-            socketConnection.socket.customData = this;
         }
 
         // Accectpor
         public SocketServiceConnection(SocketConnection socketConnection, ServiceType serviceType, int serviceId) : base(serviceType, serviceId)
         {
             this.socketConnection = socketConnection;
-
-            // !
-            socketConnection.socket.customData = this;
         }
 
         public override int GetConnectionId()

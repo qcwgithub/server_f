@@ -29,7 +29,6 @@ namespace Data
         public int errorCount = 0;
         public int defaultDateTime = 0;
         public int msgSeq = 1;
-        public int socketId = 90000;
 
         public Random random = new Random();
         public readonly ILog logger;

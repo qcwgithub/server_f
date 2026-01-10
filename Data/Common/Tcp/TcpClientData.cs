@@ -15,6 +15,8 @@ namespace Data
         ////
         bool connected;
         public override bool IsConnected() => this.connected;
+        
+        public bool sending;
 
         ////        
         bool closed;
@@ -48,10 +50,8 @@ namespace Data
         }
 
         // Connector
-        public TcpClientData(IProtocolClientCallback callback, int socketId, string ip, int port) : base(callback, socketId, true, false)
+        public TcpClientData(IProtocolClientCallback callback, string ip, int port) : base(callback, true)
         {
-            MyDebug.Assert(!oppositeIsClient);
-
             this._initConnectSocket(ip, port);
 
             // this._cancellationTaskSource = new CancellationTokenSource();
@@ -63,11 +63,12 @@ namespace Data
 
             this.connecting = false;
             this.connected = false;
+            this.sending = false;
             this.closed = false;
         }
 
         // Acceptor
-        public TcpClientData(IProtocolClientCallback callback, int socketId, bool oppositeIsClient, Socket socket) : base(callback, socketId, false, oppositeIsClient)
+        public TcpClientData(IProtocolClientCallback callback, Socket socket) : base(callback, false)
         {
             this.socket = socket;
             // this._cancellationTaskSource = new CancellationTokenSource();
@@ -79,6 +80,7 @@ namespace Data
 
             this.connecting = false;
             this.connected = true;
+            this.sending = false;
             this.closed = false;
 
             this.PerformRecv();
@@ -226,55 +228,8 @@ namespace Data
             }
         }
 
-        async void TimeoutTrigger(int timeoutS, int seq)
+        public override void Send(byte[] bytes)
         {
-            for (int i = 0; i < timeoutS; i++)
-            {
-                await Task.Delay(1000);
-                if (this.closed)
-                {
-                    return;
-                }
-
-                if (!this.waitingResponseDict.ContainsKey(seq))
-                {
-                    return;
-                }
-            }
-
-            stWaitingResponse st;
-            if (this.waitingResponseDict.TryGetValue(seq, out st))
-            {
-                this.waitingResponseDict.Remove(seq);
-                st.callback(ECode.Timeout, null);
-            }
-        }
-
-        public override void SendBytes(MsgType msgType, ArraySegment<byte> msg, int seq, ReplyCallback? cb, int? pTimeoutS)
-        {
-            if (cb != null)
-            {
-                var st = new stWaitingResponse();
-                st.callback = cb;
-                this.waitingResponseDict.Add(seq, st);
-
-                if (pTimeoutS != null)
-                {
-                    this.TimeoutTrigger(pTimeoutS.Value, seq);
-                }
-            }
-
-            // int length = Encoding.UTF8.GetByteCount(message);
-            // var bytes = new byte[length + 4];
-
-            // var bytes = Encoding.UTF8.GetBytes(message);
-            // this.sendOnePacket(bytes);
-            this.SendPacketIgnoreResult((int)msgType, msg, seq, cb != null);
-        }
-
-        protected override void SendPacketIgnoreResult(int msgTypeOrECode, ArraySegment<byte> msg, int seq, bool requireResponse)
-        {
-            var bytes = this.callback.GetMessagePacker().Pack(msgTypeOrECode, msg, seq, requireResponse);
             this.sendList.Add(bytes);
             this.PerformSend();
         }
@@ -365,25 +320,9 @@ namespace Data
 
                 if (!this.isAcceptor || this.identityVerified)
                 {
-                    int exactCount;
-                    while (this.callback.GetMessagePacker().IsCompeteMessage(this.recvBuffer, offset, count, out exactCount))
-                    {
-                        UnpackResult r = this.callback.GetMessagePacker().Unpack(this.recvBuffer, offset, exactCount);
-                        this.OnMsg(r.seq, r.code, r.msg, r.requireResponse);
-
-                        offset += r.totalLength;
-                        count -= r.totalLength;
-
-                        if (r.totalLength <= 0)
-                        {
-                            break;
-                        }
-
-                        if (this.closed)
-                        {
-                            break;
-                        }
-                    }
+                    int used = this.callback.OnReceive(this.recvBuffer, offset, count);
+                    offset += used;
+                    count -= used;
                 }
 
                 if (!this.closed)
@@ -462,9 +401,7 @@ namespace Data
             this._outArgs = null;
 
 
-            this.TimeoutAllWaitings();
             this.callback.OnClose();
-            this.waitingResponseDict = null;
             this.sendList = null;
             this.recvBuffer = null;
         }

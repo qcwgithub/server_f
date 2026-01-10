@@ -8,11 +8,6 @@ namespace Tool
         static int socketId = 1;
         static int msgSeq = 1;
 
-        public IMessagePacker GetMessagePacker()
-        {
-            return binaryMessagePacker;
-        }
-
         public void LogError(string str)
         {
             Console.WriteLine(str);
@@ -55,7 +50,7 @@ namespace Tool
             }
         }
 
-        public void OnMsg(int seq, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback? reply)
+        public void OnReceive(int seq, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback? reply)
         {
             // var msg = MessageTypeConfigData.DeserializeMsg(msgType, msgBytes);
         }
@@ -80,7 +75,7 @@ namespace Tool
         {
             var tcs = new TaskCompletionSource<MyResponse>();
 
-            ArraySegment<byte> msgBytes = MessageTypeConfigData.SerializeMsg(msgType, msg);
+            byte[] msgBytes = MessageTypeConfigData.SerializeMsg(msgType, msg);
             this.socket.SendBytes(msgType, msgBytes, msgSeq++, (e, segment) =>
             {
                 object res = MessageTypeConfigData.DeserializeRes(msgType, segment);
