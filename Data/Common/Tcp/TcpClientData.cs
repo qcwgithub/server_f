@@ -127,13 +127,13 @@ namespace Data
                         }
                         break;
                     default:
-                        this.callback.LogError(this, "TcpClientData.onSomethingComplete default: " + e.LastOperation);
+                        this.callback.LogError("TcpClientData.onSomethingComplete default: " + e.LastOperation);
                         break;
                 }
             }
             catch (Exception ex)
             {
-                this.callback.LogError(this, "onSomethingComplete " + ex);
+                this.callback.LogError("onSomethingComplete " + ex);
             }
         }
 
@@ -155,7 +155,7 @@ namespace Data
             }
             catch (SocketException ex)
             {
-                this.callback.LogError(this, "connect exception" + ex);
+                this.callback.LogError("connect exception" + ex);
             }
         }
 
@@ -178,7 +178,7 @@ namespace Data
                 }
             }
 
-            this.callback.OnConnectComplete(this, success);
+            this.callback.OnConnectComplete(success);
 
             if (this.closed)
             {
@@ -410,7 +410,7 @@ namespace Data
             }
             catch (Exception ex)
             {
-                this.callback.LogError(this, "OnRecvComplete " + ex);
+                this.callback.LogError("OnRecvComplete " + ex);
             }
             finally
             {
@@ -447,7 +447,7 @@ namespace Data
             catch (SocketException sockEx)
             {
                 // https://github.com/mono/mono/issues/7368
-                this.callback.LogInfo(this, reason + "----" + sockEx.ToString());
+                this.callback.LogInfo(reason + "----" + sockEx.ToString());
             }
             finally
             {

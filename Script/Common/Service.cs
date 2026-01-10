@@ -15,13 +15,13 @@ namespace Script
             return null;
         }
 
-        public readonly ProtocolClientScriptForS protocolClientScriptForS;
-        protected virtual ProtocolClientScriptForS CreateProtocolClientScriptForS()
+        public readonly ConnectionCallbackScriptForS connectionCallbackScriptForS;
+        protected virtual ConnectionCallbackScriptForS CreateConnectionCallbackScriptForS()
         {
-            return new ProtocolClientScriptForS(this.server, this);
+            return new ConnectionCallbackScriptForS(this.server, this);
         }
-        public readonly ProtocolClientScript protocolClientScriptForC;
-        protected virtual ProtocolClientScript CreateProtocolClientScriptForC()
+        public readonly ConnectionCallbackScript connectionCallbackScriptForC;
+        protected virtual ConnectionCallbackScript CreateConnectionCallbackScriptForC()
         {
             return null;
         }
@@ -53,8 +53,8 @@ namespace Script
             this.tcpListenerScriptForS = new TcpListenerScript(this.server, this, false);
             this.tcpListenerScriptForC = this.CreateTcpListenerScriptForC();
 
-            this.protocolClientScriptForS = this.CreateProtocolClientScriptForS();
-            this.protocolClientScriptForC = this.CreateProtocolClientScriptForC();
+            this.connectionCallbackScriptForS = this.CreateConnectionCallbackScriptForS();
+            this.connectionCallbackScriptForC = this.CreateConnectionCallbackScriptForC();
 
             this.httpListenerScript = new HttpListenerScript(this.server, this);
             this.webSocketListenerScript = new WebSocketListenerScript(this.server, this);
@@ -95,8 +95,8 @@ namespace Script
         }
         public virtual void Attach()
         {
-            this.data.protocolClientCallbackForS = this.protocolClientScriptForS;
-            this.data.protocolClientCallbackForC = this.protocolClientScriptForC;
+            this.data.connectionCallbackForS = this.connectionCallbackScriptForS;
+            this.data.connectionCallbackForC = this.connectionCallbackScriptForC;
 
             this.data.tcpListenerCallbackForS = this.tcpListenerScriptForS;
             this.data.tcpListenerCallbackForC = this.tcpListenerScriptForC;
@@ -125,13 +125,13 @@ namespace Script
                 await Task.Delay(1000);
             }
 
-            if (this.data.protocolClientCallbackForS == this.protocolClientScriptForS)
+            if (this.data.connectionCallbackForS == this.connectionCallbackScriptForS)
             {
-                this.data.protocolClientCallbackForS = null;
+                this.data.connectionCallbackForS = null;
             }
-            if (this.data.protocolClientCallbackForC == this.protocolClientScriptForC)
+            if (this.data.connectionCallbackForC == this.connectionCallbackScriptForC)
             {
-                this.data.protocolClientCallbackForC = null;
+                this.data.connectionCallbackForC = null;
             }
 
             if (this.data.tcpListenerCallbackForS == this.tcpListenerScriptForS)

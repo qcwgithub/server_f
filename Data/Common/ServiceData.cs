@@ -43,8 +43,8 @@ namespace Data
         }
 
         // tcp client callback
-        public IProtocolClientCallback? protocolClientCallbackForS;
-        public IProtocolClientCallback? protocolClientCallbackForC;
+        public IConnectionCallback? connectionCallbackForS;
+        public IConnectionCallback? connectionCallbackForC;
 
         public TcpListenerData? tcpListenerForServer;
         public TcpListenerData? tcpListenerForClient;

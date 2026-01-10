@@ -7,6 +7,7 @@ namespace Data
         public readonly ServiceData serviceData;
         public ProtocolClientData socket;
         public readonly bool isConnector;
+        public readonly bool forClient;
 
         // Connector
         public SocketConnection(ServiceData serviceData, string ip, int port)
@@ -17,6 +18,7 @@ namespace Data
             this.socket.customData = this;
 
             this.isConnector = true;
+            this.forClient = false;
         }
 
         // Acceptor
@@ -31,48 +33,8 @@ namespace Data
             this.socket.customData = this;
 
             this.isConnector = false;
+            this.forClient = forClient;
         }
-
-        //////// IProtocolClientCallback ////////
-        IMessagePacker IProtocolClientCallback.GetMessagePacker()
-        {
-            return this.serviceData.serverData.messagePacker;
-        }
-        void IProtocolClientCallback.LogError(ProtocolClientData data, string str)
-        {
-            this.serviceData.logger.Error(str);
-        }
-        void IProtocolClientCallback.LogError(ProtocolClientData data, string str, Exception ex)
-        {
-            this.serviceData.logger.Error(str, ex);
-        }
-        void IProtocolClientCallback.LogInfo(ProtocolClientData data, string str)
-        {
-            this.serviceData.logger.Info(str);
-        }
-        void IProtocolClientCallback.OnConnectComplete(ProtocolClientData data, bool success)
-        {
-            if (!success)
-            {
-                data.Close(ProtocolClientData.CloseReason.OnConnectComplete_false);
-                return;
-            }
-
-            if (data.customData == null)
-            {
-                this.service.logger.Error("OnConnectComplete data.customData == null");
-                return;
-            }
-        }
-        void IProtocolClientCallback.OnCloseComplete(ProtocolClientData data)
-        {
-
-        }
-        void IProtocolClientCallback.ReceiveFromNetwork(ProtocolClientData data, int seq, MsgType msgType, ArraySegment<byte> msg, ReplyCallback cb)
-        {
-
-        }
-        //////// IProtocolClientCallback ////////
 
         public bool isAcceptor
         {
@@ -81,6 +43,56 @@ namespace Data
                 return !this.isConnector;
             }
         }
+
+        IConnectionCallback callback
+        {
+            get
+            {
+                if (this.isConnector)
+                {
+                    return this.serviceData.connectionCallbackForS;
+                }
+                return this.forClient ? this.serviceData.connectionCallbackForC : this.serviceData.connectionCallbackForS;
+            }
+        }
+
+        #region IProtocolClientCallback
+
+        IMessagePacker IProtocolClientCallback.GetMessagePacker()
+        {
+            return this.serviceData.serverData.messagePacker;
+        }
+        void IProtocolClientCallback.LogError(string str)
+        {
+            this.serviceData.logger.Error(str);
+        }
+        void IProtocolClientCallback.LogError(string str, Exception ex)
+        {
+            this.serviceData.logger.Error(str, ex);
+        }
+        void IProtocolClientCallback.LogInfo(string str)
+        {
+            this.serviceData.logger.Info(str);
+        }
+        void IProtocolClientCallback.OnConnectComplete(bool success)
+        {
+            if (!success)
+            {
+                this.socket.Close(ProtocolClientData.CloseReason.OnConnectComplete_false);
+                return;
+            }
+            this.callback.OnConnectComplete(this);
+        }
+        void IProtocolClientCallback.OnCloseComplete(ProtocolClientData data)
+        {
+            this.callback.OnCloseComplete(this);
+        }
+        void IProtocolClientCallback.ReceiveFromNetwork(int seq, MsgType msgType, ArraySegment<byte> msg, ReplyCallback cb)
+        {
+            this.callback.OnMsg(this, seq, msgType, msg, cb);
+        }
+
+        #endregion IProtocolClientCallback
 
         public void Connect()
         {

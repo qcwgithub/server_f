@@ -54,7 +54,7 @@ namespace Script
                     continue;
                 }
 
-                if (!this.service.protocolClientScriptForS.IsServiceConnected(info.serviceId))
+                if (!this.service.connectionCallbackScriptForS.IsServiceConnected(info.serviceId))
                 {
                     continue;
                 }

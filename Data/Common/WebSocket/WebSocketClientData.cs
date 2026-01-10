@@ -2,13 +2,6 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Net.WebSockets;
-using System.Threading;
-using System.Threading.Tasks;
-
-#if UNITY_2017_1_OR_NEWER
-using ECode = System.Int32;
-using MsgType = System.Int32;
-#endif
 
 namespace Data
 {
@@ -102,7 +95,7 @@ namespace Data
             }
             catch (TaskCanceledException ex)
             {
-                this.callback?.LogInfo(this, string.Format("connect task canceled" + ex));
+                this.callback?.LogInfo(string.Format("connect task canceled" + ex));
             }
             catch (WebSocketException wsex)
             {
@@ -113,27 +106,27 @@ namespace Data
                         case SocketError.HostNotFound:
                         case SocketError.TimedOut:
                         case SocketError.ConnectionRefused:
-                            this.callback?.LogInfo(this, $"[{this.socketId}] ConnectAsync (ignore) SocketErrorCode {se.SocketErrorCode}");
+                            this.callback?.LogInfo($"[{this.socketId}] ConnectAsync (ignore) SocketErrorCode {se.SocketErrorCode}");
                             break;
 
                         default:
-                            this.callback?.LogError(this, $"[{this.socketId}] ConnectAsync", se);
+                            this.callback?.LogError($"[{this.socketId}] ConnectAsync", se);
                             break;
                     }
                 }
                 // System.Net.WebSockets.WebSocketException (0x80004005): Unable to connect to the remote server
                 else if (wsex.HResult == unchecked((int)0x80004005))
                 {
-                    this.callback?.LogInfo(this, $"[{this.socketId}] ConnectAsync (ignore) {wsex}");
+                    this.callback?.LogInfo($"[{this.socketId}] ConnectAsync (ignore) {wsex}");
                 }
                 else
                 {
-                    this.callback?.LogError(this, $"[{this.socketId}] ConnectAsync", wsex);
+                    this.callback?.LogError($"[{this.socketId}] ConnectAsync", wsex);
                 }
             }
             catch (Exception ex)
             {
-                this.callback?.LogError(this, $"[{this.socketId}] ConnectAsync", ex);
+                this.callback?.LogError($"[{this.socketId}] ConnectAsync", ex);
             }
             finally
             {
@@ -146,7 +139,7 @@ namespace Data
             }
             else
             {
-                this.callback.OnConnectComplete(this, success);
+                this.callback.OnConnectComplete(success);
 
                 if (success)
                 {
@@ -227,18 +220,18 @@ namespace Data
 
                 if (isBenign)
                 {
-                    this.callback?.LogInfo(this, $"[{this.socketId}] SendAsync (ignore) {wsex.Message}");
+                    this.callback?.LogInfo($"[{this.socketId}] SendAsync (ignore) {wsex.Message}");
                 }
                 else
                 {
-                    this.callback?.LogError(this, $"[{this.socketId}] SendAsync", wsex);
+                    this.callback?.LogError($"[{this.socketId}] SendAsync", wsex);
                 }
 
                 this.Close("SendAsync WebSocketException");
             }
             catch (Exception ex)
             {
-                this.callback?.LogError(this, $"[{this.socketId}] SendAsync", ex);
+                this.callback?.LogError($"[{this.socketId}] SendAsync", ex);
                 this.Close("SendAsync Exception");
             }
         }
@@ -276,7 +269,7 @@ namespace Data
                 {
                     if (this.webSocket.State != WebSocketState.Open)
                     {
-                        this.callback?.LogError(this, $"[{this.socketId}] Call 'ReceiveAsync' when this.webSocket.State = {this.webSocket.State}");
+                        this.callback?.LogError($"[{this.socketId}] Call 'ReceiveAsync' when this.webSocket.State = {this.webSocket.State}");
                     }
 
                     if (this.webSocket.State == WebSocketState.Closed || this.webSocket.State == WebSocketState.Aborted)
@@ -305,11 +298,11 @@ namespace Data
 
                     if (isBenign)
                     {
-                        this.callback?.LogInfo(this, $"[{this.socketId}] ReceiveAsync (ignore) {wsex.Message}");
+                        this.callback?.LogInfo($"[{this.socketId}] ReceiveAsync (ignore) {wsex.Message}");
                     }
                     else
                     {
-                        this.callback?.LogError(this, $"[{this.socketId}] ReceiveAsync", wsex);
+                        this.callback?.LogError($"[{this.socketId}] ReceiveAsync", wsex);
                     }
 
                     this.Close("ReceiveAsync WebSocketException");
@@ -317,7 +310,7 @@ namespace Data
                 }
                 catch (Exception ex)
                 {
-                    this.callback?.LogError(this, $"[{this.socketId}] ReceiveAsync", ex);
+                    this.callback?.LogError($"[{this.socketId}] ReceiveAsync", ex);
                     this.Close("ReceiveAsync Exception");
                     return;
                 }
@@ -356,7 +349,7 @@ namespace Data
                         }
                         else
                         {
-                            this.callback?.LogError(this, $"[{this.socketId}]receieved unsupported WebSocketMessageType.{result.MessageType}, what now? continue receive.");
+                            this.callback?.LogError($"[{this.socketId}]receieved unsupported WebSocketMessageType.{result.MessageType}, what now? continue receive.");
                         }
 
                         //
@@ -372,7 +365,7 @@ namespace Data
                 }
                 catch (Exception ex)
                 {
-                    this.callback?.LogError(this, $"[{this.socketId}] ReceiveAsync.2", ex);
+                    this.callback?.LogError($"[{this.socketId}] ReceiveAsync.2", ex);
                     this.Close("ReceiveAsync.2 Exception");
                 }
 
@@ -420,7 +413,7 @@ namespace Data
                             }
                             catch (Exception ex)
                             {
-                                this.callback?.LogError(this, $"[{this.socketId}] CloseAsync", ex);
+                                this.callback?.LogError($"[{this.socketId}] CloseAsync", ex);
                             }
                         }
                         break;
@@ -442,22 +435,22 @@ namespace Data
                         // 一些常见的可忽略 Socket 错误码（比如连接已关闭）
                         case SocketError.ConnectionReset:
                         case SocketError.NotConnected:
-                            this.callback?.LogInfo(this, $"[{this.socketId}] CloseAsync (ignore) SocketErrorCode {se.SocketErrorCode}");
+                            this.callback?.LogInfo($"[{this.socketId}] CloseAsync (ignore) SocketErrorCode {se.SocketErrorCode}");
                             break;
 
                         default:
-                            this.callback?.LogError(this, $"[{this.socketId}] CloseAsync", se);
+                            this.callback?.LogError($"[{this.socketId}] CloseAsync", se);
                             break;
                     }
                 }
                 else
                 {
-                    this.callback?.LogError(this, $"[{this.socketId}] CloseAsync", wsex);
+                    this.callback?.LogError($"[{this.socketId}] CloseAsync", wsex);
                 }
             }
             catch (Exception ex)
             {
-                this.callback?.LogError(this, $"[{this.socketId}] CloseAsync", ex);
+                this.callback?.LogError($"[{this.socketId}] CloseAsync", ex);
             }
             finally
             {

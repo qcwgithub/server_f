@@ -1,7 +1,3 @@
-using System;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-
 namespace Data
 {
     public struct stWaitingResponse
@@ -95,7 +91,7 @@ namespace Data
 
             if (r == VerifyIdentityResult.Failed)
             {
-                this.callback!.LogInfo(this, $"{this.GetType().Name} verify identity failed, close socket!");
+                this.callback!.LogInfo($"{this.GetType().Name} verify identity failed, close socket!");
             }
             else if (r == VerifyIdentityResult.Success)
             {
@@ -136,7 +132,7 @@ namespace Data
                     MsgType msgType = (MsgType)code;
                     if (this.oppositeIsClient && msgType < MsgType.ClientStart)
                     {
-                        this.callback!.LogError(this, "receive invalid message from client! " + msgType.ToString());
+                        this.callback!.LogError("receive invalid message from client! " + msgType.ToString());
                         if (requireResponse)
                         {
                             this.SendPacketIgnoreResult((int)ECode.Exception, null, -seq, false);
@@ -146,11 +142,11 @@ namespace Data
 
                     if (!requireResponse)
                     {
-                        this.callback!.ReceiveFromNetwork(this, seq, msgType, msg, null);
+                        this.callback!.ReceiveFromNetwork(seq, msgType, msg, null);
                     }
                     else
                     {
-                        this.callback!.ReceiveFromNetwork(this, seq, msgType, msg,
+                        this.callback!.ReceiveFromNetwork(seq, msgType, msg,
                             (ECode e2, ArraySegment<byte> msg2) =>
                             {
                                 // 消息处理是异步的，在回复的时候，有可能已经断开了。因此这里要加个判断
@@ -182,17 +178,17 @@ namespace Data
                     }
                     else
                     {
-                        this.callback!.LogError(this, "No response fun for " + (-seq));
+                        this.callback!.LogError("No response fun for " + (-seq));
                     }
                 }
                 else
                 {
-                    this.callback!.LogError(this, "onMsg wrong seq: " + seq);
+                    this.callback!.LogError("onMsg wrong seq: " + seq);
                 }
             }
             catch (Exception ex)
             {
-                this.callback!.LogError(this, "ProtocolClientData.OnMsg " + ex);
+                this.callback!.LogError("ProtocolClientData.OnMsg " + ex);
             }
         }
 

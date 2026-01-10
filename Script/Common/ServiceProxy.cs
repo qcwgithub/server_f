@@ -14,7 +14,7 @@ namespace Script
 
         protected async Task<MyResponse> Request(ServiceType serviceType, MsgType msgType, object msg)
         {
-            IConnection? connection = this.self.protocolClientScriptForS.RandomOtherServiceConnection(serviceType);
+            IConnection? connection = this.self.connectionCallbackScriptForS.RandomOtherServiceConnection(serviceType);
             if (connection == null)
             {
                 return new MyResponse(ECode.NotConnected);

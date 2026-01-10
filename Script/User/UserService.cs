@@ -24,9 +24,9 @@ namespace Script
         {
             return new UserMessageDispatcher(this.server, this);
         }
-        protected override ProtocolClientScriptForS CreateProtocolClientScriptForS()
+        protected override ConnectionCallbackScriptForS CreateConnectionCallbackScriptForS()
         {
-            return new UserProtocolClientScriptForS(this.server, this);
+            return new UserConnectionCallbackScriptForS(this.server, this);
         }
 
         public readonly UserServiceScript ss;

@@ -13,17 +13,17 @@ namespace Tool
             return binaryMessagePacker;
         }
 
-        public void LogError(ProtocolClientData data, string str)
+        public void LogError(string str)
         {
             Console.WriteLine(str);
         }
 
-        public void LogError(ProtocolClientData data, string str, Exception ex)
+        public void LogError(string str, Exception ex)
         {
             Console.WriteLine(str, ex);
         }
 
-        public void LogInfo(ProtocolClientData data, string str)
+        public void LogInfo(string str)
         {
             Console.WriteLine(str);
         }
@@ -55,12 +55,12 @@ namespace Tool
             }
         }
 
-        public void ReceiveFromNetwork(ProtocolClientData socket, int seq, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback? reply)
+        public void ReceiveFromNetwork(int seq, MsgType msgType, ArraySegment<byte> msgBytes, ReplyCallback? reply)
         {
             // var msg = MessageTypeConfigData.DeserializeMsg(msgType, msgBytes);
         }
 
-        public void OnConnectComplete(ProtocolClientData socket, bool success)
+        public void OnConnectComplete(bool success)
         {
             Console.WriteLine($"OnConnectComplete success? {success}");
             if (!success)
