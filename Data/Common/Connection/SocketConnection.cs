@@ -26,6 +26,7 @@ namespace Data
         bool closed = false;
         bool connecting = false;
         bool connected = false;
+        int handling;
 
         // Connector
         public SocketConnection(IConnectionCallbackProvider callbackProvider, string ip, int port)
@@ -36,6 +37,8 @@ namespace Data
 
             this.isConnector = true;
             this.forClient = false;
+
+            Interlocked.Exchange(ref this.handling, 0);
         }
 
         // Acceptor
@@ -50,6 +53,8 @@ namespace Data
 
             this.isConnector = false;
             this.forClient = forClient;
+
+            Interlocked.Exchange(ref this.handling, 0);
         }
 
         IConnectionCallback callback
@@ -83,6 +88,11 @@ namespace Data
         void EnqueueSocketEvent(SocketEvent e)
         {
             this.eventQueue.Enqueue(e);
+
+            if (Interlocked.CompareExchange(ref this.handling, 1, 0) == 0)
+            {
+                ET.ThreadSynchronizationContext.Instance.Post(this.HandleSocketEvents);
+            }
         }
 
         #region IProtocolClientCallback
@@ -144,41 +154,50 @@ namespace Data
         {
             while (this.eventQueue.TryDequeue(out SocketEvent? socketEvent))
             {
-                switch (socketEvent.eventType)
+                try
                 {
-                    case SocketEventType.Connect:
-                        {
-                            this.connecting = false;
-                            this.connected = (bool)socketEvent.eventData;
-                            this.callback.OnConnect(this, this.connected);
-                        }
-                        break;
-
-                    case SocketEventType.Receive:
-                        {
-                            if (socketEvent.eventData is UnpackResult r)
+                    switch (socketEvent.eventType)
+                    {
+                        case SocketEventType.Connect:
                             {
-                                this.OnMsg(r.seq, r.code, r.msgBytes, r.requireResponse);
+                                this.connecting = false;
+                                this.connected = (bool)socketEvent.eventData;
+                                this.callback.OnConnect(this, this.connected);
                             }
-                            else
+                            break;
+
+                        case SocketEventType.Receive:
                             {
-                                throw new Exception("socketEvent.eventData is not UnpackResult");
+                                if (socketEvent.eventData is UnpackResult r)
+                                {
+                                    this.OnMsg(r.seq, r.code, r.msgBytes, r.requireResponse);
+                                }
+                                else
+                                {
+                                    throw new Exception("socketEvent.eventData is not UnpackResult");
+                                }
                             }
-                        }
-                        break;
+                            break;
 
-                    case SocketEventType.Close:
-                        {
-                            this.closed = true;
-                            this.TimeoutAllWaitings();
-                            this.callback.OnClose(this);
-                        }
-                        break;
+                        case SocketEventType.Close:
+                            {
+                                this.closed = true;
+                                this.TimeoutAllWaitings();
+                                this.callback.OnClose(this);
+                            }
+                            break;
 
-                    default:
-                        throw new Exception("Not handled socket event " + socketEvent.eventType);
+                        default:
+                            throw new Exception("Not handled socket event " + socketEvent.eventType);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    this.callback.LogError("HandleSocketEvents Exception", ex);
                 }
             }
+
+            Interlocked.Exchange(ref this.handling, 0);
         }
 
         public void Connect()
