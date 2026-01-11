@@ -9,12 +9,29 @@ namespace Data
         Socket socket;
 
         ////
-        int closed;
+        int closing;
+        public bool IsClosing()
+        {
+            return Volatile.Read(ref this.closing) == 1;
+        }
+
+        int cleanuped;
         public override bool IsClosed()
         {
-            return Volatile.Read(ref this.closed) == 1;
+            return Volatile.Read(ref this.closing) == 1;
         }
+
         public override EndPoint RemoteEndPoint => this.socket.RemoteEndPoint;
+
+        int ioRef;
+        public void IncreaseIORef()
+        {
+            Interlocked.Increment(ref this.ioRef);
+        }
+        public int DecreaseIORef()
+        {
+            return Interlocked.Decrement(ref this.ioRef);
+        }
 
         SendPart sendPart;
         RecvPart recvPart;
@@ -32,7 +49,9 @@ namespace Data
                 break;
             }
 
-            Interlocked.Exchange(ref this.closed, 0);
+            Interlocked.Exchange(ref this.closing, 0);
+            Interlocked.Exchange(ref this.cleanuped, 0);
+            Interlocked.Exchange(ref this.ioRef, 0);
 
             this.sendPart = new SendPart(this, endPoint);
             this.recvPart = new RecvPart(this, false);
@@ -42,7 +61,9 @@ namespace Data
         public TcpClientData(IProtocolClientCallback callback, Socket socket) : base(callback, false)
         {
             this.socket = socket;
-            Interlocked.Exchange(ref this.closed, 0);
+            Interlocked.Exchange(ref this.closing, 0);
+            Interlocked.Exchange(ref this.cleanuped, 0);
+            Interlocked.Exchange(ref this.ioRef, 0);
 
             this.sendPart = new SendPart(this, null);
             this.recvPart = new RecvPart(this, true);
@@ -62,7 +83,7 @@ namespace Data
 
         public override void Close(string reason)
         {
-            if (Interlocked.CompareExchange(ref this.closed, 1, 0) != 0)
+            if (Interlocked.Exchange(ref this.closing, 1) != 0)
             {
                 return;
             }
@@ -88,8 +109,21 @@ namespace Data
             }
             this.socket = null;
 
-            this.sendPart.Destroy();
-            this.recvPart.Destroy();
+            if (Volatile.Read(ref this.ioRef) == 0)
+            {
+                this.Cleanup();
+            }
+        }
+
+        public void Cleanup()
+        {
+            if (Interlocked.Exchange(ref this.cleanuped, 1) != 0)
+            {
+                return;
+            }
+
+            this.sendPart.Cleanup();
+            this.recvPart.Cleanup();
 
             this.callback.OnClose();
         }

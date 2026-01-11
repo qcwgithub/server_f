@@ -23,7 +23,7 @@ namespace Data
                 this.isAcceptor = isAcceptor;
             }
 
-            public void Destroy()
+            public void Cleanup()
             {
                 this._innArgs.Completed -= this.OnSomethingComplete;
                 this._innArgs.Dispose();
@@ -48,6 +48,7 @@ namespace Data
                 try
                 {
                     this._innArgs.SetBuffer(buffer, offset, count);
+                    this.parent.IncreaseIORef();
                     bool completed = !this.parent.socket.ReceiveAsync(this._innArgs);
                     if (completed)
                     {
@@ -105,27 +106,27 @@ namespace Data
 
             void OnRecvComplete(SocketAsyncEventArgs e)
             {
-                if (this.parent.IsClosed())
-                {
-                    return;
-                }
-
-                if (e.SocketError != SocketError.Success)
-                {
-                    this.parent.Close("onRecvComplete SocketError." + e.SocketError);
-                    return;
-                }
-
-                // https://learn.microsoft.com/en-us/dotnet/api/system.net.sockets.socketasynceventargs.bytestransferred?view=netcore-3.1
-                // If zero is returned from a read operation, the remote end has closed the connection.
-                if (e.BytesTransferred == 0)
-                {
-                    this.parent.Close("onRecvComplete e.BytesTransferred == 0");
-                    return;
-                }
-
                 try
                 {
+                    if (e.SocketError != SocketError.Success)
+                    {
+                        this.parent.Close("onRecvComplete SocketError." + e.SocketError);
+                        return;
+                    }
+
+                    // https://learn.microsoft.com/en-us/dotnet/api/system.net.sockets.socketasynceventargs.bytestransferred?view=netcore-3.1
+                    // If zero is returned from a read operation, the remote end has closed the connection.
+                    if (e.BytesTransferred == 0)
+                    {
+                        this.parent.Close("onRecvComplete e.BytesTransferred == 0");
+                        return;
+                    }
+
+                    if (this.parent.IsClosing())
+                    {
+                        return;
+                    }
+
                     this.recvOffset += e.BytesTransferred;
                     int offset = 0;
                     int count = this.recvOffset;
@@ -151,7 +152,7 @@ namespace Data
                         count -= used;
                     }
 
-                    if (!this.parent.IsClosed())
+                    if (!this.parent.IsClosing())
                     {
                         if (offset > 0)
                         {
@@ -173,7 +174,11 @@ namespace Data
                 }
                 finally
                 {
-                    if (!this.parent.IsClosed())
+                    if (this.parent.DecreaseIORef() == 0 && this.parent.IsClosing())
+                    {
+                        this.parent.Cleanup();
+                    }
+                    else if (!this.parent.IsClosing())
                     {
                         // continue recv
                         this.PerformRecv();
@@ -183,10 +188,6 @@ namespace Data
 
             void OnSomethingComplete(object? sender, SocketAsyncEventArgs e)
             {
-                if (this.parent.IsClosed())
-                {
-                    return;
-                }
                 try
                 {
                     switch (e.LastOperation)

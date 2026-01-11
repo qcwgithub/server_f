@@ -26,10 +26,8 @@ namespace Data
                 this._outArgs.Completed += this.OnSomethingComplete;
             }
 
-            public void Destroy()
+            public void Cleanup()
             {
-                Interlocked.Exchange(ref this.sending, 0);
-
                 this._outArgs.Completed -= this.OnSomethingComplete;
                 this._outArgs.Dispose();
                 this._outArgs = null;
@@ -42,6 +40,7 @@ namespace Data
                 try
                 {
                     this._outArgs.RemoteEndPoint = this.endPoint;
+                    this.parent.IncreaseIORef();
                     bool completed = !this.parent.socket.ConnectAsync(this._outArgs);
                     if (completed)
                     {
@@ -70,30 +69,44 @@ namespace Data
 
             void OnConnectComplete(SocketAsyncEventArgs e)
             {
-                e.RemoteEndPoint = null;
-
-                bool success = e.SocketError == SocketError.Success;
-                if (success)
+                try
                 {
-                    byte[]? bytes = this.SendIdentity();
-                    if (bytes != null)
+                    e.RemoteEndPoint = null;
+
+                    bool success = e.SocketError == SocketError.Success;
+                    if (success)
                     {
-                        this.sendQueue.Enqueue(bytes);
+                        byte[]? bytes = this.SendIdentity();
+                        if (bytes != null)
+                        {
+                            this.sendQueue.Enqueue(bytes);
+                        }
+                    }
+
+                    this.parent.callback.OnConnect(success);
+                    if (!success)
+                    {
+                        this.parent.Close(CloseReason.OnConnectComplete_false);
+                    }
+                    else
+                    {
+                        this.parent.recvPart.StartRecv();
+
+                        if (Interlocked.CompareExchange(ref this.sending, 1, 0) == 0)
+                        {
+                            this.PerformSend();
+                        }
                     }
                 }
-
-                this.parent.callback.OnConnect(success);
-                if (!success)
+                catch (Exception ex)
                 {
-                    this.parent.Close(CloseReason.OnConnectComplete_false);
+                    this.parent.callback.LogError("OnConnectComplete " + ex);
                 }
-                else
+                finally
                 {
-                    this.parent.recvPart.StartRecv();
-
-                    if (Interlocked.CompareExchange(ref this.sending, 1, 0) == 0)
+                    if (this.parent.DecreaseIORef() == 0 && this.parent.IsClosing())
                     {
-                        this.PerformSend();
+                        this.parent.Cleanup();
                     }
                 }
             }
@@ -126,6 +139,7 @@ namespace Data
                 try
                 {
                     this._outArgs.SetBuffer(bytes, 0, bytes.Length);
+                    this.parent.IncreaseIORef();
                     bool completed = !this.parent.socket.SendAsync(this._outArgs);
                     if (completed)
                     {
@@ -140,28 +154,38 @@ namespace Data
 
             void OnSendComplete(SocketAsyncEventArgs e)
             {
-                if (e.SocketError != SocketError.Success)
+                try
                 {
-                    this.parent.Close("onTcpClientComplete_SocketAsyncOperation.Send_SocketError." + e.SocketError);
-                    return;
-                }
+                    if (e.SocketError != SocketError.Success)
+                    {
+                        this.parent.Close("onTcpClientComplete_SocketAsyncOperation.Send_SocketError." + e.SocketError);
+                        return;
+                    }
 
-                if (e.BytesTransferred == 0)
+                    if (e.BytesTransferred == 0)
+                    {
+                        this.parent.Close("onTcpClientComplete_SocketAsyncOperation.Send_e.BytesTransferred == 0");
+                        return;
+                    }
+
+                    // 不需要 Interlocked.Exchange(ref this.sending, 0);
+                    this.PerformSend();
+                }
+                catch (Exception ex)
                 {
-                    this.parent.Close("onTcpClientComplete_SocketAsyncOperation.Send_e.BytesTransferred == 0");
-                    return;
+                    this.parent.callback.LogError("OnSendComplete " + ex);
                 }
-
-                // 不需要 Interlocked.Exchange(ref this.sending, 0);
-                this.PerformSend();
+                finally
+                {
+                    if (this.parent.DecreaseIORef() == 0 && this.parent.IsClosing())
+                    {
+                        this.parent.Cleanup();
+                    }
+                }
             }
 
             void OnSomethingComplete(object? sender, SocketAsyncEventArgs e)
             {
-                if (this.parent.IsClosed())
-                {
-                    return;
-                }
                 try
                 {
                     switch (e.LastOperation)
