@@ -17,12 +17,10 @@ namespace Data
         public override EndPoint RemoteEndPoint => this.socket.RemoteEndPoint;
 
         IPEndPoint ipEndPointForConnector; // when isConnector == true
-        // public CancellationTokenSource _cancellationTaskSource;
-        // public CancellationToken _cancellationToken;
         SocketAsyncEventArgs _innArgs;
         SocketAsyncEventArgs _outArgs;
 
-        public ConcurrentQueue<byte[]> sendQueue = new();
+        ConcurrentQueue<byte[]> sendQueue = new();
         byte[] recvBuffer = new byte[8192];
         int recvOffset = 0;
 
@@ -47,8 +45,6 @@ namespace Data
         {
             this._initConnectSocket(ip, port);
 
-            // this._cancellationTaskSource = new CancellationTokenSource();
-            // this._cancellationToken = this._cancellationTaskSource.Token;
             this._innArgs = new SocketAsyncEventArgs();
             this._outArgs = new SocketAsyncEventArgs();
             this._innArgs.Completed += this.OnSomethingComplete;
@@ -62,8 +58,7 @@ namespace Data
         public TcpClientData(IProtocolClientCallback callback, Socket socket) : base(callback, false)
         {
             this.socket = socket;
-            // this._cancellationTaskSource = new CancellationTokenSource();
-            // this._cancellationToken = this._cancellationTaskSource.Token;
+
             this._innArgs = new SocketAsyncEventArgs();
             this._outArgs = new SocketAsyncEventArgs();
             this._innArgs.Completed += this.OnSomethingComplete;
@@ -199,7 +194,6 @@ namespace Data
             }
             catch (Exception e)
             {
-                // throw new Exception($"socket set buffer error: {buffer.Length}, {offset}, {count}", e);
                 this.Close("sendAsync Exception " + e);
             }
         }
@@ -248,7 +242,6 @@ namespace Data
             }
             catch (Exception e)
             {
-                // throw new Exception($"socket set buffer error: {buffer.Length}, {offset}", e);
                 this.Close("recvAsync Exception " + e);
             }
         }
