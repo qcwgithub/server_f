@@ -90,26 +90,36 @@ namespace Data
                 else
                 {
                     this.parent.recvPart.StartRecv();
-                    this.PerformSend();
+
+                    if (Interlocked.CompareExchange(ref this.sending, 1, 0) == 0)
+                    {
+                        this.PerformSend();
+                    }
                 }
             }
 
             public void Send(byte[] bytes)
             {
                 this.sendQueue.Enqueue(bytes);
-                this.PerformSend();
+
+                if (Interlocked.CompareExchange(ref this.sending, 1, 0) == 0)
+                {
+                    this.PerformSend();
+                }
             }
 
             void PerformSend()
             {
-                if (Interlocked.CompareExchange(ref this.sending, 1, 0) != 0)
-                {
-                    return;
-                }
-
                 if (!this.sendQueue.TryDequeue(out byte[]? bytes))
                 {
                     Interlocked.Exchange(ref this.sending, 0);
+
+                    // 关键：二次检查，防止 race
+                    if (!sendQueue.IsEmpty &&
+                        Interlocked.CompareExchange(ref this.sending, 1, 0) == 0)
+                    {
+                        PerformSend();
+                    }
                     return;
                 }
 
@@ -142,7 +152,7 @@ namespace Data
                     return;
                 }
 
-                Interlocked.Exchange(ref this.sending, 0);
+                // 不需要 Interlocked.Exchange(ref this.sending, 0);
                 this.PerformSend();
             }
 

@@ -11,7 +11,7 @@ namespace Data
             byte[] recvBuffer;
             int recvOffset;
             bool isAcceptor;
-            bool identityVerified;
+            int identityVerified;
 
             public RecvPart(TcpClientData parent, bool isAcceptor)
             {
@@ -97,7 +97,7 @@ namespace Data
                 }
                 else if (r == VerifyIdentityResult.Success)
                 {
-                    this.identityVerified = true;
+                    Interlocked.Exchange(ref this.identityVerified, 1);
                 }
 
                 return r;
@@ -130,7 +130,7 @@ namespace Data
                     int offset = 0;
                     int count = this.recvOffset;
 
-                    if (this.isAcceptor && !this.identityVerified)
+                    if (this.isAcceptor && Volatile.Read(ref this.identityVerified) != 1)
                     {
                         var r = this.VerifyIdentity(this.recvBuffer, offset, count, out int identityLength);
                         if (r == VerifyIdentityResult.Success)
@@ -144,7 +144,7 @@ namespace Data
                         }
                     }
 
-                    if (!this.isAcceptor || this.identityVerified)
+                    if (!this.isAcceptor || Volatile.Read(ref this.identityVerified) == 1)
                     {
                         int used = this.parent.callback.OnReceive(this.recvBuffer, offset, count);
                         offset += used;
