@@ -10,6 +10,7 @@ namespace Script
             if (connection is ServiceConnection serviceConnection)
             {
                 if (this.data.state < ServiceState.ShuttingDown &&
+                    serviceConnection.knownWho &&
                     !serviceConnection.remoteWillShutdown &&
                     serviceConnection.closeReason != ProtocolClientData.CloseReason.OnConnectComplete_false &&
                     this.data.serviceType.ShouldLogErrorWhenDisconnectFrom(serviceConnection.serviceType))
@@ -23,7 +24,7 @@ namespace Script
 
                 if (this.data.state < ServiceState.ShuttingDown &&
                     this.data.markedShutdown &&
-                    this.data.GetPassivelyConnections().Count == 0 &&
+                    this.data.GetPassivelyConnectionsCount() == 0 &&
                     !this.data.timer_shutdown.IsAlive())
                 {
                     this.data.timer_shutdown = this.server.timerScript.SetTimer(this.serviceId, 0, TimerType.Shutdown, false);

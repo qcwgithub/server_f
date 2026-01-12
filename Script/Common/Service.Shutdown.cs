@@ -61,7 +61,7 @@ namespace Script
 
             if (!force)
             {
-                if (this.data.GetPassivelyConnections().Count > 0)
+                if (this.data.GetPassivelyConnectionsCount() > 0)
                 {
                     this.data.markedShutdown = true;
                     this.logger.Info("set markedShutdown = true");

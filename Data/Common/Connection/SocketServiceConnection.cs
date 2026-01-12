@@ -1,56 +1,75 @@
+using System.Net.Sockets;
+
 namespace Data
 {
-    public class SocketServiceConnection : ServiceConnection
+    public class SocketServiceConnection : SocketConnection, ServiceConnection
     {
-        public readonly SocketConnection socketConnection;
+        ServiceType? _serviceType;
+        int? _serviceId;
+        public bool remoteWillShutdown { get; set; }
 
         // Connector
-        public SocketServiceConnection(ServiceData serviceData, string ip, int port, ServiceType serviceType, int serviceId) : base(serviceType, serviceId)
+        public SocketServiceConnection(IConnectionCallbackProvider callbackProvider, string ip, int port, ServiceType serviceType, int serviceId) : base(callbackProvider, ip, port)
         {
-            this.socketConnection = new SocketConnection(serviceData, ip, port);
+            _serviceType = serviceType;
+            _serviceId = serviceId;
         }
 
-        // Accectpor
-        public SocketServiceConnection(SocketConnection socketConnection, ServiceType serviceType, int serviceId) : base(serviceType, serviceId)
+        // Acceptor
+        public SocketServiceConnection(IConnectionCallbackProvider callbackProvider, Socket socket, bool forClient) : base(callbackProvider, socket, forClient, startRecv: false)
         {
-            this.socketConnection = socketConnection;
+            _serviceType = null;
+            _serviceId = null;
+
+            // 手动 StartRecv，否则会在基类构造函数里直接就收到消息
+            this.StartRecv();
         }
 
-        public override void Connect()
-        {
-            this.socketConnection.Connect();
-        }
-
-        public override bool IsConnected()
-        {
-            return this.socketConnection.IsConnected();
-        }
-
-        public override bool IsConnecting()
-        {
-            return this.socketConnection.IsConnecting();
-        }
-
-        public override void Send(MsgType msgType, object msg, ReplyCallback? cb, int? pTimeoutS)
-        {
-            this.socketConnection.Send(msgType, msg, cb, pTimeoutS);
-        }
-
-        public override void Close(string reason)
-        {
-            this.socketConnection.Close(reason);
-        }
-
-        public override bool IsClosed()
-        {
-            return this.socketConnection.IsClosed();
-        }
-
-        public override string? closeReason
+        public bool knownWho
         {
             get
             {
-                return this.socketConnection.closeReason;
+                return _serviceType != null;
+            }
+        }
+
+        public ServiceType serviceType
+        {
+            get
+            {
+                if (_serviceType == null)
+                {
+                    throw new InvalidOperationException("Service type is not set.");
+                }
+                return _serviceType.Value;
+            }
+            set
+            {
+                _serviceType = value;
+            }
+        }
+
+        public int serviceId
+        {
+            get
+            {
+                if (_serviceId == null)
+                {
+                    throw new InvalidOperationException("Service ID is not set.");
+                }
+                return _serviceId.Value;
+            }
+            set
+            {
+                _serviceId = value;
+            }
+        }
+
+        public ServiceTypeAndId tai
+        {
+            get
+            {
+                return ServiceTypeAndId.Create(this.serviceType, this.serviceId);
             }
         }
     }

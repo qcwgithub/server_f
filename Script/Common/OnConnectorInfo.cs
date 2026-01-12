@@ -18,7 +18,9 @@ namespace Script
         public override async Task<ECode> Handle(MessageContext context, MsgConnectorInfo msg, ResConnectorInfo res)
         {
             ConnectorInfo info = msg.connectorInfo;
-            string message = string.Format("{0} ServiceType.{1} serviceId {2} this.service.data.state {3}",
+            var connection = (SocketServiceConnection)context.connection;
+
+            string message = string.Format("{0} {1}{2} this.service.data.state {3}",
                 this.msgType, info.serviceType, info.serviceId, this.service.data.state);
             if (this.service.data.state == ServiceState.Started)
             {
@@ -29,8 +31,9 @@ namespace Script
                 this.service.logger.Error(message);
             }
 
-            var serviceConnection = new SocketServiceConnection((SocketConnection)context.connection, info.serviceType, info.serviceId);
-            this.service.data.SaveOtherServiceConnection(serviceConnection);
+            connection.serviceType = info.serviceType;
+            connection.serviceId = info.serviceId;
+            this.service.data.SaveOtherServiceConnection(connection);
 
             return ECode.Success;
         }

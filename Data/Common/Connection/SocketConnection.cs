@@ -42,20 +42,28 @@ namespace Data
         }
 
         // Acceptor
-        public SocketConnection(IConnectionCallbackProvider callbackProvider, Socket socket, bool forClient)
+        public SocketConnection(IConnectionCallbackProvider callbackProvider, Socket socket, bool forClient, bool startRecv)
         {
             this.callbackProvider = callbackProvider;
 
-            // !
-            socket.NoDelay = true;
+            socket.NoDelay = true; // !
 
             this.socket = new TcpClientData(this, socket);
 
             this.isConnector = false;
             this.forClient = forClient;
+            this.connected = true; // !
 
             Interlocked.Exchange(ref this.handling, 0);
 
+            if (startRecv)
+            {
+                this.StartRecv();
+            }
+        }
+
+        public void StartRecv()
+        {
             ((TcpClientData)this.socket).StartRecv();
         }
 
@@ -163,7 +171,7 @@ namespace Data
                         case SocketEventType.Connect:
                             {
                                 this.connecting = false;
-                                this.connected = (bool)socketEvent.eventData;
+                                this.connected = (bool)socketEvent.eventData!;
                                 this.callback.OnConnect(this, this.connected);
                             }
                             break;

@@ -74,6 +74,7 @@ namespace Data
         public List<ServiceConnection>[] otherServiceConnections2 = new List<ServiceConnection>[(int)ServiceType.Count];
         public void SaveOtherServiceConnection(ServiceConnection connection)
         {
+            MyDebug.Assert(connection.knownWho);
             ServiceType serviceType = connection.serviceType;
             int serviceId = connection.serviceId;
 
@@ -125,9 +126,9 @@ namespace Data
         }
 
         // 有没有被动连接还活着
-        public virtual List<ServiceTypeAndId> GetPassivelyConnections()
+        public virtual int GetPassivelyConnectionsCount()
         {
-            var list = new List<ServiceTypeAndId>();
+            int count = 0;
 
             for (ServiceType serviceType = 0; serviceType < ServiceType.Count; serviceType++)
             {
@@ -146,12 +147,12 @@ namespace Data
                 {
                     if (connection.IsConnected())
                     {
-                        list.Add(connection.tai);
+                        count++;
                     }
                 }
             }
 
-            return list;
+            return count;
         }
 
         // 关闭所有主动发起的连接

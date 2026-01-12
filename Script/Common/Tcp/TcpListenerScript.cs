@@ -36,7 +36,14 @@ namespace Script
                 return;
             }
 
-            new SocketConnection(this.service.data, socket, this.forClient);
+            if (this.forClient)
+            {
+                new SocketConnection(this.service.data, socket, this.forClient, startRecv: true);
+            }
+            else
+            {
+                new SocketServiceConnection(this.service.data, socket, this.forClient);
+            }
         }
     }
 }

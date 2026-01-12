@@ -9,6 +9,7 @@ namespace Script
             await base.OnConnectionClose(connection);
 
             if (connection is ServiceConnection serviceConnection &&
+                serviceConnection.knownWho &&
                 serviceConnection.serviceType == ServiceType.Gateway)
             {
                 long nowS = TimeUtils.GetTimeS();

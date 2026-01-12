@@ -1,31 +1,18 @@
 namespace Data
 {
-    public abstract class ServiceConnection : IConnection
+    public interface ServiceConnection : IConnection
     {
-        public readonly ServiceType serviceType;
-        public readonly int serviceId;
-        public bool remoteWillShutdown;
+        bool knownWho { get; }
+        ServiceType serviceType { get; }
+        int serviceId { get; }
+        bool remoteWillShutdown { get; set; }
 
-        public ServiceConnection(ServiceType serviceType, int serviceId)
-        {
-            this.serviceType = serviceType;
-            this.serviceId = serviceId;
-        }
+        ServiceTypeAndId tai { get; }
 
-        public ServiceTypeAndId tai
-        {
-            get
-            {
-                return ServiceTypeAndId.Create(this.serviceType, this.serviceId);
-            }
-        }
-
-        public abstract void Connect();
-        public abstract bool IsConnected();
-        public abstract bool IsConnecting();
-        public abstract void Send(MsgType msgType, object msg, ReplyCallback? cb, int? pTimeoutS);
-        public abstract void Close(string reason);
-        public abstract bool IsClosed();
-        public abstract string? closeReason { get; }
+        void Connect();
+        bool IsConnecting();
+        void Close(string reason);
+        bool IsClosed();
+        string? closeReason { get; }
     }
 }

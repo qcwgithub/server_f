@@ -111,25 +111,6 @@ namespace Data
 
             this.closeReason = reason;
 
-            // https://docs.microsoft.com/en-us/dotnet/api/system.net.sockets.socket.shutdown?view=net-6.0
-            try
-            {
-                if (this.socket.Connected)
-                {
-                    this.socket.Shutdown(SocketShutdown.Both);
-                }
-            }
-            catch (SocketException sockEx)
-            {
-                // https://github.com/mono/mono/issues/7368
-                this.callback.LogInfo(reason + "----" + sockEx.ToString());
-            }
-            finally
-            {
-                this.socket.Close();
-            }
-            this.socket = null;
-
             if (Volatile.Read(ref this.ioRef) == 0)
             {
                 this.Cleanup();
@@ -141,6 +122,24 @@ namespace Data
             if (Interlocked.Exchange(ref this.cleanuped, 1) != 0)
             {
                 return;
+            }
+
+            // https://docs.microsoft.com/en-us/dotnet/api/system.net.sockets.socket.shutdown?view=net-6.0
+            try
+            {
+                if (this.socket.Connected)
+                {
+                    this.socket.Shutdown(SocketShutdown.Both);
+                }
+            }
+            catch (SocketException sockEx)
+            {
+                // https://github.com/mono/mono/issues/7368
+                this.callback.LogInfo(sockEx.ToString());
+            }
+            finally
+            {
+                this.socket.Close();
             }
 
             this.sendPart.Cleanup();

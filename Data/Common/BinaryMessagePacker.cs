@@ -144,16 +144,13 @@
             this.PackHeader(buffer, seq, msgTypeOrECode, requireResponse, ref bufferOffset);
 
             // b
-            if (M > 0)
-            {
-                WriteInt(buffer, bufferOffset, M);
-                bufferOffset += sizeof(int);
-            }
+            WriteInt(buffer, bufferOffset, M);
+            bufferOffset += sizeof(int);
 
             // c
             if (M > 0)
             {
-                Array.Copy(msg, 0, buffer, bufferOffset, M);
+                Array.Copy(msg!, 0, buffer, bufferOffset, M);
                 bufferOffset += M;
             }
 

@@ -2,41 +2,62 @@ namespace Data
 {
     public class InProcessServiceConnection : ServiceConnection
     {
-        public InProcessServiceConnection(ServiceType serviceType, int serviceId) : base(serviceType, serviceId)
+        public bool knownWho
         {
+            get
+            {
+                return true;
+            }
+        }
+        public ServiceType serviceType { get; private set; }
+        public int serviceId { get; private set; }
+        public bool remoteWillShutdown { get; set; }
+
+        public ServiceTypeAndId tai
+        {
+            get
+            {
+                return ServiceTypeAndId.Create(this.serviceType, this.serviceId);
+            }
         }
 
-        public override void Connect()
+        public InProcessServiceConnection(ServiceType serviceType, int serviceId)
+        {
+            this.serviceType = serviceType;
+            this.serviceId = serviceId;
+        }
+
+        public void Connect()
         {
 
         }
 
-        public override bool IsConnected()
+        public bool IsConnected()
         {
             return true;
         }
 
-        public override bool IsConnecting()
+        public bool IsConnecting()
         {
             return false;
         }
 
-        public override void Send(MsgType msgType, object msg, ReplyCallback? cb, int? pTimeoutS)
+        public void Send(MsgType msgType, object msg, ReplyCallback? cb, int? pTimeoutS)
         {
 
         }
 
-        public override void Close(string reason)
+        public void Close(string reason)
         {
 
         }
 
-        public override bool IsClosed()
+        public bool IsClosed()
         {
             return false;
         }
 
-        public override string? closeReason
+        public string? closeReason
         {
             get
             {

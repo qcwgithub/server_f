@@ -89,6 +89,7 @@ namespace Script
                 return false;
             }
 
+            MyDebug.Assert(serviceConnection.knownWho);
             MyDebug.Assert(serviceConnection.serviceType == ServiceType.Gateway);
 
             var msgForward = (MsgForward)MessageTypeConfigData.DeserializeMsg(msgType, msgBytes);
@@ -156,6 +157,7 @@ namespace Script
 
         static void S_to_G(ServiceConnection serviceConnection, MsgForward msgForward, ReplyCallback? reply, int? pTimeoutS)
         {
+            MyDebug.Assert(serviceConnection.knownWho);
             MyDebug.Assert(serviceConnection.serviceType == ServiceType.Gateway);
 
             serviceConnection.Send(MsgType.Forward, msgForward, reply, pTimeoutS);
