@@ -10,7 +10,7 @@ namespace Script
 
         public ECode BroadcastToClient(int serviceId, List<long> userIds, MsgType msgType, object msg)
         {
-            ServiceConnection? connection = this.self.data.GetOtherServiceConnection(serviceId);
+            IServiceConnection? connection = this.self.data.GetOtherServiceConnection(serviceId);
             if (connection == null || !connection.IsConnected())
             {
                 return ECode.NotConnected;

@@ -38,7 +38,7 @@ namespace Script
                 return serviceType;
             }
 
-            ServiceConnection? serviceConnection = gatewayService.data.GetOtherServiceConnection(user.userServiceId);
+            IServiceConnection? serviceConnection = gatewayService.data.GetOtherServiceConnection(user.userServiceId);
             if (serviceConnection == null || !serviceConnection.IsConnected())
             {
                 gatewayService.logger.Error("G_to_S serviceConnection == null || !serviceConnection.IsConnected()");
@@ -81,7 +81,7 @@ namespace Script
             return true;
         }
 
-        public static async Task<bool> S_from_G(UserService userService, ServiceConnection serviceConnection, MsgType msgType, byte[] msgBytes, ReplyCallback? reply)
+        public static async Task<bool> S_from_G(UserService userService, IServiceConnection serviceConnection, MsgType msgType, byte[] msgBytes, ReplyCallback? reply)
         {
             if (msgType != MsgType.Forward)
             {
@@ -133,7 +133,7 @@ namespace Script
             return true;
         }
 
-        public static void S_to_G(ServiceConnection serviceConnection, long userId, MsgType msgType, object msg, ReplyCallback? reply, int? pTimeoutS)
+        public static void S_to_G(IServiceConnection serviceConnection, long userId, MsgType msgType, object msg, ReplyCallback? reply, int? pTimeoutS)
         {
             var msgForward = new MsgForward();
             msgForward.userId = userId;
@@ -144,7 +144,7 @@ namespace Script
             S_to_G(serviceConnection, msgForward, reply, pTimeoutS);
         }
 
-        public static void S_to_G(ServiceConnection serviceConnection, List<long> userIds, MsgType msgType, object msg, ReplyCallback? reply, int? pTimeoutS)
+        public static void S_to_G(IServiceConnection serviceConnection, List<long> userIds, MsgType msgType, object msg, ReplyCallback? reply, int? pTimeoutS)
         {
             var msgForward = new MsgForward();
             msgForward.userId = 0;
@@ -155,7 +155,7 @@ namespace Script
             S_to_G(serviceConnection, msgForward, reply, pTimeoutS);
         }
 
-        static void S_to_G(ServiceConnection serviceConnection, MsgForward msgForward, ReplyCallback? reply, int? pTimeoutS)
+        static void S_to_G(IServiceConnection serviceConnection, MsgForward msgForward, ReplyCallback? reply, int? pTimeoutS)
         {
             MyDebug.Assert(serviceConnection.knownWho);
             MyDebug.Assert(serviceConnection.serviceType == ServiceType.Gateway);

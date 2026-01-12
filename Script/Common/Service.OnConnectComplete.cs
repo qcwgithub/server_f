@@ -4,7 +4,7 @@ namespace Script
 {
     public partial class Service
     {
-        public virtual async Task<ECode> OnConnectComplete(ServiceConnection serviceConnection)
+        public virtual async Task<ECode> OnConnectComplete(IServiceConnection serviceConnection)
         {
             this.logger.Info($"OnConnectComplete to: {serviceConnection.tai}");
 

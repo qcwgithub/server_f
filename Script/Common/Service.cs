@@ -170,9 +170,9 @@ namespace Script
             this.dispatcher.OnFps(fps);
         }
 
-        public virtual ServiceConnection GetServiceConnectionOrConnect(ServiceType to_serviceType, int to_serviceId, string inIp, int inPort)
+        public virtual IServiceConnection GetServiceConnectionOrConnect(ServiceType to_serviceType, int to_serviceId, string inIp, int inPort)
         {
-            ServiceConnection? connection;
+            IServiceConnection? connection;
             if (!data.otherServiceConnections.TryGetValue(to_serviceId, out connection) || connection.IsClosed())
             {
                 // if (this.server.data.serviceTypeAndIds.Exists(tai => tai.serviceType == to_serviceType && tai.serviceId == to_serviceId))
@@ -201,7 +201,7 @@ namespace Script
         {
             var location = this.server.data.globalServiceLocation;
 
-            ServiceConnection connection = this.GetServiceConnectionOrConnect(ServiceType.Global, location.serviceId, location.inIp, location.inPort);
+            IServiceConnection connection = this.GetServiceConnectionOrConnect(ServiceType.Global, location.serviceId, location.inIp, location.inPort);
             if (connection == null || !connection.IsConnected())
             {
                 return null;

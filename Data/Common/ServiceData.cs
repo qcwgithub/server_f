@@ -70,16 +70,16 @@ namespace Data
         public readonly List<ServiceType> connectToServiceTypes = new List<ServiceType>();
 
         // 只存 Normal -> Normal 和 Group -> Group
-        public Dictionary<int, ServiceConnection> otherServiceConnections = new Dictionary<int, ServiceConnection>();
-        public List<ServiceConnection>[] otherServiceConnections2 = new List<ServiceConnection>[(int)ServiceType.Count];
-        public void SaveOtherServiceConnection(ServiceConnection connection)
+        public Dictionary<int, IServiceConnection> otherServiceConnections = new Dictionary<int, IServiceConnection>();
+        public List<IServiceConnection>[] otherServiceConnections2 = new List<IServiceConnection>[(int)ServiceType.Count];
+        public void SaveOtherServiceConnection(IServiceConnection connection)
         {
             MyDebug.Assert(connection.knownWho);
             ServiceType serviceType = connection.serviceType;
             int serviceId = connection.serviceId;
 
             {
-                if (this.otherServiceConnections.TryGetValue(serviceId, out ServiceConnection? old))
+                if (this.otherServiceConnections.TryGetValue(serviceId, out IServiceConnection? old))
                 {
                     if (old.IsConnected() || old.IsConnecting())
                     {
@@ -93,7 +93,7 @@ namespace Data
             var list = this.otherServiceConnections2[(int)serviceType];
             if (list == null)
             {
-                list = this.otherServiceConnections2[(int)serviceType] = new List<ServiceConnection>();
+                list = this.otherServiceConnections2[(int)serviceType] = new List<IServiceConnection>();
             }
             else
             {
@@ -120,9 +120,9 @@ namespace Data
                 list.Add(connection);
             }
         }
-        public ServiceConnection? GetOtherServiceConnection(int serviceId)
+        public IServiceConnection? GetOtherServiceConnection(int serviceId)
         {
-            return this.otherServiceConnections.TryGetValue(serviceId, out ServiceConnection? connection) ? connection : null;
+            return this.otherServiceConnections.TryGetValue(serviceId, out IServiceConnection? connection) ? connection : null;
         }
 
         // 有没有被动连接还活着
@@ -137,13 +137,13 @@ namespace Data
                     continue;
                 }
 
-                List<ServiceConnection> connections = this.otherServiceConnections2[(int)serviceType];
+                List<IServiceConnection> connections = this.otherServiceConnections2[(int)serviceType];
                 if (connections == null || connections.Count == 0)
                 {
                     continue;
                 }
 
-                foreach (ServiceConnection connection in connections)
+                foreach (IServiceConnection connection in connections)
                 {
                     if (connection.IsConnected())
                     {
@@ -165,7 +165,7 @@ namespace Data
                     continue;
                 }
 
-                List<ServiceConnection> connections = this.otherServiceConnections2[(int)serviceType];
+                List<IServiceConnection> connections = this.otherServiceConnections2[(int)serviceType];
                 if (connections == null || connections.Count == 0)
                 {
                     continue;
@@ -175,7 +175,7 @@ namespace Data
                 int finish = 0;
 
                 var tcs = new TaskCompletionSource();
-                foreach (ServiceConnection connection in connections)
+                foreach (IServiceConnection connection in connections)
                 {
                     if (connection.IsConnected())
                     {
@@ -198,12 +198,12 @@ namespace Data
                 await tcs.Task;
 
                 List<int> serviceIds = new List<int>();
-                foreach (ServiceConnection connection in connections)
+                foreach (IServiceConnection connection in connections)
                 {
                     serviceIds.Add(connection.serviceId);
                 }
 
-                foreach (ServiceConnection connection in connections)
+                foreach (IServiceConnection connection in connections)
                 {
                     connection.Close("manual close");
                 }
@@ -226,7 +226,7 @@ namespace Data
             var tcs = new TaskCompletionSource();
             foreach (var kv in this.otherServiceConnections)
             {
-                ServiceConnection connection = kv.Value;
+                IServiceConnection connection = kv.Value;
                 if (connection.IsConnected())
                 {
                     total++;
@@ -250,7 +250,7 @@ namespace Data
 
             foreach (var kv in this.otherServiceConnections)
             {
-                ServiceConnection connection = kv.Value;
+                IServiceConnection connection = kv.Value;
                 connection.Close("manual close");
             }
             this.otherServiceConnections.Clear();
@@ -266,13 +266,13 @@ namespace Data
 
         public int GetFirstConnected(ServiceType to)
         {
-            List<ServiceConnection> connections = this.otherServiceConnections2[(int)to];
+            List<IServiceConnection> connections = this.otherServiceConnections2[(int)to];
             if (connections == null || connections.Count == 0)
             {
                 return 0;
             }
 
-            foreach (ServiceConnection connection in connections)
+            foreach (IServiceConnection connection in connections)
             {
                 if (connection.IsConnected())
                 {

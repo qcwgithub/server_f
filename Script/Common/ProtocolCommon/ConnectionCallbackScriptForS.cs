@@ -17,9 +17,9 @@ namespace Script
             return true;
         }
 
-        public ServiceConnection? RandomOtherServiceConnection(ServiceType serviceType)
+        public IServiceConnection? RandomOtherServiceConnection(ServiceType serviceType)
         {
-            List<ServiceConnection> list = this.service.data.otherServiceConnections2[(int)serviceType];
+            List<IServiceConnection> list = this.service.data.otherServiceConnections2[(int)serviceType];
             if (list == null || list.Count == 0)
             {
                 return null;

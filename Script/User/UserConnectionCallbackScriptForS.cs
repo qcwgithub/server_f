@@ -24,7 +24,7 @@ namespace Script
                 return;
             }
 
-            ServiceConnection? serviceConnection = connection as ServiceConnection;
+            IServiceConnection? serviceConnection = connection as IServiceConnection;
             if (serviceConnection == null)
             {
                 this.service.logger.ErrorFormat("OnMsg serviceConnection == null, it is of type '{0}'", connection.GetType().Name);

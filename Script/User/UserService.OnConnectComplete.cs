@@ -4,7 +4,7 @@ namespace Script
 {
     public partial class UserService
     {
-        public override async Task<ECode> OnConnectComplete(ServiceConnection serviceConnection)
+        public override async Task<ECode> OnConnectComplete(IServiceConnection serviceConnection)
         {
             var e = await base.OnConnectComplete(serviceConnection);
             if (e != ECode.Success)

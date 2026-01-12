@@ -104,7 +104,7 @@ namespace Script
             msgU.isNewUser = isNewUser;
             msgU.userId = userId;
             msgU.newUserInfo = newUserInfo;
-            msgU.gatewayServiceId = ((ServiceConnection)context.connection).serviceId;
+            msgU.gatewayServiceId = ((IServiceConnection)context.connection).serviceId;
 
             var rU = await this.service.userServiceProxy.UserLoginSuccess(location.serviceId, msgU);
             if (rU.e != ECode.Success)

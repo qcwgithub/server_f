@@ -1,6 +1,6 @@
 namespace Data
 {
-    public class InProcessServiceConnection : ServiceConnection
+    public class InProcessServiceConnection : IServiceConnection
     {
         public bool knownWho
         {

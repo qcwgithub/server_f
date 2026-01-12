@@ -2,7 +2,7 @@ using System.Net.Sockets;
 
 namespace Data
 {
-    public class SocketServiceConnection : SocketConnection, ServiceConnection
+    public class SocketServiceConnection : SocketConnection, IServiceConnection
     {
         ServiceType? _serviceType;
         int? _serviceId;

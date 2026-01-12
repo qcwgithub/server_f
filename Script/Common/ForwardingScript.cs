@@ -8,7 +8,7 @@ namespace Script
         {
         }
 
-        public void S_to_G(ServiceConnection serviceConnection, long userId, MsgType msgType, object msg, ReplyCallback? reply, int? pTimeoutS)
+        public void S_to_G(IServiceConnection serviceConnection, long userId, MsgType msgType, object msg, ReplyCallback? reply, int? pTimeoutS)
         {
             Forwarding.S_to_G(serviceConnection, userId, msgType, msg, reply, pTimeoutS);
         }

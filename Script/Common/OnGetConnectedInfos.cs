@@ -16,14 +16,14 @@ namespace Script
         
             res.connectedInfos = new List<ServiceTypeAndId>();
 
-            foreach (List<ServiceConnection> list in sd.otherServiceConnections2)
+            foreach (List<IServiceConnection> list in sd.otherServiceConnections2)
             {
                 if (list == null)
                 {
                     continue;
                 }
 
-                foreach (ServiceConnection serviceConnection in list)
+                foreach (IServiceConnection serviceConnection in list)
                 {
                     if (!serviceConnection.IsConnected())
                     {

@@ -13,7 +13,7 @@ namespace Script
 
         public override async Task<ECode> Handle(MessageContext context, MsgRemoteWillShutdown msg, ResRemoteWillShutdown res)
         {
-            if (context.connection is ServiceConnection serviceConnection)
+            if (context.connection is IServiceConnection serviceConnection)
             {
                 this.service.logger.InfoFormat("{0} {1}", this.msgType, serviceConnection.tai);
 

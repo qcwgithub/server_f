@@ -8,7 +8,7 @@ namespace Script
         {
             await base.OnConnectionClose(connection);
 
-            if (connection is ServiceConnection serviceConnection &&
+            if (connection is IServiceConnection serviceConnection &&
                 serviceConnection.knownWho &&
                 serviceConnection.serviceType == ServiceType.Gateway)
             {

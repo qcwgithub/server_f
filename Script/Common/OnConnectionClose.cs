@@ -7,7 +7,7 @@ namespace Script
     {
         public virtual async Task<ECode> OnConnectionClose(IConnection connection)
         {
-            if (connection is ServiceConnection serviceConnection)
+            if (connection is IServiceConnection serviceConnection)
             {
                 if (this.data.state < ServiceState.ShuttingDown &&
                     serviceConnection.knownWho &&

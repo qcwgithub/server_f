@@ -12,7 +12,7 @@ namespace Script
 
         public override void OnMsg(IConnection connection, int seq, MsgType msgType, byte[] msgBytes, ReplyCallback? reply)
         {
-            var serviceConnection = connection as ServiceConnection;
+            var serviceConnection = connection as IServiceConnection;
             if (serviceConnection == null) // when from tool
             {
                 base.OnMsg(connection, seq, msgType, msgBytes, reply);

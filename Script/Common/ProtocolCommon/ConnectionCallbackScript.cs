@@ -51,7 +51,7 @@ namespace Script
                 return;
             }
 
-            var serviceConnection = connection as ServiceConnection;
+            var serviceConnection = connection as IServiceConnection;
             if (serviceConnection == null)
             {
                 this.service.logger.ErrorFormat("OnConnectComplete data.customData is not ServiceConnection, it is {0}", connection.GetType().Name);
