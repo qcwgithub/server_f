@@ -88,7 +88,7 @@ namespace Data
                     {
                         this.parent.Close(CloseReason.OnConnectComplete_false);
                     }
-                    else
+                    else if (!this.parent.IsClosing())
                     {
                         this.parent.recvPart.StartRecv();
 
@@ -104,6 +104,7 @@ namespace Data
                 }
                 finally
                 {
+                    // 说明：Decrease 发生在 Increase 之后，即确保没有下一步了，才可能变为 0
                     if (this.parent.DecreaseIORef() == 0 && this.parent.IsClosing())
                     {
                         this.parent.Cleanup();
@@ -121,6 +122,7 @@ namespace Data
                 }
             }
 
+            // 调用之前需确保 !IsClosing() && sending == 0
             void PerformSend()
             {
                 if (!this.sendQueue.TryDequeue(out byte[]? bytes))

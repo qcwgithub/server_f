@@ -32,12 +32,13 @@ namespace Data
                 this.recvBuffer = null;
             }
 
-            // Called once
+            // 只调用一次
             public void StartRecv()
             {
                 this.PerformRecv();
             }
 
+            // 自循环调用，不会外部调用
             void PerformRecv()
             {
                 this.RecvAsync(this.recvBuffer, this.recvOffset, this.recvBuffer.Length - this.recvOffset);
@@ -166,6 +167,9 @@ namespace Data
                             Array.Copy(this.recvBuffer, newBuffer, this.recvOffset);
                             this.recvBuffer = newBuffer;
                         }
+
+                        // continue recv
+                        this.PerformRecv();
                     }
                 }
                 catch (Exception ex)
@@ -174,14 +178,10 @@ namespace Data
                 }
                 finally
                 {
+                    // 说明：Decrease 发生在 Increase 之后，即确保没有下一步了，才可能变为 0
                     if (this.parent.DecreaseIORef() == 0 && this.parent.IsClosing())
                     {
                         this.parent.Cleanup();
-                    }
-                    else if (!this.parent.IsClosing())
-                    {
-                        // continue recv
-                        this.PerformRecv();
                     }
                 }
             }

@@ -78,6 +78,11 @@ namespace Data
 
         public override void Send(byte[] bytes)
         {
+            if (this.IsClosing())
+            {
+                return;
+            }
+
             this.sendPart.Send(bytes);
         }
 
