@@ -15,6 +15,7 @@ namespace Script
             var serviceConnection = connection as IServiceConnection;
             if (serviceConnection == null) // when from tool
             {
+                MyDebug.Assert(false);
                 base.OnMsg(connection, seq, msgType, msgBytes, reply);
                 return;
             }

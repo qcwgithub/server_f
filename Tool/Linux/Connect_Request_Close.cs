@@ -8,8 +8,13 @@ namespace Tool
         {
             var tai = serviceConfig.tai;
 
-            var connection = new ToolConnection(serviceConfig.inIp, serviceConfig.inPort);
-            bool success = await connection.Connect();
+            var connectionCallback = new ToolConnectionCallback();
+            var tcsConnect = new TaskCompletionSource<bool>();
+            connectionCallback.onConnect = success => tcsConnect.SetResult(success);
+
+            var connection = new ToolConnection(connectionCallback, serviceConfig.inIp, serviceConfig.inPort);
+            connection.Connect();
+            bool success = await tcsConnect.Task;
             if (!success)
             {
                 ConsoleEx.WriteLine(ConsoleColor.Red, $"Connect to {tai} failed");
@@ -19,7 +24,7 @@ namespace Tool
 
             var r = await connection.Request(msgType, msg);
             ConsoleEx.WriteLine(r.e == ECode.Success ? ConsoleColor.Green : ConsoleColor.Red, $"Request {msgType} {r.e}");
-            connection.Close();
+            connection.Close("Doesn't matter");
 
             Console.WriteLine();
             return r;

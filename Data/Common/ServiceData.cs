@@ -35,11 +35,10 @@ namespace Data
         public readonly ILog logger;
 
         // tcp listener
-        public ITcpListenerCallback? tcpListenerCallbackForS;
-        public ITcpListenerCallback? tcpListenerCallbackForC;
+        public ITcpListenerCallback? tcpListenerCallback;
         public ITcpListenerCallback? GetTcpListenerCallback(TcpListenerData tcpListenerData)
         {
-            return tcpListenerData.isForClient ? this.tcpListenerCallbackForC : this.tcpListenerCallbackForS;
+            return this.tcpListenerCallback;
         }
 
         // tcp client callback
@@ -321,7 +320,7 @@ namespace Data
 
             MyDebug.Assert(d == null);
 
-            d = new TcpListenerData() { isForClient = false, callbackProvider = this };
+            d = new TcpListenerData() { forClient = false, callbackProvider = this };
             this.logger.InfoFormat("ListenForServer_Tcp inPort {0}", port);
             d.Listen(port);
             d.StartAccept();
@@ -343,7 +342,7 @@ namespace Data
             ref TcpListenerData? d = ref this.tcpListenerForClient;
 
             MyDebug.Assert(d == null);
-            d = new TcpListenerData() { isForClient = true, callbackProvider = this };
+            d = new TcpListenerData() { forClient = true, callbackProvider = this };
             this.logger.InfoFormat("ListenForClient_Tcp outPort {0}", outPort);
             d.Listen(outPort);
             d.StartAccept();

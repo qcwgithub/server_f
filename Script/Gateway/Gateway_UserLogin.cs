@@ -50,7 +50,8 @@ namespace Script
                 this.service.sd.AddUser(user);
             }
 
-            user.connection = new GatewayUserConnection(context.connection as SocketConnection, user);
+            user.connection = (GatewayUserConnection)context.connection;
+            user.connection.user = user;
 
             ////
 

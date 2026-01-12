@@ -5,10 +5,9 @@ namespace Script
 {
     public class TcpListenerScript : ServiceScript<Service>, ITcpListenerCallback
     {
-        public readonly bool forClient;
-        public TcpListenerScript(Server server, Service service, bool forClient) : base(server, service)
+        public TcpListenerScript(Server server, Service service) : base(server, service)
         {
-            this.forClient = forClient;
+
         }
 
         public void LogError(string str)
@@ -21,7 +20,7 @@ namespace Script
             this.service.logger.Info(str);
         }
 
-        public void OnAcceptComplete(TcpListenerData tcpListener, SocketAsyncEventArgs e)
+        public virtual void OnAcceptComplete(TcpListenerData tcpListener, SocketAsyncEventArgs e)
         {
             if (e.SocketError != SocketError.Success)
             {
@@ -36,13 +35,13 @@ namespace Script
                 return;
             }
 
-            if (this.forClient)
+            if (!tcpListener.forClient)
             {
-                new SocketConnection(this.service.data, socket, this.forClient, startRecv: true);
+                new SocketServiceConnection(this.service.data, socket, false);
             }
             else
             {
-                new SocketServiceConnection(this.service.data, socket, this.forClient);
+                MyDebug.Assert(false);
             }
         }
     }

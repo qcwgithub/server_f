@@ -16,9 +16,9 @@ namespace Script
         public readonly UserManagerServiceProxy userManagerServiceProxy;
         public readonly UserServiceProxy userServiceProxy;
         public readonly RoomServiceProxy roomServiceProxy;
-        protected override TcpListenerScript CreateTcpListenerScriptForC()
+        protected override TcpListenerScript CreateTcpListenerScript()
         {
-            return new TcpListenerScript(this.server, this, true);
+            return new GatewayTcpListenerScript(this.server, this);
         }
         protected override ConnectionCallbackScriptForS CreateConnectionCallbackScriptForS()
         {

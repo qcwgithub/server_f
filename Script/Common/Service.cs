@@ -8,11 +8,10 @@ namespace Script
         public readonly int serviceId;
         public readonly ServiceData data;
 
-        public readonly TcpListenerScript tcpListenerScriptForS;
-        public readonly TcpListenerScript tcpListenerScriptForC;
-        protected virtual TcpListenerScript CreateTcpListenerScriptForC()
+        public readonly TcpListenerScript tcpListenerScript;
+        protected virtual TcpListenerScript CreateTcpListenerScript()
         {
-            return null;
+            return new TcpListenerScript(this.server, this);;
         }
 
         public readonly ConnectionCallbackScriptForS connectionCallbackScriptForS;
@@ -50,8 +49,7 @@ namespace Script
             this.serviceId = serviceId;
             this.data = this.server.data.serviceDatas[this.serviceId];
 
-            this.tcpListenerScriptForS = new TcpListenerScript(this.server, this, false);
-            this.tcpListenerScriptForC = this.CreateTcpListenerScriptForC();
+            this.tcpListenerScript = this.CreateTcpListenerScript();
 
             this.connectionCallbackScriptForS = this.CreateConnectionCallbackScriptForS();
             this.connectionCallbackScriptForC = this.CreateConnectionCallbackScriptForC();
@@ -98,8 +96,7 @@ namespace Script
             this.data.connectionCallbackForS = this.connectionCallbackScriptForS;
             this.data.connectionCallbackForC = this.connectionCallbackScriptForC;
 
-            this.data.tcpListenerCallbackForS = this.tcpListenerScriptForS;
-            this.data.tcpListenerCallbackForC = this.tcpListenerScriptForC;
+            this.data.tcpListenerCallback = this.tcpListenerScript;
 
             this.data.httpListenerCallback = this.httpListenerScript;
             this.data.webSocketListenerCallback = this.webSocketListenerScript;
@@ -134,13 +131,9 @@ namespace Script
                 this.data.connectionCallbackForC = null;
             }
 
-            if (this.data.tcpListenerCallbackForS == this.tcpListenerScriptForS)
+            if (this.data.tcpListenerCallback == this.tcpListenerScript)
             {
-                this.data.tcpListenerCallbackForS = null;
-            }
-            if (this.data.tcpListenerCallbackForC == this.tcpListenerScriptForC)
-            {
-                this.data.tcpListenerCallbackForC = null;
+                this.data.tcpListenerCallback = null;
             }
 
             if (this.data.httpListenerCallback == this.httpListenerScript)

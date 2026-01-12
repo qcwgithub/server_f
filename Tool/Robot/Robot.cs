@@ -28,7 +28,6 @@ namespace Tool
         public async Task Start()
         {
             this.connectionCallback = new ToolConnectionCallback();
-
             var tcsConnect = new TaskCompletionSource<bool>();
             this.connectionCallback.onConnect = success => tcsConnect.SetResult(success);
 

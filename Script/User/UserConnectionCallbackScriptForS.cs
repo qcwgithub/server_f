@@ -18,12 +18,6 @@ namespace Script
 
         public override async void OnMsg(IConnection connection, int seq, MsgType msgType, byte[] msgBytes, ReplyCallback? reply)
         {
-            if (connection is SocketConnection)
-            {
-                base.OnMsg(connection, seq, msgType, msgBytes, reply);
-                return;
-            }
-
             IServiceConnection? serviceConnection = connection as IServiceConnection;
             if (serviceConnection == null)
             {

@@ -8,7 +8,7 @@ namespace Data
 {
     public class TcpListenerData
     {
-        public bool isForClient;
+        public bool forClient;
         public ITcpListenerCallbackProvider callbackProvider;
         public ITcpListenerCallback callback => this.callbackProvider.GetTcpListenerCallback(this);
         public Socket socket;

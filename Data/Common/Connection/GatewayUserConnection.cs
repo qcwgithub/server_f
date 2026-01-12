@@ -4,12 +4,10 @@ namespace Data
 {
     public class GatewayUserConnection : SocketConnection
     {
-        public readonly GatewayUser user;
+        public GatewayUser? user { get; set; }
 
-        public GatewayUserConnection(IConnectionCallbackProvider callbackProvider, Socket socket, bool forClient, GatewayUser user) : base(callbackProvider, socket, forClient, startRecv: false)
+        public GatewayUserConnection(IConnectionCallbackProvider callbackProvider, Socket socket) : base(callbackProvider, socket, true, startRecv: false)
         {
-            this.user = user;
-
             // 手动 StartRecv，否则会在基类构造函数里直接就收到消息
             this.StartRecv();
         }
