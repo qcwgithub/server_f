@@ -20,15 +20,22 @@ namespace Tool
             ConsoleEx.WriteLine(color, string.Format("{0} {1}", this.channelUserId, string.Format(format, args)));
         }
 
+        ToolConnectionCallback connectionCallback;
         ToolConnection connection;
         ResLogin resLogin;
         ResGetRecommendedRooms resGetRecommendedRooms;
         long roomId;
         public async Task Start()
         {
-            this.connection = new ToolConnection("localhost", 8020);
+            this.connectionCallback = new ToolConnectionCallback();
 
-            bool success = await this.connection.Connect();
+            var tcsConnect = new TaskCompletionSource<bool>();
+            this.connectionCallback.onConnect = success => tcsConnect.SetResult(success);
+
+            this.connection = new ToolConnection(this.connectionCallback, "localhost", 8020);
+
+            this.connection.Connect();
+            bool success = await tcsConnect.Task;
             Console.WriteLine($"Connect result {success}");
             if (!success)
             {
@@ -82,7 +89,7 @@ namespace Tool
             }
             while (false);
 
-            this.connection.Close();
+            this.connection.Close("Doesn't matter");
         }
     }
 }

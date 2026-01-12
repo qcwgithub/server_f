@@ -3,7 +3,7 @@ using System.Net.Sockets;
 
 namespace Data
 {
-    public class SocketConnection : IConnection, IProtocolClientCallback
+    public abstract class SocketConnection : IConnection, IProtocolClientCallback
     {
         public struct stWaitingResponse
         {

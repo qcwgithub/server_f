@@ -1,24 +1,17 @@
+using System.Net.Sockets;
+
 namespace Data
 {
-    public class GatewayUserConnection : IConnection
+    public class GatewayUserConnection : SocketConnection
     {
-        public readonly SocketConnection socketConnection;
         public readonly GatewayUser user;
 
-        public GatewayUserConnection(SocketConnection socketConnection, GatewayUser user)
+        public GatewayUserConnection(IConnectionCallbackProvider callbackProvider, Socket socket, bool forClient, GatewayUser user) : base(callbackProvider, socket, forClient, startRecv: false)
         {
-            this.socketConnection = socketConnection;
             this.user = user;
-        }
 
-        public bool IsConnected()
-        {
-            return this.socketConnection.IsConnected();
-        }
-
-        public void Send(MsgType msgType, object msg, ReplyCallback? cb, int? pTimeoutS)
-        {
-            this.socketConnection.Send(msgType, msg, cb, pTimeoutS);
+            // 手动 StartRecv，否则会在基类构造函数里直接就收到消息
+            this.StartRecv();
         }
     }
 }
