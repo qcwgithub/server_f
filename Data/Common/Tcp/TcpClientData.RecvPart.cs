@@ -48,8 +48,12 @@ namespace Data
             {
                 try
                 {
+                    if (!this.parent.TryIncreaseIORef())
+                    {
+                        return;
+                    }
+
                     this._innArgs.SetBuffer(buffer, offset, count);
-                    this.parent.IncreaseIORef();
                     bool completed = !this.parent.socket.ReceiveAsync(this._innArgs);
                     if (completed)
                     {

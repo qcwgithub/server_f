@@ -39,8 +39,11 @@ namespace Data
             {
                 try
                 {
+                    if (!this.parent.TryIncreaseIORef())
+                    {
+                        return;
+                    }
                     this._outArgs.RemoteEndPoint = this.endPoint;
-                    this.parent.IncreaseIORef();
                     bool completed = !this.parent.socket.ConnectAsync(this._outArgs);
                     if (completed)
                     {
@@ -140,8 +143,11 @@ namespace Data
 
                 try
                 {
+                    if (!this.parent.TryIncreaseIORef())
+                    {
+                        return;
+                    }
                     this._outArgs.SetBuffer(bytes, 0, bytes.Length);
-                    this.parent.IncreaseIORef();
                     bool completed = !this.parent.socket.SendAsync(this._outArgs);
                     if (completed)
                     {

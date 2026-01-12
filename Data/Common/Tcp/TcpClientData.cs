@@ -24,9 +24,22 @@ namespace Data
         public override EndPoint RemoteEndPoint => this.socket.RemoteEndPoint;
 
         int ioRef;
-        public void IncreaseIORef()
+        public bool TryIncreaseIORef()
         {
+            if (this.IsClosing())
+            {
+                return false;
+            }
+
             Interlocked.Increment(ref this.ioRef);
+
+            if (this.IsClosing())
+            {
+                Interlocked.Decrement(ref this.ioRef);
+                return false;
+            }
+
+            return true;
         }
         public int DecreaseIORef()
         {
