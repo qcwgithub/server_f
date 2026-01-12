@@ -1,6 +1,5 @@
 using System.Net.Sockets;
 using System.Net;
-using System.Collections.Concurrent;
 
 namespace Data
 {
@@ -80,8 +79,6 @@ namespace Data
 
             this.sendPart = new SendPart(this, null);
             this.recvPart = new RecvPart(this, true);
-
-            this.recvPart.StartRecv();
         }
 
         public override void Connect()
@@ -97,6 +94,12 @@ namespace Data
             }
 
             this.sendPart.Send(bytes);
+        }
+
+        // 只调用一次
+        public void StartRecv()
+        {
+            this.recvPart.StartRecv();
         }
 
         public override void Close(string reason)

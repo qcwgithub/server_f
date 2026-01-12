@@ -93,7 +93,7 @@ namespace Data
                     }
                     else if (!this.parent.IsClosing())
                     {
-                        this.parent.recvPart.StartRecv();
+                        this.parent.StartRecv();
 
                         if (Interlocked.CompareExchange(ref this.sending, 1, 0) == 0)
                         {

@@ -55,6 +55,8 @@ namespace Data
             this.forClient = forClient;
 
             Interlocked.Exchange(ref this.handling, 0);
+
+            ((TcpClientData)this.socket).StartRecv();
         }
 
         IConnectionCallback callback
