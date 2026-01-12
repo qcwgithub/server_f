@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    public class UserConnectionCallbackScriptForS : ConnectionCallbackScriptForS
+    public class UserConnectionCallbackScriptForS : ConnectionCallbackScript
     {
         public UserConnectionCallbackScriptForS(Server server, Service service) : base(server, service)
         {

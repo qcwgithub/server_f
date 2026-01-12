@@ -14,10 +14,10 @@ namespace Script
             return new TcpListenerScript(this.server, this);;
         }
 
-        public readonly ConnectionCallbackScriptForS connectionCallbackScriptForS;
-        protected virtual ConnectionCallbackScriptForS CreateConnectionCallbackScriptForS()
+        public readonly ConnectionCallbackScript connectionCallbackScriptForS;
+        protected virtual ConnectionCallbackScript CreateConnectionCallbackScriptForS()
         {
-            return new ConnectionCallbackScriptForS(this.server, this);
+            return new ConnectionCallbackScript(this.server, this);
         }
         public readonly ConnectionCallbackScript connectionCallbackScriptForC;
         protected virtual ConnectionCallbackScript CreateConnectionCallbackScriptForC()

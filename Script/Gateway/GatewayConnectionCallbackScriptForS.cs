@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    public class GatewayConnectionCallbackScriptForS : ConnectionCallbackScriptForS
+    public class GatewayConnectionCallbackScriptForS : ConnectionCallbackScript
     {
         public readonly GatewayService gatewayService;
         public GatewayConnectionCallbackScriptForS(Server server, GatewayService gatewayService) : base(server, gatewayService)

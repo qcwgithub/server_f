@@ -20,7 +20,7 @@ namespace Script
         {
             return new GatewayTcpListenerScript(this.server, this);
         }
-        protected override ConnectionCallbackScriptForS CreateConnectionCallbackScriptForS()
+        protected override ConnectionCallbackScript CreateConnectionCallbackScriptForS()
         {
             return new GatewayConnectionCallbackScriptForS(this.server, this);
         }

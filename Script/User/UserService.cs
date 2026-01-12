@@ -24,7 +24,7 @@ namespace Script
         {
             return new UserMessageDispatcher(this.server, this);
         }
-        protected override ConnectionCallbackScriptForS CreateConnectionCallbackScriptForS()
+        protected override ConnectionCallbackScript CreateConnectionCallbackScriptForS()
         {
             return new UserConnectionCallbackScriptForS(this.server, this);
         }
