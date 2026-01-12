@@ -36,17 +36,16 @@ namespace Data
 
         // tcp listener
         public ITcpListenerCallback? tcpListenerCallback;
-        public ITcpListenerCallback? GetTcpListenerCallback(TcpListenerData tcpListenerData)
+        public ITcpListenerCallback GetTcpListenerCallback(TcpListenerData tcpListenerData)
         {
-            return this.tcpListenerCallback;
+            return this.tcpListenerCallback!;
         }
 
         // tcp client callback
-        public IConnectionCallback? connectionCallbackForS;
-        public IConnectionCallback? connectionCallbackForC;
-        public IConnectionCallback GetConnectionCallback(bool forClient)
+        public IConnectionCallback? connectionCallback;
+        public IConnectionCallback GetConnectionCallback()
         {
-            return forClient ? this.connectionCallbackForC! : this.connectionCallbackForS!;
+            return this.connectionCallback!;
         }
 
         public TcpListenerData? tcpListenerForServer;

@@ -405,7 +405,7 @@ namespace Data
                 this.remoteEndPoint = null;
             }
 
-            this.recvBuffer = null;
+            // this.recvBuffer = null;
             this.recvOffset = 0;
 
             this.callback.OnClose();

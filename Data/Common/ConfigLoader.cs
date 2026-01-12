@@ -42,7 +42,7 @@ namespace Data
         {
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(text);
-            return doc.DocumentElement;
+            return doc.DocumentElement!;
         }
 
         public T LoadInServerConfigJson<T>(string f)
@@ -94,7 +94,7 @@ namespace Data
                 config.channelUserId = helper.ReadString("channelUserId");
                 config.who = helper.ReadString("who");
 
-                if (!gmAccountConfigs.TryGetValue(config.channel, out Dictionary<string, GMAccountConfig> dict))
+                if (!gmAccountConfigs.TryGetValue(config.channel, out Dictionary<string, GMAccountConfig>? dict))
                 {
                     dict = gmAccountConfigs[config.channel] = new Dictionary<string, GMAccountConfig>();
                 }
@@ -105,9 +105,9 @@ namespace Data
             return gmAccountConfigs;
         }
 
-        bool CheckServiceConfig_inPort_outPort(Dictionary<string, HashSet<int>> inPorts, Dictionary<string, HashSet<int>> outPorts, ServiceConfig sc, out string message)
+        bool CheckServiceConfig_inPort_outPort(Dictionary<string, HashSet<int>> inPorts, Dictionary<string, HashSet<int>> outPorts, ServiceConfig sc, out string? message)
         {
-            HashSet<int> set;
+            HashSet<int>? set;
 
             if (!inPorts.TryGetValue(sc.inIp, out set))
             {
@@ -138,7 +138,7 @@ namespace Data
             return true;
         }
 
-        bool CheckServiceConfigs(Dictionary<string, HashSet<int>> inPorts, Dictionary<string, HashSet<int>> outPorts, List<ServiceConfig> scs, out string message)
+        bool CheckServiceConfigs(Dictionary<string, HashSet<int>> inPorts, Dictionary<string, HashSet<int>> outPorts, List<ServiceConfig> scs, out string? message)
         {
             for (int i = 0; i < scs.Count; i++)
             {
@@ -164,7 +164,7 @@ namespace Data
 
         bool CheckAllServiceConfigs(
             List<ServiceConfig> allNormalServiceConfigs,
-            out string message)
+            out string? message)
         {
             // 检查 inPort serviceId 重复
             var inPorts = new Dictionary<string, HashSet<int>>();
@@ -183,7 +183,7 @@ namespace Data
         public static string AllServiceConfigsFile => $"{ServerConfigDir}/AllServiceConfigs.csv";
         public bool LoadAllServiceConfigs(
             out List<ServiceConfig> allServiceConfigs,
-            out string message)
+            out string? message)
         {
             allServiceConfigs = new List<ServiceConfig>();
 

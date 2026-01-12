@@ -71,7 +71,7 @@ namespace Data
         {
             get
             {
-                return this.callbackProvider.GetConnectionCallback(this.forClient);
+                return this.callbackProvider.GetConnectionCallback();
             }
         }
 

@@ -1,6 +1,6 @@
 namespace Data
 {
-    public class UserConnection : IConnection
+    public class UserConnection : IClientConnection
     {
         public readonly int gatewayServiceId;
         public readonly User user;

@@ -51,7 +51,7 @@ namespace ET
             }
         }
 
-        public override void Post(SendOrPostCallback callback, object state)
+        public override void Post(SendOrPostCallback callback, object? state)
         {
             this.Post(() =>
             {

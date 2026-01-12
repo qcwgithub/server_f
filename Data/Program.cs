@@ -34,7 +34,7 @@ namespace Data
 
     public class IServerAndContextWeakRef
     {
-        public IServer iserver;
+        public IServer? iserver;
         public int seq;
         public Version version;
         public WeakReference contextWeakRef;
@@ -86,7 +86,7 @@ namespace Data
 
         public static int s_scriptDllSeq = 0;
         public static List<IServerAndContextWeakRef> s_assemblyLoadContextRefs;
-        public static IServer LastIServer()
+        public static IServer? LastIServer()
         {
             if (s_assemblyLoadContextRefs == null || s_assemblyLoadContextRefs.Count == 0)
             {
@@ -329,7 +329,7 @@ namespace Data
 
                     if (last1 != null)
                     {
-                        IServer last2 = LastIServer();
+                        IServer? last2 = LastIServer();
                         if (last2 == last1)
                         {
                             last2.FrameEnd(s_frame);
@@ -373,7 +373,7 @@ namespace Data
             // File.WriteAllBytes(s_scriptPdbPath, pdbBytes);
         }
 
-        public static bool LoadScriptDll(IServer iserver)
+        public static bool LoadScriptDll(IServer? iserver)
         {
             try
             {
@@ -387,7 +387,7 @@ namespace Data
                 var bytes = File.ReadAllBytes(s_scriptDllPath);
                 var symbols = File.ReadAllBytes(s_scriptPdbPath);
 
-                IServerAndContextWeakRef last = null;
+                IServerAndContextWeakRef? last = null;
                 if (s_assemblyLoadContextRefs.Count > 0)
                 {
                     last = s_assemblyLoadContextRefs[s_assemblyLoadContextRefs.Count - 1];
@@ -509,13 +509,12 @@ namespace Data
             return argMap;
         }
 
-        static void GracefullyExit(object state)
+        static void GracefullyExit(object? state)
         {
             LogInfo("GracefullyExit");
             if (s_assemblyLoadContextRefs.Count > 0)
             {
-                IServerAndContextWeakRef last = null;
-                last = s_assemblyLoadContextRefs[s_assemblyLoadContextRefs.Count - 1];
+                IServerAndContextWeakRef last = s_assemblyLoadContextRefs[s_assemblyLoadContextRefs.Count - 1];
                 if (last.iserver != null)
                 {
                     last.iserver.HandleEvent("exit");

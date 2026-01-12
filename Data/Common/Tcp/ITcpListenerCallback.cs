@@ -11,6 +11,6 @@ namespace Data
 
     public interface ITcpListenerCallbackProvider : IDataCallbackProvider
     {
-        ITcpListenerCallback? GetTcpListenerCallback(TcpListenerData tcpListenerData);
+        ITcpListenerCallback GetTcpListenerCallback(TcpListenerData tcpListenerData);
     }
 }

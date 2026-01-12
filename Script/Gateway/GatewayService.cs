@@ -20,13 +20,9 @@ namespace Script
         {
             return new GatewayTcpListenerScript(this.server, this);
         }
-        protected override ConnectionCallbackScript CreateConnectionCallbackScriptForS()
+        protected override ConnectionCallbackScript CreateConnectionCallbackScript()
         {
-            return new GatewayConnectionCallbackScriptForS(this.server, this);
-        }
-        protected override ConnectionCallbackScript CreateConnectionCallbackScriptForC()
-        {
-            return new GatewayConnectionCallbackScriptForC(this.server, this);
+            return new GatewayConnectionCallbackScript(this.server, this);
         }
         public readonly GatewayServiceScript ss;
         public readonly ObjectLocator userLocator;

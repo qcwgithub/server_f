@@ -14,6 +14,6 @@ namespace Data
 
     public interface IConnectionCallbackProvider : IDataCallback
     {
-        IConnectionCallback GetConnectionCallback(bool forClient);
+        IConnectionCallback GetConnectionCallback();
     }
 }
