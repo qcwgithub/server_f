@@ -105,7 +105,7 @@ namespace Script
                 return;
             }
 
-            if (user.destroyTimer.IsAlive())
+            if (!user.destroyTimer.IsAlive())
             {
                 return;
             }

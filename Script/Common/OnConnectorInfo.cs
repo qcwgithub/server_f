@@ -20,15 +20,13 @@ namespace Script
             ConnectorInfo info = msg.connectorInfo;
             var connection = (SocketServiceConnection)context.connection;
 
-            string message = string.Format("{0} {1}{2} this.service.data.state {3}",
-                this.msgType, info.serviceType, info.serviceId, this.service.data.state);
             if (this.service.data.state == ServiceState.Started)
             {
-                this.service.logger.Info(message);
+                this.service.logger.Info($"{this.msgType} {info.serviceType}{info.serviceId} my state {this.service.data.state}");
             }
             else
             {
-                this.service.logger.Error(message);
+                this.service.logger.Error($"{this.msgType} {info.serviceType}{info.serviceId} my state {this.service.data.state}");
             }
 
             connection.serviceType = info.serviceType;
