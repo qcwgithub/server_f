@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Net.Sockets;
 using Data;
 
@@ -10,34 +11,37 @@ namespace Script
 
         }
 
-        public void LogError(string str)
+        // NOTE: Called by socket thread
+        void ITcpListenerCallback.LogError(string str)
         {
             this.service.logger.Error(str);
         }
 
-        public void LogInfo(string str)
+        // NOTE: Called by socket thread
+        void ITcpListenerCallback.LogError(string str, Exception ex)
+        {
+            this.service.logger.Error(str, ex);
+        }
+
+        // NOTE: Called by socket thread
+        void ITcpListenerCallback.LogInfo(string str)
         {
             this.service.logger.Info(str);
         }
 
-        public virtual void OnAcceptComplete(TcpListenerData tcpListener, SocketAsyncEventArgs e)
+        // NOTE: Called by socket thread
+        void ITcpListenerCallback.OnAccept(ITcpListenerCallback.OnAcceptArg arg)
         {
-            if (e.SocketError != SocketError.Success)
-            {
-                // 有可能会走到这
-                return;
-            }
+            ET.ThreadSynchronizationContext.Instance.Post(this.OnAccept, arg);
+        }
 
-            Socket? socket = e.AcceptSocket;
-            if (socket == null)
+        // Called by main thread
+        protected virtual void OnAccept(object? arg)
+        {
+            var acceptArg = (ITcpListenerCallback.OnAcceptArg)arg!;
+            if (!acceptArg.forClient)
             {
-                this.service.logger.Error("socket == null");
-                return;
-            }
-
-            if (!tcpListener.forClient)
-            {
-                new SocketServiceConnection(this.service.data, socket, false);
+                new SocketServiceConnection(this.service.data, acceptArg.socket, false);
             }
             else
             {

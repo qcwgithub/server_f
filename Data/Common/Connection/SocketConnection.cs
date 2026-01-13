@@ -105,8 +105,6 @@ namespace Data
             }
         }
 
-        #region IProtocolClientCallback
-
         // NOTE: Called by socket thread
         void IProtocolClientCallback.LogError(string str)
         {
@@ -157,8 +155,6 @@ namespace Data
             }
             return used;
         }
-
-        #endregion IProtocolClientCallback
 
         void HandleSocketEvents()
         {

@@ -319,10 +319,9 @@ namespace Data
 
             MyDebug.Assert(d == null);
 
-            d = new TcpListenerData() { forClient = false, callbackProvider = this };
+            d = new TcpListenerData(this, false, port);
             this.logger.InfoFormat("ListenForServer_Tcp inPort {0}", port);
-            d.Listen(port);
-            d.StartAccept();
+            d.Listen();
 
             // this.logger.InfoFormat("Listen for server on: " + port);
         }
@@ -341,10 +340,9 @@ namespace Data
             ref TcpListenerData? d = ref this.tcpListenerForClient;
 
             MyDebug.Assert(d == null);
-            d = new TcpListenerData() { forClient = true, callbackProvider = this };
+            d = new TcpListenerData(this, true, outPort);
             this.logger.InfoFormat("ListenForClient_Tcp outPort {0}", outPort);
-            d.Listen(outPort);
-            d.StartAccept();
+            d.Listen();
         }
         public void StopListenForClient_Tcp()
         {

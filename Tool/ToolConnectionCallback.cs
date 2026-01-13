@@ -64,7 +64,7 @@ namespace Tool
             this.onClose?.Invoke();
         }
 
-        IConnectionCallback IConnectionCallbackProvider.GetConnectionCallback(bool forClient)
+        IConnectionCallback IConnectionCallbackProvider.GetConnectionCallback()
         {
             return this;
         }

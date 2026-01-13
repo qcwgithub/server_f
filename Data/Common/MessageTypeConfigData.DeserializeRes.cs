@@ -69,8 +69,7 @@ namespace Data
                     break;
 
                 case MsgType._Service_A_ResGetServiceConfigs:
-                    ob = MessagePackSerializer.Deserialize<ResNull>(resBytes);
-                    break;
+                    throw new Exception("Missing config for MsgType._Service_A_ResGetServiceConfigs");
 
                 case MsgType._Global_GetServiceConfigs:
                     ob = MessagePackSerializer.Deserialize<ResGetServiceConfigs>(resBytes);

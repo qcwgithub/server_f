@@ -8,75 +8,101 @@ namespace Data
 {
     public class TcpListenerData
     {
-        public bool forClient;
-        public ITcpListenerCallbackProvider callbackProvider;
-        public ITcpListenerCallback callback => this.callbackProvider.GetTcpListenerCallback(this);
-        public Socket socket;
-        public bool closed;
-        public SocketAsyncEventArgs listenSocketArg;
-        public bool accepting = false;
+        ITcpListenerCallbackProvider callbackProvider;
+        ITcpListenerCallback callback => this.callbackProvider.GetTcpListenerCallback(this);
+        bool forClient;
+        int port;
 
-        // 此函数是多线程，因此必须放在 Data
-        public void _onComplete(object sender, SocketAsyncEventArgs e)
+        int closing;
+        public bool IsClosing()
         {
-            ET.ThreadSynchronizationContext.Instance.Post(OnComplete, e);
+            return Volatile.Read(ref this.closing) == 1;
         }
-        public void Close()
+        int cleanuped;
+        int ioRef;
+        public bool TryIncreaseIORef()
         {
-            if (this.closed)
+            if (this.IsClosing())
             {
-                // this.logError(this, $"call close on socketId({this.socketId}) with reason({reason}), but this.closed is true!");
-                return;
+                return false;
             }
-            // this.logInfo(this, $"call close on socketId({this.socketId}) with reason({reason})");
-            this.closed = true;
 
-            // doesn't need to call Shutdown on a listener socket. according to:
-            // https://stackoverflow.com/questions/23963359/socket-shutdown-throws-socketexception
-            if (this.socket.Connected)
+            Interlocked.Increment(ref this.ioRef);
+
+            if (this.IsClosing())
             {
-                this.socket.Shutdown(SocketShutdown.Both);
+                Interlocked.Decrement(ref this.ioRef);
+                return false;
             }
-            this.socket.Close();
-            this.socket = null;
 
-            this.listenSocketArg.Completed -= this._onComplete;
-            this.listenSocketArg.Dispose();
-            this.listenSocketArg = null;
+            return true;
+        }
+        public int DecreaseIORef()
+        {
+            return Interlocked.Decrement(ref this.ioRef);
         }
 
-        public void Listen(int port)
+        Socket socket;
+        SocketAsyncEventArgs listenSocketArg;
+
+        public TcpListenerData(ITcpListenerCallbackProvider callbackProvider, bool forClient, int port)
         {
+            this.callbackProvider = callbackProvider;
+            this.forClient = forClient;
+            this.port = port;
             if (port <= 0)
             {
-                throw new Exception("TcpListenerData.Listen(): port <= 0");
+                throw new Exception("TcpListenerData.ctor(): port <= 0");
             }
+
+            Interlocked.Exchange(ref this.closing, 0);
+            Interlocked.Exchange(ref this.cleanuped, 0);
+            Interlocked.Exchange(ref this.ioRef, 0);
 
             var address = IPAddress.IPv6Any;
             this.socket = new Socket(address.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             this.listenSocketArg = new SocketAsyncEventArgs();
-            this.listenSocketArg.Completed += this._onComplete;
+            this.listenSocketArg.Completed += this.OnComplete;
 
             // this.socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             // this.socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
             // object ipv6Only = this.socket.GetSocketOption(SocketOptionLevel.IPv6, SocketOptionName.IPv6Only);
             this.socket.SetSocketOption(SocketOptionLevel.IPv6, SocketOptionName.IPv6Only, false);
+        }
 
+        public void Listen()
+        {
             try
             {
-                this.socket.Bind(new IPEndPoint(address, port));
+                var address = IPAddress.IPv6Any;
+                this.socket.Bind(new IPEndPoint(address, this.port));
+                this.socket.Listen(1000);
+                this.PerformAccept();
             }
             catch (Exception ex)
             {
-                callback.LogError("TcpListenerData.Listen Bind Exception, port: " + port);
-                throw ex;
+                callback.LogError("TcpListenerData.Listen Exception, port: " + this.port, ex);
             }
-            this.socket.Listen(1000);
         }
 
-        public void OnComplete(object _e)
+        // 自循环调用，不会外部调用
+        void PerformAccept()
         {
-            var e = (SocketAsyncEventArgs)_e;
+            if (!this.TryIncreaseIORef())
+            {
+                return;
+            }
+
+            this.listenSocketArg.AcceptSocket = null;
+            bool completed = !this.socket.AcceptAsync(this.listenSocketArg);
+            if (completed)
+            {
+                this.OnAcceptComplete();
+            }
+        }
+
+        void OnComplete(object? sender, SocketAsyncEventArgs e)
+        {
             switch (e.LastOperation)
             {
                 case SocketAsyncOperation.Accept:
@@ -89,18 +115,31 @@ namespace Data
 
         void OnAcceptComplete()
         {
-            this.accepting = false;
-
-            if (this.closed)
+            if (this.IsClosing())
             {
                 return;
             }
 
-            ITcpListenerCallback callback = this.callbackProvider.GetTcpListenerCallback(this);
-
             try
             {
-                callback.OnAcceptComplete(this, this.listenSocketArg);
+                if (this.listenSocketArg.SocketError == SocketError.Success)
+                {
+                    Socket? socket = this.listenSocketArg.AcceptSocket;
+                    if (socket != null)
+                    {
+                        ITcpListenerCallback callback = this.callbackProvider.GetTcpListenerCallback(this);
+                        callback.OnAccept(new ITcpListenerCallback.OnAcceptArg
+                        {
+                            forClient = this.forClient,
+                            socket = socket
+                        });
+                    }
+                }
+
+                if (!this.IsClosing())
+                {
+                    this.PerformAccept();
+                }
             }
             catch (Exception ex)
             {
@@ -108,34 +147,44 @@ namespace Data
             }
             finally
             {
-                if (!this.closed)
+                // 说明：Decrease 发生在 Increase 之后，即确保没有下一步了，才可能变为 0
+                if (this.DecreaseIORef() == 0 && this.IsClosing())
                 {
-                    // continue accept
-                    this.Accept();
+                    this.Cleanup();
                 }
             }
         }
 
-        bool acceptStarted = false;
-        public void StartAccept()
+        public void Close()
         {
-            if (this.acceptStarted)
+            if (Interlocked.Exchange(ref this.closing, 1) != 0)
             {
                 return;
             }
-            this.acceptStarted = true;
-            this.Accept();
+
+            if (Volatile.Read(ref this.ioRef) == 0)
+            {
+                this.Cleanup();
+            }
         }
 
-        void Accept()
+        void Cleanup()
         {
-            this.accepting = true;
-            this.listenSocketArg.AcceptSocket = null;
-            bool completed = !this.socket.AcceptAsync(this.listenSocketArg);
-            if (completed)
+            if (Interlocked.Exchange(ref this.cleanuped, 1) != 0)
             {
-                this.OnAcceptComplete();
+                return;
             }
+
+            // doesn't need to call Shutdown on a listener socket. according to:
+            // https://stackoverflow.com/questions/23963359/socket-shutdown-throws-socketexception
+            if (this.socket.Connected)
+            {
+                this.socket.Shutdown(SocketShutdown.Both);
+            }
+            this.socket.Close();
+
+            this.listenSocketArg.Completed -= this.OnComplete;
+            this.listenSocketArg.Dispose();
         }
     }
 }

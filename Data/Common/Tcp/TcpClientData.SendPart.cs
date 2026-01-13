@@ -30,9 +30,6 @@ namespace Data
             {
                 this._outArgs.Completed -= this.OnSomethingComplete;
                 this._outArgs.Dispose();
-                this._outArgs = null;
-
-                this.sendQueue = null;
             }
 
             public void Connect()
