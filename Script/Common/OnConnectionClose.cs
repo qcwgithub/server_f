@@ -24,11 +24,18 @@ namespace Script
 
                 if (this.data.state < ServiceState.ShuttingDown &&
                     this.data.markedShutdown &&
-                    this.data.GetPassivelyConnectionsCount() == 0 &&
                     !this.data.timer_shutdown.IsAlive())
                 {
-                    this.data.timer_shutdown = this.server.timerScript.SetTimer(this.serviceId, 0, TimerType.Shutdown, false);
-                    this.logger.Info("0 passive connections, shutdown in 0 second...");
+                    var passivelyTais = this.data.GetPassivelyConnections();
+                    if (passivelyTais.Count > 0)
+                    {
+                        this.logger.Info($"{passivelyTais.Count} passive connections: {JsonUtils.stringify(passivelyTais)}");
+                    }
+                    else
+                    {
+                        this.data.timer_shutdown = this.server.timerScript.SetTimer(this.serviceId, 0, TimerType.Shutdown, false);
+                        this.logger.Info("0 passive connections, shutdown in 0 second...");
+                    }
                 }
             }
 

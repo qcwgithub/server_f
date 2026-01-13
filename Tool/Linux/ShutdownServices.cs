@@ -43,7 +43,7 @@ namespace Tool
             });
 
             var msg = new MsgShutdown { force = option == 3 };
-            await this.Connect_Request_Close(serviceConfigs, MsgType._Service_Shutdown, msg);
+            await this.Connect_Request_Close(serviceConfigs, MsgType._Shutdown, msg);
         }
     }
 }

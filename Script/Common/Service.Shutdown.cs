@@ -51,7 +51,7 @@ namespace Script
         // 3 Ctrl-C
         public async Task<ECode> Shutdown(bool force)
         {
-            this.logger.Info($"Shutdown force {force}");
+            this.logger.Info($"Shutdown force? {force}");
 
             if (this.data.state >= ServiceState.ShuttingDown)
             {
@@ -61,10 +61,11 @@ namespace Script
 
             if (!force)
             {
-                if (this.data.GetPassivelyConnectionsCount() > 0)
+                var passivelyTais = this.data.GetPassivelyConnections();
+                if (passivelyTais.Count > 0)
                 {
                     this.data.markedShutdown = true;
-                    this.logger.Info("set markedShutdown = true");
+                    this.logger.Info($"Set markedShutdown = true. {passivelyTais.Count} passive connections: {JsonUtils.stringify(passivelyTais)}");
                     return ECode.Success;
                 }
             }

@@ -111,19 +111,6 @@ namespace Data
 
             this.closeReason = reason;
 
-            if (Volatile.Read(ref this.ioRef) == 0)
-            {
-                this.Cleanup();
-            }
-        }
-
-        public void Cleanup()
-        {
-            if (Interlocked.Exchange(ref this.cleanuped, 1) != 0)
-            {
-                return;
-            }
-
             // https://docs.microsoft.com/en-us/dotnet/api/system.net.sockets.socket.shutdown?view=net-6.0
             try
             {
@@ -140,6 +127,19 @@ namespace Data
             finally
             {
                 this.socket.Close();
+            }
+
+            if (Volatile.Read(ref this.ioRef) == 0)
+            {
+                this.Cleanup();
+            }
+        }
+
+        public void Cleanup()
+        {
+            if (Interlocked.Exchange(ref this.cleanuped, 1) != 0)
+            {
+                return;
             }
 
             this.sendPart.Cleanup();

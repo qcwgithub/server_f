@@ -21,7 +21,6 @@ namespace Script
             ServiceType? serviceType = ShouldForwardClientMessage(msgType);
             if (serviceType == null)
             {
-                gatewayService.logger.Info($"G_to_S {msgType} Not Forward");
                 return null;
             }
 
@@ -85,7 +84,6 @@ namespace Script
         {
             if (msgType != MsgType.Forward)
             {
-                userService.logger.Info($"S_from_G {msgType} Not Forward");
                 return false;
             }
 

@@ -124,9 +124,9 @@ namespace Data
         }
 
         // 有没有被动连接还活着
-        public virtual int GetPassivelyConnectionsCount()
+        public virtual List<ServiceTypeAndId> GetPassivelyConnections()
         {
-            int count = 0;
+            var tais = new List<ServiceTypeAndId>();
 
             for (ServiceType serviceType = 0; serviceType < ServiceType.Count; serviceType++)
             {
@@ -145,12 +145,12 @@ namespace Data
                 {
                     if (connection.IsConnected())
                     {
-                        count++;
+                        tais.Add(connection.tai);
                     }
                 }
             }
 
-            return count;
+            return tais;
         }
 
         // 关闭所有主动发起的连接

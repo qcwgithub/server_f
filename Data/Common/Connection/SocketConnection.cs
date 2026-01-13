@@ -187,6 +187,7 @@ namespace Data
 
                         case SocketEventType.Close:
                             {
+                                this.connected = false;
                                 this.closed = true;
                                 this.TimeoutAllWaitings();
                                 this.callback.OnClose(this);
@@ -224,7 +225,7 @@ namespace Data
 
         public bool IsClosed()
         {
-            return this.closed || this.socket.IsClosed();
+            return this.closed;
         }
 
         public void Close(string reason)

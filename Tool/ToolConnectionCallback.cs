@@ -61,6 +61,7 @@ namespace Tool
         public System.Action? onClose;
         void IConnectionCallback.OnClose(IConnection _)
         {
+            Console.WriteLine($"OnClose");
             this.onClose?.Invoke();
         }
 
