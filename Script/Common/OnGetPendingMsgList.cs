@@ -9,7 +9,7 @@ namespace Script
         {
         }
 
-        public override MsgType msgType => MsgType._Service_GetPendingMessageList;
+        public override MsgType msgType => MsgType._GetPendingMessageList;
 
         public override async Task<ECode> Handle(MessageContext context, MsgGetPendingMsgList msg, ResGetPendingMsgList res)
         {

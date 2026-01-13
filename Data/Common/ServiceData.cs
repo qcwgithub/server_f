@@ -178,7 +178,7 @@ namespace Data
                     if (connection.IsConnected())
                     {
                         total++;
-                        connection.Send(MsgType._Service_RemoteWillShutdown, new MsgRemoteWillShutdown(), (e, segment) =>
+                        connection.Send(MsgType._RemoteWillShutdown, new MsgRemoteWillShutdown(), (e, segment) =>
                         {
                             finish++;
                             if (finish >= total)
@@ -228,7 +228,7 @@ namespace Data
                 if (connection.IsConnected())
                 {
                     total++;
-                    connection.Send(MsgType._Service_RemoteWillShutdown, new MsgRemoteWillShutdown(), (e, segment) =>
+                    connection.Send(MsgType._RemoteWillShutdown, new MsgRemoteWillShutdown(), (e, segment) =>
                     {
                         finish++;
                         if (finish >= total)

@@ -10,7 +10,7 @@ namespace Script
         {
         }
 
-        public override MsgType msgType => MsgType._Service_Timer;
+        public override MsgType msgType => MsgType._Timer;
 
         public override async Task<ECode> Handle(MessageContext context, MsgTimer msg, ResTimer res)
         {

@@ -12,7 +12,7 @@ namespace Script
         {
         }
 
-        public override MsgType msgType => MsgType._Service_ViewMongoDumpList;
+        public override MsgType msgType => MsgType._ViewMongoDumpList;
 
         public override async Task<ECode> Handle(MessageContext context, MsgViewMongoDumpList msg, ResViewMongoDumpList res)
         {

@@ -43,51 +43,51 @@ namespace Script
 
         public async Task<MyResponse> Shutdown(int serviceId, MsgShutdown msg)
         {
-            return await this.Request(serviceId, MsgType._Service_Shutdown, msg);
+            return await this.Request(serviceId, MsgType._Shutdown, msg);
         }
         public async Task<MyResponse> ReloadScript(int serviceId, MsgReloadScript msg)
         {
-            return await this.Request(serviceId, MsgType._Service_ReloadScript, msg);
+            return await this.Request(serviceId, MsgType._ReloadScript, msg);
         }
         public async Task<MyResponse> ConnectorInfo(int serviceId, MsgConnectorInfo msg)
         {
-            return await this.Request(serviceId, MsgType._Service_ConnectorInfo, msg);
+            return await this.Request(serviceId, MsgType._ConnectorInfo, msg);
         }
         public async Task<MyResponse> GetPendingMessageList(int serviceId, MsgGetPendingMsgList msg)
         {
-            return await this.Request(serviceId, MsgType._Service_GetPendingMessageList, msg);
+            return await this.Request(serviceId, MsgType._GetPendingMessageList, msg);
         }
         public async Task<MyResponse> GetScriptVersion(int serviceId, MsgGetScriptVersion msg)
         {
-            return await this.Request(serviceId, MsgType._Service_GetScriptVersion, msg);
+            return await this.Request(serviceId, MsgType._GetScriptVersion, msg);
         }
         public async Task<MyResponse> ReloadConfigs(int serviceId, MsgReloadConfigs msg)
         {
-            return await this.Request(serviceId, MsgType._Service_ReloadConfigs, msg);
+            return await this.Request(serviceId, MsgType._ReloadConfigs, msg);
         }
         public async Task<MyResponse> GC(int serviceId, MsgGC msg)
         {
-            return await this.Request(serviceId, MsgType._Service_GC, msg);
+            return await this.Request(serviceId, MsgType._GC, msg);
         }
         public async Task<MyResponse> RemoteWillShutdown(int serviceId, MsgRemoteWillShutdown msg)
         {
-            return await this.Request(serviceId, MsgType._Service_RemoteWillShutdown, msg);
+            return await this.Request(serviceId, MsgType._RemoteWillShutdown, msg);
         }
         public async Task<MyResponse> GetServiceState(int serviceId, MsgGetServiceState msg)
         {
-            return await this.Request(serviceId, MsgType._Service_GetServiceState, msg);
+            return await this.Request(serviceId, MsgType._GetServiceState, msg);
         }
         public async Task<MyResponse> GetReloadConfigOptions(int serviceId, MsgGetReloadConfigOptions msg)
         {
-            return await this.Request(serviceId, MsgType._Service_GetReloadConfigOptions, msg);
+            return await this.Request(serviceId, MsgType._GetReloadConfigOptions, msg);
         }
         public async Task<MyResponse> GetConnectedInfos(int serviceId, MsgGetConnectedInfos msg)
         {
-            return await this.Request(serviceId, MsgType._Service_GetConnectedInfos, msg);
+            return await this.Request(serviceId, MsgType._GetConnectedInfos, msg);
         }
         public async Task<MyResponse> ViewMongoDumpList(int serviceId, MsgViewMongoDumpList msg)
         {
-            return await this.Request(serviceId, MsgType._Service_ViewMongoDumpList, msg);
+            return await this.Request(serviceId, MsgType._ViewMongoDumpList, msg);
         }
 
         #endregion auto_proxy

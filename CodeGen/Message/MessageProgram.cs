@@ -15,6 +15,47 @@ public class MessageProgram
             c.external = helper.ReadString("external") == "1";
             c.arg_serviceId = helper.ReadString("arg_serviceId") == "1";
 
+            //
+            c.isServer = c.msgType[0] == '_';
+            if (c.isServer)
+            {
+                int index2 = c.msgType.IndexOf('_', 1);
+                if (index2 < 0)
+                {
+                    c.serviceType = CGServiceType.Base;
+                    c.methodName = c.msgType.Substring(1);
+                }
+                else
+                {
+                    string key = c.msgType.Substring(1, index2 - 1);
+
+                    switch (key)
+                    {
+                        case "Save":
+                        case "Query":
+                        case "Insert":
+                        case "Search":
+                            c.serviceType = CGServiceType.Db;
+                            c.methodName = key + "_" + c.msgType.Substring(index2 + 1);
+                            break;
+
+                        default:
+                            if (Enum.TryParse<CGServiceType>(key, false, out CGServiceType ct))
+                            {
+                                c.serviceType = ct;
+                                c.methodName = c.msgType.Substring(index2 + 1);
+                            }
+                            else
+                            {
+                                c.serviceType = CGServiceType.Base;
+                                c.methodName = c.msgType.Substring(1);
+                            }
+                            break;
+                    }
+
+                }
+
+            }
 
             list.Add(c);
         }

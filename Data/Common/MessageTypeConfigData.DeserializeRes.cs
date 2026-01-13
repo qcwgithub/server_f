@@ -16,60 +16,60 @@ namespace Data
             {
                 #region auto
 
-                case MsgType._Service_Timer:
+                case MsgType._Timer:
                     ob = MessagePackSerializer.Deserialize<ResTimer>(resBytes);
                     break;
 
-                case MsgType._Service_Shutdown:
+                case MsgType._Shutdown:
                     ob = MessagePackSerializer.Deserialize<ResShutdown>(resBytes);
                     break;
 
-                case MsgType._Service_ReloadScript:
+                case MsgType._ReloadScript:
                     ob = MessagePackSerializer.Deserialize<ResReloadScript>(resBytes);
                     break;
 
-                case MsgType._Service_ConnectorInfo:
+                case MsgType._ConnectorInfo:
                     ob = MessagePackSerializer.Deserialize<ResConnectorInfo>(resBytes);
                     break;
 
-                case MsgType._Service_GetPendingMessageList:
+                case MsgType._GetPendingMessageList:
                     ob = MessagePackSerializer.Deserialize<ResGetPendingMsgList>(resBytes);
                     break;
 
-                case MsgType._Service_GetScriptVersion:
+                case MsgType._GetScriptVersion:
                     ob = MessagePackSerializer.Deserialize<ResGetScriptVersion>(resBytes);
                     break;
 
-                case MsgType._Service_ReloadConfigs:
+                case MsgType._ReloadConfigs:
                     ob = MessagePackSerializer.Deserialize<ResReloadConfigs>(resBytes);
                     break;
 
-                case MsgType._Service_GC:
+                case MsgType._GC:
                     ob = MessagePackSerializer.Deserialize<ResGC>(resBytes);
                     break;
 
-                case MsgType._Service_RemoteWillShutdown:
+                case MsgType._RemoteWillShutdown:
                     ob = MessagePackSerializer.Deserialize<ResRemoteWillShutdown>(resBytes);
                     break;
 
-                case MsgType._Service_GetServiceState:
+                case MsgType._GetServiceState:
                     ob = MessagePackSerializer.Deserialize<ResGetServiceState>(resBytes);
                     break;
 
-                case MsgType._Service_GetReloadConfigOptions:
+                case MsgType._GetReloadConfigOptions:
                     ob = MessagePackSerializer.Deserialize<ResGetReloadConfigOptions>(resBytes);
                     break;
 
-                case MsgType._Service_GetConnectedInfos:
+                case MsgType._GetConnectedInfos:
                     ob = MessagePackSerializer.Deserialize<ResGetConnectedInfos>(resBytes);
                     break;
 
-                case MsgType._Service_ViewMongoDumpList:
+                case MsgType._ViewMongoDumpList:
                     ob = MessagePackSerializer.Deserialize<ResViewMongoDumpList>(resBytes);
                     break;
 
-                case MsgType._Service_A_ResGetServiceConfigs:
-                    throw new Exception("Missing config for MsgType._Service_A_ResGetServiceConfigs");
+                case MsgType._A_ResGetServiceConfigs:
+                    throw new Exception("Missing config for MsgType._A_ResGetServiceConfigs");
 
                 case MsgType._Global_GetServiceConfigs:
                     ob = MessagePackSerializer.Deserialize<ResGetServiceConfigs>(resBytes);

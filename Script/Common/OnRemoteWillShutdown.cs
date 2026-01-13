@@ -9,7 +9,7 @@ namespace Script
         {
         }
 
-        public override MsgType msgType => MsgType._Service_RemoteWillShutdown;
+        public override MsgType msgType => MsgType._RemoteWillShutdown;
 
         public override async Task<ECode> Handle(MessageContext context, MsgRemoteWillShutdown msg, ResRemoteWillShutdown res)
         {

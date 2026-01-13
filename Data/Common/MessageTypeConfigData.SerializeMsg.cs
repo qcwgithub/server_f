@@ -16,59 +16,59 @@ namespace Data
             {
                 #region auto
 
-                case MsgType._Service_Timer:
+                case MsgType._Timer:
                     msgBytes = MessagePackSerializer.Serialize((MsgTimer)msg);
                     break;
 
-                case MsgType._Service_Shutdown:
+                case MsgType._Shutdown:
                     msgBytes = MessagePackSerializer.Serialize((MsgShutdown)msg);
                     break;
 
-                case MsgType._Service_ReloadScript:
+                case MsgType._ReloadScript:
                     msgBytes = MessagePackSerializer.Serialize((MsgReloadScript)msg);
                     break;
 
-                case MsgType._Service_ConnectorInfo:
+                case MsgType._ConnectorInfo:
                     msgBytes = MessagePackSerializer.Serialize((MsgConnectorInfo)msg);
                     break;
 
-                case MsgType._Service_GetPendingMessageList:
+                case MsgType._GetPendingMessageList:
                     msgBytes = MessagePackSerializer.Serialize((MsgGetPendingMsgList)msg);
                     break;
 
-                case MsgType._Service_GetScriptVersion:
+                case MsgType._GetScriptVersion:
                     msgBytes = MessagePackSerializer.Serialize((MsgGetScriptVersion)msg);
                     break;
 
-                case MsgType._Service_ReloadConfigs:
+                case MsgType._ReloadConfigs:
                     msgBytes = MessagePackSerializer.Serialize((MsgReloadConfigs)msg);
                     break;
 
-                case MsgType._Service_GC:
+                case MsgType._GC:
                     msgBytes = MessagePackSerializer.Serialize((MsgGC)msg);
                     break;
 
-                case MsgType._Service_RemoteWillShutdown:
+                case MsgType._RemoteWillShutdown:
                     msgBytes = MessagePackSerializer.Serialize((MsgRemoteWillShutdown)msg);
                     break;
 
-                case MsgType._Service_GetServiceState:
+                case MsgType._GetServiceState:
                     msgBytes = MessagePackSerializer.Serialize((MsgGetServiceState)msg);
                     break;
 
-                case MsgType._Service_GetReloadConfigOptions:
+                case MsgType._GetReloadConfigOptions:
                     msgBytes = MessagePackSerializer.Serialize((MsgGetReloadConfigOptions)msg);
                     break;
 
-                case MsgType._Service_GetConnectedInfos:
+                case MsgType._GetConnectedInfos:
                     msgBytes = MessagePackSerializer.Serialize((MsgGetConnectedInfos)msg);
                     break;
 
-                case MsgType._Service_ViewMongoDumpList:
+                case MsgType._ViewMongoDumpList:
                     msgBytes = MessagePackSerializer.Serialize((MsgViewMongoDumpList)msg);
                     break;
 
-                case MsgType._Service_A_ResGetServiceConfigs:
+                case MsgType._A_ResGetServiceConfigs:
                     msgBytes = MessagePackSerializer.Serialize((A_ResGetServiceConfigs)msg);
                     break;
 

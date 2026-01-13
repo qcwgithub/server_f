@@ -266,7 +266,7 @@ namespace Script
             {
                 if (service.serviceId == serviceId)
                 {
-                    service.dispatcher.Dispatch(new MessageContext(), MsgType._Service_Timer, new MsgTimer
+                    service.dispatcher.Dispatch(new MessageContext(), MsgType._Timer, new MsgTimer
                     {
                         timerType = timerType,
                         data = data

@@ -12,7 +12,7 @@ namespace Script
         }
 
 
-        public override MsgType msgType => MsgType._Service_ReloadScript;
+        public override MsgType msgType => MsgType._ReloadScript;
         public override async Task<ECode> Handle(MessageContext context, MsgReloadScript msg, ResReloadScript res)
         {
             // if (this.server.data.state != ServerState.Started)

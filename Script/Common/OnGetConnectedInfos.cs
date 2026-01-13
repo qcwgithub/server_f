@@ -9,7 +9,7 @@ namespace Script
         {
         }
 
-        public override MsgType msgType => MsgType._Service_GetConnectedInfos;
+        public override MsgType msgType => MsgType._GetConnectedInfos;
         public override async Task<ECode> Handle(MessageContext context, MsgGetConnectedInfos msg, ResGetConnectedInfos res)
         {
             ServiceData sd = this.service.data;

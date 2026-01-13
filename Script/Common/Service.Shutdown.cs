@@ -129,7 +129,7 @@ namespace Script
                 {
                     int v = this.data.busyList[i];
                     if (v != -1 &&
-                        v != (int)MsgType._Service_Shutdown)
+                        v != (int)MsgType._Shutdown)
                     {
                         this.logger.InfoFormat("{0} is being handled, wait for it", (MsgType)v);
                         busy = true;
