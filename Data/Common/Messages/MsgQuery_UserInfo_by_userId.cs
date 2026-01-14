@@ -16,6 +16,6 @@ namespace Data
     public sealed class ResQuery_UserInfo_by_userId
     {
         [Key(0)]
-        public UserInfo result;
+        public UserInfo? result;
     }
 }

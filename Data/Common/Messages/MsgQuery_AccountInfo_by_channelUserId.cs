@@ -16,6 +16,6 @@ namespace Data
     public sealed class ResQuery_AccountInfo_by_channelUserId
     {
         [Key(0)]
-        public AccountInfo result;
+        public AccountInfo? result;
     }
 }

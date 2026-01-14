@@ -113,6 +113,28 @@ public class ServerDataConfig
         required public string type;
         required public string typeModifier; // gte0 enum
         required public string name;
+
+        public bool IsValueType()
+        {
+            switch (type)
+            {
+                case "bool":
+                case "char":
+                case "byte":
+                case "int":
+                case "uint":
+                case "long":
+                case "ulong":
+                case "float":
+                case "double":
+                case "decimal":
+                    return true;
+
+                case "string":
+                default:
+                    return false;
+            }
+        }
     }
 
     public class Query

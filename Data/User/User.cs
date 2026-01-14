@@ -22,26 +22,6 @@ namespace Data
             return this.connection != null && this.connection.IsConnected();
         }
 
-        MsgSimulatePrepareUserLogin? msgSimulatePrepareUserLogin;
-        MsgPrepareUserLogin? msgPrepareUserLogin;
-        public void SetSimulatePrepareLogin(MsgSimulatePrepareUserLogin m)
-        {
-            this.msgSimulatePrepareUserLogin = m;
-            MyDebug.Assert(this.msgPrepareUserLogin == null);
-            this.msgPrepareUserLogin = null;
-        }
-        public void SetRealPrepareLogin(MsgPrepareUserLogin m)
-        {
-            this.msgPrepareUserLogin = m;
-            this.msgSimulatePrepareUserLogin = null;
-        }
-
-        public bool IsRealPrepareLogin(out MsgPrepareUserLogin? msg)
-        {
-            msg = this.msgPrepareUserLogin;
-            return msg != null;
-        }
-
         public ITimer? destroyTimer;
 
         public long onlineTimeS;

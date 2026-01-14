@@ -16,6 +16,6 @@ namespace Data
     public sealed class ResQuery_listOf_AccountInfo_byElementOf_userIds
     {
         [Key(0)]
-        public List<AccountInfo> result;
+        public List<AccountInfo>? result;
     }
 }

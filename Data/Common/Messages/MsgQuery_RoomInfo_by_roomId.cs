@@ -16,6 +16,6 @@ namespace Data
     public sealed class ResQuery_RoomInfo_by_roomId
     {
         [Key(0)]
-        public RoomInfo result;
+        public RoomInfo? result;
     }
 }

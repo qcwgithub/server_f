@@ -51,7 +51,13 @@ public class Create_MsgQuery_XInfo
             if (!string.IsNullOrEmpty(query.returnExp))
             {
                 ff.TabPush("[Key(0)]\n");
-                ff.TabPush("public ", query.returnExp, " result;\n");
+                ff.TabPush("public ");
+                ff.Push(query.returnExp);
+                if (!query.outputField1.IsValueType())
+                {
+                    ff.Push("?");
+                }
+                ff.Push(" result;\n");
             }
             ff.BlockEnd();
         }
