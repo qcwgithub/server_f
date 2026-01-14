@@ -110,9 +110,9 @@ public class ServerDataConfig
 
     public class Field
     {
-        public string type;
-        public string typeModifier; // gte0 enum
-        public string name;
+        required public string type;
+        required public string typeModifier; // gte0 enum
+        required public string name;
     }
 
     public class Query

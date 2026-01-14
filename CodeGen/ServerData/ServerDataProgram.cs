@@ -41,6 +41,7 @@ public class ServerDataProgram
         var query = new ServerDataConfig.Query();
 
         int index = startIndex;
+        string type, name, typeModifier;
 
         // cond
         query.cond = Read(content, ref index, endIndex);
@@ -49,42 +50,67 @@ public class ServerDataProgram
             case "all":
                 break;
             default:
-                query.condField = new ServerDataConfig.Field();
-                query.condField.type = ReadType(content, ref index, endIndex, xinfoType, out query.condField.typeModifier);
-                query.condField.name = Read(content, ref index, endIndex);
+                type = ReadType(content, ref index, endIndex, xinfoType, out typeModifier);
+                name = Read(content, ref index, endIndex);
+                query.condField = new ServerDataConfig.Field
+                {
+                    type = type,
+                    typeModifier = typeModifier,
+                    name = name
+                };
                 break;
         }
         switch (query.cond)
         {
             case "eq2":
-                query.condField2 = new ServerDataConfig.Field();
-                query.condField2.type = ReadType(content, ref index, endIndex, xinfoType, out query.condField2.typeModifier);
-                query.condField2.name = Read(content, ref index, endIndex);
+                type = ReadType(content, ref index, endIndex, xinfoType, out typeModifier);
+                name = Read(content, ref index, endIndex);
+                query.condField2 = new ServerDataConfig.Field
+                {
+                    type = type,
+                    typeModifier = typeModifier,
+                    name = name
+                };
                 break;
         }
 
         // output
         query.output = Read(content, ref index, endIndex);
-        query.outputField1 = new ServerDataConfig.Field();
-        query.outputField1.type = ReadType(content, ref index, endIndex, xinfoType, out query.outputField1.typeModifier);
-        query.outputField1.name = Read(content, ref index, endIndex);
+        type = ReadType(content, ref index, endIndex, xinfoType, out typeModifier);
+        name = Read(content, ref index, endIndex);
+        query.outputField1 = new ServerDataConfig.Field
+        {
+            type = type,
+            typeModifier = typeModifier,
+            name = name
+        };
 
         switch (query.output)
         {
             case "dict":
             case "dict2":
-                query.outputField2 = new ServerDataConfig.Field();
-                query.outputField2.type = ReadType(content, ref index, endIndex, xinfoType, out query.outputField2.typeModifier);
-                query.outputField2.name = Read(content, ref index, endIndex);
+                type = ReadType(content, ref index, endIndex, xinfoType, out typeModifier);
+                name = Read(content, ref index, endIndex);
+                query.outputField2 = new ServerDataConfig.Field
+                {
+                    type = type,
+                    typeModifier = typeModifier,
+                    name = name
+                };
                 break;
         }
 
         switch (query.output)
         {
             case "dict2":
-                query.outputField3 = new ServerDataConfig.Field();
-                query.outputField3.type = ReadType(content, ref index, endIndex, xinfoType, out query.outputField3.typeModifier);
-                query.outputField3.name = Read(content, ref index, endIndex);
+                type = ReadType(content, ref index, endIndex, xinfoType, out typeModifier);
+                name = Read(content, ref index, endIndex);
+                query.outputField3 = new ServerDataConfig.Field
+                {
+                    type = type,
+                    typeModifier = typeModifier,
+                    name = name
+                };
                 break;
         }
 
@@ -94,18 +120,32 @@ public class ServerDataProgram
     static ServerDataConfig.Field SolveField(string content, int startIndex, int endIndex, string xinfoType)
     {
         int index = startIndex;
-        var f = new ServerDataConfig.Field();
-        f.type = ReadType(content, ref index, endIndex, xinfoType, out f.typeModifier);
-        f.name = Read(content, ref index, endIndex);
+        string type, name, typeModifier;
+
+        type = ReadType(content, ref index, endIndex, xinfoType, out typeModifier);
+        name = Read(content, ref index, endIndex);
+        var f = new ServerDataConfig.Field
+        {
+            type = type,
+            typeModifier = typeModifier,
+            name = name
+        };
         return f;
     }
 
     static ServerDataConfig.Field SolveField(string content, ref int startIndex, int endIndex, string xinfoType)
     {
+        string type, name, typeModifier;
         ref int index = ref startIndex;
-        var f = new ServerDataConfig.Field();
-        f.type = ReadType(content, ref index, endIndex, xinfoType, out f.typeModifier);
-        f.name = Read(content, ref index, endIndex);
+
+        type = ReadType(content, ref index, endIndex, xinfoType, out typeModifier);
+        name = Read(content, ref index, endIndex);
+        var f = new ServerDataConfig.Field
+        {
+            type = type,
+            typeModifier = typeModifier,
+            name = name
+        };
         return f;
     }
 
