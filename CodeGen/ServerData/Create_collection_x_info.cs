@@ -273,14 +273,6 @@ public class Create_collection_x_info
                             ff.TabPush(string.Format("var filter = Builders<{0}>.Filter.Gt(nameof({0}.{1}), 0);\n", config.xinfoType, query.condField.name));
                             break;
 
-                        case "max_by_serverId":
-                            {
-                                ff.TabPush(string.Format("var gte = Builders<{0}>.Filter.Gte(nameof({0}.{1}), serverId * longidext.N);\n", config.xinfoType, query.condField.name));
-                                ff.TabPush(string.Format("var lt = Builders<{0}>.Filter.Lt(nameof({0}.{1}), (serverId + 1) * longidext.N);\n", config.xinfoType, query.condField.name));
-                                ff.TabPushF("var filter = Builders<{0}>.Filter.And(gte, lt);\n", config.xinfoType);
-                            }
-                            break;
-
                         case "iter":
                             ff.TabPushF("MyDebug.Assert(start_{0} < end_{0});\n", query.condField.name);
                             ff.TabPushF("var gte = Builders<{0}>.Filter.Gte(nameof({0}.{1}), start_{1});\n", config.xinfoType, query.condField.name);

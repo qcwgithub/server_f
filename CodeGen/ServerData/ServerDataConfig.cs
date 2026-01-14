@@ -111,7 +111,7 @@ public class ServerDataConfig
     public class Field
     {
         public string type;
-        public string typeModifier;
+        public string typeModifier; // gte0 enum
         public string name;
     }
 

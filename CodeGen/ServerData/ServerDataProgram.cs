@@ -29,6 +29,7 @@ public class ServerDataProgram
         modifier = null;
         if (i >= 0)
         {
+            // int!gte0
             modifier = s.Substring(i + 1);
             s = s.Substring(0, i);
         }

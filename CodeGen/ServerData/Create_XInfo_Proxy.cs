@@ -327,7 +327,6 @@ public class Create_XInfo_Proxy
                             {
                                 case "int":
                                 case "long":
-                                case "longid":
                                     ff.Push(string.Format("{0} == 0", field.name));
                                     break;
                                 case "string":

@@ -13,7 +13,6 @@ public enum FieldType
     float_,
     bigint_,
     hashset_,
-    longid_,
 }
 
 public static class FieldTypeExt
@@ -34,8 +33,6 @@ public static class FieldTypeExt
             case FieldType.bool_:
                 return false;
             case FieldType.long_:
-                return true;
-            case FieldType.longid_:
                 return true;
             case FieldType.list_:
                 return false;
@@ -62,7 +59,6 @@ public static class FieldTypeExt
             case FieldType.string_:
             case FieldType.bool_:
             case FieldType.long_:
-            case FieldType.longid_:
             case FieldType.list_:
             case FieldType.dictionary_:
             case FieldType.float_:
@@ -83,7 +79,6 @@ public static class FieldTypeExt
             case FieldType.string_:
             case FieldType.bool_:
             case FieldType.long_:
-            case FieldType.longid_:
             case FieldType.float_:
             case FieldType.bigint_:
                 return 0;
@@ -120,10 +115,6 @@ public static class FieldTypeExt
 
             case FieldType.long_:
                 info.name = "long";
-                break;
-
-            case FieldType.longid_:
-                info.name = "longid";
                 break;
 
             case FieldType.float_:
@@ -180,10 +171,6 @@ public static class FieldTypeExt
                 info.nameDb = "long";
                 break;
 
-            case FieldType.longid_:
-                info.nameDb = "longid";
-                break;
-
             case FieldType.float_:
                 info.nameDb = "float";
                 break;
@@ -236,7 +223,6 @@ public static class FieldTypeExt
             case FieldType.int_:
             case FieldType.bool_:
             case FieldType.long_:
-            case FieldType.longid_:
             case FieldType.enum_:
             case FieldType.float_:
             case FieldType.bigint_:
@@ -340,7 +326,6 @@ public static class FieldTypeExt
             case FieldType.int_:
             case FieldType.bool_:
             case FieldType.long_:
-            case FieldType.longid_:
             case FieldType.enum_:
             case FieldType.float_:
             case FieldType.bigint_:
@@ -370,7 +355,6 @@ public static class FieldTypeExt
                     case FieldType.int_:
                     case FieldType.bool_:
                     case FieldType.long_:
-                    case FieldType.longid_:
                     case FieldType.enum_:
                     case FieldType.float_:
                     case FieldType.string_:
@@ -396,7 +380,6 @@ public static class FieldTypeExt
                     case FieldType.int_:
                     case FieldType.bool_:
                     case FieldType.long_:
-                    case FieldType.longid_:
                     case FieldType.enum_:
                     case FieldType.float_:
                     case FieldType.string_:
@@ -421,7 +404,6 @@ public static class FieldTypeExt
                     case FieldType.int_:
                     case FieldType.bool_:
                     case FieldType.long_:
-                    case FieldType.longid_:
                     case FieldType.float_:
                     case FieldType.string_:
                     case FieldType.bigint_:
@@ -446,7 +428,6 @@ public static class FieldTypeExt
             case FieldType.int_:
             case FieldType.bool_:
             case FieldType.long_:
-            case FieldType.longid_:
             case FieldType.enum_:
             case FieldType.string_:
             case FieldType.float_:
@@ -468,7 +449,6 @@ public static class FieldTypeExt
                     case FieldType.int_:
                     case FieldType.bool_:
                     case FieldType.long_:
-                    case FieldType.longid_:
                     case FieldType.enum_:
                     case FieldType.string_:
                     case FieldType.float_:
@@ -491,7 +471,6 @@ public static class FieldTypeExt
                     case FieldType.int_:
                     case FieldType.bool_:
                     case FieldType.long_:
-                    case FieldType.longid_:
                     case FieldType.enum_:
                     case FieldType.string_:
                     case FieldType.float_:
@@ -512,7 +491,6 @@ public static class FieldTypeExt
                     case FieldType.int_:
                     case FieldType.bool_:
                     case FieldType.long_:
-                    case FieldType.longid_:
                     case FieldType.enum_:
                     case FieldType.float_:
                     case FieldType.string_:
@@ -536,7 +514,6 @@ public static class FieldTypeExt
             case FieldType.int_:
             case FieldType.bool_:
             case FieldType.long_:
-            case FieldType.longid_:
             case FieldType.enum_:
             case FieldType.string_:
             case FieldType.float_:
@@ -559,7 +536,6 @@ public static class FieldTypeExt
                         case FieldType.int_:
                         case FieldType.bool_:
                         case FieldType.long_:
-                        case FieldType.longid_:
                         case FieldType.enum_:
                         case FieldType.string_:
                         case FieldType.float_:
@@ -586,7 +562,6 @@ public static class FieldTypeExt
                         case FieldType.int_:
                         case FieldType.bool_:
                         case FieldType.long_:
-                        case FieldType.longid_:
                         case FieldType.enum_:
                         case FieldType.string_:
                         case FieldType.float_:
@@ -610,7 +585,6 @@ public static class FieldTypeExt
                         case FieldType.int_:
                         case FieldType.bool_:
                         case FieldType.long_:
-                        case FieldType.longid_:
                         case FieldType.enum_:
                         case FieldType.float_:
                         case FieldType.string_:
@@ -649,7 +623,6 @@ public static class FieldTypeExt
                 break;
 
             case FieldType.long_:
-            case FieldType.longid_:
                 f.Push("{0} = XInfoHelper_Db.Copy_long({1}{2});\n".Format(accessThis, accessOther, accessOther_appendValueIfPrimitive ? ".Value" : string.Empty));
                 break;
 
@@ -689,7 +662,6 @@ public static class FieldTypeExt
             case FieldType.int_:
             case FieldType.bool_:
             case FieldType.long_:
-            case FieldType.longid_:
             case FieldType.enum_:
             case FieldType.float_:
             case FieldType.bigint_:
@@ -717,7 +689,6 @@ public static class FieldTypeExt
             case FieldType.int_:
             case FieldType.bool_:
             case FieldType.long_:
-            case FieldType.longid_:
             case FieldType.float_:
             case FieldType.bigint_:
                 return info.nameDb + "?";
@@ -745,7 +716,6 @@ public static class FieldTypeExt
             case FieldType.bool_:
                 return "ReadBool";
             case FieldType.long_:
-            case FieldType.longid_:
                 return "ReadLong";
             case FieldType.enum_:
                 return "NotSupported";

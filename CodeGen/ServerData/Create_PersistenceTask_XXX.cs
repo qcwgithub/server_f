@@ -81,7 +81,6 @@ public class Create_PersistenceTask_XXX
                 {
                     case "int":
                     case "long":
-                    case "longid":
                         f_create.Push(string.Format("s{0} = {1}.ToString()", k + 1, config.keyParam[k].name));
                         break;
 
@@ -206,11 +205,6 @@ public class Create_PersistenceTask_XXX
 
                             case "long":
                                 ff.TabPushF("long {0} = long.Parse(element.s{1});\n", field.name, _id);
-                                ff.TabPushF("MyDebug.Assert({0} > 0);\n", field.name);
-                                break;
-
-                            case "longid":
-                                ff.TabPushF("longid {0} = longid.Parse(element.s{1});\n", field.name, _id);
                                 ff.TabPushF("MyDebug.Assert({0} > 0);\n", field.name);
                                 break;
 
