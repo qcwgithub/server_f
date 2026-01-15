@@ -43,6 +43,10 @@ namespace Script
             await this.server.roomMessagesRedis.Add(room.roomId, messageBytes);
 
             this.service.sd.recentMessages.Enqueue(message);
+            if (this.service.sd.recentMessages.Count > 100)
+            {
+                this.service.sd.recentMessages.Dequeue();
+            }
 
             // -> other users
 
