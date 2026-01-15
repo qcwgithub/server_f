@@ -30,7 +30,7 @@ namespace Data
         }
 
         public int userCountDelta = 0;
-        public int destroyTimeoutS = 600;
+        public int destroyTimeoutS = 60;
         public int saveIntervalS = 60;
         public bool allowNewUser;
 

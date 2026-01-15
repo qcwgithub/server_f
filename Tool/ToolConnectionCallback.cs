@@ -42,12 +42,12 @@ namespace Tool
             }
         }
 
-        public Action<MsgType, byte[], ReplyCallback?>? onMsg;
+        public Action<MsgType, object, ReplyCallback?>? onMsg;
 
         void IConnectionCallback.OnMsg(IConnection _, int seq, MsgType msgType, byte[] msgBytes, ReplyCallback? reply)
         {
-            // var msg = MessageTypeConfigData.DeserializeMsg(msgType, msgBytes);
-            this.onMsg?.Invoke(msgType, msgBytes, reply);
+            var msg = MessageTypeConfigData.DeserializeMsg(msgType, msgBytes);
+            this.onMsg?.Invoke(msgType, msg, reply);
         }
 
         public Action<bool>? onConnect;

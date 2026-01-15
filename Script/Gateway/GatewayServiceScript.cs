@@ -20,7 +20,7 @@ namespace Script
 
             user.destroyTimer = this.server.timerScript.SetTimer(
                 this.service.serviceId,
-                SEC, TimerType.DestroyUser,
+                SEC, TimerType.DestroyGatewayUser,
                 new TimerGatewayDestroyUser
                 {
                     userId = user.userId,
@@ -31,18 +31,19 @@ namespace Script
 
         public void ClearDestroyTimer(GatewayUser user, GatewayClearDestroyTimerReason reason)
         {
-            if (user.destroyTimer.IsAlive())
+            if (user.destroyTimer == null)
+            {
+                return;
+            }
+
+            if (!user.destroyTimer.IsAlive())
             {
                 return;
             }
 
             this.service.logger.Info($"ClearDestroyTimer userId {user.userId} reason {reason}");
-
-            if (user.destroyTimer != null)
-            {
-                server.timerScript.ClearTimer(user.destroyTimer);
-                user.destroyTimer = null;
-            }
+            server.timerScript.ClearTimer(user.destroyTimer);
+            user.destroyTimer = null;
         }
     }
 }

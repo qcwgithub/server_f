@@ -12,6 +12,7 @@ namespace Script
 
         public override async Task<ECode> Handle(MessageContext context, MsgRoomSendChat msg, ResRoomSendChat res)
         {
+            this.service.logger.Info($"{this.msgType} userId {msg.userId} roomId {msg.roomId} content {msg.content}");
             Room? room = await this.service.LockRoom(msg.roomId, context);
             if (room == null)
             {
@@ -25,6 +26,10 @@ namespace Script
             }
 
             var broadcast = new A_MsgRoomChat();
+            broadcast.roomId = msg.roomId;
+            broadcast.userId = msg.userId;
+            broadcast.chatMessageType = msg.chatMessageType;
+            broadcast.content = msg.content;
 
             Dictionary<int, List<RoomUser>> dict = room.userDict
                 .GroupBy(pair => pair.Value.gatewayServiceId, pair => pair.Value)

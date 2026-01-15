@@ -14,7 +14,11 @@ namespace Script
             {
                 case TimerType.SaveUser:
                     {
-                        var save = (TimerSaveUser)msg.data;
+                        var save = msg.data as TimerSaveUser;
+                        if (save == null)
+                        {
+                            throw new Exception("TimerSaveUser data is null");
+                        }
 
                         User? user = await this.service.LockUser(save.userId, context);
                         if (user == null)
@@ -23,6 +27,23 @@ namespace Script
                         }
 
                         return await this.service.SaveUser(user, "timer");
+                    }
+
+                case TimerType.DestroyUser:
+                    {
+                        var destroy = msg.data as TimerDestroyUser;
+                        if (destroy == null)
+                        {
+                            throw new Exception("TimerDestroyUser data is null");
+                        }
+
+                        User? user = await this.service.LockUser(destroy.userId, context);
+                        if (user == null)
+                        {
+                            return ECode.Success;
+                        }
+
+                        return await this.service.DestroyUser(user, destroy.reason);
                     }
 
                 default:
@@ -36,8 +57,23 @@ namespace Script
             {
                 case TimerType.SaveUser:
                     {
-                        var save = (TimerSaveUser)msg.data;
+                        var save = msg.data as TimerSaveUser;
+                        if (save == null)
+                        {
+                            throw new Exception("TimerSaveUser data is null");
+                        }
                         this.service.TryUnlockUser(save.userId, context);
+                    }
+                    break;
+
+                case TimerType.DestroyUser:
+                    {
+                        var destroy = msg.data as TimerDestroyUser;
+                        if (destroy == null)
+                        {
+                            throw new Exception("TimerDestroyUser data is null");
+                        }
+                        this.service.TryUnlockUser(destroy.userId, context);
                     }
                     break;
             }

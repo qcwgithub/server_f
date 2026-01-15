@@ -23,7 +23,7 @@ namespace Data
             this.userDict.Add(user.userId, user);
         }
 
-        public int destroyTimeoutS = 600;
+        public int destroyTimeoutS = 60;
         public readonly ObjectLocatorData userLocatorData = new();
         public readonly ObjectLocationAssignmentData userServiceAllocatorData = new();
 

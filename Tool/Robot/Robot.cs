@@ -31,6 +31,17 @@ namespace Tool
             var tcsConnect = new TaskCompletionSource<bool>();
             this.connectionCallback.onConnect = success => tcsConnect.SetResult(success);
 
+            this.connectionCallback.onMsg = (msgType, msg, reply) =>
+            {
+                switch (msgType)
+                {
+                    case MsgType.A_RoomChat:
+                        var chatMsg = (A_MsgRoomChat)msg;
+                        Console.WriteLine($"Received chat message from {chatMsg.userId}: {chatMsg.content} reply == null? {reply == null}");
+                        break;
+                }
+            };
+
             this.connection = new ToolConnection(this.connectionCallback, "localhost", 8020);
 
             this.connection.Connect();
@@ -75,11 +86,15 @@ namespace Tool
                 //     break;
                 // }
 
-                e = await this.SendRoomChat(this.roomId, "Hello!");
-                if (e != ECode.Success)
+                for (int i = 0; i < 1; i++)
                 {
-                    break;
+                    e = await this.SendRoomChat(this.roomId, $"Hello {i}!");
+                    if (e != ECode.Success)
+                    {
+                        break;
+                    }
                 }
+
 
                 while (true)
                 {
