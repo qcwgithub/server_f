@@ -6,21 +6,21 @@ namespace Script
     {
         protected override async Task<ECode> Start2()
         {
-            var serviceConfig = sd.serviceConfig;
+            long workerId = this.sd.serviceConfig.roomIdSnowflakeWorkerId;
 
-            if (serviceConfig.roomIdSnowflakeWorkerId < SnowflakeScript<Service>.MIN_WORKER_ID)
+            if (workerId < SnowflakeScript<Service>.MIN_WORKER_ID)
             {
                 this.logger.Error($"serviceConfig.roomIdSnowflakeWorkerId < {SnowflakeScript<Service>.MIN_WORKER_ID}");
                 return ECode.ServiceConfigError;
             }
 
-            if (serviceConfig.roomIdSnowflakeWorkerId > SnowflakeScript<Service>.MAX_WORKER_ID)
+            if (workerId > SnowflakeScript<Service>.MAX_WORKER_ID)
             {
                 this.logger.Error($"serviceConfig.roomIdSnowflakeWorkerId > {SnowflakeScript<Service>.MAX_WORKER_ID}");
                 return ECode.ServiceConfigError;
             }
 
-            ECode e = await this.roomIdSnowflakeScript.InitRoomIdSnowflakeData(serviceConfig.roomIdSnowflakeWorkerId);
+            ECode e = await this.roomIdSnowflakeScript.InitRoomIdSnowflakeData(workerId);
             if (e != ECode.Success)
             {
                 return e;

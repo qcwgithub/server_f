@@ -38,7 +38,7 @@ namespace Script
             var msgR = new MsgRoomSendChat();
             msgR.roomId = msg.roomId;
             msgR.userId = user.userId;
-            msgR.chatMessageType = msg.chatMessageType;
+            msgR.type = msg.chatMessageType;
             msgR.content = msg.content;
 
             r = await this.service.roomServiceProxy.SendChat(location.serviceId, msgR);

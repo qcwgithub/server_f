@@ -240,7 +240,7 @@ namespace Data
                     break;
 
                 case MsgType.A_RoomChat:
-                    ob = MessagePackSerializer.Deserialize<A_MsgRoomChat>(msgBytes);
+                    ob = MessagePackSerializer.Deserialize<ChatMessage>(msgBytes);
                     break;
 
                 case MsgType.SearchRoom:

@@ -10,7 +10,7 @@ namespace Data
         [Key(1)]
         public long userId;
         [Key(2)]
-        public ChatMessageType chatMessageType;
+        public ChatMessageType type;
         [Key(3)]
         public string content;
     }

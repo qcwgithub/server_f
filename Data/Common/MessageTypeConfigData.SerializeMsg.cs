@@ -240,7 +240,7 @@ namespace Data
                     break;
 
                 case MsgType.A_RoomChat:
-                    msgBytes = MessagePackSerializer.Serialize((A_MsgRoomChat)msg);
+                    msgBytes = MessagePackSerializer.Serialize((ChatMessage)msg);
                     break;
 
                 case MsgType.SearchRoom:

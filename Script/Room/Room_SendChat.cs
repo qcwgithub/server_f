@@ -1,4 +1,5 @@
 using Data;
+using MessagePack;
 
 namespace Script
 {
@@ -25,11 +26,25 @@ namespace Script
                 return ECode.UserNotInRoom;
             }
 
-            var broadcast = new A_MsgRoomChat();
-            broadcast.roomId = msg.roomId;
-            broadcast.userId = msg.userId;
-            broadcast.chatMessageType = msg.chatMessageType;
-            broadcast.content = msg.content;
+            // -> redis
+
+            var message = new ChatMessage();
+            message.messageId = this.service.roomMessageIdSnowflakeScript.NextRoomMessageId();
+            message.roomId = room.roomId;
+            message.senderId = user.userId;
+            message.senderName = string.Empty;
+            message.senderAvatar = string.Empty;
+            message.type = msg.type;
+            message.content = msg.content;
+            message.timestamp = TimeUtils.GetTime();
+            message.replyTo = null;
+
+            byte[] messageBytes = MessagePackSerializer.Serialize(message);
+            await this.server.roomMessagesRedis.Add(room.roomId, messageBytes);
+
+            this.service.sd.recentMessages.Enqueue(message);
+
+            // -> other users
 
             Dictionary<int, List<RoomUser>> dict = room.userDict
                 .GroupBy(pair => pair.Value.gatewayServiceId, pair => pair.Value)
@@ -41,7 +56,7 @@ namespace Script
                 List<RoomUser> roomUsers = pair.Value;
 
                 List<long> userIds = roomUsers.Select(x => x.userId).ToList();
-                ECode e = this.service.gatewayServiceProxy.BroadcastToClient(gatewayServiceId, userIds, MsgType.A_RoomChat, broadcast);
+                ECode e = this.service.gatewayServiceProxy.BroadcastToClient(gatewayServiceId, userIds, MsgType.A_RoomChat, message);
                 if (e == ECode.NotConnected)
                 {
                     this.service.logger.Warn($"{this.msgType} gatewayServiceId {gatewayServiceId} is not connected");
