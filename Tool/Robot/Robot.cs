@@ -36,8 +36,8 @@ namespace Tool
                 switch (msgType)
                 {
                     case MsgType.A_RoomChat:
-                        var chatMsg = (A_MsgRoomChat)msg;
-                        Console.WriteLine($"Received chat message from {chatMsg.userId}: {chatMsg.content} reply == null? {reply == null}");
+                        var chatMsg = (ChatMessage)msg;
+                        Console.WriteLine($"Received chat message from {chatMsg.senderId}: {chatMsg.content} reply == null? {reply == null}");
                         break;
                 }
             };
@@ -72,7 +72,10 @@ namespace Tool
                     break;
                 }
 
-                e = await this.EnterRoom(this.resGetRecommendedRooms.roomInfos[0].roomId);
+                long lastMessageId = 0;
+
+                ResEnterRoom resEnterRoom;
+                (e, resEnterRoom) = await this.EnterRoom(this.resGetRecommendedRooms.roomInfos[0].roomId, lastMessageId);
                 if (e != ECode.Success)
                 {
                     break;
@@ -80,21 +83,23 @@ namespace Tool
 
                 this.roomId = this.resGetRecommendedRooms.roomInfos[0].roomId;
 
-                // e = await this.LeaveRoom(this.roomId);
-                // if (e != ECode.Success)
-                // {
-                //     break;
-                // }
-
-                for (int i = 0; i < 1; i++)
+                e = await this.SendRoomChat(this.roomId, $"Hello {DateTime.Now}!");
+                if (e != ECode.Success)
                 {
-                    e = await this.SendRoomChat(this.roomId, $"Hello {i}!");
-                    if (e != ECode.Success)
-                    {
-                        break;
-                    }
+                    break;
                 }
 
+                e = await this.LeaveRoom(this.roomId);
+                if (e != ECode.Success)
+                {
+                    break;
+                }
+
+                (e, resEnterRoom) = await this.EnterRoom(this.roomId, lastMessageId);
+                if (e != ECode.Success)
+                {
+                    break;
+                }
 
                 while (true)
                 {

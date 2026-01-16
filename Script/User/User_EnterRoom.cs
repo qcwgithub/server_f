@@ -11,6 +11,8 @@ namespace Script
 
         public override async Task<ECode> Handle(MessageContext context, MsgEnterRoom msg, ResEnterRoom res)
         {
+            this.service.logger.Info($"{this.msgType} userId {context.msg_userId} roomId {msg.roomId} lastMessageId {msg.lastMessageId}");
+
             if (msg.roomId <= 0)
             {
                 return ECode.InvalidParam;
@@ -91,12 +93,16 @@ namespace Script
             msgEnter.userId = user.userId;
             msgEnter.roomId = msg.roomId;
             msgEnter.gatewayServiceId = user.connection.gatewayServiceId;
+            msgEnter.lastMessageId = msg.lastMessageId;
 
             r = await this.service.roomServiceProxy.UserEnter(location.serviceId, msgEnter);
             if (r.e != ECode.Success)
             {
                 return r.e;
             }
+
+            var resEnter = r.CastRes<ResRoomUserEnter>();
+            res.recentMessages = resEnter.recentMessages;
 
             user.roomId = msg.roomId;
 

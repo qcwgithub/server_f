@@ -16,12 +16,13 @@ namespace Script
             Room? room = await this.service.LockRoom(msg.roomId, context);
             if (room == null)
             {
-                ECode e;
-                (e, room) = await this.service.ss.LoadRoom(msg.roomId);
-                if (e != ECode.Success)
-                {
-                    return e;
-                }
+                // ECode e;
+                // (e, room) = await this.service.ss.LoadRoom(msg.roomId);
+                // if (e != ECode.Success)
+                // {
+                //     return e;
+                // }
+                return ECode.RoomNotExist;
             }
 
             RoomUser? user = room.GetUser(msg.userId);
@@ -33,6 +34,17 @@ namespace Script
             }
 
             user.gatewayServiceId = msg.gatewayServiceId;
+
+            // +recentMessages
+            res.recentMessages = new List<ChatMessage>();
+            foreach (ChatMessage message in this.service.sd.recentMessages)
+            {
+                if (msg.lastMessageId < message.messageId)
+                {
+                    res.recentMessages.Add(message);
+                }
+            }
+
             return ECode.Success;
         }
 

@@ -204,8 +204,24 @@ namespace Data
                 config.outIp = helper.ReadString(nameof(config.outIp));
                 config.outPort = helper.ReadInt(nameof(config.outPort));
 
-                config.userIdSnowflakeWorkerId = helper.ReadInt(nameof(config.userIdSnowflakeWorkerId));
-                config.roomIdSnowflakeWorkerId = helper.ReadInt(nameof(config.roomIdSnowflakeWorkerId));
+                string dbase = helper.ReadString("dbase");
+                if (!string.IsNullOrEmpty(dbase))
+                {
+                    var dict = JsonUtils.parse<Dictionary<string, object>>(dbase);
+                    object v;
+                    if (dict.TryGetValue(nameof(config.userIdSnowflakeWorkerId), out v))
+                    {
+                        config.userIdSnowflakeWorkerId = Convert.ToInt32(v);
+                    }
+                    if (dict.TryGetValue(nameof(config.roomIdSnowflakeWorkerId), out v))
+                    {
+                        config.roomIdSnowflakeWorkerId = Convert.ToInt32(v);
+                    }
+                    if (dict.TryGetValue(nameof(config.roomMessageIdSnowflakeWorkerId), out v))
+                    {
+                        config.roomMessageIdSnowflakeWorkerId = Convert.ToInt32(v);
+                    }
+                }
 
                 allServiceConfigs.Add(config);
             }

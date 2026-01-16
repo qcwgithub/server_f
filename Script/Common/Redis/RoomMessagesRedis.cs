@@ -30,15 +30,21 @@ namespace Script
             }
         }
 
-        // public async Task Add(ChatMessage message)
-        // {
-        //     MyDebug.Assert(message.roomId > 0);
-        //     byte[] bytes = MessagePackSerializer.Serialize(message);
-        //     long length = await this.GetDb().ListRightPushAsync(Key(message.roomId), bytes);
-        //     if (length > 10000)
-        //     {
-        //         await this.GetDb().ListTrimAsync(Key(message.roomId), -10000, -1);
-        //     }
-        // }
+        public async Task Add(ChatMessage message)
+        {
+            MyDebug.Assert(message.roomId > 0);
+            byte[] bytes = MessagePackSerializer.Serialize(message);
+            long length = await this.GetDb().ListRightPushAsync(Key(message.roomId), bytes);
+            if (length > 10000)
+            {
+                await this.GetDb().ListTrimAsync(Key(message.roomId), -10000, -1);
+            }
+        }
+
+        public async Task<List<ChatMessage>> GetRecents(long roomId, int count)
+        {
+            RedisValue[] redisValues = await this.GetDb().ListRangeAsync(Key(roomId), -count, -1);
+            return redisValues.Select(v => MessagePackSerializer.Deserialize<ChatMessage>(v)).ToList();
+        }
     }
 }

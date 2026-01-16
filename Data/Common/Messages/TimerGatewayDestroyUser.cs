@@ -4,6 +4,7 @@ namespace Data
     {
         DestroyTimer_Disconnect,
         ServerKick,
+        Shutdown,
     }
 
     public enum GatewayClearDestroyTimerReason

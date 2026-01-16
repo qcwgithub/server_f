@@ -39,8 +39,9 @@ namespace Script
             message.timestamp = TimeUtils.GetTime();
             message.replyTo = null;
 
-            byte[] messageBytes = MessagePackSerializer.Serialize(message);
-            await this.server.roomMessagesRedis.Add(room.roomId, messageBytes);
+            await this.server.roomMessagesRedis.Add(message);
+
+            // -> memory
 
             this.service.sd.recentMessages.Enqueue(message);
             if (this.service.sd.recentMessages.Count > 100)
