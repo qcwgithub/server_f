@@ -22,7 +22,7 @@ namespace Tool
             string? program = this.argMap.GetArg("program");
             if (program == null)
             {
-                (_, program) = AskHelp.AskSelect("which program?", "robot*", "server", "linux").OnAnswer2();
+                (_, program) = AskHelp.AskSelect("which program?", "robot*", "server", "linux", "message_pack_test").OnAnswer2();
             }
 
             if (program == "robot")
@@ -35,6 +35,10 @@ namespace Tool
             else if (program == "linux")
             {
                 new LinuxProgram().Start();
+            }
+            else if (program == "message_pack_test")
+            {
+                MessagePackTest.Test();
             }
 
             while (true)

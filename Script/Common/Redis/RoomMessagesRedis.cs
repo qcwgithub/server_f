@@ -35,9 +35,9 @@ namespace Script
             MyDebug.Assert(message.roomId > 0);
             byte[] bytes = MessagePackSerializer.Serialize(message);
             long length = await this.GetDb().ListRightPushAsync(Key(message.roomId), bytes);
-            if (length > 10000)
+            if (length > this.server.data.serverConfig.maxRoomMessagesCount)
             {
-                await this.GetDb().ListTrimAsync(Key(message.roomId), -10000, -1);
+                await this.GetDb().ListTrimAsync(Key(message.roomId), -this.server.data.serverConfig.maxRoomMessagesCount, -1);
             }
         }
 

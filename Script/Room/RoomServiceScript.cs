@@ -39,7 +39,7 @@ namespace Script
             return (ECode.Success, roomInfo);
         }
 
-        public async Task<(ECode, Room)> LoadRoom(long roomId)
+        public async Task<(ECode, Room?)> LoadRoom(long roomId)
         {
             (ECode e, RoomInfo? roomInfo) = await this.service.ss.QueryRoomInfo(roomId);
             if (e != ECode.Success)
@@ -64,6 +64,15 @@ namespace Script
             }
 
             this.service.ss.ClearDestroyTimer(room, RoomClearDestroyTimerReason.RoomLoginSuccess);
+
+            //
+            List<ChatMessage> recents = await this.server.roomMessagesRedis.GetRecents(roomId, this.server.data.serverConfig.initRoomMessagesCount);
+            this.service.logger.Info($"LoadRoom recent messages count {recents.Count}");
+            foreach (ChatMessage message in recents)
+            {
+                this.service.sd.recentMessages.Enqueue(message);
+            }
+
             return (ECode.Success, room);
         }
 

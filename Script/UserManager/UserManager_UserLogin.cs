@@ -12,7 +12,7 @@ namespace Script
 
         public override async Task<ECode> Handle(MessageContext context, MsgUserManagerUserLogin msg, ResUserManagerUserLogin res)
         {
-            if (!MyChannels.IsValidChannel(msg.channel) || !this.server.data.serverConfig.generalConfig.allowChannels.Contains(msg.channel))
+            if (!MyChannels.IsValidChannel(msg.channel) || !this.server.data.serverConfig.allowChannels.Contains(msg.channel))
             {
                 this.service.logger.ErrorFormat("{0} channel:{1}, channelUserId:{2} invalid channel!", this.msgType, msg.channel, msg.channelUserId);
                 return ECode.InvalidChannel;

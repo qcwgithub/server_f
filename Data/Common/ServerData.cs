@@ -189,7 +189,7 @@ namespace Data
             }
 
             this.log4netCreation = new Log4netCreation();
-            this.log4netCreation.Create("my_log4net_repo", this.serverConfig.generalConfig.logDir, loggerNamesToAdd, releaseModelLogToConsole, this.configLoader.log4netConfigXml, true);
+            this.log4netCreation.Create("my_log4net_repo", this.serverConfig.logDir, loggerNamesToAdd, releaseModelLogToConsole, this.configLoader.log4netConfigXml, true);
 
             this.timezoneOffset = (int)TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).TotalMinutes;
             Console.WriteLine("Timezone Offset: " + this.timezoneOffset);

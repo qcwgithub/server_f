@@ -1,18 +1,14 @@
 {
 	"purpose": "test",
-	"generalConfig": {
-		"logDir": "{current}/Logs",
-		"allowClientGM": true,
-		"needCheckClientVersion": false,
-		"allowChannels": [
-			"uuid"
-		]
-	},
-	"networkConfig": {
-		"protocolsForClient": [
-			"tcp"
-		]
-	},
+	"logDir": "{current}/Logs",
+	"allowChannels": [
+		"uuid"
+	],
+	"protocolsForClient": [
+		"tcp"
+	],
+	"initRoomMessagesCount": 10,
+	"maxRoomMessagesCount": 20,
 	"redisConfig": {
 		"redisConn": "localhost",
 		"db": 1,

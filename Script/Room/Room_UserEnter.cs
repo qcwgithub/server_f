@@ -22,13 +22,6 @@ namespace Script
                 {
                     return e;
                 }
-
-                //
-                List<ChatMessage> recents = await this.server.roomMessagesRedis.GetRecents(msg.roomId, 100);
-                foreach (ChatMessage message in recents)
-                {
-                    this.service.sd.recentMessages.Enqueue(message);
-                }
             }
 
             RoomUser? user = room.GetUser(msg.userId);

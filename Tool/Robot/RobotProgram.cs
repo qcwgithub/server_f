@@ -1,8 +1,4 @@
-﻿using System.Threading.Tasks;
-using Data;
-using ZstdSharp.Unsafe;
-
-namespace Tool
+﻿namespace Tool
 {
     public partial class RobotProgram
     {
