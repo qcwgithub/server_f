@@ -22,6 +22,10 @@ namespace Script
                 {
                     return e;
                 }
+                if (room == null)
+                {
+                    return ECode.RoomNotExist;
+                }
             }
 
             RoomUser? user = room.GetUser(msg.userId);

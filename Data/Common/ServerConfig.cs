@@ -5,8 +5,45 @@ namespace Data
         public string purpose;
         public string logDir;
         public List<string> allowChannels;
-        public int initRoomMessagesCount;
-        public int maxRoomMessagesCount;
+
+        public class MessageConfig
+        {
+            public int initMessagesCount;
+            public int maxMessagesCount;
+            public int minLength;
+            public int maxLength;
+            public int minIntervalMs;
+            public int periodMs;
+            public int periodMaxCount;
+
+            public void Init()
+            {
+                if (this.initMessagesCount <= 0 || this.maxMessagesCount <= 0)
+                {
+                    Program.LogStartError("this.initMessagesCount <= 0 || this.maxMessagesCount <= 0");
+                    return;
+                }
+
+                if (this.minLength <= 0 || this.maxLength <= 0)
+                {
+                    Program.LogStartError("this.minLength <= 0 || this.maxLength <= 0");
+                    return;
+                }
+
+                if (this.minIntervalMs <= 0)
+                {
+                    Program.LogStartError("this.minInterval <= 0");
+                    return;
+                }
+
+                if (this.periodMs <= 0 || this.periodMaxCount <= 0)
+                {
+                    Program.LogStartError("this.periodMs <= 0 || this.periodMaxCount <= 0");
+                    return;
+                }
+            }
+        }
+        public MessageConfig roomMessageConfig;
 
         ////
         public class RedisConfig
@@ -90,12 +127,7 @@ namespace Data
                 return;
             }
 
-            if (this.initRoomMessagesCount <= 0 || this.maxRoomMessagesCount <= 0)
-            {
-                Program.LogStartError("this.initRoomMessagesCount <= 0 || this.maxRoomMessagesCount <= 0");
-                return;
-            }
-
+            this.roomMessageConfig.Init();
             this.redisConfig.Init();
             this.mongoDBConfig.Init(this);
         }

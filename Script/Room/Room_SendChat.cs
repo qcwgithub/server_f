@@ -13,7 +13,54 @@ namespace Script
 
         public override async Task<ECode> Handle(MessageContext context, MsgRoomSendChat msg, ResRoomSendChat res)
         {
-            this.service.logger.Info($"{this.msgType} userId {msg.userId} roomId {msg.roomId} content {msg.content}");
+            this.service.logger.Info($"{this.msgType} userId {msg.userId} roomId {msg.roomId} type {msg.type} content {msg.content}");
+
+            if (msg.type < 0 || msg.type >= ChatMessageType.Count)
+            {
+                return ECode.InvalidParam;
+            }
+
+            var roomMessageConfig = this.server.data.serverConfig.roomMessageConfig;
+
+            switch (msg.type)
+            {
+                case ChatMessageType.Text:
+                    {
+                        if (msg.content == null)
+                        {
+                            return ECode.InvalidParam;
+                        }
+                        msg.content = msg.content.Trim();
+
+                        if (msg.content.Length < roomMessageConfig.minLength ||
+                            msg.content.Length >= roomMessageConfig.maxLength)
+                        {
+                            return ECode.InvalidParam;
+                        }
+
+                        bool allSpace = true;
+                        foreach (char c in msg.content)
+                        {
+                            if (!char.IsWhiteSpace(c))
+                            {
+                                break;
+                            }
+                        }
+                        if (allSpace)
+                        {
+                            return ECode.InvalidParam;
+                        }
+                    }
+                    break;
+
+                case ChatMessageType.Image:
+                    return ECode.NotSupported;
+
+                case ChatMessageType.System: // Not allowed
+                default:
+                    return ECode.InvalidParam;
+            }
+
             Room? room = await this.service.LockRoom(msg.roomId, context);
             if (room == null)
             {
@@ -24,6 +71,42 @@ namespace Script
             if (user == null)
             {
                 return ECode.UserNotInRoom;
+            }
+
+            long now = TimeUtils.GetTime();
+            if (user.lastSendChatStamp > 0 && now - user.lastSendChatStamp < roomMessageConfig.minIntervalMs)
+            {
+                return ECode.ChatTooFast;
+            }
+
+            if (user.sendChatTimestamps.Count >= roomMessageConfig.periodMaxCount)
+            {
+                int count = 0;
+                for (int i = 0; i < user.sendChatTimestamps.Count; i++)
+                {
+                    if (now - user.sendChatTimestamps[i] < roomMessageConfig.periodMs)
+                    {
+                        count++;
+                    }
+                }
+
+                if (count >= roomMessageConfig.periodMaxCount)
+                {
+                    return ECode.ChatTooFast;
+                }
+            }
+
+            //// ok
+
+            user.lastSendChatStamp = now;
+
+            for (int i = 0; i < user.sendChatTimestamps.Count; i++)
+            {
+                if (now - user.sendChatTimestamps[i] >= roomMessageConfig.periodMs)
+                {
+                    user.sendChatTimestamps.RemoveAt(i);
+                    i--;
+                }
             }
 
             // -> redis

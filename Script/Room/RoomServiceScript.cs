@@ -66,7 +66,7 @@ namespace Script
             this.service.ss.ClearDestroyTimer(room, RoomClearDestroyTimerReason.RoomLoginSuccess);
 
             //
-            List<ChatMessage> recents = await this.server.roomMessagesRedis.GetRecents(roomId, this.server.data.serverConfig.initRoomMessagesCount);
+            List<ChatMessage> recents = await this.server.roomMessagesRedis.GetRecents(roomId, this.server.data.serverConfig.roomMessageConfig.initMessagesCount);
             this.service.logger.Info($"LoadRoom recent messages count {recents.Count}");
             foreach (ChatMessage message in recents)
             {

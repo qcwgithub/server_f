@@ -7,8 +7,15 @@
 	"protocolsForClient": [
 		"tcp"
 	],
-	"initRoomMessagesCount": 10,
-	"maxRoomMessagesCount": 20,
+	"roomMessageConfig": {
+		"initMessagesCount": 10,
+		"maxMessagesCount": 20,
+		"minLength": 1,
+		"maxLength": 200,
+		"minIntervalMs": 500,
+		"periodMs": 60000,
+		"periodMaxCount": 60
+	},
 	"redisConfig": {
 		"redisConn": "localhost",
 		"db": 1,

@@ -42,5 +42,7 @@ namespace Data
         NoHandler = 98,
         InvalidRoomId = 99,
         FileNotExist = 100,
+        ChatTooFast = 101,
+        NotSupported = 102,
     }
 }
