@@ -62,5 +62,11 @@ namespace Script
             string key = LockKey.Room(roomId);
             await RedisUtils.Unlock(this.GetDb(), key, lockValue);
         }
+
+        public async Task WaitUntilRoomUnlocked(long roomId)
+        {
+            string key = LockKey.Room(roomId);
+            await RedisUtils.WaitUntilUnlocked(this.GetDb(), key, 5);
+        }
     }
 }

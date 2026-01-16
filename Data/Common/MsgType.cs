@@ -34,7 +34,6 @@ namespace Data
         _Room_SaveRoomInfoToFile = 603,
         _Room_UserEnter = 604,
         _Room_UserLeave = 605,
-        _Room_LoadRoom = 606,
         _Room_SaveRoomImmediately = 607,
         _Room_SendChat = 608,
         _RoomManager_LoadRoom = 800,

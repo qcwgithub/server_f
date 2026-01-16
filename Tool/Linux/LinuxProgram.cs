@@ -21,7 +21,7 @@ namespace Tool
 
         ConfigLoader configLoader = new();
         List<ServiceConfig> allServiceConfigs;
-        public async Task Start()
+        public async void Start()
         {
             if (!this.configLoader.LoadAllServiceConfigs(out this.allServiceConfigs, out string message))
             {

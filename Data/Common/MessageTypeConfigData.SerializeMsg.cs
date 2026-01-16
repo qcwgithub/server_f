@@ -136,10 +136,6 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((MsgRoomUserLeave)msg);
                     break;
 
-                case MsgType._Room_LoadRoom:
-                    msgBytes = MessagePackSerializer.Serialize((MsgRoomLoadRoom)msg);
-                    break;
-
                 case MsgType._Room_SaveRoomImmediately:
                     msgBytes = MessagePackSerializer.Serialize((MsgSaveRoomImmediately)msg);
                     break;

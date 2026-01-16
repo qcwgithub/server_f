@@ -44,6 +44,7 @@ namespace Script
             }
 
             AccountInfo accountInfo = await this.server.accountInfoProxy.Get(this.service.dbServiceProxy, msg.channel, msg.channelUserId);
+            bool save = false;
             if (accountInfo != null)
             {
                 if (this.IsBlocked(accountInfo))
@@ -54,7 +55,7 @@ namespace Script
             else
             {
                 accountInfo = this.NewAccountInfo(msg.platform, msg.channel, msg.channelUserId);
-                await this.server.accountInfoProxy.Save(accountInfo);
+                save = true;
             }
 
             bool isNewUser;
@@ -76,12 +77,18 @@ namespace Script
 
                 this.service.logger.Info($"Create user info {userId} {e}");
                 accountInfo.userIds.Add(userId);
+                save = true;
             }
             else
             {
                 isNewUser = false;
                 userId = accountInfo.userIds[0];
                 newUserInfo = null;
+            }
+
+            if (save)
+            {
+                await this.server.accountInfoProxy.Save(accountInfo);
             }
 
             ////

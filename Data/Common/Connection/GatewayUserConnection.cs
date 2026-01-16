@@ -4,7 +4,7 @@ namespace Data
 {
     public class GatewayUserConnection : SocketConnection, IClientConnection
     {
-        public GatewayUser? user { get; set; }
+        public long userId { get; set; }
 
         public GatewayUserConnection(IConnectionCallbackProvider callbackProvider, Socket socket) : base(callbackProvider, socket, true, startRecv: false)
         {

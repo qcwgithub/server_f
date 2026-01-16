@@ -24,10 +24,17 @@ namespace Script
                 return null;
             }
 
-            GatewayUser? user = connection.user;
+            long userId = connection.userId;
+            if (userId == 0)
+            {
+                gatewayService.logger.Error("G_to_S connection.userId == 0");
+                return serviceType;
+            }
+
+            GatewayUser? user = gatewayService.sd.GetUser(connection.userId);
             if (user == null)
             {
-                gatewayService.logger.Error("G_to_S connection.user == null");
+                gatewayService.logger.Error("G_to_S user == null");
                 return serviceType;
             }
 

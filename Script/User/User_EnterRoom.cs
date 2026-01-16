@@ -61,32 +61,15 @@ namespace Script
                 msgLoad.roomId = msg.roomId;
 
                 r = await this.service.roomManagerServiceProxy.LoadRoom(msgLoad);
-                if (r.e == ECode.Success)
-                {
-                    var resLoad = r.CastRes<ResRoomManagerLoadRoom>();
-                    location = resLoad.location;
-
-                    this.service.roomLocator.CacheLocation(msg.roomId, location);
-                }
-                else if (r.e == ECode.Retry)
-                {
-                    for (int i = 1; i <= 3; i++)
-                    {
-                        // 1, 2, 3 seconds, total 6 seconds
-                        await Task.Delay(i * 1000);
-
-                        location = await this.service.roomLocator.GetLocation(msg.roomId);
-                        if (location.IsValid())
-                        {
-                            break;
-                        }
-                    }
-                    return ECode.RetryFailed;
-                }
-                else
+                if (r.e != ECode.Success)
                 {
                     return r.e;
                 }
+
+                var resLoad = r.CastRes<ResRoomManagerLoadRoom>();
+                location = resLoad.location;
+
+                this.service.roomLocator.CacheLocation(msg.roomId, location);
             }
 
             var msgEnter = new MsgRoomUserEnter();

@@ -6,7 +6,7 @@ namespace Script
     {
         public async Task<ECode> DestroyUser(long userId, GatewayDestroyUserReason reason, MsgKick? msgKick)
         {
-            this.logger.InfoFormat("DestroyUser userId {0}, reason {1}, preCount {2}", userId, reason, sd.userCount);
+            this.logger.InfoFormat("DestroyUser userId {0}, reason {1}, preCount {2}", userId, reason, this.sd.userCount);
 
             GatewayUser? user = sd.GetUser(userId);
             if (user == null)
@@ -20,16 +20,14 @@ namespace Script
                 user.connection.Send(MsgType.Kick, msgKick, null, null);
             }
 
+            this.ss.ClearDestroyTimer(user, GatewayClearDestroyTimerReason.Destroy);
+            this.sd.RemoveUser(userId);
+
             if (user.connection != null && user.connection.IsConnected())
             {
                 user.connection.Close("Gateway_DestroyUser");
             }
 
-            this.ss.ClearDestroyTimer(user, GatewayClearDestroyTimerReason.Destroy);
-
-            user.destroying = true;
-
-            sd.RemoveUser(userId);
             return ECode.Success;
         }
     }

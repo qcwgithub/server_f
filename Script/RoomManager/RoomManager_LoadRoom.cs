@@ -20,35 +20,33 @@ namespace Script
             }
 
             context.lockValue = await this.server.lockRedis.LockRoom(msg.roomId, this.service.logger);
-            if (context.lockValue == null)
+            if (context.lockValue != null)
             {
-                return ECode.Retry;
-            }
+                res.location = await this.service.roomLocator.GetLocation(msg.roomId);
+                if (res.location.IsValid())
+                {
+                    return ECode.Success;
+                }
 
-            res.location = await this.service.roomLocator.GetLocation(msg.roomId);
-            if (res.location.IsValid())
+                res.location = await this.service.roomLocationAssignment.AssignLocation(msg.roomId);
+                if (!res.location.IsValid())
+                {
+                    return ECode.NoAvailableRoomService;
+                }
+
+                this.service.roomLocator.CacheLocation(msg.roomId, res.location);
+            }
+            else
             {
-                return ECode.Success;
+                await this.server.lockRedis.WaitUntilRoomUnlocked(msg.roomId);
+
+                res.location = await this.service.roomLocator.GetLocation(msg.roomId);
+                if (!res.location.IsValid())
+                {
+                    this.service.logger.Error($"!location.IsValid() after room unlocked");
+                    return ECode.Error;
+                }
             }
-
-            res.location = await this.service.roomLocationAssignment.AssignLocation(msg.roomId);
-            if (!res.location.IsValid())
-            {
-                return ECode.NoAvailableRoomService;
-            }
-
-            this.service.roomLocator.CacheLocation(msg.roomId, res.location);
-
-            var msgR = new MsgRoomLoadRoom();
-            msgR.roomId = msg.roomId;
-
-            var r = await this.service.roomServiceProxy.LoadRoom(res.location.serviceId, msgR);
-            if (r.e != ECode.Success)
-            {
-                return r.e;
-            }
-
-            // var resR = r.CastRes<ResRoomLoadRoom>();
 
             return ECode.Success;
         }

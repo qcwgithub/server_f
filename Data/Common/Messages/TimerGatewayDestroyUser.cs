@@ -9,6 +9,7 @@ namespace Data
 
     public enum GatewayClearDestroyTimerReason
     {
+        UserLogin,
         Destroy,
     }
 

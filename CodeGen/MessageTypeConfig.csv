@@ -34,7 +34,6 @@ _Room_ServerAction,600,MsgRoomServiceAction,ResRoomServiceAction,1,1
 _Room_SaveRoomInfoToFile,603,MsgSaveRoomInfoToFile,ResSaveRoomInfoToFile,1,1
 _Room_UserEnter,604,MsgRoomUserEnter,ResRoomUserEnter,1,1
 _Room_UserLeave,605,MsgRoomUserLeave,ResRoomUserLeave,1,1
-_Room_LoadRoom,606,MsgRoomLoadRoom,ResRoomLoadRoom,1,1
 _Room_SaveRoomImmediately,607,MsgSaveRoomImmediately,ResSaveRoomImmediately,1,1
 _Room_SendChat,608,MsgRoomSendChat,ResRoomSendChat,1,1
 #,,,,,

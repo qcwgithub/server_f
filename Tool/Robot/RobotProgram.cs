@@ -7,7 +7,7 @@ namespace Tool
     public partial class RobotProgram
     {
         Dictionary<string, Robot> robotDict = new();
-        public async Task Start()
+        public async void Start()
         {
             string range = AskHelp.AskInput("channelUserId?").OnAnswer();
             int min;

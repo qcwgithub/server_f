@@ -35,7 +35,7 @@ namespace Data
         RoomLocationNotFound = 91,
         AlreadyIs = 92,
         NoAvailableRoomService = 93,
-        Retry = 94,
+        // Retry = 94,
         RetryFailed = 95,
         WrongRoomId = 96,
         UserNotInRoom = 97,

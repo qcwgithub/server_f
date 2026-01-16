@@ -49,6 +49,7 @@ namespace Tool
             Console.WriteLine($"Connect result {success}");
             if (!success)
             {
+                Console.ReadLine();
                 return;
             }
 
@@ -58,17 +59,20 @@ namespace Tool
                 (e, this.resLogin) = await this.Login();
                 if (e != ECode.Success)
                 {
+                    Console.ReadLine();
                     break;
                 }
 
                 (e, this.resGetRecommendedRooms) = await this.GetRecommendedRooms();
                 if (e != ECode.Success)
                 {
+                    Console.ReadLine();
                     break;
                 }
 
                 if (this.resGetRecommendedRooms.roomInfos.Count == 0)
                 {
+                    Console.ReadLine();
                     break;
                 }
 
@@ -78,6 +82,7 @@ namespace Tool
                 (e, resEnterRoom) = await this.EnterRoom(this.resGetRecommendedRooms.roomInfos[0].roomId, lastMessageId);
                 if (e != ECode.Success)
                 {
+                    Console.ReadLine();
                     break;
                 }
 
@@ -86,18 +91,21 @@ namespace Tool
                 e = await this.SendRoomChat(this.roomId, $"Hello {DateTime.Now}!");
                 if (e != ECode.Success)
                 {
+                    Console.ReadLine();
                     break;
                 }
 
                 e = await this.LeaveRoom(this.roomId);
                 if (e != ECode.Success)
                 {
+                    Console.ReadLine();
                     break;
                 }
 
                 (e, resEnterRoom) = await this.EnterRoom(this.roomId, lastMessageId);
                 if (e != ECode.Success)
                 {
+                    Console.ReadLine();
                     break;
                 }
 

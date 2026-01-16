@@ -25,20 +25,19 @@ namespace Tool
                 (_, program) = AskHelp.AskSelect("which program?", "robot*", "server", "linux").OnAnswer2();
             }
 
-            Task? task = null;
             if (program == "robot")
             {
-                task = new RobotProgram().Start();
+                new RobotProgram().Start();
             }
             else if (program == "server")
             {
             }
             else if (program == "linux")
             {
-                task = new LinuxProgram().Start();
+                new LinuxProgram().Start();
             }
 
-            while (task != null && !task.IsCompleted)
+            while (true)
             {
                 Thread.Sleep(1);
                 ET.ThreadSynchronizationContext.Instance.Update();

@@ -20,11 +20,18 @@ namespace Tool
             }
 
             var res = r.CastRes<ResEnterRoom>();
-            Console.WriteLine($"Recent message count {res.recentMessages.Count}");
-
-            for (int i = 0; i < res.recentMessages.Count; i++)
+            if (res.recentMessages == null)
             {
-                Console.WriteLine($"{i} {res.recentMessages[i].content}");
+                Console.WriteLine("res.recentMessages == null");
+            }
+            else
+            {
+                Console.WriteLine($"Recent message count {res.recentMessages.Count}");
+
+                for (int i = 0; i < res.recentMessages.Count; i++)
+                {
+                    Console.WriteLine($"[{i}] {res.recentMessages[i].senderId} {res.recentMessages[i].content}");
+                }
             }
 
             return (ECode.Success, res);

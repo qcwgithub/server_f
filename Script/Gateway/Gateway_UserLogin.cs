@@ -51,7 +51,7 @@ namespace Script
             }
 
             user.connection = (GatewayUserConnection)context.connection;
-            user.connection.user = user;
+            user.connection.userId = user.userId;
 
             ////
 

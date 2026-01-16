@@ -11,13 +11,8 @@ namespace Data
         }
 
         public GatewayUserConnection? connection;
-        public bool IsConnected()
-        {
-            return this.connection != null && this.connection.IsConnected();
-        }
 
         public long offlineTimeS;
-        public bool destroying;
         public ITimer? destroyTimer;
     }
 }

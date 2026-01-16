@@ -135,10 +135,6 @@ namespace Data
                     ob = MessagePackSerializer.Deserialize<ResRoomUserLeave>(resBytes);
                     break;
 
-                case MsgType._Room_LoadRoom:
-                    ob = MessagePackSerializer.Deserialize<ResRoomLoadRoom>(resBytes);
-                    break;
-
                 case MsgType._Room_SaveRoomImmediately:
                     ob = MessagePackSerializer.Deserialize<ResSaveRoomImmediately>(resBytes);
                     break;

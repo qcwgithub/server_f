@@ -45,7 +45,6 @@ namespace Script
             base.AddHandler<RoomService>();
 
             this.dispatcher.AddHandler(new Room_Action(this.server, this));
-            this.dispatcher.AddHandler(new Room_LoadRoom(this.server, this));
             this.dispatcher.AddHandler(new Room_OnReloadConfigs(this.server, this), true);
             this.dispatcher.AddHandler(new Room_OnTimer(this.server, this), true);
             this.dispatcher.AddHandler(new Room_SaveRoomImmediately(this.server, this));

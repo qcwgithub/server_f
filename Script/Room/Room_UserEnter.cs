@@ -16,13 +16,19 @@ namespace Script
             Room? room = await this.service.LockRoom(msg.roomId, context);
             if (room == null)
             {
-                // ECode e;
-                // (e, room) = await this.service.ss.LoadRoom(msg.roomId);
-                // if (e != ECode.Success)
-                // {
-                //     return e;
-                // }
-                return ECode.RoomNotExist;
+                ECode e;
+                (e, room) = await this.service.ss.LoadRoom(msg.roomId);
+                if (e != ECode.Success)
+                {
+                    return e;
+                }
+
+                //
+                List<ChatMessage> recents = await this.server.roomMessagesRedis.GetRecents(msg.roomId, 100);
+                foreach (ChatMessage message in recents)
+                {
+                    this.service.sd.recentMessages.Enqueue(message);
+                }
             }
 
             RoomUser? user = room.GetUser(msg.userId);
