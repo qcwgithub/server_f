@@ -32,16 +32,10 @@ namespace Script
                 }
             }
 
+            this.service.DestroyUser(user, GatewayDestroyUserReason.ServerKick, new MsgKick
             {
-                ECode e = await this.service.DestroyUser(msg.userId, GatewayDestroyUserReason.ServerKick, new MsgKick
-                {
-                    flags = msg.logoutSdk ? LogoutFlags.LogoutSdk : LogoutFlags.None,
-                });
-                if (e != ECode.Success)
-                {
-                    return e;
-                }
-            }
+                flags = msg.logoutSdk ? LogoutFlags.LogoutSdk : LogoutFlags.None,
+            });
 
             return ECode.Success;
         }

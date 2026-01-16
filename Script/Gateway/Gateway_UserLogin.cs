@@ -64,14 +64,15 @@ namespace Script
         bool HandleOldConnection(GatewayUser user)
         {
             GatewayUserConnection? oldConnection = user.connection;
-            if (oldConnection == null || !oldConnection.IsConnected())
+            if (oldConnection == null)
             {
                 return false;
             }
 
-            this.service.logger.Info($"userId {user.userId} kick old");
-
             user.connection = null;
+            oldConnection.userId = 0;
+
+            this.service.logger.Info($"userId {user.userId} kick old");
 
             // Case 1
             // User connect to the same Gateway twice

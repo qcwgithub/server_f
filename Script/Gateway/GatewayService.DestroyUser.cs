@@ -4,31 +4,28 @@ namespace Script
 {
     public partial class GatewayService
     {
-        public async Task<ECode> DestroyUser(long userId, GatewayDestroyUserReason reason, MsgKick? msgKick)
+        public void DestroyUser(GatewayUser user, GatewayDestroyUserReason reason, MsgKick? msgKick)
         {
-            this.logger.InfoFormat("DestroyUser userId {0}, reason {1}, preCount {2}", userId, reason, this.sd.userCount);
-
-            GatewayUser? user = sd.GetUser(userId);
-            if (user == null)
-            {
-                logger.InfoFormat("DestroyUser user not exist, userId: {0}", userId);
-                return ECode.Success;
-            }
+            this.logger.InfoFormat("DestroyUser userId {0}, reason {1}, preCount {2}", user.userId, reason, this.sd.userCount);
 
             if (msgKick != null && user.connection != null && user.connection.IsConnected())
             {
                 user.connection.Send(MsgType.Kick, msgKick, null, null);
             }
 
-            this.ss.ClearDestroyTimer(user, GatewayClearDestroyTimerReason.Destroy);
-            this.sd.RemoveUser(userId);
+            this.sd.RemoveUser(user.userId);
 
-            if (user.connection != null && user.connection.IsConnected())
+            GatewayUserConnection? connection = user.connection;
+            if (connection != null)
             {
-                user.connection.Close("Gateway_DestroyUser");
-            }
+                user.connection = null;
+                connection.userId = 0;
 
-            return ECode.Success;
+                if (connection.IsConnected())
+                {
+                    connection.Close("Gateway_DestroyUser");
+                }
+            }
         }
     }
 }

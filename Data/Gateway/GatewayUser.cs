@@ -11,8 +11,5 @@ namespace Data
         }
 
         public GatewayUserConnection? connection;
-
-        public long offlineTimeS;
-        public ITimer? destroyTimer;
     }
 }

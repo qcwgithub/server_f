@@ -18,15 +18,14 @@ namespace Script
                     {
                         this.logger.InfoFormat("OnConnectionClose userId {0} closeReason {1}", user.userId, gatewayUserConnection.closeReason);
 
-                        long nowS = TimeUtils.GetTimeS();
-                        user.offlineTimeS = nowS;
-
-                        this.ss.SetDestroyTimer(user, GatewayDestroyUserReason.DestroyTimer_Disconnect);
+                        int userServiceId = user.userServiceId;
+                        this.DestroyUser(user, GatewayDestroyUserReason.Disconnect, null);
+                        user = null;
 
                         var msgU = new MsgUserDisconnectFromGateway();
-                        msgU.userId = user.userId;
+                        msgU.userId = userId;
 
-                        await this.userServiceProxy.UserDisconnectFromGateway(user.userServiceId, msgU);
+                        await this.userServiceProxy.UserDisconnectFromGateway(userServiceId, msgU);
                     }
                 }
                 return ECode.Success;

@@ -10,9 +10,6 @@ namespace Data
         SaveUser,
         DestroyUser,
 
-        // Gateway
-        DestroyGatewayUser,
-
         // Room
         SaveRoom,
         DestroyRoom,

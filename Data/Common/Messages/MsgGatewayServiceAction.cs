@@ -6,8 +6,6 @@ namespace Data
     [MessagePackObject]
     public class MsgGatewayServiceAction
     {
-        [Key(0)]
-        public int? destroyTimeoutS;
     }
 
     [MessagePackObject]
