@@ -6,6 +6,7 @@ namespace Data
     public partial class TcpClientData : ProtocolClientData
     {
         Socket socket;
+        public readonly bool forClient;
 
         ////
         int closing;
@@ -61,6 +62,8 @@ namespace Data
                 break;
             }
 
+            this.forClient = false;
+
             Interlocked.Exchange(ref this.closing, 0);
             Interlocked.Exchange(ref this.cleanuped, 0);
             Interlocked.Exchange(ref this.ioRef, 0);
@@ -70,9 +73,11 @@ namespace Data
         }
 
         // Acceptor
-        public TcpClientData(IProtocolClientCallback callback, Socket socket) : base(callback, false)
+        public TcpClientData(IProtocolClientCallback callback, Socket socket, bool forClient) : base(callback, false)
         {
             this.socket = socket;
+            this.forClient = forClient;
+
             Interlocked.Exchange(ref this.closing, 0);
             Interlocked.Exchange(ref this.cleanuped, 0);
             Interlocked.Exchange(ref this.ioRef, 0);

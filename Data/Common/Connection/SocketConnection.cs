@@ -48,7 +48,7 @@ namespace Data
 
             socket.NoDelay = true; // !
 
-            this.socket = new TcpClientData(this, socket);
+            this.socket = new TcpClientData(this, socket, forClient);
 
             this.isConnector = false;
             this.forClient = forClient;

@@ -116,6 +116,26 @@ namespace Data
             {
                 this.sendQueue.Enqueue(bytes);
 
+                if (this.parent.forClient)
+                {
+                    if (this.sendQueue.Count > 200)
+                    {
+                        this.parent.Close("send queue overflow");
+                        return;
+                    }
+
+                    long sum = 0;
+                    foreach (var q in this.sendQueue)
+                    {
+                        sum += q.Length;
+                    }
+                    if (sum > 512 * 1024)
+                    {
+                        this.parent.Close("send queue too big");
+                        return;
+                    }
+                }
+
                 if (Interlocked.CompareExchange(ref this.sending, 1, 0) == 0)
                 {
                     this.PerformSend();

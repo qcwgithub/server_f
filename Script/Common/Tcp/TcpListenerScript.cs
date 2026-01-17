@@ -41,7 +41,7 @@ namespace Script
             var acceptArg = (ITcpListenerCallback.OnAcceptArg)arg!;
             if (!acceptArg.forClient)
             {
-                new SocketServiceConnection(this.service.data, acceptArg.socket, false);
+                new SocketServiceConnection(this.service.data, acceptArg.socket);
             }
             else
             {

@@ -16,7 +16,7 @@ namespace Data
         }
 
         // Acceptor
-        public SocketServiceConnection(IConnectionCallbackProvider callbackProvider, Socket socket, bool forClient) : base(callbackProvider, socket, forClient, startRecv: false)
+        public SocketServiceConnection(IConnectionCallbackProvider callbackProvider, Socket socket) : base(callbackProvider, socket, forClient: false, startRecv: false)
         {
             _serviceType = null;
             _serviceId = null;
