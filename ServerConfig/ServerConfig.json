@@ -16,6 +16,11 @@
 		"periodMs": 60000,
 		"periodMaxCount": 60
 	},
+	"userNameConfig": {
+		"minIntervalS": 1,
+		"minLength": 2,
+		"maxLength": 20
+	},
 	"redisConfig": {
 		"redisConn": "localhost",
 		"db": 1,

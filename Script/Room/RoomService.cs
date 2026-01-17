@@ -128,13 +128,13 @@ namespace Script
 
             if (!this.sd.lockedRoomDict.TryGetValue(roomId, out var lockedRoom))
             {
-                MyDebug.Assert(false);
                 return;
             }
 
             if (lockedRoom.owner == owner)
             {
                 lockedRoom.owner = null;
+                this.sd.lockedRoomDict.Remove(roomId);
 
                 if (lockedRoom.waiting != null && lockedRoom.waiting.Count > 0)
                 {

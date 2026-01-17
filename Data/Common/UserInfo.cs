@@ -15,6 +15,8 @@ namespace Data
         public long createTimeS;
         [Key(3)]
         public long lastLoginTimeS;
+        [Key(4)]
+        public long lastSetNameTimeS;
 
         public static UserInfo Ensure(UserInfo? p)
         {
@@ -52,6 +54,10 @@ namespace Data
             {
                 return true;
             }
+            if (this.lastSetNameTimeS != other.lastSetNameTimeS)
+            {
+                return true;
+            }
             return false;
         }
 
@@ -61,6 +67,7 @@ namespace Data
             this.userName = other.userName;
             this.createTimeS = other.createTimeS;
             this.lastLoginTimeS = other.lastLoginTimeS;
+            this.lastSetNameTimeS = other.lastSetNameTimeS;
         }
 
         #endregion auto

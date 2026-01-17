@@ -16,6 +16,8 @@ namespace Data
         public long? createTimeS;
         [Key(3)]
         public long? lastLoginTimeS;
+        [Key(4)]
+        public long? lastSetNameTimeS;
 
         #endregion auto
     }

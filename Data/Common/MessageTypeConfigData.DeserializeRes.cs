@@ -244,6 +244,10 @@ namespace Data
                     ob = MessagePackSerializer.Deserialize<ResGetRecommendedRooms>(resBytes);
                     break;
 
+                case MsgType.SetName:
+                    ob = MessagePackSerializer.Deserialize<ResSetName>(resBytes);
+                    break;
+
                 #endregion auto
 
                 default:

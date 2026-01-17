@@ -66,6 +66,15 @@ public partial class collection_user_info
             updList.Add(upd);
         }
 
+        if (infoNullable.lastSetNameTimeS != null)
+        {
+            var lastSetNameTimeS_Db = XInfoHelper_Db.Copy_long(infoNullable.lastSetNameTimeS.Value);
+            var upd = lastSetNameTimeS_Db != null
+                ? Builders<UserInfo_Db>.Update.Set(nameof(UserInfo_Db.lastSetNameTimeS), lastSetNameTimeS_Db)
+                : Builders<UserInfo_Db>.Update.Unset(nameof(UserInfo_Db.lastSetNameTimeS));
+            updList.Add(upd);
+        }
+
 
         #endregion autoSave
 

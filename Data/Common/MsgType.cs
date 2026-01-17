@@ -62,6 +62,7 @@ namespace Data
         A_RoomChat = 10007,
         SearchRoom = 10008,
         GetRecommendedRooms = 10009,
+        SetName = 10010,
 
         #endregion auto
     }

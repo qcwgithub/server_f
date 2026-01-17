@@ -33,7 +33,7 @@ namespace Script
                         msg.content = msg.content.Trim();
 
                         if (msg.content.Length < roomMessageConfig.minLength ||
-                            msg.content.Length >= roomMessageConfig.maxLength)
+                            msg.content.Length > roomMessageConfig.maxLength)
                         {
                             return ECode.InvalidParam;
                         }
@@ -43,6 +43,7 @@ namespace Script
                         {
                             if (!char.IsWhiteSpace(c))
                             {
+                                allSpace = false;
                                 break;
                             }
                         }

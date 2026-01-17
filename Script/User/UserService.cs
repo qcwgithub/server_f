@@ -64,6 +64,7 @@ namespace Script
             this.dispatcher.AddHandler(new User_SendRoomChat(this.server, this));
             this.dispatcher.AddHandler(new User_ServerKick(this.server, this));
             this.dispatcher.AddHandler(new User_SetGmFlag(this.server, this));
+            this.dispatcher.AddHandler(new User_SetName(this.server, this));
             this.dispatcher.AddHandler(new User_UserDisconnectFromGateway(this.server, this));
             this.dispatcher.AddHandler(new User_UserLoginSuccess(this.server, this));
         }
@@ -142,13 +143,13 @@ namespace Script
 
             if (!this.sd.lockedUserDict.TryGetValue(userId, out var lockedUser))
             {
-                MyDebug.Assert(false);
                 return;
             }
 
             if (lockedUser.owner == owner)
             {
                 lockedUser.owner = null;
+                this.sd.lockedUserDict.Remove(userId);
 
                 if (lockedUser.waiting != null && lockedUser.waiting.Count > 0)
                 {

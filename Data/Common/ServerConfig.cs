@@ -10,6 +10,8 @@ namespace Data
         {
             public int initMessagesCount;
             public int maxMessagesCount;
+
+            // valid range [minLength, maxLength]
             public int minLength;
             public int maxLength;
             public int minIntervalMs;
@@ -44,6 +46,30 @@ namespace Data
             }
         }
         public MessageConfig roomMessageConfig;
+
+        public class UserNameConfig
+        {
+            public int minIntervalS;
+            // valid range [minLength, maxLength]
+            public int minLength;
+            public int maxLength;
+
+            public void Init()
+            {
+                if (this.minIntervalS <= 0)
+                {
+                    Program.LogStartError("this.minIntervalS <= 0");
+                    return;
+                }
+
+                if (this.minLength <= 0 || this.maxLength <= 0)
+                {
+                    Program.LogStartError("this.minLength <= 0 || this.maxLength <= 0");
+                    return;
+                }
+            }
+        }
+        public UserNameConfig userNameConfig;
 
         ////
         public class RedisConfig
@@ -128,6 +154,7 @@ namespace Data
             }
 
             this.roomMessageConfig.Init();
+            this.userNameConfig.Init();
             this.redisConfig.Init();
             this.mongoDBConfig.Init(this);
         }

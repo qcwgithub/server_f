@@ -109,6 +109,13 @@ namespace Tool
                     break;
                 }
 
+                e = await this.SetName("Test-Name");
+                if (e != ECode.Success)
+                {
+                    Console.ReadLine();
+                    break;
+                }
+
                 while (true)
                 {
                     await Task.Delay(1000);

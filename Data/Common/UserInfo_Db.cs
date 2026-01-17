@@ -17,6 +17,8 @@ namespace Data
         public long? createTimeS;
         [BsonIgnoreIfNull]
         public long? lastLoginTimeS;
+        [BsonIgnoreIfNull]
+        public long? lastSetNameTimeS;
 
         public bool DeepCopyFrom(UserInfo other)
         {
@@ -42,6 +44,12 @@ namespace Data
 
             this.lastLoginTimeS = XInfoHelper_Db.Copy_long(other.lastLoginTimeS);
             if (this.lastLoginTimeS != null)
+            {
+                empty = false;
+            }
+
+            this.lastSetNameTimeS = XInfoHelper_Db.Copy_long(other.lastSetNameTimeS);
+            if (this.lastSetNameTimeS != null)
             {
                 empty = false;
             }

@@ -55,6 +55,13 @@ namespace Script
                 if (buffer == null) buffer = new List<string>();
                 buffer.Add("lastLoginTimeS");
             }
+            if (last.lastSetNameTimeS != curr.lastSetNameTimeS)
+            {
+                infoNullable.lastSetNameTimeS = curr.lastSetNameTimeS;
+                last.lastSetNameTimeS = curr.lastSetNameTimeS;
+                if (buffer == null) buffer = new List<string>();
+                buffer.Add("lastSetNameTimeS");
+            }
 
             #endregion auto
 

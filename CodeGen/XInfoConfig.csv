@@ -4,6 +4,7 @@ long_,,,,,userId,,
 string_,,,,,userName,,
 long_,,,,,createTimeS,,
 long_,,,,,lastLoginTimeS,,
+long_,,,,,lastSetNameTimeS,,
 #,,,,,,,
 @AccountInfo,,,,,,,Redis
 string_,,,,,platform,,
