@@ -11,7 +11,7 @@ namespace Script
         public readonly TcpListenerScript tcpListenerScript;
         protected virtual TcpListenerScript CreateTcpListenerScript()
         {
-            return new TcpListenerScript(this.server, this);;
+            return new TcpListenerScript(this.server, this);
         }
 
         public readonly ConnectionCallbackScript connectionCallbackScript;
