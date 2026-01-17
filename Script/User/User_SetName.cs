@@ -25,21 +25,36 @@ namespace Script
             long nowS = TimeUtils.GetTimeS();
             if (nowS - user.userInfo.lastSetNameTimeS < userNameConfig.minIntervalS)
             {
-                return ECode.InvalidParam;
+                return ECode.Name_TooFrequent;
             }
 
             // check userName
             if (msg.userName == null)
             {
-                return ECode.InvalidParam;
+                return ECode.Name_Empty;
             }
 
             msg.userName = msg.userName.Trim();
 
-            if (msg.userName.Length < userNameConfig.minLength ||
-                msg.userName.Length > userNameConfig.maxLength)
+            if (msg.userName.Length < userNameConfig.minLength)
             {
-                return ECode.InvalidParam;
+                return ECode.Name_TooShort;
+            }
+            if (msg.userName.Length > userNameConfig.maxLength)
+            {
+                return ECode.Name_TooLong;
+            }
+
+            string lower = msg.userName.ToLower();
+            if (lower.Contains("system") ||
+                lower.Contains("moderator") ||
+                lower.Contains("official") ||
+                lower.Contains("admin") ||
+                lower.Contains("http") ||
+                lower.Contains("@") ||
+                lower.Contains("www."))
+            {
+                return ECode.Name_Reserved;
             }
 
             //// ok

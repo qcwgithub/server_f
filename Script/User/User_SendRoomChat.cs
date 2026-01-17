@@ -13,7 +13,7 @@ namespace Script
         {
             if (msg.roomId <= 0)
             {
-                return ECode.InvalidParam;
+                return ECode.InvalidRoomId;
             }
 
             User? user = await this.service.LockUser(context.msg_userId, context);

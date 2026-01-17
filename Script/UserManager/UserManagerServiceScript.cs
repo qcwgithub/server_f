@@ -31,6 +31,7 @@ namespace Script
             long nowS = TimeUtils.GetTimeS();
             userInfo.createTimeS = nowS;
             userInfo.lastLoginTimeS = nowS;
+            userInfo.userName = nowS.ToString();
             return userInfo;
         }
     }

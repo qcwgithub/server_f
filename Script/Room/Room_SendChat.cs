@@ -17,7 +17,7 @@ namespace Script
 
             if (msg.type < 0 || msg.type >= ChatMessageType.Count)
             {
-                return ECode.InvalidParam;
+                return ECode.Chat_InvalidType;
             }
 
             var roomMessageConfig = this.server.data.serverConfig.roomMessageConfig;
@@ -28,14 +28,17 @@ namespace Script
                     {
                         if (msg.content == null)
                         {
-                            return ECode.InvalidParam;
+                            return ECode.Chat_Empty;
                         }
                         msg.content = msg.content.Trim();
 
-                        if (msg.content.Length < roomMessageConfig.minLength ||
-                            msg.content.Length > roomMessageConfig.maxLength)
+                        if (msg.content.Length < roomMessageConfig.minLength)
                         {
-                            return ECode.InvalidParam;
+                            return ECode.Chat_TooShort;
+                        }
+                        if (msg.content.Length > roomMessageConfig.maxLength)
+                        {
+                            return ECode.Chat_TooLong;
                         }
 
                         bool allSpace = true;
@@ -49,7 +52,7 @@ namespace Script
                         }
                         if (allSpace)
                         {
-                            return ECode.InvalidParam;
+                            return ECode.Chat_AllSpace;
                         }
                     }
                     break;
@@ -59,7 +62,7 @@ namespace Script
 
                 case ChatMessageType.System: // Not allowed
                 default:
-                    return ECode.InvalidParam;
+                    return ECode.Chat_InvalidType;
             }
 
             Room? room = await this.service.LockRoom(msg.roomId, context);
@@ -77,7 +80,7 @@ namespace Script
             long now = TimeUtils.GetTime();
             if (user.lastSendChatStamp > 0 && now - user.lastSendChatStamp < roomMessageConfig.minIntervalMs)
             {
-                return ECode.ChatTooFast;
+                return ECode.Chat_TooFast;
             }
 
             if (user.sendChatTimestamps.Count >= roomMessageConfig.periodMaxCount)
@@ -93,7 +96,7 @@ namespace Script
 
                 if (count >= roomMessageConfig.periodMaxCount)
                 {
-                    return ECode.ChatTooFast;
+                    return ECode.Chat_TooFast;
                 }
             }
 

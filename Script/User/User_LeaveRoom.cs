@@ -18,7 +18,7 @@ namespace Script
             }
             if (msg.roomId <= 0)
             {
-                return ECode.InvalidParam;
+                return ECode.InvalidRoomId;
             }
 
             if (user.roomId == 0)
