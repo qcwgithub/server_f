@@ -169,6 +169,15 @@ namespace Data
         {
             while (this.eventQueue.TryDequeue(out SocketEvent? socketEvent))
             {
+                if (this.forClient)
+                {
+                    if (this.eventQueue.Count > 100)
+                    {
+                        this.socket.Close("eventQueue overflow");
+                        return;
+                    }
+                }
+
                 try
                 {
                     switch (socketEvent.eventType)
@@ -314,11 +323,14 @@ namespace Data
                 if (seq > 0)
                 {
                     MsgType msgType = (MsgType)code;
-                    if (this.forClient && (msgType < MsgType.ClientStart || msgType >= MsgType.Count))
+                    if (this.forClient)
                     {
-                        this.callback.LogError($"receive invalid message from client! {msgType}");
-                        this.socket.Close($"receive invalid message from client! {msgType}");
-                        return;
+                        if (msgType < MsgType.ClientStart || msgType >= MsgType.Count)
+                        {
+                            this.callback.LogError($"receive invalid message from client! {msgType}");
+                            this.socket.Close($"receive invalid message from client! {msgType}");
+                            return;
+                        }
                     }
 
                     if (!requireResponse)
