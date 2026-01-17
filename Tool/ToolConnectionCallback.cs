@@ -4,6 +4,19 @@ namespace Tool
 {
     public class ToolConnectionCallback : IConnectionCallbackProvider, IConnectionCallback
     {
+        ServerConfig.SocketSecurityConfig? _socketSecurityConfig;
+        public ServerConfig.SocketSecurityConfig socketSecurityConfig
+        {
+            get
+            {
+                if (_socketSecurityConfig == null)
+                {
+                    _socketSecurityConfig = new ServerConfig.SocketSecurityConfig();
+                }
+                return _socketSecurityConfig;
+            }
+        }
+
         public void LogError(string str)
         {
             ConsoleEx.WriteLine(ConsoleColor.Red, str);

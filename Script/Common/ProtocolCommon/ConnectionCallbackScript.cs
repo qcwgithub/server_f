@@ -8,6 +8,14 @@ namespace Script
         {
         }
 
+        public ServerConfig.SocketSecurityConfig socketSecurityConfig
+        {
+            get
+            {
+                return this.server.data.serverConfig.socketSecurityConfig;
+            }
+        }
+
         public IMessagePacker messagePacker
         {
             get

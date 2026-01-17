@@ -2,6 +2,7 @@ namespace Data
 {
     public interface IConnectionCallback : IDataCallback
     {
+        ServerConfig.SocketSecurityConfig socketSecurityConfig { get; }
         IMessagePacker messagePacker { get; }
         void LogError(string str);
         void LogError(string str, Exception ex);

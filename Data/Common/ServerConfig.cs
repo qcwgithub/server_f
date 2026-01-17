@@ -6,6 +6,24 @@ namespace Data
         public string logDir;
         public List<string> allowChannels;
 
+        public class SocketSecurityConfig
+        {
+            public int maxPacketSize;
+            public int maxRecvQueueCount;
+            public int maxSendQueueCount;
+            public int maxSendQueueBytes;
+
+            public void Init()
+            {
+                if (this.maxPacketSize <= 0 || this.maxRecvQueueCount <= 0 || this.maxSendQueueCount <= 0 || this.maxSendQueueBytes <= 0)
+                {
+                    Program.LogStartError("this.maxPacketSize <= 0 || this.maxRecvQueueCount <= 0 || this.maxSendQueueCount <= 0 || this.maxSendQueueBytes <= 0");
+                    return;
+                }
+            }
+        }
+        public SocketSecurityConfig socketSecurityConfig;
+
         public class MessageConfig
         {
             public int recentMessagesCount;
@@ -178,6 +196,7 @@ namespace Data
                 return;
             }
 
+            this.socketSecurityConfig.Init();
             this.roomMessageConfig.Init();
             this.userNameConfig.Init();
             this.userAvatarConfig.Init();

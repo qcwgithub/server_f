@@ -106,6 +106,15 @@ namespace Data
         }
 
         // NOTE: Called by socket thread
+        ServerConfig.SocketSecurityConfig IProtocolClientCallback.socketSecurityConfig
+        {
+            get
+            {
+                return this.callback.socketSecurityConfig;
+            }
+        }
+
+        // NOTE: Called by socket thread
         void IProtocolClientCallback.LogError(string str)
         {
             this.callback.LogError(str);
@@ -143,7 +152,7 @@ namespace Data
             {
                 if (this.forClient)
                 {
-                    if (exactCount < 0 || exactCount >= 64 * 1024) // 64KB
+                    if (exactCount < 0 || exactCount > this.callback.socketSecurityConfig.maxPacketSize)
                     {
                         this.socket.Close($"Invalid packet size {exactCount}");
                         return 0;
@@ -171,7 +180,7 @@ namespace Data
             {
                 if (this.forClient)
                 {
-                    if (this.eventQueue.Count > 100)
+                    if (this.eventQueue.Count > this.callback.socketSecurityConfig.maxRecvQueueCount)
                     {
                         this.socket.Close("eventQueue overflow");
                         return;

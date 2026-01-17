@@ -4,9 +4,12 @@
 	"allowChannels": [
 		"uuid"
 	],
-	"protocolsForClient": [
-		"tcp"
-	],
+	"socketSecurityConfig": {
+		"maxPacketSize": 65536,
+		"maxRecvQueueCount": 100,
+		"maxSendQueueCount": 200,
+		"maxSendQueueBytes": 524288
+	},
 	"roomMessageConfig": {
 		"recentMessagesCount": 100,
 		"maxMessagesCount": 5000,

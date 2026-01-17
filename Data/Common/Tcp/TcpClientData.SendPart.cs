@@ -118,7 +118,9 @@ namespace Data
 
                 if (this.parent.forClient)
                 {
-                    if (this.sendQueue.Count > 200)
+                    var s_config = this.parent.callback.socketSecurityConfig;
+
+                    if (this.sendQueue.Count > s_config.maxSendQueueCount)
                     {
                         this.parent.Close("send queue overflow");
                         return;
@@ -129,7 +131,7 @@ namespace Data
                     {
                         sum += q.Length;
                     }
-                    if (sum > 512 * 1024)
+                    if (sum > s_config.maxSendQueueBytes)
                     {
                         this.parent.Close("send queue too big");
                         return;
