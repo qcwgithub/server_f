@@ -252,6 +252,10 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((ResSetAvatarIndex)res);
                     break;
 
+                case MsgType.GetRoomChatHistory:
+                    msgBytes = MessagePackSerializer.Serialize((ResGetRoomChatHistory)res);
+                    break;
+
                 #endregion auto
 
                 default:

@@ -8,8 +8,9 @@
 		"tcp"
 	],
 	"roomMessageConfig": {
-		"initMessagesCount": 10,
-		"maxMessagesCount": 20,
+		"recentMessagesCount": 100,
+		"maxMessagesCount": 5000,
+		"getHistoryMessageCount": 20,
 		"minLength": 1,
 		"maxLength": 200,
 		"minIntervalMs": 500,
@@ -21,7 +22,7 @@
 		"minLength": 2,
 		"maxLength": 20
 	},
-	"userDefaultAvatarConfig": {
+	"userAvatarConfig": {
 		"minIntervalS": 1,
 		"minIndex": 0,
 		"maxIndex": 19

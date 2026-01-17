@@ -15,6 +15,8 @@ namespace Data
         public string title;
         [Key(3)]
         public string desc;
+        [Key(4)]
+        public long messageId;
 
         public static RoomInfo Ensure(RoomInfo? p)
         {
@@ -56,6 +58,10 @@ namespace Data
             {
                 return true;
             }
+            if (this.messageId != other.messageId)
+            {
+                return true;
+            }
             return false;
         }
 
@@ -65,6 +71,7 @@ namespace Data
             this.createTimeS = other.createTimeS;
             this.title = other.title;
             this.desc = other.desc;
+            this.messageId = other.messageId;
         }
 
         #endregion auto

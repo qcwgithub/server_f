@@ -4,6 +4,6 @@ User5,localhost,3022,localhost,,
 Db6,localhost,3023,localhost,,
 Global7,localhost,3024,localhost,,
 UserManager8,localhost,3025,localhost,,"{""userIdSnowflakeWorkerId"":1}"
-Room9,localhost,3026,localhost,,"{""roomMessageIdSnowflakeWorkerId"":3}"
+Room9,localhost,3026,localhost,,
 RoomManager10,localhost,3027,localhost,,"{""roomIdSnowflakeWorkerId"":2}"
 Gateway100,localhost,3100,localhost,8020,

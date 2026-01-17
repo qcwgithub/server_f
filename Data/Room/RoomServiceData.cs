@@ -42,7 +42,6 @@ namespace Data
             ServiceType.Global,
             ServiceType.RoomManager,
         };
-        public readonly SnowflakeData roomMessageIdSnowflakeData;
         public RoomServiceData(ServerData serverData, ServiceTypeAndId serviceTypeAndId)
             : base(serverData, serviceTypeAndId, s_connectToServiceIds)
         {
@@ -51,7 +50,6 @@ namespace Data
             this.LoadConfigs();
 
             this.allowNewRoom = true;
-            this.roomMessageIdSnowflakeData = new SnowflakeData();
         }
 
         void LoadConfigs()

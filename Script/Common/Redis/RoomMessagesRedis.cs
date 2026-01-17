@@ -21,29 +21,44 @@ namespace Script
             return RoomKey.Messages(roomId);
         }
 
-        public async Task Add(long roomId, byte[] bytes)
-        {
-            long length = await this.GetDb().ListRightPushAsync(Key(roomId), bytes);
-            if (length > 10000)
-            {
-                await this.GetDb().ListTrimAsync(Key(roomId), -10000, -1);
-            }
-        }
-
         public async Task Add(ChatMessage message)
         {
             MyDebug.Assert(message.roomId > 0);
+            string key = Key(message.roomId);
+
             byte[] bytes = MessagePackSerializer.Serialize(message);
-            long length = await this.GetDb().ListRightPushAsync(Key(message.roomId), bytes);
-            if (length > this.server.data.serverConfig.roomMessageConfig.maxMessagesCount)
-            {
-                await this.GetDb().ListTrimAsync(Key(message.roomId), -this.server.data.serverConfig.roomMessageConfig.maxMessagesCount, -1);
-            }
+            await this.GetDb().SortedSetAddAsync(key, bytes, message.messageId);
+        }
+
+        public async Task Trim(long roomId, int left)
+        {
+            string key = Key(roomId);
+            
+            await this.GetDb().SortedSetRemoveRangeByRankAsync(key,
+                start: 0,
+                stop: -left);
         }
 
         public async Task<List<ChatMessage>> GetRecents(long roomId, int count)
         {
-            RedisValue[] redisValues = await this.GetDb().ListRangeAsync(Key(roomId), -count, -1);
+            string key = Key(roomId);
+            RedisValue[] redisValues = await this.GetDb().SortedSetRangeByScoreAsync(key,
+                start: double.NegativeInfinity,
+                stop: double.PositiveInfinity,
+                order: Order.Descending,
+                take: count);
+            return redisValues.Select(v => MessagePackSerializer.Deserialize<ChatMessage>(v)).ToList();
+        }
+
+        public async Task<List<ChatMessage>> GetHistory(long roomId, long newestMessageId, int count)
+        {
+            string key = Key(roomId);
+            RedisValue[] redisValues = await this.GetDb().SortedSetRangeByScoreAsync(key,
+                start: double.NegativeInfinity,
+                stop: newestMessageId,
+                exclude: Exclude.Stop,
+                order: Order.Descending,
+                take: count);
             return redisValues.Select(v => MessagePackSerializer.Deserialize<ChatMessage>(v)).ToList();
         }
     }

@@ -55,6 +55,7 @@ namespace Script
             this.dispatcher.AddHandler(new User_Action(this.server, this));
             this.dispatcher.AddHandler(new User_EnterRoom(this.server, this));
             this.dispatcher.AddHandler(new User_GetRecommendedRooms(this.server, this));
+            this.dispatcher.AddHandler(new User_GetRoomChatHistory(this.server, this));
             this.dispatcher.AddHandler(new User_LeaveRoom(this.server, this));
             this.dispatcher.AddHandler(new User_OnReloadConfigs(this.server, this), true);
             this.dispatcher.AddHandler(new User_OnTimer(this.server, this), true);

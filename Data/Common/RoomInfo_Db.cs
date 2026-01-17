@@ -17,6 +17,8 @@ namespace Data
         public string title;
         [BsonIgnoreIfNull]
         public string desc;
+        [BsonIgnoreIfNull]
+        public long? messageId;
 
         public bool DeepCopyFrom(RoomInfo other)
         {
@@ -42,6 +44,12 @@ namespace Data
 
             this.desc = XInfoHelper_Db.Copy_string(other.desc);
             if (this.desc != null)
+            {
+                empty = false;
+            }
+
+            this.messageId = XInfoHelper_Db.Copy_long(other.messageId);
+            if (this.messageId != null)
             {
                 empty = false;
             }

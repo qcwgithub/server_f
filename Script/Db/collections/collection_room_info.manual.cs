@@ -85,6 +85,15 @@ public partial class collection_room_info
             updList.Add(upd);
         }
 
+        if (infoNullable.messageId != null)
+        {
+            var messageId_Db = XInfoHelper_Db.Copy_long(infoNullable.messageId.Value);
+            var upd = messageId_Db != null
+                ? Builders<RoomInfo_Db>.Update.Set(nameof(RoomInfo_Db.messageId), messageId_Db)
+                : Builders<RoomInfo_Db>.Update.Unset(nameof(RoomInfo_Db.messageId));
+            updList.Add(upd);
+        }
+
 
         #endregion autoSave
 

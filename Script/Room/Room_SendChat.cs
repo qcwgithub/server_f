@@ -101,7 +101,7 @@ namespace Script
             // -> redis
 
             var message = new ChatMessage();
-            message.messageId = this.service.roomMessageIdSnowflakeScript.NextRoomMessageId();
+            message.messageId = ++room.roomInfo.messageId;
             message.roomId = room.roomId;
             message.senderId = user.userId;
             message.senderName = string.Empty;
@@ -114,6 +114,11 @@ namespace Script
             message.senderAvatarIndex = msg.avatarIndex;
 
             await this.server.roomMessagesRedis.Add(message);
+
+            if (message.messageId % 100 == 0)
+            {
+                await this.server.roomMessagesRedis.Trim(room.roomId, roomMessageConfig.maxMessagesCount);
+            }
 
             // -> memory
 

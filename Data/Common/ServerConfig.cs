@@ -8,8 +8,9 @@ namespace Data
 
         public class MessageConfig
         {
-            public int initMessagesCount;
+            public int recentMessagesCount;
             public int maxMessagesCount;
+            public int getHistoryMessageCount;
 
             // valid range [minLength, maxLength]
             public int minLength;
@@ -20,9 +21,9 @@ namespace Data
 
             public void Init()
             {
-                if (this.initMessagesCount <= 0 || this.maxMessagesCount <= 0)
+                if (this.recentMessagesCount <= 0 || this.maxMessagesCount <= 0 || this.getHistoryMessageCount <= 0)
                 {
-                    Program.LogStartError("this.initMessagesCount <= 0 || this.maxMessagesCount <= 0");
+                    Program.LogStartError("this.initMessagesCount <= 0 || this.maxMessagesCount <= 0 || this.getHistoryMessageCount <= 0");
                     return;
                 }
 

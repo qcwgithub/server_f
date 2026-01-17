@@ -64,6 +64,7 @@ namespace Data
         GetRecommendedRooms = 10009,
         SetName = 10010,
         SetAvatarIndex = 10011,
+        GetRoomChatHistory = 10012,
 
         #endregion auto
     }

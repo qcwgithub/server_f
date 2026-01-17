@@ -55,6 +55,13 @@ namespace Script
                 if (buffer == null) buffer = new List<string>();
                 buffer.Add("desc");
             }
+            if (last.messageId != curr.messageId)
+            {
+                infoNullable.messageId = curr.messageId;
+                last.messageId = curr.messageId;
+                if (buffer == null) buffer = new List<string>();
+                buffer.Add("messageId");
+            }
 
             #endregion auto
 

@@ -252,6 +252,10 @@ namespace Data
                     ob = MessagePackSerializer.Deserialize<ResSetAvatarIndex>(resBytes);
                     break;
 
+                case MsgType.GetRoomChatHistory:
+                    ob = MessagePackSerializer.Deserialize<ResGetRoomChatHistory>(resBytes);
+                    break;
+
                 #endregion auto
 
                 default:

@@ -217,10 +217,6 @@ namespace Data
                     {
                         config.roomIdSnowflakeWorkerId = Convert.ToInt32(v);
                     }
-                    if (dict.TryGetValue(nameof(config.roomMessageIdSnowflakeWorkerId), out v))
-                    {
-                        config.roomMessageIdSnowflakeWorkerId = Convert.ToInt32(v);
-                    }
                 }
 
                 allServiceConfigs.Add(config);
