@@ -19,6 +19,10 @@ namespace Data
         public long? lastLoginTimeS;
         [BsonIgnoreIfNull]
         public long? lastSetNameTimeS;
+        [BsonIgnoreIfNull]
+        public int? defaultAvatarIndex;
+        [BsonIgnoreIfNull]
+        public long? lastSetDefaultAvatarTimeS;
 
         public bool DeepCopyFrom(UserInfo other)
         {
@@ -50,6 +54,18 @@ namespace Data
 
             this.lastSetNameTimeS = XInfoHelper_Db.Copy_long(other.lastSetNameTimeS);
             if (this.lastSetNameTimeS != null)
+            {
+                empty = false;
+            }
+
+            this.defaultAvatarIndex = XInfoHelper_Db.Copy_int(other.defaultAvatarIndex);
+            if (this.defaultAvatarIndex != null)
+            {
+                empty = false;
+            }
+
+            this.lastSetDefaultAvatarTimeS = XInfoHelper_Db.Copy_long(other.lastSetDefaultAvatarTimeS);
+            if (this.lastSetDefaultAvatarTimeS != null)
             {
                 empty = false;
             }

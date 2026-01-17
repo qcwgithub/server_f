@@ -62,6 +62,20 @@ namespace Script
                 if (buffer == null) buffer = new List<string>();
                 buffer.Add("lastSetNameTimeS");
             }
+            if (last.defaultAvatarIndex != curr.defaultAvatarIndex)
+            {
+                infoNullable.defaultAvatarIndex = curr.defaultAvatarIndex;
+                last.defaultAvatarIndex = curr.defaultAvatarIndex;
+                if (buffer == null) buffer = new List<string>();
+                buffer.Add("defaultAvatarIndex");
+            }
+            if (last.lastSetDefaultAvatarTimeS != curr.lastSetDefaultAvatarTimeS)
+            {
+                infoNullable.lastSetDefaultAvatarTimeS = curr.lastSetDefaultAvatarTimeS;
+                last.lastSetDefaultAvatarTimeS = curr.lastSetDefaultAvatarTimeS;
+                if (buffer == null) buffer = new List<string>();
+                buffer.Add("lastSetDefaultAvatarTimeS");
+            }
 
             #endregion auto
 

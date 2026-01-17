@@ -21,6 +21,11 @@
 		"minLength": 2,
 		"maxLength": 20
 	},
+	"userDefaultAvatarConfig": {
+		"minIntervalS": 1,
+		"minIndex": 0,
+		"maxIndex": 19
+	},
 	"redisConfig": {
 		"redisConn": "localhost",
 		"db": 1,

@@ -251,6 +251,10 @@ namespace Data
                     ob = MessagePackSerializer.Deserialize<MsgSetName>(msgBytes);
                     break;
 
+                case MsgType.SetDefaultAvatar:
+                    ob = MessagePackSerializer.Deserialize<MsgSetDefaultAvatar>(msgBytes);
+                    break;
+
                 #endregion auto
 
                 default:

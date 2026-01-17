@@ -5,6 +5,8 @@ string_,,,,,userName,,
 long_,,,,,createTimeS,,
 long_,,,,,lastLoginTimeS,,
 long_,,,,,lastSetNameTimeS,,
+int_,,,,,defaultAvatarIndex,,
+long_,,,,,lastSetDefaultAvatarTimeS,,
 #,,,,,,,
 @AccountInfo,,,,,,,Redis
 string_,,,,,platform,,

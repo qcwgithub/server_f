@@ -85,15 +85,7 @@ namespace Script
 
             if (user.sendChatTimestamps.Count >= roomMessageConfig.periodMaxCount)
             {
-                int count = 0;
-                for (int i = 0; i < user.sendChatTimestamps.Count; i++)
-                {
-                    if (now - user.sendChatTimestamps[i] < roomMessageConfig.periodMs)
-                    {
-                        count++;
-                    }
-                }
-
+                int count = user.sendChatTimestamps.Count(ts => now - ts < roomMessageConfig.periodMs);
                 if (count >= roomMessageConfig.periodMaxCount)
                 {
                     return ECode.Chat_TooFast;
@@ -103,15 +95,8 @@ namespace Script
             //// ok
 
             user.lastSendChatStamp = now;
-
-            for (int i = 0; i < user.sendChatTimestamps.Count; i++)
-            {
-                if (now - user.sendChatTimestamps[i] >= roomMessageConfig.periodMs)
-                {
-                    user.sendChatTimestamps.RemoveAt(i);
-                    i--;
-                }
-            }
+            user.sendChatTimestamps.RemoveAll(ts => now - ts >= roomMessageConfig.periodMs);
+            user.sendChatTimestamps.Add(now);
 
             // -> redis
 
@@ -131,7 +116,7 @@ namespace Script
             // -> memory
 
             this.service.sd.recentMessages.Enqueue(message);
-            if (this.service.sd.recentMessages.Count > 100)
+            while (this.service.sd.recentMessages.Count > 100)
             {
                 this.service.sd.recentMessages.Dequeue();
             }

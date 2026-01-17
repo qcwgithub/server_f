@@ -75,6 +75,24 @@ public partial class collection_user_info
             updList.Add(upd);
         }
 
+        if (infoNullable.defaultAvatarIndex != null)
+        {
+            var defaultAvatarIndex_Db = XInfoHelper_Db.Copy_int(infoNullable.defaultAvatarIndex.Value);
+            var upd = defaultAvatarIndex_Db != null
+                ? Builders<UserInfo_Db>.Update.Set(nameof(UserInfo_Db.defaultAvatarIndex), defaultAvatarIndex_Db)
+                : Builders<UserInfo_Db>.Update.Unset(nameof(UserInfo_Db.defaultAvatarIndex));
+            updList.Add(upd);
+        }
+
+        if (infoNullable.lastSetDefaultAvatarTimeS != null)
+        {
+            var lastSetDefaultAvatarTimeS_Db = XInfoHelper_Db.Copy_long(infoNullable.lastSetDefaultAvatarTimeS.Value);
+            var upd = lastSetDefaultAvatarTimeS_Db != null
+                ? Builders<UserInfo_Db>.Update.Set(nameof(UserInfo_Db.lastSetDefaultAvatarTimeS), lastSetDefaultAvatarTimeS_Db)
+                : Builders<UserInfo_Db>.Update.Unset(nameof(UserInfo_Db.lastSetDefaultAvatarTimeS));
+            updList.Add(upd);
+        }
+
 
         #endregion autoSave
 

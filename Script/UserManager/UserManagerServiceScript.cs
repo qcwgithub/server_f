@@ -32,6 +32,10 @@ namespace Script
             userInfo.createTimeS = nowS;
             userInfo.lastLoginTimeS = nowS;
             userInfo.userName = nowS.ToString();
+            userInfo.defaultAvatarIndex = this.server.data.random.Next(
+                this.server.data.serverConfig.userDefaultAvatarConfig.minIndex,
+                this.server.data.serverConfig.userDefaultAvatarConfig.maxIndex + 1
+            );
             return userInfo;
         }
     }

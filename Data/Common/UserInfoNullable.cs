@@ -18,6 +18,10 @@ namespace Data
         public long? lastLoginTimeS;
         [Key(4)]
         public long? lastSetNameTimeS;
+        [Key(5)]
+        public int? defaultAvatarIndex;
+        [Key(6)]
+        public long? lastSetDefaultAvatarTimeS;
 
         #endregion auto
     }

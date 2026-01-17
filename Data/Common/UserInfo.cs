@@ -17,6 +17,10 @@ namespace Data
         public long lastLoginTimeS;
         [Key(4)]
         public long lastSetNameTimeS;
+        [Key(5)]
+        public int defaultAvatarIndex;
+        [Key(6)]
+        public long lastSetDefaultAvatarTimeS;
 
         public static UserInfo Ensure(UserInfo? p)
         {
@@ -58,6 +62,14 @@ namespace Data
             {
                 return true;
             }
+            if (this.defaultAvatarIndex != other.defaultAvatarIndex)
+            {
+                return true;
+            }
+            if (this.lastSetDefaultAvatarTimeS != other.lastSetDefaultAvatarTimeS)
+            {
+                return true;
+            }
             return false;
         }
 
@@ -68,6 +80,8 @@ namespace Data
             this.createTimeS = other.createTimeS;
             this.lastLoginTimeS = other.lastLoginTimeS;
             this.lastSetNameTimeS = other.lastSetNameTimeS;
+            this.defaultAvatarIndex = other.defaultAvatarIndex;
+            this.lastSetDefaultAvatarTimeS = other.lastSetDefaultAvatarTimeS;
         }
 
         #endregion auto

@@ -63,6 +63,7 @@ namespace Data
         SearchRoom = 10008,
         GetRecommendedRooms = 10009,
         SetName = 10010,
+        SetDefaultAvatar = 10011,
 
         #endregion auto
     }
