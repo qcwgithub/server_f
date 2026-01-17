@@ -57,7 +57,7 @@ namespace Data
         Chat_AllSpace = 113,
         Search_TooShort = 114,
         Search_TooLong = 115,
-        DefaultAvatar_TooFrequent = 116,
-        DefaultAvatar_OutofRange = 117,
+        AvatarIndex_TooFrequent = 116,
+        AvatarIndex_OutOfRange = 117,
     }
 }

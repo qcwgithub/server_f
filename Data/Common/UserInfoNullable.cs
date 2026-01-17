@@ -19,9 +19,9 @@ namespace Data
         [Key(4)]
         public long? lastSetNameTimeS;
         [Key(5)]
-        public int? defaultAvatarIndex;
+        public int? avatarIndex;
         [Key(6)]
-        public long? lastSetDefaultAvatarTimeS;
+        public long? lastSetAvatarIndexTimeS;
 
         #endregion auto
     }

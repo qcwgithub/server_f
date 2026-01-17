@@ -110,6 +110,8 @@ namespace Script
             message.content = msg.content;
             message.timestamp = TimeUtils.GetTime();
             message.replyTo = null;
+            message.senderName = msg.userName;
+            message.senderAvatarIndex = msg.avatarIndex;
 
             await this.server.roomMessagesRedis.Add(message);
 

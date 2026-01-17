@@ -3,14 +3,14 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class MsgSetDefaultAvatar
+    public class MsgSetAvatarIndex
     {
         [Key(0)]
-        public int defaultAvatarIndex;
+        public int avatarIndex;
     }
 
     [MessagePackObject]
-    public class ResSetDefaultAvatar
+    public class ResSetAvatarIndex
     {
 
     }

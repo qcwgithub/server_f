@@ -75,21 +75,21 @@ public partial class collection_user_info
             updList.Add(upd);
         }
 
-        if (infoNullable.defaultAvatarIndex != null)
+        if (infoNullable.avatarIndex != null)
         {
-            var defaultAvatarIndex_Db = XInfoHelper_Db.Copy_int(infoNullable.defaultAvatarIndex.Value);
-            var upd = defaultAvatarIndex_Db != null
-                ? Builders<UserInfo_Db>.Update.Set(nameof(UserInfo_Db.defaultAvatarIndex), defaultAvatarIndex_Db)
-                : Builders<UserInfo_Db>.Update.Unset(nameof(UserInfo_Db.defaultAvatarIndex));
+            var avatarIndex_Db = XInfoHelper_Db.Copy_int(infoNullable.avatarIndex.Value);
+            var upd = avatarIndex_Db != null
+                ? Builders<UserInfo_Db>.Update.Set(nameof(UserInfo_Db.avatarIndex), avatarIndex_Db)
+                : Builders<UserInfo_Db>.Update.Unset(nameof(UserInfo_Db.avatarIndex));
             updList.Add(upd);
         }
 
-        if (infoNullable.lastSetDefaultAvatarTimeS != null)
+        if (infoNullable.lastSetAvatarIndexTimeS != null)
         {
-            var lastSetDefaultAvatarTimeS_Db = XInfoHelper_Db.Copy_long(infoNullable.lastSetDefaultAvatarTimeS.Value);
-            var upd = lastSetDefaultAvatarTimeS_Db != null
-                ? Builders<UserInfo_Db>.Update.Set(nameof(UserInfo_Db.lastSetDefaultAvatarTimeS), lastSetDefaultAvatarTimeS_Db)
-                : Builders<UserInfo_Db>.Update.Unset(nameof(UserInfo_Db.lastSetDefaultAvatarTimeS));
+            var lastSetAvatarIndexTimeS_Db = XInfoHelper_Db.Copy_long(infoNullable.lastSetAvatarIndexTimeS.Value);
+            var upd = lastSetAvatarIndexTimeS_Db != null
+                ? Builders<UserInfo_Db>.Update.Set(nameof(UserInfo_Db.lastSetAvatarIndexTimeS), lastSetAvatarIndexTimeS_Db)
+                : Builders<UserInfo_Db>.Update.Unset(nameof(UserInfo_Db.lastSetAvatarIndexTimeS));
             updList.Add(upd);
         }
 

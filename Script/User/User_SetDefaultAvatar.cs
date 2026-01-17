@@ -2,16 +2,16 @@ using Data;
 
 namespace Script
 {
-    public class User_SetDefaultAvatar : Handler<UserService, MsgSetDefaultAvatar, ResSetDefaultAvatar>
+    public class User_SetAvatarIndex : Handler<UserService, MsgSetAvatarIndex, ResSetAvatarIndex>
     {
-        public override MsgType msgType => MsgType.SetDefaultAvatar;
-        public User_SetDefaultAvatar(Server server, UserService service) : base(server, service)
+        public override MsgType msgType => MsgType.SetAvatarIndex;
+        public User_SetAvatarIndex(Server server, UserService service) : base(server, service)
         {
         }
 
-        public override async Task<ECode> Handle(MessageContext context, MsgSetDefaultAvatar msg, ResSetDefaultAvatar res)
+        public override async Task<ECode> Handle(MessageContext context, MsgSetAvatarIndex msg, ResSetAvatarIndex res)
         {
-            this.service.logger.Info($"{this.msgType} userId {context.msg_userId} defaultAvatarIndex {msg.defaultAvatarIndex}");
+            this.service.logger.Info($"{this.msgType} userId {context.msg_userId} avatarIndex {msg.avatarIndex}");
 
             User? user = await this.service.LockUser(context.msg_userId, context);
             if (user == null)
@@ -19,30 +19,30 @@ namespace Script
                 return ECode.UserNotExist;
             }
 
-            var userDefaultAvatarConfig = this.server.data.serverConfig.userDefaultAvatarConfig;
+            var userAvatarConfig = this.server.data.serverConfig.userAvatarConfig;
 
             // check time
             long nowS = TimeUtils.GetTimeS();
-            if (nowS - user.userInfo.lastSetDefaultAvatarTimeS < userDefaultAvatarConfig.minIntervalS)
+            if (nowS - user.userInfo.lastSetAvatarIndexTimeS < userAvatarConfig.minIntervalS)
             {
-                return ECode.DefaultAvatar_TooFrequent;
+                return ECode.AvatarIndex_TooFrequent;
             }
 
-            if (msg.defaultAvatarIndex < userDefaultAvatarConfig.minIndex ||
-                msg.defaultAvatarIndex > userDefaultAvatarConfig.maxIndex)
+            if (msg.avatarIndex < userAvatarConfig.minIndex ||
+                msg.avatarIndex > userAvatarConfig.maxIndex)
             {
-                return ECode.DefaultAvatar_OutofRange;
+                return ECode.AvatarIndex_OutOfRange;
             }
 
             //// ok
 
-            user.userInfo.lastSetDefaultAvatarTimeS = nowS;
-            user.userInfo.defaultAvatarIndex = msg.defaultAvatarIndex;
+            user.userInfo.lastSetAvatarIndexTimeS = nowS;
+            user.userInfo.avatarIndex = msg.avatarIndex;
 
             return ECode.Success;
         }
 
-        public override void PostHandle(MessageContext context, MsgSetDefaultAvatar msg, ECode e, ResSetDefaultAvatar res)
+        public override void PostHandle(MessageContext context, MsgSetAvatarIndex msg, ECode e, ResSetAvatarIndex res)
         {
             this.service.TryUnlockUser(context.msg_userId, context);
 

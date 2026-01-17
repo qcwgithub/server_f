@@ -25,5 +25,8 @@ namespace Data
         public long timestamp;
         [Key(8)]
         public long? replyTo; // message id
+
+        [Key(9)]
+        public int senderAvatarIndex;
     }
 }

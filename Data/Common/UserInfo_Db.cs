@@ -20,9 +20,9 @@ namespace Data
         [BsonIgnoreIfNull]
         public long? lastSetNameTimeS;
         [BsonIgnoreIfNull]
-        public int? defaultAvatarIndex;
+        public int? avatarIndex;
         [BsonIgnoreIfNull]
-        public long? lastSetDefaultAvatarTimeS;
+        public long? lastSetAvatarIndexTimeS;
 
         public bool DeepCopyFrom(UserInfo other)
         {
@@ -58,14 +58,14 @@ namespace Data
                 empty = false;
             }
 
-            this.defaultAvatarIndex = XInfoHelper_Db.Copy_int(other.defaultAvatarIndex);
-            if (this.defaultAvatarIndex != null)
+            this.avatarIndex = XInfoHelper_Db.Copy_int(other.avatarIndex);
+            if (this.avatarIndex != null)
             {
                 empty = false;
             }
 
-            this.lastSetDefaultAvatarTimeS = XInfoHelper_Db.Copy_long(other.lastSetDefaultAvatarTimeS);
-            if (this.lastSetDefaultAvatarTimeS != null)
+            this.lastSetAvatarIndexTimeS = XInfoHelper_Db.Copy_long(other.lastSetAvatarIndexTimeS);
+            if (this.lastSetAvatarIndexTimeS != null)
             {
                 empty = false;
             }

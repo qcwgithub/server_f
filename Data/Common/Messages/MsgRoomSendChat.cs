@@ -12,9 +12,13 @@ namespace Data
         [Key(2)]
         public ChatMessageType type;
         [Key(3)]
-        public string content;
+        public string? content;
         [Key(4)]
         public long? replyTo; // message id
+        [Key(5)]
+        public string userName;
+        [Key(6)]
+        public int avatarIndex;
     }
 
     [MessagePackObject]

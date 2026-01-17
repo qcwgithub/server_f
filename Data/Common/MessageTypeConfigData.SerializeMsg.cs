@@ -251,8 +251,8 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((MsgSetName)msg);
                     break;
 
-                case MsgType.SetDefaultAvatar:
-                    msgBytes = MessagePackSerializer.Serialize((MsgSetDefaultAvatar)msg);
+                case MsgType.SetAvatarIndex:
+                    msgBytes = MessagePackSerializer.Serialize((MsgSetAvatarIndex)msg);
                     break;
 
                 #endregion auto

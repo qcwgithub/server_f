@@ -71,7 +71,7 @@ namespace Data
         }
         public UserNameConfig userNameConfig;
 
-        public class UserDefaultAvatarConfig
+        public class UserAvatarConfig
         {
             public int minIntervalS;
             // valid range [minIndex, maxIndex]
@@ -93,7 +93,7 @@ namespace Data
                 }
             }
         }
-        public UserDefaultAvatarConfig userDefaultAvatarConfig;
+        public UserAvatarConfig userAvatarConfig;
 
         ////
         public class RedisConfig
@@ -179,7 +179,7 @@ namespace Data
 
             this.roomMessageConfig.Init();
             this.userNameConfig.Init();
-            this.userDefaultAvatarConfig.Init();
+            this.userAvatarConfig.Init();
             this.redisConfig.Init();
             this.mongoDBConfig.Init(this);
         }

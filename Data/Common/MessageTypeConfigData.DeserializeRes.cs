@@ -248,8 +248,8 @@ namespace Data
                     ob = MessagePackSerializer.Deserialize<ResSetName>(resBytes);
                     break;
 
-                case MsgType.SetDefaultAvatar:
-                    ob = MessagePackSerializer.Deserialize<ResSetDefaultAvatar>(resBytes);
+                case MsgType.SetAvatarIndex:
+                    ob = MessagePackSerializer.Deserialize<ResSetAvatarIndex>(resBytes);
                     break;
 
                 #endregion auto
