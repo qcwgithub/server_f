@@ -30,13 +30,13 @@ namespace Script
             await this.GetDb().SortedSetAddAsync(key, bytes, message.messageId);
         }
 
-        public async Task Trim(long roomId, int left)
+        public async Task Trim(long roomId, int keepCount)
         {
             string key = Key(roomId);
-            
+
             await this.GetDb().SortedSetRemoveRangeByRankAsync(key,
                 start: 0,
-                stop: -left);
+                stop: -keepCount - 1);
         }
 
         public async Task<List<ChatMessage>> GetRecents(long roomId, int count)
@@ -47,18 +47,22 @@ namespace Script
                 stop: double.PositiveInfinity,
                 order: Order.Descending,
                 take: count);
+
+            // 返回值是从新到旧
             return redisValues.Select(v => MessagePackSerializer.Deserialize<ChatMessage>(v)).ToList();
         }
 
-        public async Task<List<ChatMessage>> GetHistory(long roomId, long newestMessageId, int count)
+        public async Task<List<ChatMessage>> GetHistory(long roomId, long lastMessageId, int count)
         {
             string key = Key(roomId);
             RedisValue[] redisValues = await this.GetDb().SortedSetRangeByScoreAsync(key,
                 start: double.NegativeInfinity,
-                stop: newestMessageId,
+                stop: lastMessageId,
                 exclude: Exclude.Stop,
                 order: Order.Descending,
                 take: count);
+
+            // 返回值是从新到旧
             return redisValues.Select(v => MessagePackSerializer.Deserialize<ChatMessage>(v)).ToList();
         }
     }
