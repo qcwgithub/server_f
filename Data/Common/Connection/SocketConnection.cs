@@ -141,6 +141,15 @@ namespace Data
             int used = 0;
             while (this.callback.messagePacker.IsCompeteMessage(buffer, offset, count, out int exactCount))
             {
+                if (this.forClient)
+                {
+                    if (exactCount < 0 || exactCount >= 64 * 1024) // 64KB
+                    {
+                        this.socket.Close($"Invalid packet size {exactCount}");
+                        return 0;
+                    }
+                }
+
                 UnpackResult r = this.callback.messagePacker.Unpack(buffer, offset, exactCount);
                 this.EnqueueSocketEvent(new SocketEvent(SocketEventType.Receive, r));
 
@@ -279,11 +288,6 @@ namespace Data
             }
 
             var seq = this.callback.nextMsgSeq;
-            if (seq <= 0)
-            {
-                seq = 1;
-            }
-
             if (cb != null)
             {
                 var st = new stWaitingResponse();
@@ -310,13 +314,10 @@ namespace Data
                 if (seq > 0)
                 {
                     MsgType msgType = (MsgType)code;
-                    if (this.forClient && msgType < MsgType.ClientStart)
+                    if (this.forClient && (msgType < MsgType.ClientStart || msgType >= MsgType.Count))
                     {
-                        this.callback.LogError("receive invalid message from client! " + msgType.ToString());
-                        if (requireResponse)
-                        {
-                            this.socket.Send(this.callback.messagePacker.Pack((int)ECode.Exception, null, -seq, false));
-                        }
+                        this.callback.LogError($"receive invalid message from client! {msgType}");
+                        this.socket.Close($"receive invalid message from client! {msgType}");
                         return;
                     }
 

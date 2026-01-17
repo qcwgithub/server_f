@@ -67,5 +67,7 @@ namespace Data
         GetRoomChatHistory = 10012,
 
         #endregion auto
+
+        Count,
     }
 }
