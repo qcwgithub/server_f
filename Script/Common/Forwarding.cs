@@ -59,7 +59,7 @@ namespace Script
             msgForward.innerMsgType = msgType;
             msgForward.innerMsgBytes = msgBytes;
 
-            serviceConnection.Send(MsgType.Forward, msgForward, reply, null);
+            serviceConnection.Send(MsgType.Forward, msgForward, reply);
             return serviceType;
         }
 
@@ -138,7 +138,7 @@ namespace Script
             return true;
         }
 
-        public static void S_to_G(IServiceConnection serviceConnection, long userId, MsgType msgType, object msg, ReplyCallback? reply, int? pTimeoutS)
+        public static void S_to_G(IServiceConnection serviceConnection, long userId, MsgType msgType, object msg, ReplyCallback? reply)
         {
             var msgForward = new MsgForward();
             msgForward.userId = userId;
@@ -146,10 +146,10 @@ namespace Script
             msgForward.innerMsgType = msgType;
             msgForward.innerMsgBytes = MessageTypeConfigData.SerializeMsg(msgType, msg);
 
-            S_to_G(serviceConnection, msgForward, reply, pTimeoutS);
+            S_to_G(serviceConnection, msgForward, reply);
         }
 
-        public static void S_to_G(IServiceConnection serviceConnection, List<long> userIds, MsgType msgType, object msg, ReplyCallback? reply, int? pTimeoutS)
+        public static void S_to_G(IServiceConnection serviceConnection, List<long> userIds, MsgType msgType, object msg, ReplyCallback? reply)
         {
             var msgForward = new MsgForward();
             msgForward.userId = 0;
@@ -157,15 +157,15 @@ namespace Script
             msgForward.innerMsgType = msgType;
             msgForward.innerMsgBytes = MessageTypeConfigData.SerializeMsg(msgType, msg);
 
-            S_to_G(serviceConnection, msgForward, reply, pTimeoutS);
+            S_to_G(serviceConnection, msgForward, reply);
         }
 
-        static void S_to_G(IServiceConnection serviceConnection, MsgForward msgForward, ReplyCallback? reply, int? pTimeoutS)
+        static void S_to_G(IServiceConnection serviceConnection, MsgForward msgForward, ReplyCallback? reply)
         {
             MyDebug.Assert(serviceConnection.knownWho);
             MyDebug.Assert(serviceConnection.serviceType == ServiceType.Gateway);
 
-            serviceConnection.Send(MsgType.Forward, msgForward, reply, pTimeoutS);
+            serviceConnection.Send(MsgType.Forward, msgForward, reply);
         }
 
         static void SendToClient(GatewayService gatewayService, long userId, MsgType msgType, object msg, ReplyCallback? reply)
@@ -176,7 +176,7 @@ namespace Script
                 return;
             }
 
-            user.connection.Send(msgType, msg, reply, null);
+            user.connection.Send(msgType, msg, reply);
         }
     }
 }

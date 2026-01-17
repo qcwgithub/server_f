@@ -23,14 +23,12 @@ namespace Data
             return serviceConnection != null && serviceConnection.IsConnected();
         }
 
-        public void Send(MsgType msgType, object msg, ReplyCallback? cb, int? pTimeoutS)
+        public void Send(MsgType msgType, object msg, ReplyCallback? cb)
         {
-            MyDebug.Assert(cb == null && pTimeoutS == null);
-
             IServiceConnection? serviceConnection = this.sd.GetOtherServiceConnection(this.gatewayServiceId);
             if (serviceConnection != null && serviceConnection.IsConnected())
             {
-                this.sd.Get_S_to_G().S_to_G(serviceConnection, this.user.userId, msgType, msg, cb, pTimeoutS);
+                this.sd.Get_S_to_G().S_to_G(serviceConnection, this.user.userId, msgType, msg, cb);
             }
         }
     }

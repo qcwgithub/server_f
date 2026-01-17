@@ -3,6 +3,6 @@ namespace Data
     public interface IConnection
     {
         bool IsConnected();
-        void Send(MsgType msgType, object msg, ReplyCallback? cb, int? pTimeoutS);
+        void Send(MsgType msgType, object msg, ReplyCallback? cb);
     }
 }

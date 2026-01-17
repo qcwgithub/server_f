@@ -108,7 +108,7 @@ namespace Script
             {
                 var msgKick = new MsgKick();
                 msgKick.flags = LogoutFlags.CancelAutoLogin;
-                oldConnection.Send(MsgType.Kick, msgKick, null, null);
+                oldConnection.Send(MsgType.Kick, msgKick, null);
             }
 
             return true;

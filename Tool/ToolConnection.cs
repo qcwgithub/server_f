@@ -17,8 +17,7 @@ namespace Tool
             {
                 object res = MessageTypeConfigData.DeserializeRes(msgType, segment);
                 tcs.SetResult(new MyResponse(e, res));
-            },
-            null);
+            });
 
             return await tcs.Task;
         }

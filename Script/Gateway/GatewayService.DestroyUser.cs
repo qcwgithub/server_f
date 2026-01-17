@@ -10,7 +10,7 @@ namespace Script
 
             if (msgKick != null && user.connection != null && user.connection.IsConnected())
             {
-                user.connection.Send(MsgType.Kick, msgKick, null, null);
+                user.connection.Send(MsgType.Kick, msgKick, null);
             }
 
             this.sd.RemoveUser(user.userId);

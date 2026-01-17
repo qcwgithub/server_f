@@ -260,32 +260,7 @@ namespace Data
         }
 
         // Called by Main thread
-        async void TimeoutTrigger(int timeoutS, int seq)
-        {
-            for (int i = 0; i < timeoutS; i++)
-            {
-                await Task.Delay(1000);
-                if (this.closed)
-                {
-                    return;
-                }
-
-                if (!this.waitingResponseDict.ContainsKey(seq))
-                {
-                    return;
-                }
-            }
-
-            stWaitingResponse st;
-            if (this.waitingResponseDict.TryGetValue(seq, out st))
-            {
-                this.waitingResponseDict.Remove(seq);
-                st.callback(ECode.Timeout, null);
-            }
-        }
-
-        // Called by Main thread
-        public void Send(MsgType msgType, object msg, ReplyCallback? cb, int? pTimeoutS)
+        public void Send(MsgType msgType, object msg, ReplyCallback? cb)
         {
             if (!this.IsConnected())
             {
@@ -302,11 +277,6 @@ namespace Data
                 var st = new stWaitingResponse();
                 st.callback = cb;
                 this.waitingResponseDict.Add(seq, st);
-
-                if (pTimeoutS != null)
-                {
-                    this.TimeoutTrigger(pTimeoutS.Value, seq);
-                }
             }
 
             byte[] msgBytes = MessageTypeConfigData.SerializeMsg(msgType, msg);

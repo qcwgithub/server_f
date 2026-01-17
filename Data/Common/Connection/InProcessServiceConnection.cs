@@ -42,7 +42,7 @@ namespace Data
             return false;
         }
 
-        public void Send(MsgType msgType, object msg, ReplyCallback? cb, int? pTimeoutS)
+        public void Send(MsgType msgType, object msg, ReplyCallback? cb)
         {
 
         }

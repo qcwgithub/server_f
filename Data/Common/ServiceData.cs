@@ -185,8 +185,7 @@ namespace Data
                             {
                                 tcs.SetResult();
                             }
-                        },
-                        pTimeoutS: 5);
+                        });
                     }
                 }
                 if (total == 0)
@@ -235,7 +234,7 @@ namespace Data
                         {
                             tcs.SetResult();
                         }
-                    }, pTimeoutS: 5);
+                    });
                 }
             }
             if (total == 0)

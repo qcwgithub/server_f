@@ -15,8 +15,7 @@ namespace Script
                 {
                     Console.WriteLine("!cs.TrySetResult " + msgType);
                 }
-            },
-            pTimeoutS: null);
+            });
     
             (ECode e, byte[] resSegment) = await cs.Task;
 

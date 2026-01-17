@@ -21,7 +21,7 @@ namespace Script
                 return ECode.NotConnected;
             }
 
-            Forwarding.S_to_G(connection, userIds, MsgType.A_RoomChat, msg, null, null);
+            Forwarding.S_to_G(connection, userIds, MsgType.A_RoomChat, msg, null);
             return ECode.Success;
         }
 
