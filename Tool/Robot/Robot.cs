@@ -88,33 +88,43 @@ namespace Tool
 
                 this.roomId = this.resGetRecommendedRooms.roomInfos[0].roomId;
 
-                e = await this.SendRoomChat(this.roomId, $"Hello {DateTime.Now}!");
-                if (e != ECode.Success)
+                if (resEnterRoom.recentMessages.Count > 0)
                 {
-                    Console.ReadLine();
-                    break;
+                    e = await this.ReportRoomMessage(this.roomId, resEnterRoom.recentMessages[0].messageId);
+                    if (e != ECode.Success)
+                    {
+                        Console.ReadLine();
+                        break;
+                    }
                 }
 
-                e = await this.LeaveRoom(this.roomId);
-                if (e != ECode.Success)
-                {
-                    Console.ReadLine();
-                    break;
-                }
+                // e = await this.SendRoomChat(this.roomId, $"Hello {DateTime.Now}!");
+                // if (e != ECode.Success)
+                // {
+                //     Console.ReadLine();
+                //     break;
+                // }
 
-                (e, resEnterRoom) = await this.EnterRoom(this.roomId, lastMessageId);
-                if (e != ECode.Success)
-                {
-                    Console.ReadLine();
-                    break;
-                }
+                // e = await this.LeaveRoom(this.roomId);
+                // if (e != ECode.Success)
+                // {
+                //     Console.ReadLine();
+                //     break;
+                // }
 
-                e = await this.SetName("Test-Name");
-                if (e != ECode.Success)
-                {
-                    Console.ReadLine();
-                    break;
-                }
+                // (e, resEnterRoom) = await this.EnterRoom(this.roomId, lastMessageId);
+                // if (e != ECode.Success)
+                // {
+                //     Console.ReadLine();
+                //     break;
+                // }
+
+                // e = await this.SetName("Test-Name");
+                // if (e != ECode.Success)
+                // {
+                //     Console.ReadLine();
+                //     break;
+                // }
 
                 while (true)
                 {

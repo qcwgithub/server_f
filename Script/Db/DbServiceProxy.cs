@@ -71,6 +71,10 @@ namespace Script
         {
             return await this.Request(ServiceType.Db, MsgType._Search_RoomInfo, msg);
         }
+        public async Task<MyResponse> Save_RoomMessageReportInfo(MsgSave_RoomMessageReportInfo msg)
+        {
+            return await this.Request(ServiceType.Db, MsgType._Save_RoomMessageReportInfo, msg);
+        }
 
         #endregion auto_proxy
     }

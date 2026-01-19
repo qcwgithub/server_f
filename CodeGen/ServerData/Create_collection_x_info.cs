@@ -476,52 +476,72 @@ public class Create_collection_x_info
                 {
                     ff.TabPushF("var collection = this.GetCollection{0}();\n", config.dbPostfix);
 
-                    bool eq2 = false;
-                    string op = string.Empty;
                     switch (item.cond)
                     {
-                        case "eq":
-                            op = "Eq";
+                        case SaveCond.eq:
+                            {
+                                ff.TabPush(string.Format("var filter = Builders<{0}>.Filter.{2}(nameof({0}.{1}), info.{1});\n",
+                                    config.xinfoType_dbPostfix, item.field.name, "Eq"));
+                            }
                             break;
 
-                        case "eq2":
-                            eq2 = true;
+                        case SaveCond.eq2:
+                            {
+                                ff.TabPushF("var eq1 = Builders<{0}>.Filter.Eq(nameof({0}.{1}), info.{1});\n", config.xinfoType_dbPostfix, item.field.name);
+                                ff.TabPushF("var eq2 = Builders<{0}>.Filter.Eq(nameof({0}.{1}), info.{1});\n", config.xinfoType_dbPostfix, item.field2.name);
+                                ff.TabPushF("var filter = Builders<{0}>.Filter.And(eq1, eq2);\n", config.xinfoType_dbPostfix);
+                            }
                             break;
 
-                        case "gte":
-                            op = "Gte";
+                        case SaveCond.gte:
+                            {
+                                ff.TabPush(string.Format("var filter = Builders<{0}>.Filter.{2}(nameof({0}.{1}), info.{1});\n",
+                                    config.xinfoType_dbPostfix, item.field.name, "Gte"));
+                            }
                             break;
 
-                        case "singleton":
+                        case SaveCond.singleton:
+                            {
+                                ff.TabPush(string.Format("var filter = Builders<{0}>.Filter.Empty;\n", config.xinfoType_dbPostfix));
+                            }
+                            break;
+
+                        case SaveCond.multiple:
+                            {
+
+                            }
                             break;
 
                         default:
                             throw new Exception();
                     }
 
-                    if (eq2)
+                    switch (item.cond)
                     {
-                        ff.TabPushF("var eq1 = Builders<{0}>.Filter.Eq(nameof({0}.{1}), info.{1});\n", config.xinfoType_dbPostfix, item.field.name);
-                        ff.TabPushF("var eq2 = Builders<{0}>.Filter.Eq(nameof({0}.{1}), info.{1});\n", config.xinfoType_dbPostfix, item.field2.name);
-                        ff.TabPushF("var filter = Builders<{0}>.Filter.And(eq1, eq2);\n", config.xinfoType_dbPostfix);
-                    }
-                    else if (string.IsNullOrEmpty(op))
-                    {
-                        ff.TabPush(string.Format("var filter = Builders<{0}>.Filter.Empty;\n", config.xinfoType_dbPostfix));
-                    }
-                    else
-                    {
-                        ff.TabPush(string.Format("var filter = Builders<{0}>.Filter.{2}(nameof({0}.{1}), info.{1});\n",
-                            config.xinfoType_dbPostfix, item.field.name, op));
-                    }
-                    if (config.unsetEmptyField)
-                    {
-                        ff.TabPush("var info_Db = XInfoHelper_Db.Copy_Class<{0}, {1}>(info);\n".Format(config.xinfoType_dbPostfix, config.xinfoType));
-                        ff.TabPush("await collection.ReplaceOneAsync(filter, info_Db, new ReplaceOptions { IsUpsert = true });\n");
-                    }
-                    else
-                    {
-                        ff.TabPush("await collection.ReplaceOneAsync(filter, info, new ReplaceOptions { IsUpsert = true });\n");
+                        case SaveCond.eq:
+                        case SaveCond.eq2:
+                        case SaveCond.gte:
+                        case SaveCond.singleton:
+                            {
+                                if (config.unsetEmptyField)
+                                {
+                                    ff.TabPush("var info_Db = XInfoHelper_Db.Copy_Class<{0}, {1}>(info);\n".Format(config.xinfoType_dbPostfix, config.xinfoType));
+                                    ff.TabPush("await collection.ReplaceOneAsync(filter, info_Db, new ReplaceOptions { IsUpsert = true });\n");
+                                }
+                                else
+                                {
+                                    ff.TabPush("await collection.ReplaceOneAsync(filter, info, new ReplaceOptions { IsUpsert = true });\n");
+                                }
+                            }
+                            break;
+                        case SaveCond.multiple:
+                            {
+                                ff.TabPush("await collection.InsertOneAsync(info);\n");
+                            }
+                            break;
+                        default:
+                            throw new Exception();
+
                     }
                     ff.TabPush("return ECode.Success;\n");
                 }

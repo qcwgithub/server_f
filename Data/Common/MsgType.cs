@@ -52,6 +52,7 @@ namespace Data
         _Insert_RoomInfo = 5011,
         _Save_RoomInfo = 5012,
         _Search_RoomInfo = 5013,
+        _Save_RoomMessageReportInfo = 5014,
         ClientStart = 10000,
         Forward = 10001,
         Login = 10002,
@@ -65,6 +66,7 @@ namespace Data
         SetName = 10010,
         SetAvatarIndex = 10011,
         GetRoomChatHistory = 10012,
+        ReportRoomMessage = 10013,
 
         #endregion auto
 

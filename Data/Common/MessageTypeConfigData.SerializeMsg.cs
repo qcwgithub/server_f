@@ -208,6 +208,10 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((MsgSearch_RoomInfo)msg);
                     break;
 
+                case MsgType._Save_RoomMessageReportInfo:
+                    msgBytes = MessagePackSerializer.Serialize((MsgSave_RoomMessageReportInfo)msg);
+                    break;
+
                 case MsgType.ClientStart:
                     throw new Exception("Missing config for MsgType.ClientStart");
 
@@ -257,6 +261,10 @@ namespace Data
 
                 case MsgType.GetRoomChatHistory:
                     msgBytes = MessagePackSerializer.Serialize((MsgGetRoomChatHistory)msg);
+                    break;
+
+                case MsgType.ReportRoomMessage:
+                    msgBytes = MessagePackSerializer.Serialize((MsgReportRoomMessage)msg);
                     break;
 
                 #endregion auto

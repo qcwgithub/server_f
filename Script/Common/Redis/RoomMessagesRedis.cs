@@ -65,5 +65,24 @@ namespace Script
             // 返回值是从新到旧
             return redisValues.Select(v => MessagePackSerializer.Deserialize<ChatMessage>(v)).ToList();
         }
+
+        public async Task<ChatMessage?> QueryOne(long roomId, long messageId)
+        {
+            string key = Key(roomId);
+
+            RedisValue[] redisValues = await this.GetDb().SortedSetRangeByScoreAsync(key,
+                start: messageId,
+                stop: messageId,
+                exclude: Exclude.None,
+                order: Order.Descending,
+                take: 1);
+
+            if (redisValues.Length == 0)
+            {
+                return null;
+            }
+
+            return MessagePackSerializer.Deserialize<ChatMessage>(redisValues[0]);
+        }
     }
 }

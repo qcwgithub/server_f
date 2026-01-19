@@ -154,13 +154,14 @@ public class ServerDataProgram
         int index = startIndex;
 
         var save = new ServerDataConfig.Save();
-        save.cond = Read(content, ref index, endIndex);
+        save.cond = Enum.Parse<SaveCond>(Read(content, ref index, endIndex));
 
         switch (save.cond)
         {
-            case "singleton":
+            case SaveCond.singleton:
+            case SaveCond.multiple:
                 break;
-            case "eq2":
+            case SaveCond.eq2:
                 save.field = SolveField(content, ref index, endIndex, xinfoType);
                 save.field2 = SolveField(content, ref index, endIndex, xinfoType);
                 break;

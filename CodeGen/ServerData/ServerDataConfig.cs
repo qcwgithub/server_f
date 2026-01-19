@@ -15,6 +15,15 @@ public class DbFilesConfig
     public Func<string, string, string> Persistence_path2;
 }
 
+public enum SaveCond
+{
+    singleton,
+    eq,
+    eq2,
+    gte,
+    multiple,
+}
+
 public class ServerDataConfig
 {
     public string originalXInfoType;
@@ -156,7 +165,7 @@ public class ServerDataConfig
 
     public class Save
     {
-        public string cond; // eq, gte, singleton
+        public SaveCond cond;
         public Field field;
         public Field field2;
 

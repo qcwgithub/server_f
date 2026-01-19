@@ -1,8 +1,3 @@
-using System;
-using System.IO;
-using System.Linq;
-using Microsoft.VisualBasic;
-
 public class Create_Save_XInfo
 {
     public static void Create(ServerDataConfig config)
