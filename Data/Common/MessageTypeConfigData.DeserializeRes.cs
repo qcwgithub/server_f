@@ -115,6 +115,10 @@ namespace Data
                     ob = MessagePackSerializer.Deserialize<ResSetGmFlag>(resBytes);
                     break;
 
+                case MsgType._User_ResetName:
+                    ob = MessagePackSerializer.Deserialize<ResResetName>(resBytes);
+                    break;
+
                 case MsgType._UserManager_UserLogin:
                     ob = MessagePackSerializer.Deserialize<ResUserManagerUserLogin>(resBytes);
                     break;

@@ -27,6 +27,7 @@ _User_SaveUserImmediately,305,MsgSaveUserImmediately,ResSaveUserImmediately,1,1
 _User_GetUserCount,306,MsgGetUserCount,ResGetUserCount,1,1
 _User_SaveUserInfoToFile,307,MsgSaveUserInfoToFile,ResSaveUserInfoToFile,1,1
 _User_SetGmFlag,309,MsgSetGmFlag,ResSetGmFlag,1,1
+_User_ResetName,310,MsgResetName,ResResetName,1,1
 #,,,,,
 _UserManager_UserLogin,500,MsgUserManagerUserLogin,ResUserManagerUserLogin,1,0
 #,,,,,

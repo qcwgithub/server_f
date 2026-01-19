@@ -8,6 +8,7 @@ namespace Data
         DestroyTimer_DisconnectFromGateway,
         Shutdown,
         ServerKick,
+        ResetName,
     }
 
     public enum UserClearDestroyTimerReason

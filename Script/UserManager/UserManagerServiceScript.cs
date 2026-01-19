@@ -23,6 +23,11 @@ namespace Script
             return ECode.Success;
         }
 
+        public static string DefaultUserName(long createTimeS)
+        {
+            return "User_" + createTimeS;
+        }
+
         public UserInfo NewUserInfo(long userId)
         {
             UserInfo userInfo = UserInfo.Ensure(null);
@@ -31,7 +36,7 @@ namespace Script
             long nowS = TimeUtils.GetTimeS();
             userInfo.createTimeS = nowS;
             userInfo.lastLoginTimeS = nowS;
-            userInfo.userName = nowS.ToString();
+            userInfo.userName = DefaultUserName(nowS);
             userInfo.avatarIndex = this.server.data.random.Next(
                 this.server.data.serverConfig.userAvatarConfig.minIndex,
                 this.server.data.serverConfig.userAvatarConfig.maxIndex + 1

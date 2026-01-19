@@ -34,6 +34,12 @@ public static class XInfoHelper_Db
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static DateTime? Copy_BigInteger(DateTime other)
+    {
+        return other;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static string Copy_string(string other)
     {
         return string.IsNullOrEmpty(other) ? null : other;

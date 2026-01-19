@@ -29,6 +29,7 @@ namespace Data
         _User_GetUserCount = 306,
         _User_SaveUserInfoToFile = 307,
         _User_SetGmFlag = 309,
+        _User_ResetName = 310,
         _UserManager_UserLogin = 500,
         _Room_ServerAction = 600,
         _Room_SaveRoomInfoToFile = 603,

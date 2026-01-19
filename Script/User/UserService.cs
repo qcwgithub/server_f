@@ -61,6 +61,7 @@ namespace Script
             this.dispatcher.AddHandler(new User_OnTimer(this.server, this), true);
             this.dispatcher.AddHandler(new User_ReportRoomMessage(this.server, this));
             this.dispatcher.AddHandler(new User_ReportUser(this.server, this));
+            this.dispatcher.AddHandler(new User_ResetName(this.server, this));
             this.dispatcher.AddHandler(new User_SaveUserImmediately(this.server, this));
             this.dispatcher.AddHandler(new User_SaveUserInfoToFile(this.server, this));
             this.dispatcher.AddHandler(new User_SearchRoom(this.server, this));

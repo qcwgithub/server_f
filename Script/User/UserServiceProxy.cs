@@ -42,6 +42,10 @@ namespace Script
         {
             return await this.Request(serviceId, MsgType._User_SetGmFlag, msg);
         }
+        public async Task<MyResponse> ResetName(int serviceId, MsgResetName msg)
+        {
+            return await this.Request(serviceId, MsgType._User_ResetName, msg);
+        }
 
         #endregion auto_proxy
     }

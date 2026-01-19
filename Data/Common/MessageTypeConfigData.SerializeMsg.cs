@@ -116,6 +116,10 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((MsgSetGmFlag)msg);
                     break;
 
+                case MsgType._User_ResetName:
+                    msgBytes = MessagePackSerializer.Serialize((MsgResetName)msg);
+                    break;
+
                 case MsgType._UserManager_UserLogin:
                     msgBytes = MessagePackSerializer.Serialize((MsgUserManagerUserLogin)msg);
                     break;

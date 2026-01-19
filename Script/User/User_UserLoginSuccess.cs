@@ -20,10 +20,11 @@ namespace Script
                 return ECode.ServerNotReady;
             }
 
+            ECode e;
             User? user = await this.service.LockUser(msg.userId, context);
             if (user == null)
             {
-                UserInfo? userInfo;
+                UserInfo? userInfo = null;
                 if (msg.isNewUser)
                 {
                     userInfo = msg.newUserInfo;
@@ -33,34 +34,20 @@ namespace Script
                         return ECode.UserInfoNotExist;
                     }
                 }
-                else
-                {
-                    ECode e;
-                    (e, userInfo) = await this.service.ss.QueryUserInfo(msg.userId);
-                    if (e != ECode.Success)
-                    {
-                        return e;
-                    }
 
-                    if (userInfo == null)
-                    {
-                        return ECode.UserInfoNotExist;
-                    }
+                (e, user) = await this.service.LoadUser(msg.userId, userInfo);
+                if (e != ECode.Success)
+                {
+                    return e;
                 }
 
-                user = new User(userInfo);
-
-                await this.server.userLocationRedisW.WriteLocation(msg.userId, this.service.serviceId, this.service.sd.saveIntervalS + 60);
-
-                this.AddUserToDict(user);
-
-                // 这里不再加东西了，要加得加到 AddPlayerToDict 里
+                if (user == null)
+                {
+                    return ECode.UserNotExist;
+                }
             }
 
-            if (!user.saveTimer.IsAlive())
-            {
-                this.service.ss.SetSaveTimer(user);
-            }
+            this.service.ss.SetSaveTimer(user);
 
             bool kickOther = this.HandleOldConnection(user, msg.gatewayServiceId);
 
@@ -112,23 +99,6 @@ namespace Script
             }
 
             return true;
-        }
-
-        void AddUserToDict(User user)
-        {
-            // runtime 初始化
-            this.service.sd.AddUser(user);
-
-            // 有值就不能再赋值了，不然玩家上线下线就错了
-            MyDebug.Assert(user.lastUserInfo == null);
-
-            user.lastUserInfo = UserInfo.Ensure(null);
-            user.lastUserInfo.DeepCopyFrom(user.userInfo);
-
-            // qiucw
-            // 这句会修改 userInfo，必须放在 lastUserInfo.DeepCopyFrom 后面
-            // this.gameScripts.CallInit(user);
-            this.service.CheckUpdateRuntimeInfo().Forget();
         }
 
         public override void PostHandle(MessageContext context, MsgUserLoginSuccess msg, ECode e, ResUserLoginSuccess res)
