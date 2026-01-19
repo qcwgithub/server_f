@@ -211,6 +211,10 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((ResSave_RoomMessageReportInfo)res);
                     break;
 
+                case MsgType._Save_UserNameReportInfo:
+                    msgBytes = MessagePackSerializer.Serialize((ResSave_UserNameReportInfo)res);
+                    break;
+
                 case MsgType.ClientStart:
                     throw new Exception("Missing config for MsgType.ClientStart");
 
@@ -262,6 +266,10 @@ namespace Data
 
                 case MsgType.ReportRoomMessage:
                     msgBytes = MessagePackSerializer.Serialize((ResReportRoomMessage)res);
+                    break;
+
+                case MsgType.ReportUserName:
+                    msgBytes = MessagePackSerializer.Serialize((ResReportUserName)res);
                     break;
 
                 #endregion auto
