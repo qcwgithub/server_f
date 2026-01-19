@@ -4,16 +4,16 @@ using System.Collections.Generic;
 namespace Data
 {
     [MessagePackObject]
-    public class MsgReportUserName
+    public class MsgReportUser
     {
         [Key(0)]
         public long targetUserId;
         [Key(1)]
-        public UserNameReportReason reason;
+        public UserReportReason reason;
     }
 
     [MessagePackObject]
-    public class ResReportUserName
+    public class ResReportUser
     {
 
     }

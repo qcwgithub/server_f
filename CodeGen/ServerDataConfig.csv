@@ -4,4 +4,4 @@ UserInfo,*,1,collection_user_info,1,user_info,dbPlayer,[1 userId][0 userName],[e
 AccountInfo,*,1,collection_account_info,0,account_info,dbPlayer,[1 channel channelUserId][0 userIds],[eq2 string channel string channelUserId one * info][eq string channelUserId one * info][ele long userIds one * info][ele long userIds list * info],[eq2 string channel string channelUserId],*,db,AccountKey.AccountInfo,[string channel][string channelUserId],*,SecondKey,0,0,1,1,Redis
 RoomInfo,*,1,collection_room_info,1,room_info,dbPlayer,[1 roomId][0 title][0 desc],[eq long roomId one * info][max long roomId one long roomId],,*,,,,*,NoKey,0,0,1,1,Memory
 RoomMessageReportInfo,*,1,collection_room_message_report_info,0,room_message_report_info,dbPlayer,,,multiple,*,,,,,NoKey,,,,,None
-UserNameReportInfo,*,1,collection_user_name_report_info,0,room_user_name_report_info,dbPlayer,,,multiple,*,,,,,NoKey,,,,,None
+UserReportInfo,*,1,collection_user_report_info,0,room_user_report_info,dbPlayer,,,multiple,*,,,,,NoKey,,,,,None

@@ -2,14 +2,14 @@ using Data;
 
 namespace Script
 {
-    public class User_ReportUserName : Handler<UserService, MsgReportUserName, ResReportUserName>
+    public class User_ReportUser : Handler<UserService, MsgReportUser, ResReportUser>
     {
-        public override MsgType msgType => MsgType.ReportUserName;
-        public User_ReportUserName(Server server, UserService service) : base(server, service)
+        public override MsgType msgType => MsgType.ReportUser;
+        public User_ReportUser(Server server, UserService service) : base(server, service)
         {
         }
 
-        public override async Task<ECode> Handle(MessageContext context, MsgReportUserName msg, ResReportUserName res)
+        public override async Task<ECode> Handle(MessageContext context, MsgReportUser msg, ResReportUser res)
         {
             this.service.logger.Info($"{this.msgType} userId {context.msg_userId} targetUserId {msg.targetUserId} reason {msg.reason}");
 
@@ -19,26 +19,25 @@ namespace Script
                 return ECode.UserNotExist;
             }
 
-            if (msg.reason < 0 || msg.reason >= UserNameReportReason.Count)
+            if (msg.reason < 0 || msg.reason >= UserReportReason.Count)
             {
                 return ECode.InvalidParam;
             }
 
-            var info = new UserNameReportInfo();
+            var info = new UserReportInfo();
             info.reportUserId = user.userId;
             info.reason = msg.reason;
             info.timeS = TimeUtils.GetTimeS();
-            info.targetUserName = string.Empty; // todo
 
-            var msgDb = new MsgSave_UserNameReportInfo();
+            var msgDb = new MsgSave_UserReportInfo();
             msgDb.info = info;
 
-            await this.service.dbServiceProxy.Save_UserNameReportInfo(msgDb);
+            await this.service.dbServiceProxy.Save_UserReportInfo(msgDb);
 
             return ECode.Success;
         }
 
-        public override void PostHandle(MessageContext context, MsgReportUserName msg, ECode e, ResReportUserName res)
+        public override void PostHandle(MessageContext context, MsgReportUser msg, ECode e, ResReportUser res)
         {
             this.service.TryUnlockUser(context.msg_userId, context);
 

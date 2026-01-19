@@ -212,8 +212,8 @@ namespace Data
                     ob = MessagePackSerializer.Deserialize<MsgSave_RoomMessageReportInfo>(msgBytes);
                     break;
 
-                case MsgType._Save_UserNameReportInfo:
-                    ob = MessagePackSerializer.Deserialize<MsgSave_UserNameReportInfo>(msgBytes);
+                case MsgType._Save_UserReportInfo:
+                    ob = MessagePackSerializer.Deserialize<MsgSave_UserReportInfo>(msgBytes);
                     break;
 
                 case MsgType.ClientStart:
@@ -271,8 +271,8 @@ namespace Data
                     ob = MessagePackSerializer.Deserialize<MsgReportRoomMessage>(msgBytes);
                     break;
 
-                case MsgType.ReportUserName:
-                    ob = MessagePackSerializer.Deserialize<MsgReportUserName>(msgBytes);
+                case MsgType.ReportUser:
+                    ob = MessagePackSerializer.Deserialize<MsgReportUser>(msgBytes);
                     break;
 
                 #endregion auto

@@ -212,8 +212,8 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((MsgSave_RoomMessageReportInfo)msg);
                     break;
 
-                case MsgType._Save_UserNameReportInfo:
-                    msgBytes = MessagePackSerializer.Serialize((MsgSave_UserNameReportInfo)msg);
+                case MsgType._Save_UserReportInfo:
+                    msgBytes = MessagePackSerializer.Serialize((MsgSave_UserReportInfo)msg);
                     break;
 
                 case MsgType.ClientStart:
@@ -271,8 +271,8 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((MsgReportRoomMessage)msg);
                     break;
 
-                case MsgType.ReportUserName:
-                    msgBytes = MessagePackSerializer.Serialize((MsgReportUserName)msg);
+                case MsgType.ReportUser:
+                    msgBytes = MessagePackSerializer.Serialize((MsgReportUser)msg);
                     break;
 
                 #endregion auto

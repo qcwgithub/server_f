@@ -3,7 +3,7 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class UserNameReportInfo
+    public class UserReportInfo
     {
         #region auto
 
@@ -12,17 +12,15 @@ namespace Data
         [Key(1)]
         public long targetUserId;
         [Key(2)]
-        public UserNameReportReason reason;
+        public UserReportReason reason;
         [Key(3)]
         public long timeS;
-        [Key(4)]
-        public string targetUserName;
 
-        public static UserNameReportInfo Ensure(UserNameReportInfo? p)
+        public static UserReportInfo Ensure(UserReportInfo? p)
         {
             if (p == null)
             {
-                p = new UserNameReportInfo();
+                p = new UserReportInfo();
             }
             p.Ensure();
             return p;
@@ -30,13 +28,9 @@ namespace Data
 
         public void Ensure()
         {
-            if (this.targetUserName == null)
-            {
-                this.targetUserName = string.Empty;
-            }
         }
 
-        public bool IsDifferent(UserNameReportInfo other)
+        public bool IsDifferent(UserReportInfo other)
         {
             if (this.reportUserId != other.reportUserId)
             {
@@ -54,20 +48,15 @@ namespace Data
             {
                 return true;
             }
-            if (this.targetUserName != other.targetUserName)
-            {
-                return true;
-            }
             return false;
         }
 
-        public void DeepCopyFrom(UserNameReportInfo other)
+        public void DeepCopyFrom(UserReportInfo other)
         {
             this.reportUserId = other.reportUserId;
             this.targetUserId = other.targetUserId;
             this.reason = other.reason;
             this.timeS = other.timeS;
-            this.targetUserName = other.targetUserName;
         }
 
         #endregion auto

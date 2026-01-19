@@ -5,7 +5,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Data
 {
-    public class UserNameReportInfo_Db : IIsDifferent_Db<UserNameReportInfo>
+    public class UserReportInfo_Db : IIsDifferent_Db<UserReportInfo>
     {
         #region auto
 
@@ -14,13 +14,11 @@ namespace Data
         [BsonIgnoreIfNull]
         public long? targetUserId;
         [BsonIgnoreIfNull]
-        public UserNameReportReason reason;
+        public UserReportReason reason;
         [BsonIgnoreIfNull]
         public long? timeS;
-        [BsonIgnoreIfNull]
-        public string targetUserName;
 
-        public bool DeepCopyFrom(UserNameReportInfo other)
+        public bool DeepCopyFrom(UserReportInfo other)
         {
             bool empty = true;
 
@@ -41,12 +39,6 @@ namespace Data
 
             this.timeS = XInfoHelper_Db.Copy_long(other.timeS);
             if (this.timeS != null)
-            {
-                empty = false;
-            }
-
-            this.targetUserName = XInfoHelper_Db.Copy_string(other.targetUserName);
-            if (this.targetUserName != null)
             {
                 empty = false;
             }

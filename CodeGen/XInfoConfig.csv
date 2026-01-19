@@ -32,9 +32,8 @@ long_,,,,,roomId,,
 long_,,,,,messageId,,
 enum_,RoomMessageReportReason,,,,reason,,
 long_,,,,,timeS,,
-@UserNameReportInfo,,,,,,,None
+@UserReportInfo,,,,,,,None
 long_,,,,,reportUserId,,
 long_,,,,,targetUserId,,
-enum_,UserNameReportReason,,,,reason,,
+enum_,UserReportReason,,,,reason,,
 long_,,,,,timeS,,
-string_,,,,,targetUserName,,

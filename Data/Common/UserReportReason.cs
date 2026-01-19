@@ -1,6 +1,6 @@
 namespace Data
 {
-    public enum UserNameReportReason
+    public enum UserReportReason
     {
         Other,
         Spam,

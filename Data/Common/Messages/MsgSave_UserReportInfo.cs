@@ -5,15 +5,15 @@ namespace Data
 {
     //// AUTO CREATED ////
     [MessagePackObject]
-    public sealed class MsgSave_UserNameReportInfo
+    public sealed class MsgSave_UserReportInfo
     {
         [Key(0)]
-        public UserNameReportInfo info;
+        public UserReportInfo info;
     }
     
     //// AUTO CREATED ////
     [MessagePackObject]
-    public sealed class ResSave_UserNameReportInfo
+    public sealed class ResSave_UserReportInfo
     {
     }
 }
