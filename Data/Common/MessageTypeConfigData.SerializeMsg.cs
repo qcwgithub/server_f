@@ -124,6 +124,10 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((MsgUserManagerUserLogin)msg);
                     break;
 
+                case MsgType._UserManager_GetUserLocation:
+                    msgBytes = MessagePackSerializer.Serialize((MsgUserManagerGetUserLocation)msg);
+                    break;
+
                 case MsgType._Room_ServerAction:
                     msgBytes = MessagePackSerializer.Serialize((MsgRoomServiceAction)msg);
                     break;

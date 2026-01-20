@@ -123,6 +123,10 @@ namespace Data
                     ob = MessagePackSerializer.Deserialize<ResUserManagerUserLogin>(resBytes);
                     break;
 
+                case MsgType._UserManager_GetUserLocation:
+                    ob = MessagePackSerializer.Deserialize<ResUserManagerGetUserLocation>(resBytes);
+                    break;
+
                 case MsgType._Room_ServerAction:
                     ob = MessagePackSerializer.Deserialize<ResRoomServiceAction>(resBytes);
                     break;

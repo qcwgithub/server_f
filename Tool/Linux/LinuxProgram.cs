@@ -52,6 +52,10 @@ namespace Tool
                         await this.SearchRoom();
                         break;
 
+                    case Action.UserResetName:
+                        await this.UserResetName();
+                        break;
+
                     case Action.Exit:
                         exit = true;
                         break;

@@ -7,7 +7,7 @@ namespace Tool
         ShutdownServicesAll,
         PrintUserUSId,
         PrintPendingMsgList,
-        UserAction,
+        UserResetName,
         ShowScriptVersion,
         ReloadScript,
         ReloadConfigs,
@@ -38,8 +38,8 @@ namespace Tool
                     return "Print User US Id";
                 case Action.PrintPendingMsgList:
                     return "Print Pending Msg List";
-                case Action.UserAction:
-                    return "User Action";
+                case Action.UserResetName:
+                    return "User Reset Name";
                 case Action.ShowScriptVersion:
                     return "Show Script Version";
                 case Action.ReloadScript:

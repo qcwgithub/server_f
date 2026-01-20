@@ -14,6 +14,10 @@ namespace Script
         {
             return await this.Request(ServiceType.UserManager, MsgType._UserManager_UserLogin, msg);
         }
+        public async Task<MyResponse> GetUserLocation(MsgUserManagerGetUserLocation msg)
+        {
+            return await this.Request(ServiceType.UserManager, MsgType._UserManager_GetUserLocation, msg);
+        }
 
         #endregion auto_proxy
     }

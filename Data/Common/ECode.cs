@@ -4,7 +4,7 @@ namespace Data
     {
         Success = 0,
         NoAvailableUserService = 1,
-        InvalidAccount = 2,
+        AccountNotExist = 2,
         InvalidPassword = 3,
         UserNotExist = 5,
         RoomNotExist = 6,

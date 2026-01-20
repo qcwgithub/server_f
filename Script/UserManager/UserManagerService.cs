@@ -43,6 +43,7 @@ namespace Script
             base.Attach();
             base.AddHandler<UserManagerService>();
 
+            this.dispatcher.AddHandler(new UserManager_GetUserLocation(this.server, this));
             this.dispatcher.AddHandler(new UserManager_UserLogin(this.server, this));
         }
     }

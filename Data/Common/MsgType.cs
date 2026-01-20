@@ -31,6 +31,7 @@ namespace Data
         _User_SetGmFlag = 309,
         _User_ResetName = 310,
         _UserManager_UserLogin = 500,
+        _UserManager_GetUserLocation = 501,
         _Room_ServerAction = 600,
         _Room_SaveRoomInfoToFile = 603,
         _Room_UserEnter = 604,
