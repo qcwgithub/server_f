@@ -155,12 +155,12 @@ namespace Script
             IServiceConnection? connection;
             if (!data.otherServiceConnections.TryGetValue(to_serviceId, out connection) || connection.IsClosed())
             {
-                // if (this.server.data.serviceTypeAndIds.Exists(tai => tai.serviceType == to_serviceType && tai.serviceId == to_serviceId))
-                // {
-                //     connection = new InProcessServiceConnection(to_serviceType, to_serviceId);
-                //     data.SaveOtherServiceConnection(connection);
-                // }
-                // else
+                if (this.server.data.serviceTypeAndIds.Exists(tai => tai.serviceType == to_serviceType && tai.serviceId == to_serviceId))
+                {
+                    connection = new InProcessServiceConnection(this.data, to_serviceType, to_serviceId);
+                    data.SaveOtherServiceConnection(connection);
+                }
+                else
                 {
                     connection = new SocketServiceConnection(this.data, inIp, inPort, to_serviceType, to_serviceId);
                     data.SaveOtherServiceConnection(connection);

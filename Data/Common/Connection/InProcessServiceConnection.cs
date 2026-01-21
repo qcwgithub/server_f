@@ -37,8 +37,10 @@ namespace Data
             }
         }
 
-        public InProcessServiceConnection(ServiceType serviceType, int serviceId)
+        readonly IConnectionCallbackProvider callbackProvider;
+        public InProcessServiceConnection(IConnectionCallbackProvider callbackProvider, ServiceType serviceType, int serviceId)
         {
+            this.callbackProvider = callbackProvider;
             this.serviceType = serviceType;
             this.serviceId = serviceId;
         }
@@ -60,7 +62,7 @@ namespace Data
 
         public void Send(MsgType msgType, object msg, ReplyCallback? cb)
         {
-
+            this.callbackProvider.GetConnectionCallback().OnMsg(this, 0, msgType, msg, cb);
         }
 
         public void Close(string reason)

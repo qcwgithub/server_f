@@ -118,6 +118,11 @@ namespace Script
             }
         }
 
+        public virtual async void OnMsg(IConnection connection, int seq, MsgType msgType, object msg, ReplyCallback2? reply)
+        {
+            
+        }
+
         public void OnClose(IConnection connection)
         {
             this.service.OnConnectionClose(connection).Forget();
