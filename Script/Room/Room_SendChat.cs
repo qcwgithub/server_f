@@ -139,7 +139,7 @@ namespace Script
                 int gatewayServiceId = pair.Key;
                 List<RoomUser> roomUsers = pair.Value;
 
-                List<long> userIds = roomUsers.Select(x => x.userId).ToList();
+                long[] userIds = roomUsers.Select(x => x.userId).ToArray();
                 ECode e = this.service.gatewayServiceProxy.BroadcastToClient(gatewayServiceId, userIds, MsgType.A_RoomChat, message);
                 if (e == ECode.NotConnected)
                 {

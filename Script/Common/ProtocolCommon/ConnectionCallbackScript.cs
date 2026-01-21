@@ -118,9 +118,18 @@ namespace Script
             }
         }
 
-        public virtual async void OnMsg(IConnection connection, int seq, MsgType msgType, object msg, ReplyCallback2? reply)
+        public virtual async void OnLocalMsg(IConnection connection, int seq, MsgType msgType, object msg, LocalReplyCallback? reply)
         {
-            
+            var context = new MessageContext
+            {
+                connection = connection,
+            };
+
+            var r = await this.service.dispatcher.Dispatch(context, msgType, msg);
+            if (reply != null)
+            {
+                reply(r.e, r.res);
+            }
         }
 
         public void OnClose(IConnection connection)

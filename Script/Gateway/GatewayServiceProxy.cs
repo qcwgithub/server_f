@@ -8,7 +8,7 @@ namespace Script
         {
         }
 
-        public ECode BroadcastToClient(int serviceId, List<long> userIds, MsgType msgType, object msg)
+        public ECode BroadcastToClient(int serviceId, long[] userIds, MsgType msgType, object msg)
         {
             IServiceConnection? connection = this.self.data.GetOtherServiceConnection(serviceId);
             if (connection == null || !connection.IsConnected())
@@ -21,7 +21,7 @@ namespace Script
                 return ECode.NotConnected;
             }
 
-            Forwarding.S_to_G(connection, userIds, MsgType.A_RoomChat, msg, null);
+            Forwarding.S_to_G(connection, userIds, msgType, msg, null);
             return ECode.Success;
         }
 

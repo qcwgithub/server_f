@@ -1,4 +1,4 @@
 using Data;
 
 public delegate void ReplyCallback(ECode e, byte[] bytes);
-public delegate void ReplyCallback2(ECode e, object res);
+public delegate void LocalReplyCallback(ECode e, object res);

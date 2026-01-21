@@ -149,7 +149,7 @@ namespace Script
             S_to_G(serviceConnection, msgForward, reply);
         }
 
-        public static void S_to_G(IServiceConnection serviceConnection, List<long> userIds, MsgType msgType, object msg, ReplyCallback? reply)
+        public static void S_to_G(IServiceConnection serviceConnection, long[] userIds, MsgType msgType, object msg, ReplyCallback? reply)
         {
             var msgForward = new MsgForward();
             msgForward.userId = 0;

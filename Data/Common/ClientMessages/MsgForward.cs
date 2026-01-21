@@ -8,7 +8,7 @@ namespace Data
         [Key(0)]
         public long userId;
         [Key(1)]
-        public List<long>? userIds;
+        public long[]? userIds;
         [Key(2)]
         public MsgType innerMsgType;
         [Key(3)]

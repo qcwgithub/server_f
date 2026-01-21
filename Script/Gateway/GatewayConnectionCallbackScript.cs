@@ -30,5 +30,26 @@ namespace Script
 
             base.OnMsg(connection, seq, msgType, msgBytes, reply);
         }
+
+        public override void OnLocalMsg(IConnection connection, int seq, MsgType msgType, object msg, LocalReplyCallback? reply)
+        {
+            if (connection is GatewayUserConnection gatewayUserConnection)
+            {
+                ServiceType? serviceType = LocalForwarding.G_to_S(this.gatewayService, gatewayUserConnection, msgType, msg, reply);
+                if (serviceType != null)
+                {
+                    return;
+                }
+            }
+            else if (connection is IServiceConnection serviceConnection)
+            {
+                if (LocalForwarding.G_from_S(this.gatewayService, msgType, msg, reply))
+                {
+                    return;
+                }
+            }
+
+            base.OnLocalMsg(connection, seq, msgType, msg, reply);
+        }
     }
 }

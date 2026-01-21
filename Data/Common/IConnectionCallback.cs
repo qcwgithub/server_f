@@ -9,8 +9,8 @@ namespace Data
         void LogInfo(string str);
         int nextMsgSeq { get; }
         void OnConnect(IConnection connection, bool success);
-        void OnMsg(IConnection connection, int seq, MsgType msgType, byte[] msgBytes, ReplyCallback? cb);
-        void OnMsg(IConnection connection, int seq, MsgType msgType, object msg, ReplyCallback2? cb);
+        void OnMsg(IConnection connection, int seq, MsgType msgType, byte[] msgBytes, ReplyCallback? reply);
+        void OnLocalMsg(IConnection connection, int seq, MsgType msgType, object msg, LocalReplyCallback? reply);
         void OnClose(IConnection connection);
     }
 

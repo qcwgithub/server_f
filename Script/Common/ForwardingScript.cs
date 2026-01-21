@@ -10,7 +10,14 @@ namespace Script
 
         public void S_to_G(IServiceConnection serviceConnection, long userId, MsgType msgType, object msg, ReplyCallback? reply)
         {
-            Forwarding.S_to_G(serviceConnection, userId, msgType, msg, reply);
+            if (serviceConnection is InProcessServiceConnection)
+            {
+                LocalForwarding.S_to_G(serviceConnection, userId, msgType, msg, reply);
+            }
+            else
+            {
+                Forwarding.S_to_G(serviceConnection, userId, msgType, msg, reply);
+            }
         }
     }
 }
