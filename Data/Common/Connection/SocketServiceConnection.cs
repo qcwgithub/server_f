@@ -29,9 +29,11 @@ namespace Data
         {
             get
             {
-                return _serviceType != null;
+                return this.isCommand || _serviceType != null;
             }
         }
+
+        public bool isCommand { get; set; }
 
         public ServiceType serviceType
         {
@@ -70,6 +72,18 @@ namespace Data
             get
             {
                 return ServiceTypeAndId.Create(this.serviceType, this.serviceId);
+            }
+        }
+
+        public string identifierString
+        {
+            get
+            {
+                if (this.isCommand)
+                {
+                    return "Command";
+                }
+                return this.tai.ToString();
             }
         }
     }

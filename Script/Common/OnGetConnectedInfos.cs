@@ -14,7 +14,7 @@ namespace Script
         {
             ServiceData sd = this.service.data;
         
-            res.connectedInfos = new List<ServiceTypeAndId>();
+            res.connectedInfos = new List<string>();
 
             foreach (List<IServiceConnection> list in sd.otherServiceConnections2)
             {
@@ -30,7 +30,7 @@ namespace Script
                         continue;
                     }
 
-                    res.connectedInfos.Add(serviceConnection.tai);
+                    res.connectedInfos.Add(serviceConnection.identifierString);
                 }
             }
 

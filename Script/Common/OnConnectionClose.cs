@@ -11,15 +11,16 @@ namespace Script
             {
                 if (this.data.state < ServiceState.ShuttingDown &&
                     serviceConnection.knownWho &&
+                    !serviceConnection.isCommand &&
                     !serviceConnection.remoteWillShutdown &&
                     serviceConnection.closeReason != ProtocolClientData.CloseReason.OnConnectComplete_false &&
                     this.data.serviceType.ShouldLogErrorWhenDisconnectFrom(serviceConnection.serviceType))
                 {
-                    this.logger.FatalFormat("SocketClose {0} reason {1}", serviceConnection.tai, serviceConnection.closeReason);
+                    this.logger.FatalFormat("SocketClose {0} reason {1}", serviceConnection.identifierString, serviceConnection.closeReason);
                 }
                 else
                 {
-                    this.logger.InfoFormat("SocketClose {0} reason {1}", serviceConnection.tai, serviceConnection.closeReason);
+                    this.logger.InfoFormat("SocketClose {0} reason {1}", serviceConnection.identifierString, serviceConnection.closeReason);
                 }
 
                 if (this.data.state < ServiceState.ShuttingDown &&

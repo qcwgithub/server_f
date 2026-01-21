@@ -2,6 +2,14 @@ namespace Data
 {
     public class InProcessServiceConnection : IServiceConnection
     {
+        public bool isCommand
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         public bool knownWho
         {
             get
@@ -18,6 +26,14 @@ namespace Data
             get
             {
                 return ServiceTypeAndId.Create(this.serviceType, this.serviceId);
+            }
+        }
+
+        public string identifierString
+        {
+            get
+            {
+                return this.tai.ToString();
             }
         }
 

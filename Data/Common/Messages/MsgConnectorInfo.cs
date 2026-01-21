@@ -19,6 +19,8 @@ namespace Data
     {
         [Key(0)]
         public ConnectorInfo connectorInfo;
+        [Key(1)]
+        public bool isCommand;
     }
 
     [MessagePackObject]

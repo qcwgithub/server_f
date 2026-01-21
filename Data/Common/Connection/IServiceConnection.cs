@@ -3,11 +3,13 @@ namespace Data
     public interface IServiceConnection : IConnection
     {
         bool knownWho { get; }
+        bool isCommand { get; }
         ServiceType serviceType { get; }
         int serviceId { get; }
         bool remoteWillShutdown { get; set; }
 
         ServiceTypeAndId tai { get; }
+        string identifierString { get; }
 
         void Connect();
         bool IsConnecting();

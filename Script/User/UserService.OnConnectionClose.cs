@@ -10,6 +10,7 @@ namespace Script
 
             if (connection is IServiceConnection serviceConnection &&
                 serviceConnection.knownWho &&
+                !serviceConnection.isCommand &&
                 serviceConnection.serviceType == ServiceType.Gateway)
             {
                 long nowS = TimeUtils.GetTimeS();

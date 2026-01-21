@@ -15,7 +15,7 @@ namespace Script
         {
             if (context.connection is IServiceConnection serviceConnection)
             {
-                this.service.logger.InfoFormat("{0} {1}", this.msgType, serviceConnection.tai);
+                this.service.logger.InfoFormat("{0} {1}", this.msgType, serviceConnection.identifierString);
 
                 serviceConnection.remoteWillShutdown = true;
             }

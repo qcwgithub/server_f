@@ -17,21 +17,28 @@ namespace Script
 
         public override async Task<ECode> Handle(MessageContext context, MsgConnectorInfo msg, ResConnectorInfo res)
         {
-            ConnectorInfo info = msg.connectorInfo;
             var connection = (SocketServiceConnection)context.connection;
-
-            if (this.service.data.state == ServiceState.Started)
+            if (msg.isCommand)
             {
-                this.service.logger.Info($"{this.msgType} {info.serviceType}{info.serviceId} my state {this.service.data.state}");
+                connection.isCommand = true;
             }
             else
             {
-                this.service.logger.Error($"{this.msgType} {info.serviceType}{info.serviceId} my state {this.service.data.state}");
-            }
+                ConnectorInfo info = msg.connectorInfo;
 
-            connection.serviceType = info.serviceType;
-            connection.serviceId = info.serviceId;
-            this.service.data.SaveOtherServiceConnection(connection);
+                if (this.service.data.state == ServiceState.Started)
+                {
+                    this.service.logger.Info($"{this.msgType} {info.serviceType}{info.serviceId} my state {this.service.data.state}");
+                }
+                else
+                {
+                    this.service.logger.Error($"{this.msgType} {info.serviceType}{info.serviceId} my state {this.service.data.state}");
+                }
+
+                connection.serviceType = info.serviceType;
+                connection.serviceId = info.serviceId;
+                this.service.data.SaveOtherServiceConnection(connection);
+            }
 
             return ECode.Success;
         }

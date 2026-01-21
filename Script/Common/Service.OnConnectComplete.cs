@@ -6,7 +6,7 @@ namespace Script
     {
         public virtual async Task<ECode> OnConnectComplete(IServiceConnection serviceConnection)
         {
-            this.logger.Info($"OnConnectComplete to: {serviceConnection.tai}");
+            this.logger.Info($"OnConnectComplete to: {serviceConnection.identifierString}");
 
             // 连上去之后立即向他报告是我的身份
             var msgInfo = new MsgConnectorInfo();

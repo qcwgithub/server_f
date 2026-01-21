@@ -13,6 +13,6 @@ namespace Data
     public class ResGetConnectedInfos
     {
         [Key(0)]
-        public List<ServiceTypeAndId> connectedInfos;
+        public List<string> connectedInfos;
     }
 }

@@ -21,6 +21,7 @@ namespace Tool
                 return ECode.NotConnected;
             }
             ConsoleEx.WriteLine(ConsoleColor.Green, $"Connect to {tai} ok");
+            connection.Send(MsgType._ConnectorInfo, new MsgConnectorInfo { isCommand = true }, null);
 
             var r = await connection.Request(msgType, msg);
             ConsoleEx.WriteLine(r.e == ECode.Success ? ConsoleColor.Green : ConsoleColor.Red, $"Request {msgType} {r.e}");

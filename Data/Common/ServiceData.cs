@@ -124,9 +124,9 @@ namespace Data
         }
 
         // 有没有被动连接还活着
-        public virtual List<ServiceTypeAndId> GetPassivelyConnections()
+        public virtual List<string> GetPassivelyConnections()
         {
-            var tais = new List<ServiceTypeAndId>();
+            var tais = new List<string>();
 
             for (ServiceType serviceType = 0; serviceType < ServiceType.Count; serviceType++)
             {
@@ -145,7 +145,7 @@ namespace Data
                 {
                     if (connection.IsConnected())
                     {
-                        tais.Add(connection.tai);
+                        tais.Add(connection.identifierString);
                     }
                 }
             }

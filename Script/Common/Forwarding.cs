@@ -51,7 +51,7 @@ namespace Script
                 return serviceType;
             }
 
-            gatewayService.logger.Info($"G_to_S {msgType} -> {serviceConnection.tai}");
+            gatewayService.logger.Info($"G_to_S {msgType} -> {serviceConnection.identifierString}");
 
             var msgForward = new MsgForward();
             msgForward.userId = user.userId;
