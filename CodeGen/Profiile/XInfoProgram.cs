@@ -123,7 +123,7 @@ public class XInfoProgram
                 s = helper.ReadString("createFromHelper");
                 xinfoConfig.createFromHelper = s == "1" || s == "true";
 
-                xinfoConfig.cacheType = helper.ReadEnum<CacheType>("cacheType");;
+                xinfoConfig.cacheType = helper.ReadEnum<CacheType>("cacheType");
 
                 if (xinfoConfig.cacheType == CacheType.Redis)
                 {
@@ -183,14 +183,28 @@ namespace Data
 
             // File.Copy("Data/Common/" + config.name + ".cs", "Data/Common/SCCommonData/" + config.name + "Nullable.cs", true);
 
-            ReplaceFile("Data/Common/" + xinfoConfig.name + ".cs", new Mark[]
-            {
-                new Mark { startMark = "#region auto", text = GenXInfo.Gen(xinfoConfig) },
-            });
 
             ReplaceFile("Data/Common/" + xinfoConfig.name + "_Db.cs", new Mark[]
             {
                 new Mark { startMark = "#region auto", text = Gen_XInfo_Db.Do(xinfoConfig) },
+            });
+
+            text = @"using MessagePack;
+
+namespace Data
+{{
+    [MessagePackObject]
+    public class {0}{1}
+    {{
+        #region auto
+        #endregion auto
+    }}
+}}";
+            File.WriteAllText("Data/Common/" + xinfoConfig.name + ".cs", string.Format(text, xinfoConfig.name,
+                xinfoConfig.cacheType == CacheType.Redis ? " : ICanBePlaceholder" : string.Empty));
+            ReplaceFile("Data/Common/" + xinfoConfig.name + ".cs", new Mark[]
+            {
+                new Mark { startMark = "#region auto", text = GenXInfo.Gen(xinfoConfig) },
             });
 
             if (xinfoConfig.cacheType == CacheType.Memory)

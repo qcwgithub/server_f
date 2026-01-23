@@ -136,10 +136,5 @@ namespace Data
         }
 
         #endregion auto
-
-        public static int ToTaskQueueHash(string channelUserId)
-        {
-            return channelUserId.GetHashCode();
-        }
     }
 }

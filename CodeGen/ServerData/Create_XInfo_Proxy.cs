@@ -259,7 +259,7 @@ public class Create_XInfo_Proxy
                             throw new Exception("Not handled TaskQueueHash." + config.taskQueueHash);
                     }
 
-                    ff.TabPushF("return PersistenceTaskQueueRedis.GetQueue({0}.ToTaskQueueHash({1}));\n", config.xinfoType, p);
+                    ff.TabPushF("return PersistenceTaskQueueRedis.GetQueue({0}.GetHashCode());\n", p);
                 }
                 ff.BlockEnd();
                 // ff.Push("\n");

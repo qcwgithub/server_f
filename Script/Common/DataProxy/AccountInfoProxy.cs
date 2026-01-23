@@ -82,7 +82,7 @@ namespace Script
         //// AUTO CREATED ////
         protected override int GetBelongTaskQueue(string channel, string channelUserId)
         {
-            return PersistenceTaskQueueRedis.GetQueue(AccountInfo.ToTaskQueueHash(channelUserId));
+            return PersistenceTaskQueueRedis.GetQueue(channelUserId.GetHashCode());
         }
         #endregion override
 
