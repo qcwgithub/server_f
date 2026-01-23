@@ -10,7 +10,6 @@ namespace Data
         int nextMsgSeq { get; }
         void OnConnect(IConnection connection, bool success);
         void OnMsg(IConnection connection, int seq, MsgType msgType, byte[] msgBytes, ReplyCallback? reply);
-        void OnLocalMsg(IConnection connection, int seq, MsgType msgType, object msg, LocalReplyCallback? reply);
         void OnClose(IConnection connection);
     }
 

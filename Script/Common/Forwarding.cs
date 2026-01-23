@@ -16,7 +16,7 @@ namespace Script
             }
         }
 
-        public static ServiceType? G_to_S(GatewayService gatewayService, GatewayUserConnection connection, MsgType msgType, byte[] msgBytes, ReplyCallback? reply)
+        public static ServiceType? G_to_S(GatewayService gatewayService, GatewayUserConnection connection, MsgType msgType, byte[] msgBytes, ReplyCallback? replyToC)
         {
             ServiceType? serviceType = ShouldForwardClientMessage(msgType);
             if (serviceType == null)
@@ -59,11 +59,12 @@ namespace Script
             msgForward.innerMsgType = msgType;
             msgForward.innerMsgBytes = msgBytes;
 
-            serviceConnection.Send(MsgType.Forward, msgForward, reply);
+            var replyFromService = replyToC;
+            serviceConnection.Send(MsgType.Forward, msgForward, replyFromService);
             return serviceType;
         }
 
-        public static bool G_from_S(GatewayService gatewayService, MsgType msgType, byte[] msgBytes, ReplyCallback? reply)
+        public static bool G_from_S(GatewayService gatewayService, MsgType msgType, byte[] msgBytes, ReplyCallback? replyToS)
         {
             if (msgType != MsgType.Forward)
             {
@@ -75,13 +76,13 @@ namespace Script
 
             if (msgForward.userId > 0)
             {
-                SendToClient(gatewayService, msgForward.userId, msgForward.innerMsgType, innerMsg, reply);
+                SendToClient(gatewayService, msgForward.userId, msgForward.innerMsgType, innerMsg, replyToS);
             }
             if (msgForward.userIds != null)
             {
                 foreach (long userId in msgForward.userIds)
                 {
-                    SendToClient(gatewayService, userId, msgForward.innerMsgType, innerMsg, reply);
+                    SendToClient(gatewayService, userId, msgForward.innerMsgType, innerMsg, replyToS);
                 }
             }
             return true;
@@ -138,7 +139,7 @@ namespace Script
             return true;
         }
 
-        public static void S_to_G(IServiceConnection serviceConnection, long userId, MsgType msgType, object msg, ReplyCallback? reply)
+        public static void S_to_G(IServiceConnection serviceConnection, long userId, MsgType msgType, object msg, ReplyCallback? replyFromG)
         {
             var msgForward = new MsgForward();
             msgForward.userId = userId;
@@ -146,10 +147,10 @@ namespace Script
             msgForward.innerMsgType = msgType;
             msgForward.innerMsgBytes = MessageTypeConfigData.SerializeMsg(msgType, msg);
 
-            S_to_G(serviceConnection, msgForward, reply);
+            S_to_G(serviceConnection, msgForward, replyFromG);
         }
 
-        public static void S_to_G(IServiceConnection serviceConnection, long[] userIds, MsgType msgType, object msg, ReplyCallback? reply)
+        public static void S_to_G(IServiceConnection serviceConnection, long[] userIds, MsgType msgType, object msg, ReplyCallback? replyFromG)
         {
             var msgForward = new MsgForward();
             msgForward.userId = 0;
@@ -157,18 +158,18 @@ namespace Script
             msgForward.innerMsgType = msgType;
             msgForward.innerMsgBytes = MessageTypeConfigData.SerializeMsg(msgType, msg);
 
-            S_to_G(serviceConnection, msgForward, reply);
+            S_to_G(serviceConnection, msgForward, replyFromG);
         }
 
-        static void S_to_G(IServiceConnection serviceConnection, MsgForward msgForward, ReplyCallback? reply)
+        static void S_to_G(IServiceConnection serviceConnection, MsgForward msgForward, ReplyCallback? replyFromG)
         {
             MyDebug.Assert(serviceConnection.knownWho);
             MyDebug.Assert(serviceConnection.serviceType == ServiceType.Gateway);
 
-            serviceConnection.Send(MsgType.Forward, msgForward, reply);
+            serviceConnection.Send(MsgType.Forward, msgForward, replyFromG);
         }
 
-        static void SendToClient(GatewayService gatewayService, long userId, MsgType msgType, object msg, ReplyCallback? reply)
+        static void SendToClient(GatewayService gatewayService, long userId, MsgType msgType, object msg, ReplyCallback? replyFromC)
         {
             GatewayUser? user = gatewayService.sd.GetUser(userId);
             if (user == null || user.connection == null || !user.connection.IsConnected())
@@ -176,7 +177,7 @@ namespace Script
                 return;
             }
 
-            user.connection.Send(msgType, msg, reply);
+            user.connection.Send(msgType, msg, replyFromC);
         }
     }
 }
