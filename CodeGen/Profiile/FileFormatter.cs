@@ -4,7 +4,23 @@ using System.Collections.Generic;
 
 public class FileFormatter
 {
-    static string[] stab = new string[] {
+    static string[] stab2 = new string[] {
+    "",
+    "  ",
+    "    ",
+    "      ",
+    "        ",
+    "          ",
+    "            ",
+    "              ",
+    "                ",
+    "                  ",
+    "                    ",
+    "                      ",
+    "                        ",
+    "                          ",
+    };
+    static string[] stab4 = new string[] {
     "",
     "    ",
     "        ",
@@ -22,6 +38,12 @@ public class FileFormatter
     };
 
     List<string> buffer = new List<string>();
+    int tabWidth = 4;
+    public FileFormatter SetTabWidth2()
+    {
+        this.tabWidth = 2;
+        return this;
+    }
 
     int tab = 0;
     public FileFormatter AddTab(int c = 1)
@@ -31,6 +53,8 @@ public class FileFormatter
     }
     public FileFormatter PushTab()
     {
+        var stab = this.tabWidth == 2 ? stab2 : stab4;
+
         if (this.tab >= stab.Length) throw new Exception("tab index out of range");
         this.Push(stab[this.tab]);
         return this;

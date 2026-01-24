@@ -15,7 +15,7 @@ public enum FieldType
     hashset_,
 }
 
-public static class FieldTypeExt
+public static partial class FieldTypeExt
 {
     public static bool SupportsMath(this FieldType e)
     {

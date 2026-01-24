@@ -87,6 +87,7 @@ public class XInfoProgram
         {
             info.subInfos[i] = ReadTypeInfo(list, ref index);
         }
+        info.CalcFieldTypeInfoNameDart();
         info.CalcFieldTypeInfoName();
         info.CalcFieldTypeInfoName_Db();
         return info;
@@ -124,6 +125,9 @@ public class XInfoProgram
                 xinfoConfig.createFromHelper = s == "1" || s == "true";
 
                 xinfoConfig.cacheType = helper.ReadEnum<CacheType>("cacheType");
+
+                s = helper.ReadString("createDart");
+                xinfoConfig.createDart = s == "1" || s == "true";
 
                 if (xinfoConfig.cacheType == CacheType.Redis)
                 {
@@ -206,10 +210,17 @@ namespace Data
             {
                 new Mark { startMark = "#region auto", text = GenXInfo.Gen(xinfoConfig) },
             });
-
             if (xinfoConfig.cacheType == CacheType.Memory)
             {
                 DoXInfoStuff(xinfoConfig);
+            }
+
+            if (xinfoConfig.createDart)
+            {
+                text = @"class {0} {{
+{1}}}";
+                File.WriteAllText("../client_f/lib/gen/" + xinfoConfig.name + ".dart", 
+                    string.Format(text, xinfoConfig.name, GenXInfoDart.Gen(xinfoConfig)));
             }
         }
     }

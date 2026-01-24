@@ -9,6 +9,8 @@ public class FieldTypeInfo
     ////
     public string name;
     public string nameDb;
+
+    public string nameDart;
 }
 
 public class XInfoFieldConfig
@@ -28,4 +30,5 @@ public class XInfoConfig
     public bool math;
     public bool createFromHelper;
     public CacheType cacheType;
+    public bool createDart;
 }
