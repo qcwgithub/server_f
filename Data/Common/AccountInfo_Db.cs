@@ -31,6 +31,8 @@ namespace Data
         public string blockOrUnblockReason;
         [BsonIgnoreIfNull]
         public long? lastLoginUserId;
+        [BsonIgnoreIfNull]
+        public List<UserInfo_Db> testUserInfos;
 
         public bool DeepCopyFrom(AccountInfo other)
         {
@@ -98,6 +100,12 @@ namespace Data
 
             this.lastLoginUserId = XInfoHelper_Db.Copy_long(other.lastLoginUserId);
             if (this.lastLoginUserId != null)
+            {
+                empty = false;
+            }
+
+            this.testUserInfos = XInfoHelper_Db.Copy_ListClass<UserInfo_Db, UserInfo>(other.testUserInfos);
+            if (this.testUserInfos != null)
             {
                 empty = false;
             }

@@ -1,10 +1,14 @@
 // 共用
 public class GenXInfoDart
 {
-    public static string Gen(XInfoConfig xinfoConfig)
+    public static void Gen(XInfoConfig xinfoConfig)
     {
         var f = new FileFormatter();
         f.SetTabWidth2();
+
+        GenImports(f, xinfoConfig);
+
+        f.TabPush($"class {xinfoConfig.name} {{\n");
 
         f.AddTab(2);
 
@@ -18,10 +22,49 @@ public class GenXInfoDart
         f.Push("\n");
 
         GenFromMsgPack(f, xinfoConfig);
-        f.Push("\n");
+        f.AddTab(-2);
+        
+        f.TabPush("}");
 
-        string str = f.GetString();
-        return str;
+        File.WriteAllText("../client_f/lib/gen/" + xinfoConfig.fileNameDart + ".dart",
+            f.GetString());
+    }
+
+    static void FindClass(FieldTypeInfo typeInfo, List<string> classNames)
+    {
+        if (typeInfo.type == FieldType.class_)
+        {
+            string lName = XInfoConfig.NameToLowerName(typeInfo.name);
+            if (!classNames.Contains(lName))
+            {
+                classNames.Add(lName);
+            }
+        }
+        if (typeInfo.subInfos != null)
+        {
+            foreach (var sub in typeInfo.subInfos)
+            {
+                FindClass(sub, classNames);
+            }
+        }
+    }
+    public static void GenImports(FileFormatter f, XInfoConfig xinfoConfig)
+    {
+        var classNames = new List<string>();
+        for (int i = 0; i < xinfoConfig.fields.Count; i++)
+        {
+            var fieldConfig = xinfoConfig.fields[i];
+
+            FindClass(fieldConfig.typeInfo, classNames);
+        }
+        if (classNames.Count > 0)
+        {
+            foreach (string className in classNames)
+            {
+                f.TabPush($"import 'package:scene_hub/gen/{className}.dart';\n");
+            }
+            f.Push("\n");
+        }
     }
 
     public static void GenFields(FileFormatter f, XInfoConfig xinfoConfig)

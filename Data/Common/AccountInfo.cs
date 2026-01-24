@@ -32,6 +32,8 @@ namespace Data
         public string blockOrUnblockReason;
         [Key(10)]
         public long lastLoginUserId;
+        [Key(11)]
+        public List<UserInfo> testUserInfos;
 
         public static AccountInfo Ensure(AccountInfo? p)
         {
@@ -68,6 +70,14 @@ namespace Data
             if (this.blockOrUnblockReason == null)
             {
                 this.blockOrUnblockReason = string.Empty;
+            }
+            if (this.testUserInfos == null)
+            {
+                this.testUserInfos = new List<UserInfo>();
+            }
+            for (int i = 0; i < this.testUserInfos.Count; i++)
+            {
+                this.testUserInfos[i] = UserInfo.Ensure(this.testUserInfos[i]);
             }
         }
 
@@ -117,6 +127,10 @@ namespace Data
             {
                 return true;
             }
+            if (this.testUserInfos.IsDifferent_ListClass(other.testUserInfos))
+            {
+                return true;
+            }
             return false;
         }
 
@@ -133,6 +147,7 @@ namespace Data
             this.blockPrompt = other.blockPrompt;
             this.blockOrUnblockReason = other.blockOrUnblockReason;
             this.lastLoginUserId = other.lastLoginUserId;
+            this.testUserInfos.DeepCopyFrom_ListClass(other.testUserInfos);
         }
 
         #endregion auto

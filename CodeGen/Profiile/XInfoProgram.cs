@@ -217,10 +217,7 @@ namespace Data
 
             if (xinfoConfig.createDart)
             {
-                text = @"class {0} {{
-{1}}}";
-                File.WriteAllText("../client_f/lib/gen/" + xinfoConfig.name + ".dart", 
-                    string.Format(text, xinfoConfig.name, GenXInfoDart.Gen(xinfoConfig)));
+                GenXInfoDart.Gen(xinfoConfig);
             }
         }
     }

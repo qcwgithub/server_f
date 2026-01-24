@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 
 public class FieldTypeInfo
 {
@@ -24,6 +25,42 @@ public class XInfoFieldConfig
 public class XInfoConfig
 {
     public string name;
+
+    public static string NameToLowerName(string name)
+    {
+        sb.Clear();
+        for (int i = 0; i < name.Length; i++)
+        {
+            char c = name[i];
+            if (c >= 'A' && c <= 'Z')
+            {
+                if (i > 0)
+                {
+                    sb.Append('_');
+                }
+                sb.Append((char)(c - 'A' + 'a'));
+            }
+            else
+            {
+                sb.Append(c);
+            }
+        }
+        return sb.ToString();
+    }
+
+    static StringBuilder sb = new StringBuilder();
+    string _fileNameDart;
+    public string fileNameDart
+    {
+        get
+        {
+            if (_fileNameDart == null)
+            {
+                _fileNameDart = NameToLowerName(this.name);
+            }
+            return _fileNameDart;
+        }
+    }
     public bool addLastDiffField;
     public List<XInfoFieldConfig> fields;
     public bool ensureEx;

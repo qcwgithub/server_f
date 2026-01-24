@@ -19,6 +19,7 @@ long_,,,,,unblockTime,,,
 string_,,,,,blockPrompt,,,
 string_,,,,,blockOrUnblockReason,,,
 long_,,,,,lastLoginUserId,,,
+list_,class_,UserInfo,,,testUserInfos,,,
 @RoomInfo,,,,,,,Memory,1
 long_,,,,,roomId,,,
 long_,,,,,createTimeS,,,

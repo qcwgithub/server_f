@@ -137,10 +137,10 @@ public static partial class FieldTypeExt
                         case FieldType.class_:
                             f.Push(string.Format("({0} as List)\n", accessGet));
                             f.AddTab(1);
-                            f.TabPushF("(map(e => {0}.fromMsgPack(e as List))\n", typeInfo.subInfos[0].nameDart);
+                            f.TabPushF(".map((e) => {0}.fromMsgPack(e as List))\n", typeInfo.subInfos[0].nameDart);
                             f.TabPushF(".toList(growable: true),\n");
                             f.AddTab(-1);
-                            
+
                             break;
 
                         default:
@@ -150,6 +150,43 @@ public static partial class FieldTypeExt
                 break;
 
             case FieldType.dictionary_:
+                {
+                    switch (typeInfo.subInfos[0].type)
+                    {
+                        case FieldType.int_:
+                        case FieldType.bool_:
+                        case FieldType.long_:
+                        case FieldType.enum_:
+                        case FieldType.float_:
+                        case FieldType.string_:
+                            break;
+
+                        default:
+                            throw new Exception("unknown field type");
+                    }
+                    switch (typeInfo.subInfos[1].type)
+                    {
+                        case FieldType.int_:
+                        case FieldType.bool_:
+                        case FieldType.long_:
+                        case FieldType.enum_:
+                        case FieldType.float_:
+                        case FieldType.string_:
+                            break;
+
+                        case FieldType.class_:
+                            f.Push(string.Format("({0} as Map).forEach(k, v) {{\n", accessGet));
+                            f.AddTab(1);
+                            f.TabPushF(".map((k, v) => {0}.fromMsgPack(v as List))\n", typeInfo.subInfos[0].nameDart);
+                            f.TabPushF(".toList(growable: true),\n");
+                            f.AddTab(-1);
+
+                            break;
+
+                        default:
+                            throw new Exception("unknown field type");
+                    }
+                }
                 break;
 
             case FieldType.int_:
