@@ -167,23 +167,7 @@ public class XInfoProgram
         {
             xinfoConfig = list[i];
 
-            var text = @"using MessagePack;
-
-namespace Data
-{{
-    [MessagePackObject]
-    public class {0}{1}
-    {{
-        #region auto
-        #endregion auto
-    }}
-}}";
-            File.WriteAllText("Data/Common/Gen/" + xinfoConfig.name + ".cs", string.Format(text, xinfoConfig.name,
-                xinfoConfig.cacheType == CacheType.Redis ? " : ICanBePlaceholder" : string.Empty));
-            ReplaceFile("Data/Common/Gen/" + xinfoConfig.name + ".cs", new Mark[]
-            {
-                new Mark { startMark = "#region auto", text = GenXInfo.Gen(xinfoConfig) },
-            });
+            GenXInfo.Gen(xinfoConfig);
             if (xinfoConfig.cacheType == CacheType.Memory)
             {
                 DoMemoryXInfoStuff(xinfoConfig);

@@ -5,8 +5,6 @@ namespace Data
     [MessagePackObject]
     public class RoomInfo
     {
-        #region auto
-
         [Key(0)]
         public long roomId;
         [Key(1)]
@@ -73,7 +71,5 @@ namespace Data
             this.desc = other.desc;
             this.messageId = other.messageId;
         }
-
-        #endregion auto
     }
 }

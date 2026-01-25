@@ -5,8 +5,6 @@ namespace Data
     [MessagePackObject]
     public class AccountInfo : ICanBePlaceholder
     {
-        #region auto
-
         [Key(0)]
         [MongoDB.Bson.Serialization.Attributes.BsonIgnore]
         public int isPlaceholder;
@@ -134,7 +132,5 @@ namespace Data
             this.blockOrUnblockReason = other.blockOrUnblockReason;
             this.lastLoginUserId = other.lastLoginUserId;
         }
-
-        #endregion auto
     }
 }

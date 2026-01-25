@@ -5,8 +5,6 @@ namespace Data
     [MessagePackObject]
     public class MPTestInfo
     {
-        #region auto
-
         [Key(0)]
         public int intValue;
         [Key(1)]
@@ -95,7 +93,5 @@ namespace Data
             this.listOfLong.DeepCopyFrom_ListValue(other.listOfLong);
             this.listOfString.DeepCopyFrom_ListValue(other.listOfString);
         }
-
-        #endregion auto
     }
 }

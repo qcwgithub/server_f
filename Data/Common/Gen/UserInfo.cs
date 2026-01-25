@@ -5,8 +5,6 @@ namespace Data
     [MessagePackObject]
     public class UserInfo
     {
-        #region auto
-
         [Key(0)]
         public long userId;
         [Key(1)]
@@ -83,7 +81,5 @@ namespace Data
             this.avatarIndex = other.avatarIndex;
             this.lastSetAvatarIndexTimeS = other.lastSetAvatarIndexTimeS;
         }
-
-        #endregion auto
     }
 }

@@ -1,34 +1,45 @@
 // 共用
 public class GenXInfo
 {
-    public static string Gen(XInfoConfig xinfoConfig)
+    public static void Gen(XInfoConfig xinfoConfig)
     {
         var f = new FileFormatter();
-
-        f.AddTab(2);
-
-        GenFields(f, xinfoConfig);
-
+        f.TabPush("using MessagePack;\n");
         f.Push("\n");
-        GenEnsures(f, xinfoConfig);
-
-        f.Push("\n");
-        GenIsDifferent_DeepCopyFrom(f, xinfoConfig);
-
-        if (xinfoConfig.math)
+        f.TabPush("namespace Data\n");
+        f.BlockStart();
         {
-            f.Push("\n");
-            GenMath(f, xinfoConfig);
-        }
+            f.TabPush("[MessagePackObject]\n");
+            f.TabPushF("public class {0}{1}\n", xinfoConfig.name,
+                xinfoConfig.cacheType == CacheType.Redis ? " : ICanBePlaceholder" : string.Empty);
 
-        if (xinfoConfig.createFromHelper)
-        {
-            f.Push("\n");
-            GenCreateFromHelper(f, xinfoConfig);
-        }
+            f.BlockStart();
+            {
+                GenFields(f, xinfoConfig);
 
-        string str = f.GetString();
-        return str;
+                f.Push("\n");
+                GenEnsures(f, xinfoConfig);
+
+                f.Push("\n");
+                GenIsDifferent_DeepCopyFrom(f, xinfoConfig);
+
+                if (xinfoConfig.math)
+                {
+                    f.Push("\n");
+                    GenMath(f, xinfoConfig);
+                }
+
+                if (xinfoConfig.createFromHelper)
+                {
+                    f.Push("\n");
+                    GenCreateFromHelper(f, xinfoConfig);
+                }
+            }
+            f.BlockEnd();
+        }
+        f.BlockEnd();
+
+        File.WriteAllText("Data/Common/Gen/" + xinfoConfig.name + ".cs", f.GetString());
     }
 
     public static void GenFields(FileFormatter f, XInfoConfig xinfoConfig)

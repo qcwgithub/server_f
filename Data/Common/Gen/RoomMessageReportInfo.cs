@@ -5,8 +5,6 @@ namespace Data
     [MessagePackObject]
     public class RoomMessageReportInfo
     {
-        #region auto
-
         [Key(0)]
         public long reportUserId;
         [Key(1)]
@@ -72,7 +70,5 @@ namespace Data
             this.reason = other.reason;
             this.timeS = other.timeS;
         }
-
-        #endregion auto
     }
 }

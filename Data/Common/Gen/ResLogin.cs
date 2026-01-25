@@ -5,8 +5,6 @@ namespace Data
     [MessagePackObject]
     public class ResLogin
     {
-        #region auto
-
         [Key(0)]
         public bool isNewUser;
         [Key(1)]
@@ -52,7 +50,5 @@ namespace Data
             this.userInfo.DeepCopyFrom(other.userInfo);
             this.kickOther = other.kickOther;
         }
-
-        #endregion auto
     }
 }

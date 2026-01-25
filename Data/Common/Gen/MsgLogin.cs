@@ -5,8 +5,6 @@ namespace Data
     [MessagePackObject]
     public class MsgLogin
     {
-        #region auto
-
         [Key(0)]
         public string version;
         [Key(1)]
@@ -125,7 +123,5 @@ namespace Data
             this.deviceUid = other.deviceUid;
             this.dict.DeepCopyFrom_DictValue(other.dict);
         }
-
-        #endregion auto
     }
 }
