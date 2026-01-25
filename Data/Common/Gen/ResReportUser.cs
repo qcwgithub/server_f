@@ -3,7 +3,7 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class MsgGetRecommendedRooms
+    public class ResReportUser
     {
     }
 }

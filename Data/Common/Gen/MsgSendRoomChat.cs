@@ -12,10 +12,4 @@ namespace Data
         [Key(2)]
         public string content;
     }
-
-    [MessagePackObject]
-    public class ResSendRoomChat
-    {
-
-    }
 }

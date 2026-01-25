@@ -8,10 +8,4 @@ namespace Data
         [Key(0)]
         public int avatarIndex;
     }
-
-    [MessagePackObject]
-    public class ResSetAvatarIndex
-    {
-
-    }
 }

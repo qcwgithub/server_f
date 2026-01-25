@@ -1,5 +1,4 @@
 using MessagePack;
-using System.Collections.Generic;
 
 namespace Data
 {
@@ -8,11 +7,5 @@ namespace Data
     {
         [Key(0)]
         public long roomId;
-    }
-
-    [MessagePackObject]
-    public class ResLeaveRoom
-    {
-
     }
 }

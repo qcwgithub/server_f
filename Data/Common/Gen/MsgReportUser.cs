@@ -1,5 +1,4 @@
 using MessagePack;
-using System.Collections.Generic;
 
 namespace Data
 {
@@ -10,11 +9,5 @@ namespace Data
         public long targetUserId;
         [Key(1)]
         public UserReportReason reason;
-    }
-
-    [MessagePackObject]
-    public class ResReportUser
-    {
-
     }
 }
