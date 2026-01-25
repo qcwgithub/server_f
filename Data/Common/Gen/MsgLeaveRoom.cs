@@ -1,0 +1,18 @@
+using MessagePack;
+using System.Collections.Generic;
+
+namespace Data
+{
+    [MessagePackObject]
+    public class MsgLeaveRoom
+    {
+        [Key(0)]
+        public long roomId;
+    }
+
+    [MessagePackObject]
+    public class ResLeaveRoom
+    {
+
+    }
+}
