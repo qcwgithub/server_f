@@ -23,7 +23,7 @@ public class GenXInfoDart
 
         GenFromMsgPack(f, xinfoConfig);
         f.AddTab(-2);
-        
+
         f.TabPush("}");
 
         File.WriteAllText("../client_f/lib/gen/" + xinfoConfig.fileNameDart + ".dart",
@@ -74,6 +74,7 @@ public class GenXInfoDart
         {
             var fieldConfig = xinfoConfig.fields[i];
 
+            f.TabPush($"// [{i}]\n");
             f.PushTab().Push(fieldConfig.typeInfo.nameDart).Push(" ").Push(fieldConfig.name).Push(";");
 
             if (!string.IsNullOrEmpty(fieldConfig.comment))
@@ -112,7 +113,7 @@ public class GenXInfoDart
                 var config = xinfoConfig.fields[i];
                 f.TabPush("");
                 f.PushDartToMsgPack(config.typeInfo, config.name);
-                f.Push($", // [{i}]\n");
+                f.Push(",\n");
             }
             f.AddTab(-1);
             f.TabPush("];\n");
@@ -132,7 +133,7 @@ public class GenXInfoDart
                 var config = xinfoConfig.fields[i];
                 f.TabPushF("{0}: ", config.name);
                 f.PushDartFromMsgPack(config.typeInfo, $"list[{i}]");
-                f.Push($", // [{i}]\n");
+                f.Push(",\n");
             }
             f.AddTab(-1);
             f.PushTab().Push(");\n");
