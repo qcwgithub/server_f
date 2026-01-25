@@ -17,12 +17,14 @@ public class GenXInfo
             {
                 GenFields(f, xinfoConfig);
 
-                f.Push("\n");
-                GenEnsures(f, xinfoConfig);
+                if (xinfoConfig.ensure)
+                {
+                    f.Push("\n");
+                    GenEnsures(f, xinfoConfig);
 
-                f.Push("\n");
-                GenIsDifferent_DeepCopyFrom(f, xinfoConfig);
-
+                    f.Push("\n");
+                    GenIsDifferent_DeepCopyFrom(f, xinfoConfig);
+                }
                 if (xinfoConfig.math)
                 {
                     f.Push("\n");

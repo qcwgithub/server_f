@@ -1,8 +1,8 @@
 public enum CacheType
 {
+    None,
     Memory,
     Redis,
-    None,
 }
 
 public static class CacheTypeExt

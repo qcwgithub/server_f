@@ -101,32 +101,32 @@ namespace Script
             }
             return float.Parse(cell);
         }
-/*
-        public T ReadObject<T>(string name, T default_ = null) where T : class
-        {
-            var cell = this.GetCell(name);
-            if (string.IsNullOrEmpty(cell))
-            {
-                return default_;
-            }
-            if (cell.IndexOf(CsvUtils.COMMA_REPLACEMENT) >= 0)
-            {
-                cell = cell.Replace(CsvUtils.COMMA_REPLACEMENT, ',');
-            }
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(cell);
-        }
-*/
+        /*
+                public T ReadObject<T>(string name, T default_ = null) where T : class
+                {
+                    var cell = this.GetCell(name);
+                    if (string.IsNullOrEmpty(cell))
+                    {
+                        return default_;
+                    }
+                    if (cell.IndexOf(CsvUtils.COMMA_REPLACEMENT) >= 0)
+                    {
+                        cell = cell.Replace(CsvUtils.COMMA_REPLACEMENT, ',');
+                    }
+                    return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(cell);
+                }
+        */
         public T ReadEnum<T>(string name) where T : Enum
         {
             var cell = this.GetCell(name);
             return (T)Enum.Parse(typeof(T), cell);
         }
 
-        public T ReadEnum<T>(string name, T default_) where T : Enum
+        public T ReadEnum<T>(string name, T? default_) where T : Enum
         {
             var cell = this.GetCell(name);
 
-            if (string.IsNullOrEmpty(cell))
+            if (default_ != null && string.IsNullOrEmpty(cell))
             {
                 return default_;
             }

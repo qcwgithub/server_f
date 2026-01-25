@@ -113,7 +113,10 @@ public class XInfoProgram
                 xinfoConfig.name = firstCol.Substring(1);
                 xinfoConfig.fields = new List<XInfoFieldConfig>();
 
-                string s = helper.ReadString("ensureEx");
+                string s = helper.ReadString("ensure");
+                xinfoConfig.ensure = s == "1" || s == "true";
+                
+                s = helper.ReadString("ensureEx");
                 xinfoConfig.ensureEx = s == "1" || s == "true";
 
                 s = helper.ReadString("math");
@@ -122,7 +125,7 @@ public class XInfoProgram
                 s = helper.ReadString("createFromHelper");
                 xinfoConfig.createFromHelper = s == "1" || s == "true";
 
-                xinfoConfig.cacheType = helper.ReadEnum<CacheType>("cacheType");
+                xinfoConfig.cacheType = helper.ReadEnum<CacheType>("cacheType", CacheType.None);
 
                 s = helper.ReadString("createDart");
                 xinfoConfig.createDart = s == "1" || s == "true";

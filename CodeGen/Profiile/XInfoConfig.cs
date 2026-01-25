@@ -63,6 +63,7 @@ public class XInfoConfig
     }
     public bool addLastDiffField;
     public List<XInfoFieldConfig> fields;
+    public bool ensure;
     public bool ensureEx;
     public bool math;
     public bool createFromHelper;
