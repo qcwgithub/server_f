@@ -34,7 +34,7 @@ public static partial class FieldTypeExt
                 break;
 
             case FieldType.dictionary_:
-                info.name = "Map<" +
+                info.nameDart = "Map<" +
                     info.subInfos[0].CalcFieldTypeInfoNameDart() + ", " +
                     info.subInfos[1].CalcFieldTypeInfoNameDart() + ">";
                 break;
@@ -48,50 +48,73 @@ public static partial class FieldTypeExt
         return info.nameDart;
     }
 
-    public static FileFormatter PushPrepareDartFromMsgPack(this FileFormatter f, FieldTypeInfo typeInfo,
-        string accessGet, string accessSet)
+    public static FileFormatter PushDartToMsgPack(this FileFormatter f, FieldTypeInfo typeInfo,
+        string accessGet)
     {
         switch (typeInfo.type)
         {
             case FieldType.class_:
+                {
+                    f.Push(string.Format("{0}.toMsgPack()", typeInfo.nameDart, accessGet));
+                }
                 break;
 
             case FieldType.list_:
-                f.TabPush("if ({0} == null)\n".Format(accessGet));
-                f.BlockStart();
-                f.TabPush("{0} = new {1}();\n".Format(accessSet, typeInfo.name));
-                f.BlockEnd();
-
-                if (typeInfo.subInfos[0].type.NeedEnsure(typeInfo.type))
                 {
-                    f.TabPush("for (int i = 0; i < {0}.Count; i++)\n".Format(accessGet));
-                    f.BlockStart();
+                    switch (typeInfo.subInfos[0].type)
                     {
-                        f.PushEnsure(typeInfo.subInfos[0], accessGet + "[i]", accessSet + "[i]");
+                        case FieldType.int_:
+                        case FieldType.bool_:
+                        case FieldType.long_:
+                        case FieldType.enum_:
+                        case FieldType.float_:
+                        case FieldType.string_:
+                            f.Push(string.Format("{0}", accessGet));
+                            break;
+
+                        case FieldType.class_:
+                            f.Push(string.Format("{0}.map((e) => e.toMsgPack()).toList(growable: false)", accessGet));
+                            break;
+
+                        default:
+                            throw new Exception("unknown field type");
                     }
-                    f.BlockEnd();
                 }
                 break;
 
             case FieldType.dictionary_:
-                f.TabPush("if ({0} == null)\n".Format(accessGet));
-                f.BlockStart();
                 {
-                    f.TabPush("{0} = new {1}();\n".Format(accessSet, typeInfo.name));
-                }
-                f.BlockEnd();
-
-                if (typeInfo.subInfos[1].type.NeedEnsure(typeInfo.type))
-                {
-                    f.TabPush("foreach (var kv in {0})\n".Format(accessGet));
-                    f.BlockStart();
+                    switch (typeInfo.subInfos[0].type)
                     {
-                        f.PushEnsure(typeInfo.subInfos[1], "kv.Value",
-                        // accessGet + "[kv.Key]"
-                        null // 不要赋值，会报错
-                        );
+                        case FieldType.int_:
+                        case FieldType.bool_:
+                        case FieldType.long_:
+                        case FieldType.enum_:
+                        case FieldType.float_:
+                        case FieldType.string_:
+                            break;
+
+                        default:
+                            throw new Exception("unknown field type");
                     }
-                    f.BlockEnd();
+                    switch (typeInfo.subInfos[1].type)
+                    {
+                        case FieldType.int_:
+                        case FieldType.bool_:
+                        case FieldType.long_:
+                        case FieldType.enum_:
+                        case FieldType.float_:
+                        case FieldType.string_:
+                            f.Push(string.Format("{0}", accessGet));
+                            break;
+
+                        case FieldType.class_:
+                            f.Push(string.Format("{0}.map((k, v) => MapEntry(k, v.toMsgPack()))", accessGet));
+                            break;
+
+                        default:
+                            throw new Exception("unknown field type");
+                    }
                 }
                 break;
 
@@ -101,6 +124,7 @@ public static partial class FieldTypeExt
             case FieldType.enum_:
             case FieldType.float_:
             case FieldType.string_:
+                f.Push(string.Format("{0}", accessGet));
                 break;
             case FieldType.bigint_:
             case FieldType.hashset_:
@@ -117,7 +141,7 @@ public static partial class FieldTypeExt
         {
             case FieldType.class_:
                 {
-                    f.Push(string.Format("{0}.fromMsgPack({1} as List),\n", typeInfo.nameDart, accessGet));
+                    f.Push(string.Format("{0}.fromMsgPack({1} as List)", typeInfo.nameDart, accessGet));
                 }
                 break;
 
@@ -131,14 +155,14 @@ public static partial class FieldTypeExt
                         case FieldType.enum_:
                         case FieldType.float_:
                         case FieldType.string_:
-                            f.Push(string.Format("{0}.from({1}, growable: true),\n", typeInfo.nameDart, accessGet));
+                            f.Push(string.Format("{0}.from({1}, growable: true)", typeInfo.nameDart, accessGet));
                             break;
 
                         case FieldType.class_:
                             f.Push(string.Format("({0} as List)\n", accessGet));
                             f.AddTab(1);
                             f.TabPushF(".map((e) => {0}.fromMsgPack(e as List))\n", typeInfo.subInfos[0].nameDart);
-                            f.TabPushF(".toList(growable: true),\n");
+                            f.TabPushF(".toList(growable: true)");
                             f.AddTab(-1);
 
                             break;
@@ -172,15 +196,17 @@ public static partial class FieldTypeExt
                         case FieldType.enum_:
                         case FieldType.float_:
                         case FieldType.string_:
+                            f.Push(string.Format("({0} as Map)\n", accessGet));
+                            f.AddTab(1);
+                            f.TabPushF(".map((k, v) => MapEntry(k as {0}, v as {1}))", typeInfo.subInfos[0].nameDart, typeInfo.subInfos[1].nameDart);
+                            f.AddTab(-1);
                             break;
 
                         case FieldType.class_:
-                            f.Push(string.Format("({0} as Map).forEach(k, v) {{\n", accessGet));
+                            f.Push(string.Format("({0} as Map)\n", accessGet));
                             f.AddTab(1);
-                            f.TabPushF(".map((k, v) => {0}.fromMsgPack(v as List))\n", typeInfo.subInfos[0].nameDart);
-                            f.TabPushF(".toList(growable: true),\n");
+                            f.TabPushF(".map((k, v) => MapEntry(k as {0}, {1}.fromMsgPack(v as List)))", typeInfo.subInfos[0].nameDart, typeInfo.subInfos[1].nameDart);
                             f.AddTab(-1);
-
                             break;
 
                         default:
@@ -195,7 +221,7 @@ public static partial class FieldTypeExt
             case FieldType.enum_:
             case FieldType.float_:
             case FieldType.string_:
-                f.Push(string.Format("{0} as {1},\n", accessGet, typeInfo.nameDart));
+                f.Push(string.Format("{0} as {1}", accessGet, typeInfo.nameDart));
                 break;
             case FieldType.bigint_:
             case FieldType.hashset_:

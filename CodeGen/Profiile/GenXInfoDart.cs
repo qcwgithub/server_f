@@ -110,7 +110,9 @@ public class GenXInfoDart
             for (int i = 0; i < xinfoConfig.fields.Count; i++)
             {
                 var config = xinfoConfig.fields[i];
-                f.TabPush($"{config.name}, // [{i}]\n");
+                f.TabPush("");
+                f.PushDartToMsgPack(config.typeInfo, config.name);
+                f.Push($", // [{i}]\n");
             }
             f.AddTab(-1);
             f.TabPush("];\n");
@@ -130,6 +132,7 @@ public class GenXInfoDart
                 var config = xinfoConfig.fields[i];
                 f.TabPushF("{0}: ", config.name);
                 f.PushDartFromMsgPack(config.typeInfo, $"list[{i}]");
+                f.Push($", // [{i}]\n");
             }
             f.AddTab(-1);
             f.PushTab().Push(");\n");
