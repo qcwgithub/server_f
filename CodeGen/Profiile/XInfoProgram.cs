@@ -113,22 +113,11 @@ public class XInfoProgram
                 xinfoConfig.name = firstCol.Substring(1);
                 xinfoConfig.fields = new List<XInfoFieldConfig>();
 
-                string s = helper.ReadString("ensure");
-                xinfoConfig.ensure = s == "1" || s == "true";
-                
-                s = helper.ReadString("ensureEx");
-                xinfoConfig.ensureEx = s == "1" || s == "true";
-
-                s = helper.ReadString("math");
-                xinfoConfig.math = s == "1" || s == "true";
-
-                s = helper.ReadString("createFromHelper");
-                xinfoConfig.createFromHelper = s == "1" || s == "true";
-
+                xinfoConfig.ensure = helper.ReadBool("ensure");
+                xinfoConfig.ensureEx = helper.ReadBool("ensureEx");
+                xinfoConfig.deepCopy = helper.ReadBool("deepCopy");
                 xinfoConfig.cacheType = helper.ReadEnum<CacheType>("cacheType", CacheType.None);
-
-                s = helper.ReadString("createDart");
-                xinfoConfig.createDart = s == "1" || s == "true";
+                xinfoConfig.dart = helper.ReadBool("dart");
 
                 if (xinfoConfig.cacheType == CacheType.Redis)
                 {
@@ -176,7 +165,7 @@ public class XInfoProgram
                 DoMemoryXInfoStuff(xinfoConfig);
             }
 
-            if (xinfoConfig.createDart)
+            if (xinfoConfig.dart)
             {
                 GenXInfoDart.Gen(xinfoConfig);
             }

@@ -72,6 +72,12 @@ namespace Script
             return this.GetCell(name);
         }
 
+        public bool ReadBool(string name)
+        {
+            string s = this.GetCell(name);
+            return s == "1" || s == "true";
+        }
+
         public int ReadInt(string name, int default_ = 0)
         {
             var cell = this.GetCell(name);

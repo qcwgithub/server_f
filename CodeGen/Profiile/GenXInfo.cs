@@ -22,6 +22,9 @@ public class GenXInfo
                     f.Push("\n");
                     GenEnsures(f, xinfoConfig);
 
+                }
+                if (xinfoConfig.deepCopy)
+                {
                     f.Push("\n");
                     GenIsDifferent_DeepCopyFrom(f, xinfoConfig);
                 }

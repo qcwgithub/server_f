@@ -65,8 +65,9 @@ public class XInfoConfig
     public List<XInfoFieldConfig> fields;
     public bool ensure;
     public bool ensureEx;
+    public bool deepCopy;
     public bool math;
     public bool createFromHelper;
     public CacheType cacheType;
-    public bool createDart;
+    public bool dart;
 }
