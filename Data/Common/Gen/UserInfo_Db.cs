@@ -7,8 +7,6 @@ namespace Data
 {
     public class UserInfo_Db : IIsDifferent_Db<UserInfo>
     {
-        #region auto
-
         [BsonIgnoreIfNull]
         public long? userId;
         [BsonIgnoreIfNull]
@@ -72,7 +70,5 @@ namespace Data
 
             return !empty;
         }
-
-        #endregion auto
     }
 }

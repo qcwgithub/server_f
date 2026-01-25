@@ -7,8 +7,6 @@ namespace Data
 {
     public class RoomInfo_Db : IIsDifferent_Db<RoomInfo>
     {
-        #region auto
-
         [BsonIgnoreIfNull]
         public long? roomId;
         [BsonIgnoreIfNull]
@@ -56,7 +54,5 @@ namespace Data
 
             return !empty;
         }
-
-        #endregion auto
     }
 }

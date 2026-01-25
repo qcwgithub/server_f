@@ -46,7 +46,7 @@ public class XInfoProgram
         File.WriteAllText(file, content);
     }
 
-    static void DoXInfoStuff(XInfoConfig xinfoConfig)
+    static void DoMemoryXInfoStuff(XInfoConfig xinfoConfig)
     {
         string x = xinfoConfig.name.Substring(0, xinfoConfig.name.IndexOf("Info"));
         string x_lower = x.ToLower();
@@ -56,10 +56,8 @@ public class XInfoProgram
         {
             new Mark { startMark = "#region auto", text = Gen_XInfoNullable.Do(fields) }
         });
-        ReplaceFile($"Data/Common/Gen/{xinfoConfig.name}_Db.cs", new Mark[]
-        {
-            new Mark { startMark = "#region auto", text = Gen_XInfo_Db.Do(xinfoConfig) }
-        });
+
+        Gen_XInfo_Db.Do(xinfoConfig);
 
         ReplaceFile($"Script/{x}/{x}Service.Save{x}.cs", new Mark[]
         {
@@ -169,31 +167,7 @@ public class XInfoProgram
         {
             xinfoConfig = list[i];
 
-            string text = @"using System.Collections.Generic;
-using MessagePack;
-using System.Numerics;
-using MongoDB.Bson.Serialization.Attributes;
-
-namespace Data
-{{
-    public class {0}_Db : IIsDifferent_Db<{0}>
-    {{
-        #region auto
-        #endregion auto
-    }}
-}}";
-            File.WriteAllText("Data/Common/Gen/" + xinfoConfig.name + "_Db.cs", string.Format(text, xinfoConfig.name));
-
-
-            // File.Copy("Data/Common/" + config.name + ".cs", "Data/Common/SCCommonData/" + config.name + "Nullable.cs", true);
-
-
-            ReplaceFile("Data/Common/Gen/" + xinfoConfig.name + "_Db.cs", new Mark[]
-            {
-                new Mark { startMark = "#region auto", text = Gen_XInfo_Db.Do(xinfoConfig) },
-            });
-
-            text = @"using MessagePack;
+            var text = @"using MessagePack;
 
 namespace Data
 {{
@@ -212,7 +186,7 @@ namespace Data
             });
             if (xinfoConfig.cacheType == CacheType.Memory)
             {
-                DoXInfoStuff(xinfoConfig);
+                DoMemoryXInfoStuff(xinfoConfig);
             }
 
             if (xinfoConfig.createDart)
