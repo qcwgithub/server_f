@@ -52,11 +52,11 @@ public class XInfoProgram
         string x_lower = x.ToLower();
 
         List<XInfoFieldConfig> fields = xinfoConfig.fields;
-        ReplaceFile($"Data/Common/{xinfoConfig.name}Nullable.cs", new Mark[]
+        ReplaceFile($"Data/Common/Gen/{xinfoConfig.name}Nullable.cs", new Mark[]
         {
             new Mark { startMark = "#region auto", text = Gen_XInfoNullable.Do(fields) }
         });
-        ReplaceFile($"Data/Common/{xinfoConfig.name}_Db.cs", new Mark[]
+        ReplaceFile($"Data/Common/Gen/{xinfoConfig.name}_Db.cs", new Mark[]
         {
             new Mark { startMark = "#region auto", text = Gen_XInfo_Db.Do(xinfoConfig) }
         });
@@ -182,13 +182,13 @@ namespace Data
         #endregion auto
     }}
 }}";
-            File.WriteAllText("Data/Common/" + xinfoConfig.name + "_Db.cs", string.Format(text, xinfoConfig.name));
+            File.WriteAllText("Data/Common/Gen/" + xinfoConfig.name + "_Db.cs", string.Format(text, xinfoConfig.name));
 
 
             // File.Copy("Data/Common/" + config.name + ".cs", "Data/Common/SCCommonData/" + config.name + "Nullable.cs", true);
 
 
-            ReplaceFile("Data/Common/" + xinfoConfig.name + "_Db.cs", new Mark[]
+            ReplaceFile("Data/Common/Gen/" + xinfoConfig.name + "_Db.cs", new Mark[]
             {
                 new Mark { startMark = "#region auto", text = Gen_XInfo_Db.Do(xinfoConfig) },
             });
@@ -204,9 +204,9 @@ namespace Data
         #endregion auto
     }}
 }}";
-            File.WriteAllText("Data/Common/" + xinfoConfig.name + ".cs", string.Format(text, xinfoConfig.name,
+            File.WriteAllText("Data/Common/Gen/" + xinfoConfig.name + ".cs", string.Format(text, xinfoConfig.name,
                 xinfoConfig.cacheType == CacheType.Redis ? " : ICanBePlaceholder" : string.Empty));
-            ReplaceFile("Data/Common/" + xinfoConfig.name + ".cs", new Mark[]
+            ReplaceFile("Data/Common/Gen/" + xinfoConfig.name + ".cs", new Mark[]
             {
                 new Mark { startMark = "#region auto", text = GenXInfo.Gen(xinfoConfig) },
             });
