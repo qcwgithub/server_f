@@ -9,7 +9,7 @@
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/CodeGen/bin/Debug/net10.0/CodeGen.dll",
             "args": [
-                "action=XInfo,ServerData,Message"
+                "action=XInfo,ServerData,Message,Enum"
             ],
             "cwd": "${workspaceFolder}",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console

@@ -184,6 +184,11 @@ namespace CodeGen
                 MessageProgram.MainX();
             }
 
+            if (action.Contains("Enum"))
+            {
+                EnumProgram.MainX();
+            }
+
             if (action.Contains("messagePack"))
             {
                 // GenMessageCode.SaveInt("Data/Common/Gen/MessageCode.cs");
