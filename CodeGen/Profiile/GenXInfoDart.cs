@@ -12,8 +12,11 @@ public class GenXInfoDart
 
         f.AddTab(2);
 
-        GenFields(f, xinfoConfig);
-        f.Push("\n");
+        if (xinfoConfig.fields.Count > 0)
+        {
+            GenFields(f, xinfoConfig);
+            f.Push("\n");
+        }
 
         GenConstructor(f, xinfoConfig);
         f.Push("\n");
@@ -32,7 +35,7 @@ public class GenXInfoDart
 
     static void FindClass(FieldTypeInfo typeInfo, List<string> classNames)
     {
-        if (typeInfo.type == FieldType.class_||
+        if (typeInfo.type == FieldType.class_ ||
             typeInfo.type == FieldType.enum_)
         {
             string lName = XInfoConfig.NameToLowerName(typeInfo.name);
@@ -89,6 +92,12 @@ public class GenXInfoDart
 
     public static void GenConstructor(FileFormatter f, XInfoConfig xinfoConfig)
     {
+        if (xinfoConfig.fields.Count == 0)
+        {
+            f.TabPushF("{0}();\n", xinfoConfig.name);
+            return;
+        }
+
         f.TabPushF("{0}({{\n", xinfoConfig.name);
         f.AddTab(1);
 

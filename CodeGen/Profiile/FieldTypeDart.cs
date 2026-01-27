@@ -55,7 +55,7 @@ public static partial class FieldTypeExt
         {
             case FieldType.class_:
                 {
-                    f.Push(string.Format("{0}.toMsgPack()", typeInfo.nameDart, accessGet));
+                    f.Push(string.Format("{0}.toMsgPack()", accessGet));
                 }
                 break;
 
@@ -215,10 +215,13 @@ public static partial class FieldTypeExt
                 }
                 break;
 
+            case FieldType.enum_:
+                f.Push(string.Format("{0}.fromCode({1} as int)", typeInfo.nameDart, accessGet));
+                break;
+
             case FieldType.int_:
             case FieldType.bool_:
             case FieldType.long_:
-            case FieldType.enum_:
             case FieldType.float_:
             case FieldType.string_:
                 f.Push(string.Format("{0} as {1}", accessGet, typeInfo.nameDart));

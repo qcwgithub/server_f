@@ -105,3 +105,14 @@ string_,,,,,content,,,,
 @MsgSetAvatarIndex,,,,,,,,,1
 int_,,,,,avatarIndex,,,,
 @ResSetAvatarIndex,,,,,,,,,1
+@ChatMessage,,,,,,,,,1
+long_,,,,,messageId,,,,
+long_,,,,,roomId,,,,
+long_,,,,,senderId,,,,
+string_,,,,,senderName,,,,
+string_,,,,,senderAvatar,,,,
+enum_,ChatMessageType,,,,type,,,,
+string_,,,,,content,,,,
+long_,,,,,timestamp,,,,
+long_,,,,,replyTo,,,,
+int_,,,,,senderAvatarIndex,,,,
