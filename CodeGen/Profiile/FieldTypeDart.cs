@@ -118,10 +118,13 @@ public static partial class FieldTypeExt
                 }
                 break;
 
+            case FieldType.enum_:
+                f.Push(string.Format("{0}.code", accessGet));
+                break;
+
             case FieldType.int_:
             case FieldType.bool_:
             case FieldType.long_:
-            case FieldType.enum_:
             case FieldType.float_:
             case FieldType.string_:
                 f.Push(string.Format("{0}", accessGet));

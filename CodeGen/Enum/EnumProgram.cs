@@ -124,4 +124,9 @@ public class EnumProgram
             }
         }
     }
+
+    public static void CreateOne()
+    {
+        
+    }
 }

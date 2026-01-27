@@ -8,7 +8,7 @@ public class GenXInfoDart
 
         GenImports(f, xinfoConfig);
 
-        f.TabPush($"class {xinfoConfig.name} {{\n");
+        f.TabPush($"class {xinfoConfig.name} implements IToMsgPack {{\n");
 
         f.AddTab(2);
 
@@ -61,14 +61,12 @@ public class GenXInfoDart
 
             FindClass(fieldConfig.typeInfo, classNames);
         }
-        if (classNames.Count > 0)
+        f.TabPush($"import 'package:scene_hub/i_to_msg_pack.dart';\n");
+        foreach (string className in classNames)
         {
-            foreach (string className in classNames)
-            {
-                f.TabPush($"import 'package:scene_hub/gen/{className}.dart';\n");
-            }
-            f.Push("\n");
+            f.TabPush($"import 'package:scene_hub/gen/{className}.dart';\n");
         }
+        f.Push("\n");
     }
 
     public static void GenFields(FileFormatter f, XInfoConfig xinfoConfig)
@@ -113,6 +111,7 @@ public class GenXInfoDart
     }
     public static void GenToMsgPack(FileFormatter f, XInfoConfig xinfoConfig)
     {
+        f.TabPush("@override\n");
         f.PushTab().Push("List toMsgPack() {\n");
         f.AddTab(1);
         {
