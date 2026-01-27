@@ -60,10 +60,40 @@ public class MessageProgram
             list.Add(c);
         }
 
-        Create_MsgType.Create(list);
         Create_MessageTypeConfigData.Create(list);
         Create_ServiceProxy.Create(list);
 
-        
+        var enumConfig = new EnumConfig();
+        enumConfig.name = "MsgType";
+        enumConfig.fields = new List<EnumFieldConfig>();
+        {
+            foreach (MessageTypeConfig config in list)
+            {
+                enumConfig.fields.Add(new EnumFieldConfig
+                {
+                    name = config.msgType,
+                    value = config.value,
+                });
+            }
+            EnumProgram.CreateCs(enumConfig);
+        }
+
+        enumConfig.fields.Clear();
+        {
+            foreach (MessageTypeConfig config in list)
+            {
+                if (config.msgType.StartsWith('_'))
+                {
+                    continue;
+                }
+                enumConfig.fields.Add(new EnumFieldConfig
+                {
+                    name = config.msgType,
+                    value = config.value,
+                    dartDefault = config.msgType == "ClientStart",
+                });
+            }
+            EnumProgram.CreateDart(enumConfig);
+        }
     }
 }

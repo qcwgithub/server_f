@@ -2,8 +2,6 @@ namespace Data
 {
     public enum MsgType
     {
-        #region auto
-
         _Timer = 1,
         _Shutdown = 2,
         _ReloadScript = 5,
@@ -71,9 +69,5 @@ namespace Data
         GetRoomChatHistory = 10012,
         ReportRoomMessage = 10013,
         ReportUser = 10014,
-
-        #endregion auto
-
-        Count,
     }
 }
