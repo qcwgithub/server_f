@@ -26,6 +26,28 @@ public class XInfoConfig
 {
     public string name;
 
+    public static string FirstCharacterLower(string name)
+    {
+        sb.Clear();
+        for (int i = 0; i < name.Length; i++)
+        {
+            char c = name[i];
+            if (i == 0 && c >= 'A' && c <= 'Z')
+            {
+                if (i > 0)
+                {
+                    sb.Append('_');
+                }
+                sb.Append((char)(c - 'A' + 'a'));
+            }
+            else
+            {
+                sb.Append(c);
+            }
+        }
+        return sb.ToString();
+    }
+
     public static string NameToLowerName(string name)
     {
         sb.Clear();

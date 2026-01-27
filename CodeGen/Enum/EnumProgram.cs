@@ -30,6 +30,7 @@ public class EnumProgram
                 var c = new EnumFieldConfig();
                 c.name = helper.ReadString("name");
                 c.value = helper.ReadInt("value");
+                c.dartDefault = helper.ReadBool("dartDefault");
                 config.fields.Add(c);
             }
         }
@@ -49,7 +50,12 @@ public class EnumProgram
                     {
                         foreach (var field in config.fields)
                         {
-                            f.TabPushF("{0} = {1},\n", field.name, field.value);
+                            f.TabPushF("{0} = {1},", field.name, field.value);
+                            if (field.dartDefault)
+                            {
+                                f.Push(" // default for dart");
+                            }
+                            f.Push("\n");
                         }
                     }
                     f.BlockEnd();
@@ -61,7 +67,60 @@ public class EnumProgram
 
             // dart
             {
+                var f = new FileFormatter();
+                f.SetTabWidth2();
+                f.TabPushF("enum {0} {{\n", config.name);
+                f.AddTab(1);
+                {
+                    for (int j = 0; j < config.fields.Count; j++)
+                    {
+                        var field = config.fields[j];
+                        f.TabPushF("{0}({1})", XInfoConfig.FirstCharacterLower(field.name), field.value);
+                        f.Push(j == config.fields.Count - 1 ? ";" : ",");
+                        if (field.dartDefault)
+                        {
+                            f.Push(" // default for dart");
+                        }
+                        f.Push("\n");
+                    }
+                    f.Push("\n");
 
+                    f.TabPushF("static {0} fromCode(int code) {{\n", config.name);
+                    f.AddTab(1);
+                    {
+                        f.TabPush("switch (code) {\n");
+                        f.AddTab(1);
+                        {
+                            for (int j = 0; j < config.fields.Count; j++)
+                            {
+                                var field = config.fields[j];
+                                f.TabPushF("case {0}:\n", field.value);
+                                f.AddTab(1);
+                                f.TabPushF("return {0}.{1};\n", config.name, XInfoConfig.FirstCharacterLower(field.name));
+                                f.AddTab(-1);
+                            }
+                            f.TabPush("default:\n");
+                            f.AddTab(1);
+                            f.TabPushF("return {0}.{1};\n", config.name, XInfoConfig.FirstCharacterLower(
+                                config.fields.Find(x => x.dartDefault).name
+                            ));
+                            f.AddTab(-1);
+                        }
+                        f.AddTab(-1);
+                        f.TabPush("}\n");
+                    }
+                    f.AddTab(-1);
+                    f.TabPush("}\n");
+                    f.Push("\n");
+
+                    f.TabPush("final int code;\n");
+                    f.TabPushF("const {0}(this.code);\n", config.name);
+                }
+                f.AddTab(-1);
+                f.TabPush("}");
+
+                File.WriteAllText("../client_f/lib/gen/" + XInfoConfig.NameToLowerName(config.name) + ".dart",
+                    f.GetString());
             }
         }
     }

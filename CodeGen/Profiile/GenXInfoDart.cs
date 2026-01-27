@@ -32,7 +32,8 @@ public class GenXInfoDart
 
     static void FindClass(FieldTypeInfo typeInfo, List<string> classNames)
     {
-        if (typeInfo.type == FieldType.class_)
+        if (typeInfo.type == FieldType.class_||
+            typeInfo.type == FieldType.enum_)
         {
             string lName = XInfoConfig.NameToLowerName(typeInfo.name);
             if (!classNames.Contains(lName))
