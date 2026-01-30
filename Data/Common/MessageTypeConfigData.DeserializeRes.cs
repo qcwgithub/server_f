@@ -280,6 +280,9 @@ namespace Data
                     ob = MessagePackSerializer.Deserialize<ResReportUser>(resBytes);
                     break;
 
+                case MsgType.Count:
+                    throw new Exception("Missing config for MsgType.Count");
+
                 #endregion auto
 
                 default:

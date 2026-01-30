@@ -146,6 +146,7 @@ namespace Data
                         }
                         else if (r == VerifyIdentityResult.Failed)
                         {
+                            Console.WriteLine("VerifyIdentityFailed");
                             this.parent.Close("VerifyIdentityFailed");
                         }
                     }

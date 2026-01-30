@@ -109,7 +109,7 @@ namespace Script
             message.type = msg.type;
             message.content = msg.content;
             message.timestamp = TimeUtils.GetTime();
-            message.replyTo = null;
+            message.replyTo = 0;
             message.senderName = msg.userName;
             message.senderAvatarIndex = msg.avatarIndex;
 

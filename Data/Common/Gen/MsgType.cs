@@ -69,5 +69,6 @@ namespace Data
         GetRoomChatHistory = 10012,
         ReportRoomMessage = 10013,
         ReportUser = 10014,
+        Count = 10015,
     }
 }
