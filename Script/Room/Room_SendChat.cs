@@ -113,6 +113,7 @@ namespace Script
             message.senderName = msg.userName;
             message.senderAvatarIndex = msg.avatarIndex;
             message.clientMessageId = msg.clientMessageId;
+            message.status = ChatMessageStatus.Normal;
 
             await this.server.roomMessagesRedis.Add(message);
 
