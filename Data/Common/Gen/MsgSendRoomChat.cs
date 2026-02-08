@@ -11,5 +11,7 @@ namespace Data
         public ChatMessageType chatMessageType;
         [Key(2)]
         public string content;
+        [Key(3)]
+        public long clientMessageId;
     }
 }

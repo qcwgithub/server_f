@@ -101,7 +101,8 @@ list_,class_,ChatMessage,,,history,,,,
 long_,,,,,roomId,,,,
 enum_,ChatMessageType,,,,chatMessageType,,,,
 string_,,,,,content,,,,
-@ResSendRoomChat,,,,,,,,,
+long_,,,,,clientMessageId,,,,
+@ResSendRoomChat,,,,,,,,,1
 @MsgSetAvatarIndex,,,,,,,,,1
 int_,,,,,avatarIndex,,,,
 @ResSetAvatarIndex,,,,,,,,,1
@@ -116,3 +117,4 @@ string_,,,,,content,,,,
 long_,,,,,timestamp,,,,
 long_,,,,,replyTo,,,,
 int_,,,,,senderAvatarIndex,,,,
+long_,,,,,clientMessageId,,,,

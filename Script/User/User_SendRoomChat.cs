@@ -42,6 +42,7 @@ namespace Script
             msgR.content = msg.content;
             msgR.userName = user.userInfo.userName;
             msgR.avatarIndex = user.userInfo.avatarIndex;
+            msgR.clientMessageId = msg.clientMessageId;
 
             r = await this.service.roomServiceProxy.SendChat(location.serviceId, msgR);
             if (r.e != ECode.Success)

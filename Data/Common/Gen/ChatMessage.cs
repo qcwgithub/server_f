@@ -25,5 +25,7 @@ namespace Data
         public long replyTo;
         [Key(9)]
         public int senderAvatarIndex;
+        [Key(10)]
+        public long clientMessageId;
     }
 }

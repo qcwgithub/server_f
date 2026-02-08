@@ -112,6 +112,7 @@ namespace Script
             message.replyTo = 0;
             message.senderName = msg.userName;
             message.senderAvatarIndex = msg.avatarIndex;
+            message.clientMessageId = msg.clientMessageId;
 
             await this.server.roomMessagesRedis.Add(message);
 

@@ -19,6 +19,8 @@ namespace Data
         public string userName;
         [Key(6)]
         public int avatarIndex;
+        [Key(7)]
+        public long clientMessageId;
     }
 
     [MessagePackObject]
