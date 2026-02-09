@@ -73,7 +73,5 @@ Image,2,,
 System,3,,
 Count,4,,
 @ChatMessageStatus,,,
-Normal,,1,
-ClientSending,,,client only
-ClientFailed,,,client only
-Revoked,,,
+Normal,0,1,
+Revoked,1,,

@@ -94,12 +94,12 @@ namespace Script
 
             //// ok
 
+            // last send
             user.lastSendChatStamp = now;
             user.sendChatTimestamps.RemoveAll(ts => now - ts >= roomMessageConfig.periodMs);
             user.sendChatTimestamps.Add(now);
 
-            // -> redis
-
+            // create message
             var message = new ChatMessage();
             message.messageId = ++room.roomInfo.messageId;
             message.roomId = room.roomId;
@@ -115,6 +115,7 @@ namespace Script
             message.clientMessageId = msg.clientMessageId;
             message.status = ChatMessageStatus.Normal;
 
+            // -> redis
             await this.server.roomMessagesRedis.Add(message);
 
             if (message.messageId % 100 == 0)
