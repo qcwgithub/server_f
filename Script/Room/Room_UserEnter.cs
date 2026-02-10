@@ -48,6 +48,8 @@ namespace Script
                 }
             }
 
+            this.service.logger.Info($"res.recentMessages.Count {res.recentMessages.Count}");
+
             return ECode.Success;
         }
 

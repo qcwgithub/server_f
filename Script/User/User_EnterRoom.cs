@@ -24,15 +24,10 @@ namespace Script
                 return ECode.UserNotExist;
             }
 
-            if (msg.roomId == user.roomId)
-            {
-                return ECode.Success;
-            }
-
             MyResponse r;
 
             stObjectLocation location;
-            if (user.roomId != 0)
+            if (user.roomId != 0 && user.roomId != msg.roomId)
             {
                 // leave first
                 location = await this.service.roomLocator.GetLocation(user.roomId);
