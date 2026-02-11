@@ -76,10 +76,8 @@ namespace Tool
                     break;
                 }
 
-                long lastMessageId = 0;
-
                 ResEnterRoom resEnterRoom;
-                (e, resEnterRoom) = await this.EnterRoom(this.resGetRecommendedRooms.roomInfos[0].roomId, lastMessageId);
+                (e, resEnterRoom) = await this.EnterRoom(this.resGetRecommendedRooms.roomInfos[0].roomId);
                 if (e != ECode.Success)
                 {
                     Console.ReadLine();

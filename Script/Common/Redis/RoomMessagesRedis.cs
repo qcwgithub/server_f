@@ -39,6 +39,7 @@ namespace Script
                 stop: -keepCount - 1);
         }
 
+        // 返回值是从旧到新
         public async Task<List<ChatMessage>> GetRecents(long roomId, int count)
         {
             string key = Key(roomId);
@@ -48,10 +49,15 @@ namespace Script
                 order: Order.Descending,
                 take: count);
 
-            // 返回值是从新到旧
-            return redisValues.Select(v => MessagePackSerializer.Deserialize<ChatMessage>(v)).ToList();
+            var list = new List<ChatMessage>();
+            for (int i = redisValues.Length - 1; i >= 0; i--)
+            {
+                list.Add(MessagePackSerializer.Deserialize<ChatMessage>(redisValues[i]));
+            }
+            return list;
         }
 
+        // 返回值是从旧到新
         public async Task<List<ChatMessage>> GetHistory(long roomId, long lastMessageId, int count)
         {
             string key = Key(roomId);
@@ -62,8 +68,12 @@ namespace Script
                 order: Order.Descending,
                 take: count);
 
-            // 返回值是从新到旧
-            return redisValues.Select(v => MessagePackSerializer.Deserialize<ChatMessage>(v)).ToList();
+            var list = new List<ChatMessage>();
+            for (int i = redisValues.Length - 1; i >= 0; i--)
+            {
+                list.Add(MessagePackSerializer.Deserialize<ChatMessage>(redisValues[i]));
+            }
+            return list;
         }
 
         public async Task<ChatMessage?> QueryOne(long roomId, long messageId)

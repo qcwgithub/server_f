@@ -11,7 +11,7 @@
 		"maxSendQueueBytes": 524288
 	},
 	"roomMessageConfig": {
-		"recentMessagesCount": 100,
+		"recentMessagesCount": 20,
 		"maxMessagesCount": 5000,
 		"getHistoryMessageCount": 20,
 		"minLength": 1,

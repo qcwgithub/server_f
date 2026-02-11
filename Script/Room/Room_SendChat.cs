@@ -126,7 +126,7 @@ namespace Script
             // -> memory
 
             this.service.sd.recentMessages.Enqueue(message);
-            while (this.service.sd.recentMessages.Count > 100)
+            while (this.service.sd.recentMessages.Count > roomMessageConfig.recentMessagesCount)
             {
                 this.service.sd.recentMessages.Dequeue();
             }

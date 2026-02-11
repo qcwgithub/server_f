@@ -4,13 +4,13 @@ namespace Tool
 {
     public partial class Robot
     {
-        public async Task<(ECode, ResEnterRoom)> EnterRoom(long roomId, long lastMessageId)
+        public async Task<(ECode, ResEnterRoom)> EnterRoom(long roomId)
         {
             this.Log($"EnterRoom roomId {roomId}");
 
             var msg = new MsgEnterRoom();
             msg.roomId = roomId;
-            msg.lastMessageId = lastMessageId;
+            msg.lastMessageId = 0;
 
             var r = await this.connection.Request(MsgType.EnterRoom, msg);
             this.Log($"EnterRoom result {r.e}");
@@ -30,7 +30,43 @@ namespace Tool
 
                 for (int i = 0; i < res.recentMessages.Count; i++)
                 {
-                    Console.WriteLine($"[{i}] {res.recentMessages[i].senderId} {res.recentMessages[i].content}");
+                    var m = res.recentMessages[i];
+                    Console.WriteLine($"recent[{i}] messageId: {m.messageId} {TimeUtils.MillisecondsToDateTime(m.timestamp)} senderId: {m.senderId} content: {m.content}");
+                }
+
+                if (res.recentMessages.Count > 0)
+                {
+                    long lastMessageId = res.recentMessages[0].messageId;
+                    while (lastMessageId > 0)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("Requesting room chat history..., lastMessageId {0}", lastMessageId);
+
+                        var msgHistory = new MsgGetRoomChatHistory
+                        {
+                            roomId = roomId,
+                            lastMessageId = lastMessageId,
+                        };
+
+                        r = await this.connection.Request(MsgType.GetRoomChatHistory, msgHistory);
+
+                        var resHistory = r.CastRes<ResGetRoomChatHistory>();
+                        Console.WriteLine("history count: {0}", resHistory.history.Count);
+                        for (int i = 0; i < resHistory.history.Count; i++)
+                        {
+                            var m = resHistory.history[i];
+                            Console.WriteLine($"history[{i}] messageId: {m.messageId} {TimeUtils.MillisecondsToDateTime(m.timestamp)} senderId: {m.senderId} content: {m.content}");
+                        }
+
+                        if (resHistory.history.Count > 0)
+                        {
+                            lastMessageId = resHistory.history[0].messageId;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
                 }
             }
 

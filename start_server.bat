@@ -1,0 +1,2 @@
+dotnet Data\bin\Debug\net10.0\Data.dll services=all
+PAUSE
