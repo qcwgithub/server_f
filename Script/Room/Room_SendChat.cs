@@ -137,13 +137,16 @@ namespace Script
                 .GroupBy(pair => pair.Value.gatewayServiceId, pair => pair.Value)
                 .ToDictionary(group => group.Key, group => group.ToList());
 
+            var broadcast = new MsgARoomChat();
+            broadcast.message = message;
+
             foreach (var pair in dict)
             {
                 int gatewayServiceId = pair.Key;
                 List<RoomUser> roomUsers = pair.Value;
 
                 long[] userIds = roomUsers.Select(x => x.userId).ToArray();
-                ECode e = this.service.gatewayServiceProxy.BroadcastToClient(gatewayServiceId, userIds, MsgType.A_RoomChat, message);
+                ECode e = this.service.gatewayServiceProxy.BroadcastToClient(gatewayServiceId, userIds, MsgType.ARoomChat, broadcast);
                 if (e == ECode.NotConnected)
                 {
                     this.service.logger.Warn($"{this.msgType} gatewayServiceId {gatewayServiceId} is not connected");

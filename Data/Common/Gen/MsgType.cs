@@ -61,7 +61,7 @@ namespace Data
         EnterRoom = 10004,
         LeaveRoom = 10005,
         SendRoomChat = 10006,
-        A_RoomChat = 10007,
+        ARoomChat = 10007,
         SearchRoom = 10008,
         GetRecommendedRooms = 10009,
         SetName = 10010,

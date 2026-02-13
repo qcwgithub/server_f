@@ -251,8 +251,8 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((MsgSendRoomChat)msg);
                     break;
 
-                case MsgType.A_RoomChat:
-                    msgBytes = MessagePackSerializer.Serialize((ChatMessage)msg);
+                case MsgType.ARoomChat:
+                    msgBytes = MessagePackSerializer.Serialize((MsgARoomChat)msg);
                     break;
 
                 case MsgType.SearchRoom:

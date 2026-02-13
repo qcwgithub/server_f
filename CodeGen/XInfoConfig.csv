@@ -119,3 +119,5 @@ long_,,,,,replyTo,,,,
 int_,,,,,senderAvatarIndex,,,,
 long_,,,,,clientMessageId,,,,
 enum_,ChatMessageStatus,,,,status,,,,
+@MsgARoomChat,,,,,,,,,1
+class_,ChatMessage,,,,message,,,,

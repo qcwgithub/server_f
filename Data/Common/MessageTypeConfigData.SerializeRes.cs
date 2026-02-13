@@ -249,8 +249,8 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((ResSendRoomChat)res);
                     break;
 
-                case MsgType.A_RoomChat:
-                    throw new Exception("Missing config for MsgType.A_RoomChat");
+                case MsgType.ARoomChat:
+                    throw new Exception("Missing config for MsgType.ARoomChat");
 
                 case MsgType.SearchRoom:
                     msgBytes = MessagePackSerializer.Serialize((ResSearchRoom)res);

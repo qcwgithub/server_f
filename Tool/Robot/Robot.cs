@@ -35,9 +35,11 @@ namespace Tool
             {
                 switch (msgType)
                 {
-                    case MsgType.A_RoomChat:
-                        var chatMsg = (ChatMessage)msg;
-                        Console.WriteLine($"Received chat message from {chatMsg.senderId}: {chatMsg.content} reply == null? {reply == null}");
+                    case MsgType.ARoomChat:
+                        {
+                            var chatMsg = ((MsgARoomChat)msg).message;
+                            Console.WriteLine($"Received chat message from {chatMsg.senderId}: {chatMsg.content} reply == null? {reply == null}");
+                        }
                         break;
                 }
             };
@@ -96,12 +98,16 @@ namespace Tool
                     }
                 }
 
-                // e = await this.SendRoomChat(this.roomId, $"Hello {DateTime.Now}!");
-                // if (e != ECode.Success)
-                // {
-                //     Console.ReadLine();
-                //     break;
-                // }
+                for (int i = 0; i < 100; i++)
+                {
+                    e = await this.SendRoomChat(this.roomId, $"Hello {DateTime.Now}!");
+                    if (e != ECode.Success)
+                    {
+                        Console.ReadLine();
+                        break;
+                    }
+                    await Task.Delay(2000);
+                }
 
                 // e = await this.LeaveRoom(this.roomId);
                 // if (e != ECode.Success)
