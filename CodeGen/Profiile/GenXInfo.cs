@@ -61,7 +61,7 @@ public class GenXInfo
                 f.PushTab().Push("[MongoDB.Bson.Serialization.Attributes.BsonIgnore]").PushLine();
             }
 
-            f.PushTab().Push("public ").Push(fieldConfig.typeInfo.name).Push(" ").Push(fieldConfig.name).Push(";");
+            f.TabPushF("public {0}{1} {2};", fieldConfig.typeInfo.name, fieldConfig.nullable ? "?" : string.Empty, fieldConfig.name);
 
             if (!string.IsNullOrEmpty(fieldConfig.comment))
             {

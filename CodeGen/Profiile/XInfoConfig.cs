@@ -7,6 +7,7 @@ public class FieldTypeInfo
     public string concreteString;
     public FieldTypeInfo[] subInfos;
 
+
     ////
     public string name;
     public string nameDb;
@@ -17,6 +18,7 @@ public class FieldTypeInfo
 public class XInfoFieldConfig
 {
     public FieldTypeInfo typeInfo;
+    public bool nullable;
 
     public string name;
     public string comment;

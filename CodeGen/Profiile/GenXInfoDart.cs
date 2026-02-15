@@ -77,7 +77,7 @@ public class GenXInfoDart
             var fieldConfig = xinfoConfig.fields[i];
 
             f.TabPush($"// [{i}]\n");
-            f.PushTab().Push(fieldConfig.typeInfo.nameDart).Push(" ").Push(fieldConfig.name).Push(";");
+            f.TabPushF("{0}{1} {2};", fieldConfig.typeInfo.nameDart, fieldConfig.nullable ? "?" : string.Empty, fieldConfig.name);
 
             if (!string.IsNullOrEmpty(fieldConfig.comment))
             {
@@ -121,7 +121,7 @@ public class GenXInfoDart
             {
                 var config = xinfoConfig.fields[i];
                 f.TabPush("");
-                f.PushDartToMsgPack(config.typeInfo, config.name);
+                f.PushDartToMsgPack(config.nullable, config.typeInfo, config.name);
                 f.Push(",\n");
             }
             f.AddTab(-1);
@@ -141,7 +141,7 @@ public class GenXInfoDart
             {
                 var config = xinfoConfig.fields[i];
                 f.TabPushF("{0}: ", config.name);
-                f.PushDartFromMsgPack(config.typeInfo, $"list[{i}]");
+                f.PushDartFromMsgPack(config.nullable, config.typeInfo, $"list[{i}]");
                 f.Push(",\n");
             }
             f.AddTab(-1);

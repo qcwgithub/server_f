@@ -149,6 +149,11 @@ public class XInfoProgram
                 c.typeInfo = ReadTypeInfo(list1, ref i1);
 
                 c.name = helper.ReadString("name");
+                if (c.name[c.name.Length - 1] == '?')
+                {
+                    c.nullable = true;
+                    c.name = c.name.Substring(0, c.name.Length - 1);
+                }
                 c.comment = helper.ReadString("comment");
 
                 xinfoConfig.fields.Add(c);

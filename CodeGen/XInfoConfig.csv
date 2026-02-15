@@ -102,6 +102,7 @@ long_,,,,,roomId,,,,
 enum_,ChatMessageType,,,,chatMessageType,,,,
 string_,,,,,content,,,,
 long_,,,,,clientMessageId,,,,
+class_,ChatMessageImageContent,,,,imageContent?,,,,
 @ResSendRoomChat,,,,,,,,,1
 @MsgSetAvatarIndex,,,,,,,,,1
 int_,,,,,avatarIndex,,,,
@@ -119,5 +120,12 @@ long_,,,,,replyTo,,,,
 int_,,,,,senderAvatarIndex,,,,
 long_,,,,,clientMessageId,,,,
 enum_,ChatMessageStatus,,,,status,,,,
+class_,ChatMessageImageContent,,,,imageContent?,,,,
 @MsgARoomChat,,,,,,,,,1
 class_,ChatMessage,,,,message,,,,
+@ChatMessageImageContent,,,,,,,,,1
+string_,,,,,url,,,,
+int_,,,,,width,,,,
+int_,,,,,height,,,,
+long_,,,,,size,,,,
+string_,,,,,thumbnailUrl,,,,

@@ -29,5 +29,7 @@ namespace Data
         public long clientMessageId;
         [Key(11)]
         public ChatMessageStatus status;
+        [Key(12)]
+        public ChatMessageImageContent? imageContent;
     }
 }

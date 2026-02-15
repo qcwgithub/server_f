@@ -21,6 +21,8 @@ namespace Data
         public int avatarIndex;
         [Key(7)]
         public long clientMessageId;
+        [Key(8)]
+        public ChatMessageImageContent? imageContent;
     }
 
     [MessagePackObject]

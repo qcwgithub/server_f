@@ -43,6 +43,7 @@ namespace Script
             msgR.userName = user.userInfo.userName;
             msgR.avatarIndex = user.userInfo.avatarIndex;
             msgR.clientMessageId = msg.clientMessageId;
+            msgR.imageContent = msg.imageContent;
 
             r = await this.service.roomServiceProxy.SendChat(location.serviceId, msgR);
             if (r.e != ECode.Success)

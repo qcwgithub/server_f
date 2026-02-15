@@ -17,7 +17,7 @@ namespace Script
 
             if (msg.type < 0 || msg.type >= ChatMessageType.Count)
             {
-                return ECode.Chat_InvalidType;
+                return ECode.ChatInvalidType;
             }
 
             var roomMessageConfig = this.server.data.serverConfig.roomMessageConfig;
@@ -28,17 +28,17 @@ namespace Script
                     {
                         if (msg.content == null)
                         {
-                            return ECode.Chat_Empty;
+                            return ECode.ChatEmpty;
                         }
                         msg.content = msg.content.Trim();
 
                         if (msg.content.Length < roomMessageConfig.minLength)
                         {
-                            return ECode.Chat_TooShort;
+                            return ECode.ChatTooShort;
                         }
                         if (msg.content.Length > roomMessageConfig.maxLength)
                         {
-                            return ECode.Chat_TooLong;
+                            return ECode.ChatTooLong;
                         }
 
                         bool allSpace = true;
@@ -52,17 +52,32 @@ namespace Script
                         }
                         if (allSpace)
                         {
-                            return ECode.Chat_AllSpace;
+                            return ECode.ChatAllSpace;
                         }
                     }
                     break;
 
                 case ChatMessageType.Image:
-                    return ECode.NotSupported;
+                    {
+                        ChatMessageImageContent? imageContent = msg.imageContent;
+                        if (imageContent == null)
+                        {
+                            return ECode.ChatMissingImageContent;
+                        }
+
+                        if (string.IsNullOrEmpty(imageContent.url) ||
+                            imageContent.width <= 0 ||
+                            imageContent.height <= 0 ||
+                            imageContent.size <= 0)
+                        {
+                            return ECode.InvalidParam;
+                        }
+                    }
+                    break;
 
                 case ChatMessageType.System: // Not allowed
                 default:
-                    return ECode.Chat_InvalidType;
+                    return ECode.ChatInvalidType;
             }
 
             Room? room = await this.service.LockRoom(msg.roomId, context);
@@ -114,6 +129,7 @@ namespace Script
             message.senderAvatarIndex = msg.avatarIndex;
             message.clientMessageId = msg.clientMessageId;
             message.status = ChatMessageStatus.Normal;
+            message.imageContent = msg.imageContent;
 
             // -> redis
             await this.server.roomMessagesRedis.Add(message);

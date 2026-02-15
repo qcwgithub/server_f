@@ -48,14 +48,14 @@ public static partial class FieldTypeExt
         return info.nameDart;
     }
 
-    public static FileFormatter PushDartToMsgPack(this FileFormatter f, FieldTypeInfo typeInfo,
+    public static FileFormatter PushDartToMsgPack(this FileFormatter f, bool nullable, FieldTypeInfo typeInfo,
         string accessGet)
     {
         switch (typeInfo.type)
         {
             case FieldType.class_:
                 {
-                    f.Push(string.Format("{0}.toMsgPack()", accessGet));
+                    f.Push(string.Format("{0}{1}.toMsgPack()", accessGet, nullable ? "?" : string.Empty));
                 }
                 break;
 
@@ -137,14 +137,22 @@ public static partial class FieldTypeExt
         return f;
     }
 
-    public static FileFormatter PushDartFromMsgPack(this FileFormatter f, FieldTypeInfo typeInfo,
+    public static FileFormatter PushDartFromMsgPack(this FileFormatter f, bool nullable, FieldTypeInfo typeInfo,
         string accessGet)
     {
         switch (typeInfo.type)
         {
             case FieldType.class_:
                 {
-                    f.Push(string.Format("{0}.fromMsgPack({1} as List)", typeInfo.nameDart, accessGet));
+                    if (nullable)
+                    {
+                        f.Push(string.Format("{0} == null ? null : {1}.fromMsgPack({0} as List)",
+                            accessGet, typeInfo.nameDart));
+                    }
+                    else
+                    {
+                        f.Push(string.Format("{0}.fromMsgPack({1} as List)", typeInfo.nameDart, accessGet));
+                    }
                 }
                 break;
 
