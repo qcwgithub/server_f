@@ -8,7 +8,7 @@ namespace Data
         {
             if (res == null)
             {
-                return [];
+                return null;
             }
 
             byte[] msgBytes;
@@ -119,12 +119,28 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((ResResetName)res);
                     break;
 
+                case MsgType._User_ReceiveFriendRequest:
+                    msgBytes = MessagePackSerializer.Serialize((ResReceiveFriendRequest)res);
+                    break;
+
+                case MsgType._User_OtherAcceptFriendRequest:
+                    msgBytes = MessagePackSerializer.Serialize((ResOtherAcceptFriendRequest)res);
+                    break;
+
+                case MsgType._User_OtherRejectFriendRequest:
+                    msgBytes = MessagePackSerializer.Serialize((ResOtherRejectFriendRequest)res);
+                    break;
+
                 case MsgType._UserManager_UserLogin:
                     msgBytes = MessagePackSerializer.Serialize((ResUserManagerUserLogin)res);
                     break;
 
                 case MsgType._UserManager_GetUserLocation:
                     msgBytes = MessagePackSerializer.Serialize((ResUserManagerGetUserLocation)res);
+                    break;
+
+                case MsgType._UserManager_ForwardToUserService:
+                    msgBytes = MessagePackSerializer.Serialize((ResForwardToUserService)res);
                     break;
 
                 case MsgType._Room_ServerAction:
@@ -278,6 +294,26 @@ namespace Data
 
                 case MsgType.ReportUser:
                     msgBytes = MessagePackSerializer.Serialize((ResReportUser)res);
+                    break;
+
+                case MsgType.SendFriendRequest:
+                    msgBytes = MessagePackSerializer.Serialize((ResSendFriendRequest)res);
+                    break;
+
+                case MsgType.RejectFriendRequest:
+                    msgBytes = MessagePackSerializer.Serialize((ResRejectFriendRequest)res);
+                    break;
+
+                case MsgType.AcceptFriendRequest:
+                    msgBytes = MessagePackSerializer.Serialize((ResAcceptFriendRequest)res);
+                    break;
+
+                case MsgType.BlockUser:
+                    msgBytes = MessagePackSerializer.Serialize((ResBlockUser)res);
+                    break;
+
+                case MsgType.UnblockUser:
+                    msgBytes = MessagePackSerializer.Serialize((ResUnblockUser)res);
                     break;
 
                 case MsgType.Count:

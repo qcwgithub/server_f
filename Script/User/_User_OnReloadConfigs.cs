@@ -5,9 +5,9 @@ using Data;
 
 namespace Script
 {
-    public class User_OnReloadConfigs : OnReloadConfigs<UserService>
+    public class _User_OnReloadConfigs : OnReloadConfigs<UserService>
     {
-        public User_OnReloadConfigs(Server server, UserService service) : base(server, service)
+        public _User_OnReloadConfigs(Server server, UserService service) : base(server, service)
         {
         }
 

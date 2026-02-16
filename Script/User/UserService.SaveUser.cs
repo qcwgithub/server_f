@@ -76,6 +76,34 @@ namespace Script
                 if (buffer == null) buffer = new List<string>();
                 buffer.Add("lastSetAvatarIndexTimeS");
             }
+            if (last.friends.IsDifferent_ListClass(curr.friends))
+            {
+                infoNullable.friends = curr.friends;
+                last.friends.DeepCopyFrom_ListClass(curr.friends);
+                if (buffer == null) buffer = new List<string>();
+                buffer.Add("friends");
+            }
+            if (last.outgoingFriendRequests.IsDifferent_ListClass(curr.outgoingFriendRequests))
+            {
+                infoNullable.outgoingFriendRequests = curr.outgoingFriendRequests;
+                last.outgoingFriendRequests.DeepCopyFrom_ListClass(curr.outgoingFriendRequests);
+                if (buffer == null) buffer = new List<string>();
+                buffer.Add("outgoingFriendRequests");
+            }
+            if (last.incomingFriendRequests.IsDifferent_ListClass(curr.incomingFriendRequests))
+            {
+                infoNullable.incomingFriendRequests = curr.incomingFriendRequests;
+                last.incomingFriendRequests.DeepCopyFrom_ListClass(curr.incomingFriendRequests);
+                if (buffer == null) buffer = new List<string>();
+                buffer.Add("incomingFriendRequests");
+            }
+            if (last.blockedUsers.IsDifferent_ListClass(curr.blockedUsers))
+            {
+                infoNullable.blockedUsers = curr.blockedUsers;
+                last.blockedUsers.DeepCopyFrom_ListClass(curr.blockedUsers);
+                if (buffer == null) buffer = new List<string>();
+                buffer.Add("blockedUsers");
+            }
 
             #endregion auto
 

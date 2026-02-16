@@ -2,9 +2,9 @@ using Data;
 
 namespace Script
 {
-    public class User_OnTimer : OnTimer<UserService>
+    public class _User_OnTimer : OnTimer<UserService>
     {
-        public User_OnTimer(Server server, UserService service) : base(server, service)
+        public _User_OnTimer(Server server, UserService service) : base(server, service)
         {
         }
 

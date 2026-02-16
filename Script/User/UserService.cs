@@ -31,6 +31,7 @@ namespace Script
 
         public readonly UserServiceScript ss;
         public readonly ObjectLocator roomLocator;
+        public readonly FriendScript friendScript;
 
         public UserService(Server server, int serviceId) : base(server, serviceId)
         {
@@ -45,6 +46,7 @@ namespace Script
             this.ss = new UserServiceScript(this.server, this);
 
             this.roomLocator = ObjectLocator.CreateRoomLocator(this.server, this, this.sd.roomLocatorData);
+            this.friendScript = new FriendScript(this.server, this);
         }
 
         public override void Attach()
@@ -52,26 +54,31 @@ namespace Script
             base.Attach();
             base.AddHandler<UserService>();
 
-            this.dispatcher.AddHandler(new User_Action(this.server, this));
+            this.dispatcher.AddHandler(new User_AcceptFriendRequest(this.server, this));
+            this.dispatcher.AddHandler(new _User_Action(this.server, this));
+            this.dispatcher.AddHandler(new User_SendFriendRequest(this.server, this));
             this.dispatcher.AddHandler(new User_EnterRoom(this.server, this));
             this.dispatcher.AddHandler(new User_GetRecommendedRooms(this.server, this));
             this.dispatcher.AddHandler(new User_GetRoomChatHistory(this.server, this));
             this.dispatcher.AddHandler(new User_LeaveRoom(this.server, this));
-            this.dispatcher.AddHandler(new User_OnReloadConfigs(this.server, this), true);
-            this.dispatcher.AddHandler(new User_OnTimer(this.server, this), true);
+            this.dispatcher.AddHandler(new _User_OnReloadConfigs(this.server, this), true);
+            this.dispatcher.AddHandler(new _User_OnTimer(this.server, this), true);
+            this.dispatcher.AddHandler(new User_RejectFriendRequest(this.server, this), true);
             this.dispatcher.AddHandler(new User_ReportRoomMessage(this.server, this));
             this.dispatcher.AddHandler(new User_ReportUser(this.server, this));
-            this.dispatcher.AddHandler(new User_ResetName(this.server, this));
-            this.dispatcher.AddHandler(new User_SaveUserImmediately(this.server, this));
-            this.dispatcher.AddHandler(new User_SaveUserInfoToFile(this.server, this));
+            this.dispatcher.AddHandler(new _User_ResetName(this.server, this));
+            this.dispatcher.AddHandler(new _User_SaveUserImmediately(this.server, this));
+            this.dispatcher.AddHandler(new _User_SaveUserInfoToFile(this.server, this));
             this.dispatcher.AddHandler(new User_SearchRoom(this.server, this));
             this.dispatcher.AddHandler(new User_SendRoomChat(this.server, this));
-            this.dispatcher.AddHandler(new User_ServerKick(this.server, this));
+            this.dispatcher.AddHandler(new _User_ServerKick(this.server, this));
             this.dispatcher.AddHandler(new User_SetAvatarIndex(this.server, this));
-            this.dispatcher.AddHandler(new User_SetGmFlag(this.server, this));
+            this.dispatcher.AddHandler(new _User_SetGmFlag(this.server, this));
             this.dispatcher.AddHandler(new User_SetName(this.server, this));
-            this.dispatcher.AddHandler(new User_UserDisconnectFromGateway(this.server, this));
-            this.dispatcher.AddHandler(new User_UserLoginSuccess(this.server, this));
+            this.dispatcher.AddHandler(new _User_UserDisconnectFromGateway(this.server, this));
+            this.dispatcher.AddHandler(new _User_UserLoginSuccess(this.server, this));
+            this.dispatcher.AddHandler(new User_BlockUser(this.server, this));
+            this.dispatcher.AddHandler(new _User_ReceiveFriendRequest(this.server, this));
         }
 
         public override async Task Detach()

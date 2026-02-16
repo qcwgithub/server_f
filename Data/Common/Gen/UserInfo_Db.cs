@@ -21,6 +21,14 @@ namespace Data
         public int? avatarIndex;
         [BsonIgnoreIfNull]
         public long? lastSetAvatarIndexTimeS;
+        [BsonIgnoreIfNull]
+        public List<FriendInfo_Db> friends;
+        [BsonIgnoreIfNull]
+        public List<OutgoingFriendRequest_Db> outgoingFriendRequests;
+        [BsonIgnoreIfNull]
+        public List<IncomingFriendRequest_Db> incomingFriendRequests;
+        [BsonIgnoreIfNull]
+        public List<BlockedUser_Db> blockedUsers;
 
         public bool DeepCopyFrom(UserInfo other)
         {
@@ -64,6 +72,30 @@ namespace Data
 
             this.lastSetAvatarIndexTimeS = XInfoHelper_Db.Copy_long(other.lastSetAvatarIndexTimeS);
             if (this.lastSetAvatarIndexTimeS != null)
+            {
+                empty = false;
+            }
+
+            this.friends = XInfoHelper_Db.Copy_ListClass<FriendInfo_Db, FriendInfo>(other.friends);
+            if (this.friends != null)
+            {
+                empty = false;
+            }
+
+            this.outgoingFriendRequests = XInfoHelper_Db.Copy_ListClass<OutgoingFriendRequest_Db, OutgoingFriendRequest>(other.outgoingFriendRequests);
+            if (this.outgoingFriendRequests != null)
+            {
+                empty = false;
+            }
+
+            this.incomingFriendRequests = XInfoHelper_Db.Copy_ListClass<IncomingFriendRequest_Db, IncomingFriendRequest>(other.incomingFriendRequests);
+            if (this.incomingFriendRequests != null)
+            {
+                empty = false;
+            }
+
+            this.blockedUsers = XInfoHelper_Db.Copy_ListClass<BlockedUser_Db, BlockedUser>(other.blockedUsers);
+            if (this.blockedUsers != null)
             {
                 empty = false;
             }

@@ -10,8 +10,25 @@ public class GenXInfo
         f.BlockStart();
         {
             f.TabPush("[MessagePackObject]\n");
-            f.TabPushF("public class {0}{1}\n", xinfoConfig.name,
-                xinfoConfig.cacheType == CacheType.Redis ? " : ICanBePlaceholder" : string.Empty);
+            f.TabPushF("public class {0}", xinfoConfig.name);
+
+            var interfaces = new List<string>();
+            if (xinfoConfig.cacheType == CacheType.Redis)
+            {
+                interfaces.Add("ICanBePlaceholder");
+            }
+
+            if (xinfoConfig.ensure)
+            {
+                interfaces.Add($"IIsDifferent<{xinfoConfig.name}>");
+            }
+
+            for (int i = 0; i < interfaces.Count; i++)
+            {
+                f.Push(i == 0 ? " : " : ", ");
+                f.Push(interfaces[i]);
+            }
+            f.Push("\n");
 
             f.BlockStart();
             {

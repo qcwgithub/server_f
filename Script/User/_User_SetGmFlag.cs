@@ -4,9 +4,9 @@ using Data;
 
 namespace Script
 {
-    public class User_SetGmFlag : Handler<UserService, MsgSetGmFlag, ResSetGmFlag>
+    public class _User_SetGmFlag : Handler<UserService, MsgSetGmFlag, ResSetGmFlag>
     {
-        public User_SetGmFlag(Server server, UserService service) : base(server, service)
+        public _User_SetGmFlag(Server server, UserService service) : base(server, service)
         {
         }
 

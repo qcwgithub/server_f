@@ -3,7 +3,7 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class AccountInfo : ICanBePlaceholder
+    public class AccountInfo : ICanBePlaceholder, IIsDifferent<AccountInfo>
     {
         [Key(0)]
         [MongoDB.Bson.Serialization.Attributes.BsonIgnore]

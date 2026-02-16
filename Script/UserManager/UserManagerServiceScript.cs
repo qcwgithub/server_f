@@ -43,5 +43,55 @@ namespace Script
             );
             return userInfo;
         }
+
+        public struct stCheckUserExistAndAddLocationResult
+        {
+            public ECode e;
+            public string channel;
+            public string channelUserId;
+            public stObjectLocation location;
+        }
+
+        public async Task<stCheckUserExistAndAddLocationResult> CheckUserExistAndAddLocation(MessageContext context, long userId)
+        {
+            var ret = new stCheckUserExistAndAddLocationResult();
+
+            var msgDb = new MsgQuery_AccountInfo_byElementOf_userIds();
+            msgDb.ele_userIds = userId;
+
+            var r = await this.service.dbServiceProxy.Query_AccountInfo_byElementOf_userIds(msgDb);
+            if (r.e != ECode.Success)
+            {
+                ret.e = r.e;
+                return ret;
+            }
+
+            var resDb = r.CastRes<ResQuery_AccountInfo_byElementOf_userIds>();
+            if (resDb.result == null)
+            {
+                ret.e = ECode.AccountNotExist;
+                return ret;
+            }
+
+            ret.channel = resDb.result.channel;
+            ret.channelUserId = resDb.result.channelUserId;
+
+            context.lockValue = await this.server.lockRedis.LockAccount(ret.channel, ret.channelUserId, this.service.logger);
+            if (context.lockValue == null)
+            {
+                ret.e = ECode.RedisLockFail;
+                return ret;
+            }
+
+            ret.location = await this.service.userLocationAssignmentScript.AssignLocation(userId);
+            if (!ret.location.IsValid())
+            {
+                ret.e = ECode.NoAvailableUserService;
+                return ret;
+            }
+
+            this.service.userLocator.CacheLocation(userId, ret.location);
+            return ret;
+        }
     }
 }

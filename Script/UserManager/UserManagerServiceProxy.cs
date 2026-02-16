@@ -18,7 +18,25 @@ namespace Script
         {
             return await this.Request(ServiceType.UserManager, MsgType._UserManager_GetUserLocation, msg);
         }
+        public async Task<MyResponse> ForwardToUserService(MsgForwardToUserService msg)
+        {
+            return await this.Request(ServiceType.UserManager, MsgType._UserManager_ForwardToUserService, msg);
+        }
 
         #endregion auto_proxy
+
+        public async Task<MyResponse> ForwardToUserService(long toUserId, MsgType innerMsgType, object innerMsg)
+        {
+            var msg = new MsgForwardToUserService();
+            msg.userId = toUserId;
+            msg.innerMsgType = innerMsgType;
+            msg.innerMsgBytes = MessageTypeConfigData.SerializeMsg(innerMsgType, innerMsg);
+
+            var r = await this.ForwardToUserService(msg);
+
+            var res = r.CastRes<ResForwardToUserService>();
+            var innerRes = MessageTypeConfigData.DeserializeRes(innerMsgType, res.innerResBytes);
+            return new MyResponse(r.e, innerRes); 
+        }
     }
 }

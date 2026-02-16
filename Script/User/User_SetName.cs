@@ -25,24 +25,24 @@ namespace Script
             long nowS = TimeUtils.GetTimeS();
             if (nowS - user.userInfo.lastSetNameTimeS < userNameConfig.minIntervalS)
             {
-                return ECode.Name_TooFrequent;
+                return ECode.NameTooFrequent;
             }
 
             // check userName
             if (msg.userName == null)
             {
-                return ECode.Name_Empty;
+                return ECode.NameEmpty;
             }
 
             msg.userName = msg.userName.Trim();
 
             if (msg.userName.Length < userNameConfig.minLength)
             {
-                return ECode.Name_TooShort;
+                return ECode.NameTooShort;
             }
             if (msg.userName.Length > userNameConfig.maxLength)
             {
-                return ECode.Name_TooLong;
+                return ECode.NameTooLong;
             }
 
             string lower = msg.userName.ToLower();
@@ -54,7 +54,7 @@ namespace Script
                 lower.Contains("@") ||
                 lower.Contains("www."))
             {
-                return ECode.Name_Reserved;
+                return ECode.NameReserved;
             }
 
             //// ok

@@ -23,7 +23,7 @@ namespace Script
             return await connection.Request(msgType, msg);
         }
 
-        protected async Task<MyResponse> Request(int serviceId, MsgType msgType, object msg)
+        public async Task<MyResponse> Request(int serviceId, MsgType msgType, object msg)
         {
             IConnection? connection = this.self.data.GetOtherServiceConnection(serviceId);
             if (connection == null || !connection.IsConnected())

@@ -22,6 +22,14 @@ namespace Data
         public int? avatarIndex;
         [Key(6)]
         public long? lastSetAvatarIndexTimeS;
+        [Key(7)]
+        public List<FriendInfo> friends;
+        [Key(8)]
+        public List<OutgoingFriendRequest> outgoingFriendRequests;
+        [Key(9)]
+        public List<IncomingFriendRequest> incomingFriendRequests;
+        [Key(10)]
+        public List<BlockedUser> blockedUsers;
 
         #endregion auto
     }

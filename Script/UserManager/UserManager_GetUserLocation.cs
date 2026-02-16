@@ -21,37 +21,15 @@ namespace Script
 
             if (msg.addWhenNotExist)
             {
-                var msgDb = new MsgQuery_AccountInfo_byElementOf_userIds();
-                msgDb.ele_userIds = msg.userId;
-
-                var r = await this.service.dbServiceProxy.Query_AccountInfo_byElementOf_userIds(msgDb);
-                if (r.e != ECode.Success)
+                var ret = await this.service.ss.CheckUserExistAndAddLocation(context, msg.userId);
+                if (ret.e != ECode.Success)
                 {
-                    return r.e;
+                    return ret.e;
                 }
 
-                var resDb = r.CastRes<ResQuery_AccountInfo_byElementOf_userIds>();
-                if (resDb.result == null)
-                {
-                    return ECode.AccountNotExist;
-                }
-
-                msg.channel = resDb.result.channel;
-                msg.channelUserId = resDb.result.channelUserId;
-
-                context.lockValue = await this.server.lockRedis.LockAccount(msg.channel, msg.channelUserId, this.service.logger);
-                if (context.lockValue == null)
-                {
-                    return ECode.RedisLockFail;
-                }
-
-                location = await this.service.userLocationAssignmentScript.AssignLocation(msg.userId);
-                if (!location.IsValid())
-                {
-                    return ECode.NoAvailableUserService;
-                }
-
-                this.service.userLocator.CacheLocation(msg.userId, location);
+                msg.channel = ret.channel;
+                msg.channelUserId = ret.channelUserId;
+                location = ret.location;
             }
 
             res.location = location;

@@ -93,6 +93,42 @@ public partial class collection_user_info
             updList.Add(upd);
         }
 
+        if (infoNullable.friends != null)
+        {
+            var friends_Db = XInfoHelper_Db.Copy_ListClass<FriendInfo_Db, FriendInfo>(infoNullable.friends);
+            var upd = friends_Db != null
+                ? Builders<UserInfo_Db>.Update.Set(nameof(UserInfo_Db.friends), friends_Db)
+                : Builders<UserInfo_Db>.Update.Unset(nameof(UserInfo_Db.friends));
+            updList.Add(upd);
+        }
+
+        if (infoNullable.outgoingFriendRequests != null)
+        {
+            var outgoingFriendRequests_Db = XInfoHelper_Db.Copy_ListClass<OutgoingFriendRequest_Db, OutgoingFriendRequest>(infoNullable.outgoingFriendRequests);
+            var upd = outgoingFriendRequests_Db != null
+                ? Builders<UserInfo_Db>.Update.Set(nameof(UserInfo_Db.outgoingFriendRequests), outgoingFriendRequests_Db)
+                : Builders<UserInfo_Db>.Update.Unset(nameof(UserInfo_Db.outgoingFriendRequests));
+            updList.Add(upd);
+        }
+
+        if (infoNullable.incomingFriendRequests != null)
+        {
+            var incomingFriendRequests_Db = XInfoHelper_Db.Copy_ListClass<IncomingFriendRequest_Db, IncomingFriendRequest>(infoNullable.incomingFriendRequests);
+            var upd = incomingFriendRequests_Db != null
+                ? Builders<UserInfo_Db>.Update.Set(nameof(UserInfo_Db.incomingFriendRequests), incomingFriendRequests_Db)
+                : Builders<UserInfo_Db>.Update.Unset(nameof(UserInfo_Db.incomingFriendRequests));
+            updList.Add(upd);
+        }
+
+        if (infoNullable.blockedUsers != null)
+        {
+            var blockedUsers_Db = XInfoHelper_Db.Copy_ListClass<BlockedUser_Db, BlockedUser>(infoNullable.blockedUsers);
+            var upd = blockedUsers_Db != null
+                ? Builders<UserInfo_Db>.Update.Set(nameof(UserInfo_Db.blockedUsers), blockedUsers_Db)
+                : Builders<UserInfo_Db>.Update.Unset(nameof(UserInfo_Db.blockedUsers));
+            updList.Add(upd);
+        }
+
 
         #endregion autoSave
 

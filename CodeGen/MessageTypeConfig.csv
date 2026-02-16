@@ -28,9 +28,13 @@ _User_GetUserCount,306,MsgGetUserCount,ResGetUserCount,1,1
 _User_SaveUserInfoToFile,307,MsgSaveUserInfoToFile,ResSaveUserInfoToFile,1,1
 _User_SetGmFlag,309,MsgSetGmFlag,ResSetGmFlag,1,1
 _User_ResetName,310,MsgResetName,ResResetName,1,1
+_User_ReceiveFriendRequest,311,MsgReceiveFriendRequest,ResReceiveFriendRequest,1,1
+_User_OtherAcceptFriendRequest,312,MsgOtherAcceptFriendRequest,ResOtherAcceptFriendRequest,1,1
+_User_OtherRejectFriendRequest,313,MsgOtherRejectFriendRequest,ResOtherRejectFriendRequest,1,1
 #,,,,,
 _UserManager_UserLogin,500,MsgUserManagerUserLogin,ResUserManagerUserLogin,1,0
 _UserManager_GetUserLocation,501,MsgUserManagerGetUserLocation,ResUserManagerGetUserLocation,1,0
+_UserManager_ForwardToUserService,502,MsgForwardToUserService,ResForwardToUserService,1,0
 #,,,,,
 _Room_ServerAction,600,MsgRoomServiceAction,ResRoomServiceAction,1,1
 _Room_SaveRoomInfoToFile,603,MsgSaveRoomInfoToFile,ResSaveRoomInfoToFile,1,1
@@ -75,4 +79,9 @@ SetAvatarIndex,10011,MsgSetAvatarIndex,ResSetAvatarIndex,,
 GetRoomChatHistory,10012,MsgGetRoomChatHistory,ResGetRoomChatHistory,,
 ReportRoomMessage,10013,MsgReportRoomMessage,ResReportRoomMessage,,
 ReportUser,10014,MsgReportUser,ResReportUser,,
-Count,10015,,,,
+SendFriendRequest,10015,MsgSendFriendRequest,ResSendFriendRequest,,
+RejectFriendRequest,10016,MsgRejectFriendRequest,ResRejectFriendRequest,,
+AcceptFriendRequest,10017,MsgAcceptFriendRequest,ResAcceptFriendRequest,,
+BlockUser,10018,MsgBlockUser,ResBlockUser,,
+UnblockUser,10019,MsgUnblockUser,ResUnblockUser,,
+Count,10020,,,,

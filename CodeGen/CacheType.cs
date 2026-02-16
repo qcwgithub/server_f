@@ -3,6 +3,7 @@ public enum CacheType
     None,
     Memory,
     Redis,
+    MemoryChild,
 }
 
 public static class CacheTypeExt

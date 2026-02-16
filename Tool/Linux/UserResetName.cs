@@ -24,10 +24,7 @@ namespace Tool
             }
 
             var res = r.CastRes<ResUserManagerGetUserLocation>();
-            if (!res.location.IsValid())
-            {
-                return;
-            }
+            MyDebug.Assert(res.location.IsValid());
 
             serviceConfig = this.allServiceConfigs.Find(tai => tai.serviceId == res.location.serviceId);
 

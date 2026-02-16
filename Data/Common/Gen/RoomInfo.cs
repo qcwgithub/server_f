@@ -3,7 +3,7 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class RoomInfo
+    public class RoomInfo : IIsDifferent<RoomInfo>
     {
         [Key(0)]
         public long roomId;

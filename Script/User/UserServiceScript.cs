@@ -114,5 +114,22 @@ namespace Script
             server.timerScript.ClearTimer(user.destroyTimer);
             user.destroyTimer = null;
         }
+
+        public async Task<(ECode, User?)> SimulateUserLogin(long userId, UserDestroyUserReason userDestroyUserReason)
+        {
+            ECode e;
+            User? user;
+
+            (e, user) = await this.service.LoadUser(userId, null);
+            if (e != ECode.Success)
+            {
+                return (e, null);
+            }
+
+            this.SetSaveTimer(user);
+            this.SetDestroyTimer(user, userDestroyUserReason);
+
+            return (ECode.Success, user);
+        }
     }
 }

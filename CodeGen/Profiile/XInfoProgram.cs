@@ -69,6 +69,10 @@ public class XInfoProgram
             new Mark { startMark = "#region autoSave", text = Gen_collection_x_info.Save(xinfoConfig) },
         });
     }
+    static void DoMemoryChildXInfoStuff(XInfoConfig xinfoConfig)
+    {
+        Gen_XInfo_Db.Do(xinfoConfig);
+    }
 
     static FieldTypeInfo ReadTypeInfo(List<string> list, ref int index)
     {
@@ -168,6 +172,10 @@ public class XInfoProgram
             if (xinfoConfig.cacheType == CacheType.Memory)
             {
                 DoMemoryXInfoStuff(xinfoConfig);
+            }
+            if (xinfoConfig.cacheType == CacheType.MemoryChild)
+            {
+                DoMemoryChildXInfoStuff(xinfoConfig);
             }
 
             if (xinfoConfig.dart)

@@ -15,12 +15,12 @@ namespace Script
             this.service.logger.Info($"{this.msgType} userId {context.msg_userId} keyword {msg.keyword}");
             if (string.IsNullOrEmpty(msg.keyword))
             {
-                return ECode.Search_TooShort;
+                return ECode.SearchTooShort;
             }
 
             if (msg.keyword.Length > 100)
             {
-                return ECode.Search_TooLong;
+                return ECode.SearchTooLong;
             }
 
             User? user = await this.service.LockUser(context.msg_userId, context);

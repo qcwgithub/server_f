@@ -8,7 +8,8 @@ namespace Data
         DestroyTimer_DisconnectFromGateway,
         Shutdown,
         ServerKick,
-        ResetName,
+        SimulateLogin_ResetName,
+        SimulateLogin_ReveiveFriendRequest,
     }
 
     public enum UserClearDestroyTimerReason

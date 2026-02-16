@@ -55,5 +55,11 @@ namespace Data
         AvatarIndex_TooFrequent = 116,
         AvatarIndex_OutOfRange = 117,
         ChatMissingImageContent = 118,
+        AlreadyFriends = 119,
+        InvalidUserId = 120,
+        OutgoingFriendRequestNotExist = 121,
+        FriendRequestResultNotWait = 122,
+        IncomingFriendRequestNotExist = 123,
+        OutgoingFriendRequestAlreadyExist = 124,
     }
 }

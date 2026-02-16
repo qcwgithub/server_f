@@ -3,7 +3,7 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class UserReportInfo
+    public class UserReportInfo : IIsDifferent<UserReportInfo>
     {
         [Key(0)]
         public long reportUserId;

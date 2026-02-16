@@ -119,12 +119,28 @@ namespace Data
                     ob = MessagePackSerializer.Deserialize<ResResetName>(resBytes);
                     break;
 
+                case MsgType._User_ReceiveFriendRequest:
+                    ob = MessagePackSerializer.Deserialize<ResReceiveFriendRequest>(resBytes);
+                    break;
+
+                case MsgType._User_OtherAcceptFriendRequest:
+                    ob = MessagePackSerializer.Deserialize<ResOtherAcceptFriendRequest>(resBytes);
+                    break;
+
+                case MsgType._User_OtherRejectFriendRequest:
+                    ob = MessagePackSerializer.Deserialize<ResOtherRejectFriendRequest>(resBytes);
+                    break;
+
                 case MsgType._UserManager_UserLogin:
                     ob = MessagePackSerializer.Deserialize<ResUserManagerUserLogin>(resBytes);
                     break;
 
                 case MsgType._UserManager_GetUserLocation:
                     ob = MessagePackSerializer.Deserialize<ResUserManagerGetUserLocation>(resBytes);
+                    break;
+
+                case MsgType._UserManager_ForwardToUserService:
+                    ob = MessagePackSerializer.Deserialize<ResForwardToUserService>(resBytes);
                     break;
 
                 case MsgType._Room_ServerAction:
@@ -278,6 +294,26 @@ namespace Data
 
                 case MsgType.ReportUser:
                     ob = MessagePackSerializer.Deserialize<ResReportUser>(resBytes);
+                    break;
+
+                case MsgType.SendFriendRequest:
+                    ob = MessagePackSerializer.Deserialize<ResSendFriendRequest>(resBytes);
+                    break;
+
+                case MsgType.RejectFriendRequest:
+                    ob = MessagePackSerializer.Deserialize<ResRejectFriendRequest>(resBytes);
+                    break;
+
+                case MsgType.AcceptFriendRequest:
+                    ob = MessagePackSerializer.Deserialize<ResAcceptFriendRequest>(resBytes);
+                    break;
+
+                case MsgType.BlockUser:
+                    ob = MessagePackSerializer.Deserialize<ResBlockUser>(resBytes);
+                    break;
+
+                case MsgType.UnblockUser:
+                    ob = MessagePackSerializer.Deserialize<ResUnblockUser>(resBytes);
                     break;
 
                 case MsgType.Count:
