@@ -243,6 +243,14 @@ namespace Data
                     ob = MessagePackSerializer.Deserialize<ResSave_UserReportInfo>(resBytes);
                     break;
 
+                case MsgType._Save_UserBriefInfo:
+                    ob = MessagePackSerializer.Deserialize<ResSave_UserBriefInfo>(resBytes);
+                    break;
+
+                case MsgType._Query_UserBriefInfo_by_userId:
+                    ob = MessagePackSerializer.Deserialize<ResQuery_UserBriefInfo_by_userId>(resBytes);
+                    break;
+
                 case MsgType.ClientStart:
                     throw new Exception("Missing config for MsgType.ClientStart");
 
@@ -323,6 +331,18 @@ namespace Data
                 case MsgType.RemoveFriend:
                     ob = MessagePackSerializer.Deserialize<ResRemoveFriend>(resBytes);
                     break;
+
+                case MsgType.AReceiveFriendRequest:
+                    throw new Exception("Missing config for MsgType.AReceiveFriendRequest");
+
+                case MsgType.AOtherAcceptFriendRequest:
+                    throw new Exception("Missing config for MsgType.AOtherAcceptFriendRequest");
+
+                case MsgType.AOtherRejectFriendRequest:
+                    throw new Exception("Missing config for MsgType.AOtherRejectFriendRequest");
+
+                case MsgType.ARemoveFriend:
+                    throw new Exception("Missing config for MsgType.ARemoveFriend");
 
                 case MsgType.Count:
                     throw new Exception("Missing config for MsgType.Count");

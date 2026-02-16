@@ -18,7 +18,7 @@ public class GenXInfo
                 interfaces.Add("ICanBePlaceholder");
             }
 
-            if (xinfoConfig.ensure)
+            if (xinfoConfig.deepCopy)
             {
                 interfaces.Add($"IIsDifferent<{xinfoConfig.name}>");
             }

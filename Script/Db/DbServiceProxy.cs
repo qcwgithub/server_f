@@ -79,6 +79,14 @@ namespace Script
         {
             return await this.Request(ServiceType.Db, MsgType._Save_UserReportInfo, msg);
         }
+        public async Task<MyResponse> Save_UserBriefInfo(MsgSave_UserBriefInfo msg)
+        {
+            return await this.Request(ServiceType.Db, MsgType._Save_UserBriefInfo, msg);
+        }
+        public async Task<MyResponse> Query_UserBriefInfo_by_userId(MsgQuery_UserBriefInfo_by_userId msg)
+        {
+            return await this.Request(ServiceType.Db, MsgType._Query_UserBriefInfo_by_userId, msg);
+        }
 
         #endregion auto_proxy
     }

@@ -225,6 +225,10 @@ namespace Script
                     (err, putBack) = await this.SaveAccountInfo(element);
                     break;
 
+                case DirtyElementType.UserBriefInfo:
+                    (err, putBack) = await this.SaveUserBriefInfo(element);
+                    break;
+
 
                 #endregion auto_callSave
 

@@ -64,6 +64,8 @@ _Save_RoomInfo,5012,MsgSave_RoomInfo,ResSave_RoomInfo,1,0
 _Search_RoomInfo,5013,MsgSearch_RoomInfo,ResSearch_RoomInfo,1,0
 _Save_RoomMessageReportInfo,5014,MsgSave_RoomMessageReportInfo,ResSave_RoomMessageReportInfo,1,0
 _Save_UserReportInfo,5015,MsgSave_UserReportInfo,ResSave_UserReportInfo,1,0
+_Save_UserBriefInfo,5016,MsgSave_UserBriefInfo,ResSave_UserBriefInfo,1,
+_Query_UserBriefInfo_by_userId,5017,MsgQuery_UserBriefInfo_by_userId,ResQuery_UserBriefInfo_by_userId,1,
 #,,,,,
 ClientStart,10000,,,,
 Forward,10001,MsgForward,,,
@@ -86,4 +88,8 @@ AcceptFriendRequest,10017,MsgAcceptFriendRequest,ResAcceptFriendRequest,,
 BlockUser,10018,MsgBlockUser,ResBlockUser,,
 UnblockUser,10019,MsgUnblockUser,ResUnblockUser,,
 RemoveFriend,10020,MsgRemoveFriend,ResRemoveFriend,,
-Count,10021,,,,
+AReceiveFriendRequest,10021,MsgAReceiveFriendRequest,,,
+AOtherAcceptFriendRequest,10022,MsgAOtherAcceptFriendRequest,,,
+AOtherRejectFriendRequest,10023,MsgAOtherRejectFriendRequest,,,
+ARemoveFriend,10024,MsgARemoveFriendf,,,
+Count,10025,,,,

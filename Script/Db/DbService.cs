@@ -23,6 +23,7 @@ namespace Script
         public collection_room_info collection_room_info;
         public collection_room_message_report_info collection_room_message_report_info;
         public collection_user_report_info collection_user_report_info;
+        public collection_user_brief_info collection_user_brief_info;
 
         #endregion auto_collection_var_decl
 
@@ -40,6 +41,7 @@ namespace Script
             this.collection_room_info = new collection_room_info(server, this);
             this.collection_room_message_report_info = new collection_room_message_report_info(server, this);
             this.collection_user_report_info = new collection_user_report_info(server, this);
+            this.collection_user_brief_info = new collection_user_brief_info(server, this);
 
             #endregion auto_collection_var_create
         }
@@ -64,6 +66,8 @@ namespace Script
             this.dispatcher.AddHandler(new Query_RoomInfo_maxOf_roomId(server, this));
             this.dispatcher.AddHandler(new Save_RoomMessageReportInfo(server, this));
             this.dispatcher.AddHandler(new Save_UserReportInfo(server, this));
+            this.dispatcher.AddHandler(new Save_UserBriefInfo(server, this));
+            this.dispatcher.AddHandler(new Query_UserBriefInfo_by_userId(server, this));
 
             #endregion auto_handler_create
 

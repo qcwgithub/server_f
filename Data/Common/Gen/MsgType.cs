@@ -59,6 +59,8 @@ namespace Data
         _Search_RoomInfo = 5013,
         _Save_RoomMessageReportInfo = 5014,
         _Save_UserReportInfo = 5015,
+        _Save_UserBriefInfo = 5016,
+        _Query_UserBriefInfo_by_userId = 5017,
         ClientStart = 10000,
         Forward = 10001,
         Login = 10002,
@@ -80,6 +82,10 @@ namespace Data
         BlockUser = 10018,
         UnblockUser = 10019,
         RemoveFriend = 10020,
-        Count = 10021,
+        AReceiveFriendRequest = 10021,
+        AOtherAcceptFriendRequest = 10022,
+        AOtherRejectFriendRequest = 10023,
+        ARemoveFriend = 10024,
+        Count = 10025,
     }
 }

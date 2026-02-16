@@ -32,6 +32,15 @@ namespace Data
         public UserInfo? lastUserInfo;
 
         public bool isGm = false;
-        public long roomId;        
+        public long roomId;
+
+        public UserBriefInfo CreateUserBriefInfo()
+        {
+            var brief = UserBriefInfo.Ensure(null);
+            brief.userId = userInfo.userId;
+            brief.userName = userInfo.userName;
+            brief.avatarIndex = userInfo.avatarIndex;
+            return brief;
+        }
     }
 }

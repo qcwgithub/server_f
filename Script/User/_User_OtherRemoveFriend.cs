@@ -34,6 +34,15 @@ namespace Script
             //// ok
 
             user.userInfo.friends.RemoveAt(index);
+
+            if (user.connection != null)
+            {
+                user.connection.Send(MsgType.ARemoveFriend, new MsgARemoveFriend
+                {
+                    friendUserId = msg.otherUserId,
+                    reason = RemoveFriendReason.OtherRemoveYou,
+                }, null);
+            }
             return ECode.Success;
         }
 

@@ -25,6 +25,10 @@ namespace Data
         {
             return new stDirtyElement { e = DirtyElementType.AccountInfo, s1 = channel, s2 = channelUserId };
         }
+        public static stDirtyElement Create_UserBriefInfo(long userId)
+        {
+            return new stDirtyElement { e = DirtyElementType.UserBriefInfo, s1 = userId.ToString() };
+        }
 
         #endregion auto_create
 
@@ -38,6 +42,9 @@ namespace Data
 
                 case DirtyElementType.AccountInfo:
                     return string.Join(SPLITER, this.e, this.s1, this.s2);
+
+                case DirtyElementType.UserBriefInfo:
+                    return string.Join(SPLITER, this.e, this.s1);
 
 
                 #endregion auto_toString
@@ -71,6 +78,10 @@ namespace Data
                         self.s1 = str.Substring(index + 1, index2 - index - 1);
                         self.s2 = str.Substring(index2 + 1);
                     }
+                    break;
+
+                case DirtyElementType.UserBriefInfo:
+                    self.s1 = str.Substring(index + 1);
                     break;
 
 

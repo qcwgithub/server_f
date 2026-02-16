@@ -75,6 +75,7 @@ namespace Script
         #region auto_proxy_var_decl
 
         public AccountInfoProxy accountInfoProxy { get; private set; }
+        public UserBriefInfoProxy userBriefInfoProxy { get; private set; }
 
         #endregion auto_proxy_var_decl
 
@@ -114,6 +115,7 @@ namespace Script
             #region auto_proxy_var_create
 
             this.accountInfoProxy = new AccountInfoProxy(this);
+            this.userBriefInfoProxy = new UserBriefInfoProxy(this);
 
             #endregion auto_proxy_var_create
 

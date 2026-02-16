@@ -41,6 +41,14 @@ namespace Script
 
             req.result = FriendRequestResult.Rejected;
 
+            if (user.connection != null)
+            {
+                user.connection.Send(MsgType.AOtherRejectFriendRequest, new MsgAOtherRejectFriendRequest
+                {
+                    otherUserId = msg.otherUserId,
+                }, null);
+            }
+
             return ECode.Success;
         }
 

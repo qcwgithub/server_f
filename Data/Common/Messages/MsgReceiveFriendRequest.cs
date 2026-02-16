@@ -11,5 +11,12 @@ namespace Data
         public long fromUserId;
         [Key(2)]
         public string say;
+        [Key(3)]
+        public UserBriefInfo fromUserBriefInfo;
+    }
+
+    [MessagePackObject]
+    public class ResReceiveFriendRequest
+    {
     }
 }

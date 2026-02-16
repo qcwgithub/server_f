@@ -23,6 +23,7 @@ namespace Data
         #region auto_enum
 
         AccountInfo,
+        UserBriefInfo,
 
         #endregion auto_enum
     }

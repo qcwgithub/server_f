@@ -45,6 +45,7 @@ namespace Script
                 userId = msg.toUserId,
                 fromUserId = user.userId,
                 say = msg.say,
+                fromUserBriefInfo = user.CreateUserBriefInfo(),
             });
             if (r.e != ECode.Success)
             {

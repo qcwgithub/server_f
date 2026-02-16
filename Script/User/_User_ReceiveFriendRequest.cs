@@ -46,6 +46,15 @@ namespace Script
             req.result = FriendRequestResult.Wait;
             user.userInfo.incomingFriendRequests.Add(req);
 
+            if (user.connection != null)
+            {
+                user.connection.Send(MsgType.AReceiveFriendRequest, new MsgAReceiveFriendRequest
+                {
+                    fromUserBriefInfo = msg.fromUserBriefInfo,
+                    req = req,
+                }, null);
+            }
+
             return ECode.Success;
         }
 

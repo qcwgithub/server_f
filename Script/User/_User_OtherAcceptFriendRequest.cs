@@ -48,13 +48,27 @@ namespace Script
 
             req.result = FriendRequestResult.Accepted;
 
-            bool alreadyFriends = user.userInfo.friends.Exists(x => x.userId == msg.otherUserId);
-            if (!alreadyFriends)
+            int friendIndex = user.userInfo.friends.FindIndex(x => x.userId == msg.otherUserId);
+            FriendInfo friendInfo;
+            if (friendIndex >= 0)
             {
-                var friendInfo = FriendInfo.Ensure(null);
+                friendInfo = user.userInfo.friends[friendIndex];
+            }
+            else
+            {
+                friendInfo = FriendInfo.Ensure(null);
                 friendInfo.userId = msg.otherUserId;
                 friendInfo.timeS = TimeUtils.GetTimeS();
                 user.userInfo.friends.Add(friendInfo);
+            }
+
+            if (user.connection != null)
+            {
+                user.connection.Send(MsgType.AOtherAcceptFriendRequest, new MsgAOtherAcceptFriendRequest
+                {
+                    otherUserId = msg.otherUserId,
+                    friendInfo = friendInfo,
+                }, null);
             }
 
             return ECode.Success;
