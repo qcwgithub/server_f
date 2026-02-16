@@ -79,6 +79,8 @@ namespace Script
             this.dispatcher.AddHandler(new _User_UserLoginSuccess(this.server, this));
             this.dispatcher.AddHandler(new User_BlockUser(this.server, this));
             this.dispatcher.AddHandler(new _User_ReceiveFriendRequest(this.server, this));
+            this.dispatcher.AddHandler(new User_RemoveFriend(this.server, this));
+            this.dispatcher.AddHandler(new _User_OtherRemoveFriend(this.server, this));
         }
 
         public override async Task Detach()

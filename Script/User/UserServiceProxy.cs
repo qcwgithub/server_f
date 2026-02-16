@@ -46,18 +46,6 @@ namespace Script
         {
             return await this.Request(serviceId, MsgType._User_ResetName, msg);
         }
-        public async Task<MyResponse> ReceiveFriendRequest(int serviceId, MsgReceiveFriendRequest msg)
-        {
-            return await this.Request(serviceId, MsgType._User_ReceiveFriendRequest, msg);
-        }
-        public async Task<MyResponse> OtherAcceptFriendRequest(int serviceId, MsgOtherAcceptFriendRequest msg)
-        {
-            return await this.Request(serviceId, MsgType._User_OtherAcceptFriendRequest, msg);
-        }
-        public async Task<MyResponse> OtherRejectFriendRequest(int serviceId, MsgOtherRejectFriendRequest msg)
-        {
-            return await this.Request(serviceId, MsgType._User_OtherRejectFriendRequest, msg);
-        }
 
         #endregion auto_proxy
     }

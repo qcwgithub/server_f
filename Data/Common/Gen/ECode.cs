@@ -61,5 +61,6 @@ namespace Data
         FriendRequestResultNotWait = 122,
         IncomingFriendRequestNotExist = 123,
         OutgoingFriendRequestAlreadyExist = 124,
+        NotFriends = 125,
     }
 }

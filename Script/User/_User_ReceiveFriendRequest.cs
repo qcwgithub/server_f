@@ -2,6 +2,7 @@ using Data;
 
 namespace Script
 {
+    // 别人给我发送好友申请
     public class _User_ReceiveFriendRequest : Handler<UserService, MsgReceiveFriendRequest, ResReceiveFriendRequest>
     {
         public override MsgType msgType => MsgType._User_ReceiveFriendRequest;
@@ -41,9 +42,10 @@ namespace Script
             var req = IncomingFriendRequest.Ensure(null);
             req.fromUserId = msg.fromUserId;
             req.timeS = TimeUtils.GetTimeS();
+            req.say = msg.say;
             req.result = FriendRequestResult.Wait;
-
             user.userInfo.incomingFriendRequests.Add(req);
+
             return ECode.Success;
         }
 

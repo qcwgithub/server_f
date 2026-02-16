@@ -31,6 +31,7 @@ namespace Data
         _User_ReceiveFriendRequest = 311,
         _User_OtherAcceptFriendRequest = 312,
         _User_OtherRejectFriendRequest = 313,
+        _User_OtherRemoveFriend = 314,
         _UserManager_UserLogin = 500,
         _UserManager_GetUserLocation = 501,
         _UserManager_ForwardToUserService = 502,
@@ -78,6 +79,7 @@ namespace Data
         AcceptFriendRequest = 10017,
         BlockUser = 10018,
         UnblockUser = 10019,
-        Count = 10020,
+        RemoveFriend = 10020,
+        Count = 10021,
     }
 }

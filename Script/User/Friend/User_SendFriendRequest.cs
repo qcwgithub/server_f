@@ -71,10 +71,6 @@ namespace Script
         public override void PostHandle(MessageContext context, MsgSendFriendRequest msg, ECode e, ResSendFriendRequest res)
         {
             this.service.TryUnlockUser(context.msg_userId, context);
-            if (msg.toUserId != context.msg_userId)
-            {
-                this.service.TryUnlockUser(msg.toUserId, context);
-            }
 
             base.PostHandle(context, msg, e, res);
         }

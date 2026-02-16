@@ -132,6 +132,10 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((MsgOtherRejectFriendRequest)msg);
                     break;
 
+                case MsgType._User_OtherRemoveFriend:
+                    msgBytes = MessagePackSerializer.Serialize((MsgOtherRemoveFriend)msg);
+                    break;
+
                 case MsgType._UserManager_UserLogin:
                     msgBytes = MessagePackSerializer.Serialize((MsgUserManagerUserLogin)msg);
                     break;
@@ -317,6 +321,10 @@ namespace Data
 
                 case MsgType.UnblockUser:
                     msgBytes = MessagePackSerializer.Serialize((MsgUnblockUser)msg);
+                    break;
+
+                case MsgType.RemoveFriend:
+                    msgBytes = MessagePackSerializer.Serialize((MsgRemoveFriend)msg);
                     break;
 
                 case MsgType.Count:

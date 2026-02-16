@@ -176,3 +176,6 @@ string_,,,,,say,,,,
 @BlockedUser,,,,,,1,1,MemoryChild,1
 long_,,,,,userId,,,,
 long_,,,,,timeS,,,,
+@MsgRemoveFriend,,,,,,,,,1
+long_,,,,,friendUserId,,,,
+@ResRemoveFriend,,,,,,,,,1
