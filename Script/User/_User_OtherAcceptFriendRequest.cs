@@ -18,7 +18,7 @@ namespace Script
             User? user = await this.service.LockUser(msg.userId, context);
             if (user == null)
             {
-                (e, user) = await this.service.ss.SimulateUserLogin(msg.userId, UserDestroyUserReason.SimulateLogin_ReveiveFriendRequest);
+                (e, user) = await this.service.ss.SimulateUserLogin(msg.userId, UserDestroyUserReason.SimulateLogin);
                 if (e != ECode.Success)
                 {
                     return e;

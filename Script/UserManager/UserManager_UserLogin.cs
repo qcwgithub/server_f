@@ -75,6 +75,9 @@ namespace Script
                     return e;
                 }
 
+                UserBriefInfo userBriefInfo = UserServiceScript.CreateUserBriefInfo(newUserInfo);
+                this.server.userBriefInfoProxy.Save(userBriefInfo).Forget();
+
                 this.service.logger.Info($"Create user info {userId} {e}");
                 accountInfo.userIds.Add(userId);
                 save = true;

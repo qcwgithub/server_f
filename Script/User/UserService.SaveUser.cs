@@ -134,6 +134,13 @@ namespace Script
                     this.logger.ErrorFormat("Save_UserInfo e {0}, userId {1}", r.e, user.userId);
                     return r.e;
                 }
+
+                var userBriefInfo = UserServiceScript.CreateUserBriefInfo(user.userInfo);
+                if (user.lastBriefInfo == null || user.lastBriefInfo.IsDifferent(userBriefInfo))
+                {
+                    user.lastBriefInfo = userBriefInfo;
+                    this.server.userBriefInfoProxy.Save(userBriefInfo).Forget();
+                }
             }
 
             return ECode.Success;

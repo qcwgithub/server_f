@@ -42,6 +42,8 @@ namespace Script
             user.lastUserInfo = UserInfo.Ensure(null);
             user.lastUserInfo.DeepCopyFrom(user.userInfo);
 
+            user.lastBriefInfo = user.CreateUserBriefInfo();
+
             // qiucw
             // 这句会修改 userInfo，必须放在 lastUserInfo.DeepCopyFrom 后面
             // this.gameScripts.CallInit(user);

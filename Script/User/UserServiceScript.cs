@@ -131,5 +131,14 @@ namespace Script
 
             return (ECode.Success, user);
         }
+
+        public static UserBriefInfo CreateUserBriefInfo(UserInfo userInfo)
+        {
+            var brief = UserBriefInfo.Ensure(null);
+            brief.userId = userInfo.userId;
+            brief.userName = userInfo.userName;
+            brief.avatarIndex = userInfo.avatarIndex;
+            return brief;
+        }
     }
 }

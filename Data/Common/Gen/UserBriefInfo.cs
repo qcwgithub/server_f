@@ -3,7 +3,7 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class UserBriefInfo : ICanBePlaceholder
+    public class UserBriefInfo : ICanBePlaceholder, IIsDifferent<UserBriefInfo>
     {
         [Key(0)]
         [MongoDB.Bson.Serialization.Attributes.BsonIgnore]
@@ -33,6 +33,35 @@ namespace Data
             {
                 this.userName = string.Empty;
             }
+        }
+
+        public bool IsDifferent(UserBriefInfo other)
+        {
+            if (this.isPlaceholder != other.isPlaceholder)
+            {
+                return true;
+            }
+            if (this.userId != other.userId)
+            {
+                return true;
+            }
+            if (this.userName != other.userName)
+            {
+                return true;
+            }
+            if (this.avatarIndex != other.avatarIndex)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public void DeepCopyFrom(UserBriefInfo other)
+        {
+            this.isPlaceholder = other.isPlaceholder;
+            this.userId = other.userId;
+            this.userName = other.userName;
+            this.avatarIndex = other.avatarIndex;
         }
     }
 }

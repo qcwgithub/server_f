@@ -182,7 +182,7 @@ long_,,,,,otherUserId,,,,
 class_,FriendInfo,,,,friendInfo,,,,
 @MsgAOtherRejectFriendRequest,,,,,,,,,1
 long_,,,,,otherUserId,,,,
-@UserBriefInfo,,,,,,1,,Redis,1
+@UserBriefInfo,,,,,,1,1,Redis,1
 long_,,,,,userId,,,,
 string_,,,,,userName,,,,
 int_,,,,,avatarIndex,,,,
