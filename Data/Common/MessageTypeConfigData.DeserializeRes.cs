@@ -344,6 +344,10 @@ namespace Data
                 case MsgType.ARemoveFriend:
                     throw new Exception("Missing config for MsgType.ARemoveFriend");
 
+                case MsgType.GetUserBriefInfos:
+                    ob = MessagePackSerializer.Deserialize<ResGetUserBriefInfos>(resBytes);
+                    break;
+
                 case MsgType.Count:
                     throw new Exception("Missing config for MsgType.Count");
 

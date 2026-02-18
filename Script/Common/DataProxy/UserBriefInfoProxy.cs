@@ -42,6 +42,12 @@ namespace Script
         }
 
         //// AUTO CREATED ////
+        protected override string RedisValueFormat()
+        {
+            return "binary";
+        }
+
+        //// AUTO CREATED ////
         public Task<UserBriefInfo> OnlyForSave_GetFromRedis(long userId)
         {
             return this.GetFromRedis(userId, 0);

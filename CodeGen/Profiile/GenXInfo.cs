@@ -13,7 +13,7 @@ public class GenXInfo
             f.TabPushF("public class {0}", xinfoConfig.name);
 
             var interfaces = new List<string>();
-            if (xinfoConfig.cacheType == CacheType.Redis)
+            if (xinfoConfig.cacheType.IsRedis())
             {
                 interfaces.Add("ICanBePlaceholder");
             }

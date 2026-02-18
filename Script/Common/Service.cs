@@ -77,6 +77,19 @@ namespace Script
             this.dispatcher.AddHandler(new OnGetScriptVersion<S>(this.server, (S)this));
 
             this.dispatcher.AddHandler(new OnViewMongoDumpList<S>(this.server, (S)this));
+
+            ////
+            Type[] types = this.GetType().Assembly.GetTypes();
+            foreach (Type type in types)
+            {
+                var attributes = type.GetCustomAttributes(typeof(AutoRegisterAttribute), false);
+                if (attributes.Length == 0)
+                {
+                    continue;
+                }
+                var handler = type.GetConstructors()[0].Invoke([this.server, this]);
+                this.dispatcher.AddHandler((IHandler)handler, ((AutoRegisterAttribute)attributes[0]).isOverride);
+            }
         }
 
         public log4net.ILog logger => this.data.logger;

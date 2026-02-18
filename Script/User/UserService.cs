@@ -81,6 +81,7 @@ namespace Script
             this.dispatcher.AddHandler(new _User_ReceiveFriendRequest(this.server, this));
             this.dispatcher.AddHandler(new User_RemoveFriend(this.server, this));
             this.dispatcher.AddHandler(new _User_OtherRemoveFriend(this.server, this));
+            this.dispatcher.AddHandler(new User_GetUserBriefInfos(this.server, this));
         }
 
         public override async Task Detach()

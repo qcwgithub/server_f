@@ -86,6 +86,7 @@ namespace Data
         AOtherAcceptFriendRequest = 10022,
         AOtherRejectFriendRequest = 10023,
         ARemoveFriend = 10024,
-        Count = 10025,
+        GetUserBriefInfos = 10025,
+        Count = 10026,
     }
 }

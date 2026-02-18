@@ -12,7 +12,7 @@ list_,class_,OutgoingFriendRequest,,,outgoingFriendRequests,,,,
 list_,class_,IncomingFriendRequest,,,incomingFriendRequests,,,,
 list_,class_,BlockedUser,,,blockedUsers,,,,
 #,,,,,,,,,
-@AccountInfo,,,,,,1,1,Redis,1
+@AccountInfo,,,,,,1,1,RedisBinary,1
 string_,,,,,platform,,,,
 string_,,,,,channel,,,,
 string_,,,,,channelUserId,,,,
@@ -182,10 +182,14 @@ long_,,,,,otherUserId,,,,
 class_,FriendInfo,,,,friendInfo,,,,
 @MsgAOtherRejectFriendRequest,,,,,,,,,1
 long_,,,,,otherUserId,,,,
-@UserBriefInfo,,,,,,1,1,Redis,1
+@UserBriefInfo,,,,,,1,1,RedisBinary,1
 long_,,,,,userId,,,,
 string_,,,,,userName,,,,
 int_,,,,,avatarIndex,,,,
 @MsgARemoveFriend,,,,,,,,,1
 long_,,,,,friendUserId,,,,
 enum_,RemoveFriendReason,,,,reason,,,,
+@MsgGetUserBriefInfos,,,,,,,,,1
+hashset_,long_,,,,userIds,,,,
+@ResGetUserBriefInfos,,,,,,,,,1
+list_,class_,UserBriefInfo,,,userBriefInfos,,,,

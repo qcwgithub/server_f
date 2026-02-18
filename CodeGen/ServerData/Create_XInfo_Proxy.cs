@@ -123,6 +123,29 @@ public class Create_XInfo_Proxy
                 ff.BlockEnd();
 
 
+                ff.Push("\n");
+                ff.TabPush("//// AUTO CREATED ////\n");
+                ff.TabPushF("protected override string RedisValueFormat()\n");
+                ff.BlockStart();
+                {
+                    switch (config.cacheType)
+                    {
+                        case CacheType.RedisJson:
+                            ff.TabPushF("return \"json\";\n");
+                            break;
+
+                        case CacheType.RedisBinary:
+                            ff.TabPushF("return \"binary\";\n");
+                            break;
+
+                        default:
+                            throw new Exception();
+                    }
+
+                }
+                ff.BlockEnd();
+
+
                 // ff.Push("\n");
                 // ff.TabPush("//// AUTO CREATED ////\n");
                 // ff.TabPushF("protected override async Task<{0}> GetFromRedis({1})\n", config.xinfoType, config.keyParamToString(true, true, string.Empty, true, true, true));

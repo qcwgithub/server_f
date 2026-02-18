@@ -42,6 +42,12 @@ namespace Script
         }
 
         //// AUTO CREATED ////
+        protected override string RedisValueFormat()
+        {
+            return "binary";
+        }
+
+        //// AUTO CREATED ////
         public Task<AccountInfo> OnlyForSave_GetFromRedis(string channel, string channelUserId)
         {
             return this.GetFromRedis(channel, channelUserId);

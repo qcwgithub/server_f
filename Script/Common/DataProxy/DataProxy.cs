@@ -17,7 +17,7 @@ namespace Script
     {
         public DataProxy(Server server) : base(server)
         {
-            
+
         }
 
         protected abstract IDatabase GetDb();
@@ -41,6 +41,9 @@ namespace Script
             {
                 case "json":
                     return await RedisUtils.GetFromJson<DataType>(this.GetDb(), this.Key(p1, p2));
+
+                case "binary":
+                    return await RedisUtils.GetFromBinary<DataType>(this.GetDb(), this.Key(p1, p2));
 
                 case "hash":
                     {
@@ -83,6 +86,10 @@ namespace Script
             {
                 case "json":
                     await RedisUtils.SaveAsJson(this.GetDb(), this.Key(p1, p2), data, expiry);
+                    break;
+
+                case "binary":
+                    await RedisUtils.SaveAsBinary(this.GetDb(), this.Key(p1, p2), data, expiry);
                     break;
 
                 case "hash":
@@ -259,23 +266,10 @@ namespace Script
             return list;
         }
 
-        public async Task<List<DataType?>> GetMany(DbServiceProxy dbServiceProxy, List<P1> idList, bool fillNullIfNotExist)
+        public async Task<List<DataType?>> GetMany(DbServiceProxy dbServiceProxy, List<P1> idList)
         {
-            var list2 = await this.GetManyHelp(dbServiceProxy, idList);
-            if (fillNullIfNotExist)
-            {
-                return list2;
-            }
-
-            var list = new List<DataType?>();
-            for (int i = 0; i < idList.Count; i++)
-            {
-                if (list2[i] != null)
-                {
-                    list.Add(list2[i]);
-                }
-            }
-
+            var list = await this.GetManyHelp(dbServiceProxy, idList);
+            MyDebug.Assert(idList.Count == list.Count);
             return list;
         }
 

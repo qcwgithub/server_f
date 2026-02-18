@@ -6,6 +6,7 @@ using Data;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
+using MessagePack;
 
 
 namespace Script
@@ -52,6 +53,23 @@ namespace Script
         {
             await db.StringSetAsync(key, JsonUtils.stringify(data), expiry);
         }
+
+        public static async Task<T?> GetFromBinary<T>(IDatabase db, RedisKey key) where T : class
+        {
+            RedisValue redisValue = await db.StringGetAsync(key);
+            if (redisValue.IsNullOrEmpty)
+            {
+                return null;
+            }
+            return MessagePackSerializer.Deserialize<T>(redisValue);
+        }
+
+        public static async Task SaveAsBinary<T>(IDatabase db, RedisKey key, T data, TimeSpan? expiry) where T : class
+        {
+            byte[] bytes = MessagePackSerializer.Serialize<T>(data);
+            await db.StringSetAsync(key, bytes, expiry);
+        }
+
         public static async Task<List<T>> GetListJson<T>(IDatabase db, RedisKey key)
         {
             RedisValue[] redisValues = await db.ListRangeAsync(key);
@@ -256,7 +274,7 @@ namespace Script
                 await Task.Delay(intervalMs);
             }
         }
-        
+
         public static async Task<bool> KeyCopy(Server server, IDatabase db, string src, string dest)
         {
             // https://redis.io/commands/copy/
@@ -337,7 +355,7 @@ namespace Script
                 maxId += STEP;
             }
         }
-        
+
         public static async Task<ECode> Wait(Service service, string what, Func<Task<bool>> action)
         {
             while (true)

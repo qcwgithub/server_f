@@ -123,7 +123,7 @@ public class XInfoProgram
                 xinfoConfig.cacheType = helper.ReadEnum<CacheType>("cacheType", CacheType.None);
                 xinfoConfig.dart = helper.ReadBool("dart");
 
-                if (xinfoConfig.cacheType == CacheType.Redis)
+                if (xinfoConfig.cacheType.IsRedis())
                 {
                     var c = new XInfoFieldConfig();
 

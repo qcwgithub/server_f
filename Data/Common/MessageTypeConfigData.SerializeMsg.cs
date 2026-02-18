@@ -351,6 +351,10 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((MsgARemoveFriendf)msg);
                     break;
 
+                case MsgType.GetUserBriefInfos:
+                    msgBytes = MessagePackSerializer.Serialize((MsgGetUserBriefInfos)msg);
+                    break;
+
                 case MsgType.Count:
                     throw new Exception("Missing config for MsgType.Count");
 

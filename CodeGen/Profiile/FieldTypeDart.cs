@@ -40,6 +40,8 @@ public static partial class FieldTypeExt
                 break;
 
             case FieldType.hashset_:
+                info.nameDart = "Set<" + info.subInfos[0].CalcFieldTypeInfoNameDart() + ">";
+                break;
             case FieldType.bigint_:
             default:
                 throw new Exception("unknown field type");
@@ -129,8 +131,29 @@ public static partial class FieldTypeExt
             case FieldType.string_:
                 f.Push(string.Format("{0}", accessGet));
                 break;
-            case FieldType.bigint_:
             case FieldType.hashset_:
+                {
+                    switch (typeInfo.subInfos[0].type)
+                    {
+                        case FieldType.int_:
+                        case FieldType.bool_:
+                        case FieldType.long_:
+                        case FieldType.enum_:
+                        case FieldType.float_:
+                        case FieldType.string_:
+                            f.Push(string.Format("{0}", accessGet));
+                            break;
+
+                        case FieldType.class_:
+                            f.Push(string.Format("{0}.map((e) => e.toMsgPack()).toList(growable: false)", accessGet));
+                            break;
+
+                        default:
+                            throw new Exception("unknown field type");
+                    }
+                }
+                break;
+            case FieldType.bigint_:
             default:
                 throw new Exception("unknown field type");
         }
@@ -237,8 +260,34 @@ public static partial class FieldTypeExt
             case FieldType.string_:
                 f.Push(string.Format("{0} as {1}", accessGet, typeInfo.nameDart));
                 break;
-            case FieldType.bigint_:
             case FieldType.hashset_:
+                {
+                    switch (typeInfo.subInfos[0].type)
+                    {
+                        case FieldType.int_:
+                        case FieldType.bool_:
+                        case FieldType.long_:
+                        case FieldType.enum_:
+                        case FieldType.float_:
+                        case FieldType.string_:
+                            f.Push(string.Format("{0}.from({1})", typeInfo.nameDart, accessGet));
+                            break;
+
+                        case FieldType.class_:
+                            f.Push(string.Format("({0} as List)\n", accessGet));
+                            f.AddTab(1);
+                            f.TabPushF(".map((e) => {0}.fromMsgPack(e as List))\n", typeInfo.subInfos[0].nameDart);
+                            f.TabPushF(".toSet()");
+                            f.AddTab(-1);
+
+                            break;
+
+                        default:
+                            throw new Exception("unknown field type");
+                    }
+                }
+                break;
+            case FieldType.bigint_:
             default:
                 throw new Exception("unknown field type");
         }
