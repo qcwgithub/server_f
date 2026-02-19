@@ -3,6 +3,7 @@ using Data;
 namespace Script
 {
     // 别人删除我
+    [AutoRegister(false)]
     public class _User_OtherRemoveFriend : Handler<UserService, MsgOtherRemoveFriend, ResOtherRemoveFriend>
     {
         public override MsgType msgType => MsgType._User_OtherRemoveFriend;

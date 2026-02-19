@@ -4,6 +4,7 @@ using Data;
 
 namespace Script
 {
+    [AutoRegister]
     public class Global_GetServiceConfigs : Handler<GlobalService, MsgGetServiceConfigs, ResGetServiceConfigs>
     {
         public Global_GetServiceConfigs(Server server, GlobalService service) : base(server, service)

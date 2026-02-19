@@ -25,9 +25,6 @@ namespace Script
             base.AddHandler<GlobalService>();
 
             MongoRegister.Init();
-
-            this.dispatcher.AddHandler(new Global_GetServiceConfigs(this.server, this));
-            this.dispatcher.AddHandler(this.global_OnReladConfigs, true);
         }
 
         protected override Task<ResGetServiceConfigs?> RequestServiceConfigs(string why)

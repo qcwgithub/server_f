@@ -3,6 +3,7 @@ using MessagePack;
 
 namespace Script
 {
+    [AutoRegister]
     public class Room_SendChat : Handler<RoomService, MsgRoomSendChat, ResRoomSendChat>
     {
         public Room_SendChat(Server server, RoomService service) : base(server, service)

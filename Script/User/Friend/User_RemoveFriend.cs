@@ -2,6 +2,7 @@ using Data;
 
 namespace Script
 {
+    [AutoRegister(false)]
     public class User_RemoveFriend : Handler<UserService, MsgRemoveFriend, ResRemoveFriend>
     {
         public override MsgType msgType => MsgType.RemoveFriend;

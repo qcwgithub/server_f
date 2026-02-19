@@ -2,6 +2,7 @@ using Data;
 
 namespace Script
 {
+    [AutoRegister(false)]
     public class User_ReportRoomMessage : Handler<UserService, MsgReportRoomMessage, ResReportRoomMessage>
     {
         public override MsgType msgType => MsgType.ReportRoomMessage;

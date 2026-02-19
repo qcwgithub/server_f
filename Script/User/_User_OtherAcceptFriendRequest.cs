@@ -3,6 +3,7 @@ using Data;
 namespace Script
 {
     // 别人同意我的好友申请
+    [AutoRegister(false)]
     public class _User_OtherAcceptFriendRequest : Handler<UserService, MsgOtherAcceptFriendRequest, ResOtherAcceptFriendRequest>
     {
         public override MsgType msgType => MsgType._User_OtherAcceptFriendRequest;

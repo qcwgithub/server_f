@@ -2,6 +2,7 @@ using Data;
 
 namespace Script
 {
+    [AutoRegister(false)]
     public class _User_ResetName : Handler<UserService, MsgResetName, ResResetName>
     {
         public override MsgType msgType => MsgType._User_ResetName;

@@ -2,6 +2,7 @@ using Data;
 
 namespace Script
 {
+    [AutoRegister]
     public class Room_SaveRoomInfoToFile : Handler<RoomService, MsgSaveRoomInfoToFile, ResSaveRoomInfoToFile>
     {
         public Room_SaveRoomInfoToFile(Server server, RoomService service) : base(server, service)

@@ -2,6 +2,7 @@ using Data;
 
 namespace Script
 {
+    [AutoRegister(true)]
     public class _User_OnTimer : OnTimer<UserService>
     {
         public _User_OnTimer(Server server, UserService service) : base(server, service)

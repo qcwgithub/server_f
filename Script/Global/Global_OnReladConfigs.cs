@@ -4,6 +4,7 @@ using Data;
 
 namespace Script
 {
+    [AutoRegister(true)]
     public class Global_OnReladConfigs : OnReloadConfigs<GlobalService>
     {
         public Global_OnReladConfigs(Server server, GlobalService service) : base(server, service)

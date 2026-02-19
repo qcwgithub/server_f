@@ -5,6 +5,7 @@ using Data;
 
 namespace Script
 {
+    [AutoRegister(true)]
     public class _User_OnReloadConfigs : OnReloadConfigs<UserService>
     {
         public _User_OnReloadConfigs(Server server, UserService service) : base(server, service)

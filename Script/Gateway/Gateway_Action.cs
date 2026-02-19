@@ -2,6 +2,7 @@ using Data;
 
 namespace Script
 {
+    [AutoRegister]
     public class Gateway_Action : Handler<GatewayService, MsgGatewayServiceAction, ResGatewayServiceAction>
     {
         public Gateway_Action(Server server, GatewayService service) : base(server, service)

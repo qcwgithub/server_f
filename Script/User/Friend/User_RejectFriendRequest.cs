@@ -2,6 +2,7 @@ using Data;
 
 namespace Script
 {
+    [AutoRegister(false)]
     public class User_RejectFriendRequest : Handler<UserService, MsgRejectFriendRequest, ResRejectFriendRequest>
     {
         public override MsgType msgType => MsgType.RejectFriendRequest;

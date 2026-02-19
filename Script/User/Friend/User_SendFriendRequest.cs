@@ -2,6 +2,7 @@ using Data;
 
 namespace Script
 {
+    [AutoRegister(false)]
     public class User_SendFriendRequest : Handler<UserService, MsgSendFriendRequest, ResSendFriendRequest>
     {
         public override MsgType msgType => MsgType.SendFriendRequest;
@@ -45,7 +46,7 @@ namespace Script
                 userId = msg.toUserId,
                 fromUserId = user.userId,
                 say = msg.say,
-                fromUserBriefInfo = user.CreateUserBriefInfo(),
+                fromUserBriefInfo = UserServiceScript.CreateUserBriefInfo(user.userInfo),
             });
             if (r.e != ECode.Success)
             {

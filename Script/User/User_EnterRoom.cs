@@ -2,6 +2,7 @@ using Data;
 
 namespace Script
 {
+    [AutoRegister(false)]
     public class User_EnterRoom : Handler<UserService, MsgEnterRoom, ResEnterRoom>
     {
         public override MsgType msgType => MsgType.EnterRoom;

@@ -3,6 +3,7 @@ using Data;
 
 namespace Script
 {
+    [AutoRegister(false)]
     public class _User_ServerKick : Handler<UserService, MsgUserServerKick, ResUserServerKick>
     {
         public _User_ServerKick(Server server, UserService service) : base(server, service)

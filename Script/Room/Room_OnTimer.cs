@@ -2,6 +2,7 @@ using Data;
 
 namespace Script
 {
+    [AutoRegister(true)]
     public class Room_OnTimer : OnTimer<RoomService>
     {
         public Room_OnTimer(Server server, RoomService service) : base(server, service)

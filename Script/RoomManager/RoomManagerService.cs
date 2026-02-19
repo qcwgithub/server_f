@@ -39,9 +39,6 @@ namespace Script
         {
             base.Attach();
             base.AddHandler<RoomManagerService>();
-
-            this.dispatcher.AddHandler(new RoomManager_ImportRoomConfig(this.server, this));
-            this.dispatcher.AddHandler(new RoomManager_LoadRoom(this.server, this));
         }
     }
 }

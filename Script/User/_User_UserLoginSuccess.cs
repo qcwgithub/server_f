@@ -2,6 +2,7 @@ using Data;
 
 namespace Script
 {
+    [AutoRegister(false)]
     public class _User_UserLoginSuccess : Handler<UserService, MsgUserLoginSuccess, ResUserLoginSuccess>
     {
         public _User_UserLoginSuccess(Server server, UserService service) : base(server, service)

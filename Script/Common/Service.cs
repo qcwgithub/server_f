@@ -87,8 +87,37 @@ namespace Script
                 {
                     continue;
                 }
-                var handler = type.GetConstructors()[0].Invoke([this.server, this]);
-                this.dispatcher.AddHandler((IHandler)handler, ((AutoRegisterAttribute)attributes[0]).isOverride);
+
+                bool foundHandler = false;
+                Type currType = type;
+                while (true)
+                {
+                    Type? baseType = currType.BaseType;
+                    if (baseType == null)
+                    {
+                        break;
+                    }
+
+                    if (baseType.GetGenericTypeDefinition() == typeof(Handler<,,>))
+                    {
+                        foundHandler = true;
+                        break;
+                    }
+                    currType = baseType;
+                }
+                if (!foundHandler)
+                {
+                    throw new Exception($"{type} base type is not Handler<,,>");
+                }
+
+                if (type.BaseType!.GetGenericArguments()[0] != typeof(S))
+                {
+                    continue;
+                }
+
+                var handler = (IHandler)type.GetConstructors()[0].Invoke([this.server, this]);
+                this.logger.InfoFormat("+{0}", handler.GetType().Name);
+                this.dispatcher.AddHandler(handler, ((AutoRegisterAttribute)attributes[0]).isOverride);
             }
         }
 

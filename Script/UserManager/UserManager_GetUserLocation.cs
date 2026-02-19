@@ -2,6 +2,7 @@ using Data;
 
 namespace Script
 {
+    [AutoRegister]
     public class UserManager_GetUserLocation : Handler<UserManagerService, MsgUserManagerGetUserLocation, ResUserManagerGetUserLocation>
     {
         public UserManager_GetUserLocation(Server server, UserManagerService service) : base(server, service)

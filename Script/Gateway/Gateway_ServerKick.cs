@@ -2,6 +2,7 @@ using Data;
 
 namespace Script
 {
+    [AutoRegister]
     public class Gateway_ServerKick : Handler<GatewayService, MsgGatewayServerKick, ResGatewayServerKick>
     {
         public Gateway_ServerKick(Server server, GatewayService service) : base(server, service)

@@ -2,6 +2,7 @@ using Data;
 
 namespace Script
 {
+    [AutoRegister]
     public class _User_Action : Handler<UserService, MsgUserServiceAction, ResUserServiceAction>
     {
         public _User_Action(Server server, UserService service) : base(server, service)

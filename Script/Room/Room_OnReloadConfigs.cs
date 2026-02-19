@@ -5,6 +5,7 @@ using Data;
 
 namespace Script
 {
+    [AutoRegister(true)]
     public class Room_OnReloadConfigs : OnReloadConfigs<RoomService>
     {
         public Room_OnReloadConfigs(Server server, RoomService service) : base(server, service)

@@ -348,7 +348,7 @@ namespace Data
                     break;
 
                 case MsgType.ARemoveFriend:
-                    msgBytes = MessagePackSerializer.Serialize((MsgARemoveFriendf)msg);
+                    msgBytes = MessagePackSerializer.Serialize((MsgARemoveFriend)msg);
                     break;
 
                 case MsgType.GetUserBriefInfos:

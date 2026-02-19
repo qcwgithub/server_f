@@ -2,6 +2,7 @@ using Data;
 
 namespace Script
 {
+    [AutoRegister(false)]
     public class User_GetRoomChatHistory : Handler<UserService, MsgGetRoomChatHistory, ResGetRoomChatHistory>
     {
         public override MsgType msgType => MsgType.GetRoomChatHistory;

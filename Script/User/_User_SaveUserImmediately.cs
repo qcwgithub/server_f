@@ -1,6 +1,7 @@
 using Data;
 namespace Script
 {
+    [AutoRegister(false)]
     public class _User_SaveUserImmediately : Handler<UserService, MsgSaveUserImmediately, ResSaveUserImmediately>
     {
         public _User_SaveUserImmediately(Server server, UserService service) : base(server, service)

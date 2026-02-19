@@ -2,6 +2,7 @@ using Data;
 
 namespace Script
 {
+    [AutoRegister]
     public class Room_UserLeave : Handler<RoomService, MsgRoomUserLeave, ResRoomUserLeave>
     {
         public Room_UserLeave(Server server, RoomService service) : base(server, service)

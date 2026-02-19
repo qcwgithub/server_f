@@ -2,6 +2,7 @@ using Data;
 
 namespace Script
 {
+    [AutoRegister(false)]
     public class User_UnblockUser : Handler<UserService, MsgUnblockUser, ResUnblockUser>
     {
         public override MsgType msgType => MsgType.UnblockUser;

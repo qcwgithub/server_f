@@ -2,6 +2,7 @@ using Data;
 
 namespace Script
 {
+    [AutoRegister]
     public class UserManager_ForwardToUserService : Handler<UserManagerService, MsgForwardToUserService, ResForwardToUserService>
     {
         public UserManager_ForwardToUserService(Server server, UserManagerService service) : base(server, service)

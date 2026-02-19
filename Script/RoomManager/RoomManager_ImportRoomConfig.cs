@@ -2,6 +2,7 @@ using Data;
 
 namespace Script
 {
+    [AutoRegister]
     public class RoomManager_ImportRoomConfig : Handler<RoomManagerService, MsgRoomManagerImportRoomConfig, ResRoomManagerImportRoomConfig>
     {
         public RoomManager_ImportRoomConfig(Server server, RoomManagerService service) : base(server, service)
