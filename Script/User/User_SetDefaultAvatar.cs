@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    [AutoRegister(false)]
+    [AutoRegister]
     public class User_SetAvatarIndex : Handler<UserService, MsgSetAvatarIndex, ResSetAvatarIndex>
     {
         public override MsgType msgType => MsgType.SetAvatarIndex;

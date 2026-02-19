@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    [AutoRegister(false)]
+    [AutoRegister]
     public class User_GetUserBriefInfos : Handler<UserService, MsgGetUserBriefInfos, ResGetUserBriefInfos>
     {
         public override MsgType msgType => MsgType.GetUserBriefInfos;

@@ -30,6 +30,8 @@ namespace Data
         public List<IncomingFriendRequest> incomingFriendRequests;
         [Key(10)]
         public List<BlockedUser> blockedUsers;
+        [Key(11)]
+        public List<FriendInfo> removedFriends;
 
         #endregion auto
     }

@@ -179,6 +179,14 @@ namespace Data
                     ob = MessagePackSerializer.Deserialize<ResRoomManagerImportRoomConfig>(resBytes);
                     break;
 
+                case MsgType._RoomManager_CreateRoom:
+                    ob = MessagePackSerializer.Deserialize<ResRoomManagerCreateRoom>(resBytes);
+                    break;
+
+                case MsgType._RoomManager_PrepareCreateRoom:
+                    ob = MessagePackSerializer.Deserialize<ResRoomManagerPrepareCreateRoom>(resBytes);
+                    break;
+
                 case MsgType._Save_AccountInfo:
                     ob = MessagePackSerializer.Deserialize<ResSave_AccountInfo>(resBytes);
                     break;

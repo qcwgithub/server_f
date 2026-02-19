@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    [AutoRegister(false)]
+    [AutoRegister]
     public class User_RemoveFriend : Handler<UserService, MsgRemoveFriend, ResRemoveFriend>
     {
         public override MsgType msgType => MsgType.RemoveFriend;
@@ -30,8 +30,10 @@ namespace Script
                 return ECode.InvalidParam;
             }
 
-            int index = user.userInfo.friends.FindIndex(x => x.userId == msg.friendUserId);
-            if (index < 0)
+            UserInfo userInfo = user.userInfo;
+
+            int friendIndex = userInfo.friends.FindIndex(x => x.userId == msg.friendUserId);
+            if (friendIndex < 0)
             {
                 return ECode.NotFriends;
             }
@@ -47,8 +49,7 @@ namespace Script
             }
 
             //// ok
-
-            user.userInfo.friends.RemoveAt(index);
+            this.service.friendScript.DoRemoveFriend(userInfo, msg.friendUserId, friendIndex, TimeUtils.GetTimeS());
             return ECode.Success;
         }
 

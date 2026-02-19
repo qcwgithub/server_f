@@ -104,6 +104,13 @@ namespace Script
                 if (buffer == null) buffer = new List<string>();
                 buffer.Add("blockedUsers");
             }
+            if (last.removedFriends.IsDifferent_ListClass(curr.removedFriends))
+            {
+                infoNullable.removedFriends = curr.removedFriends;
+                last.removedFriends.DeepCopyFrom_ListClass(curr.removedFriends);
+                if (buffer == null) buffer = new List<string>();
+                buffer.Add("removedFriends");
+            }
 
             #endregion auto
 

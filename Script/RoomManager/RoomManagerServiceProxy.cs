@@ -18,6 +18,14 @@ namespace Script
         {
             return await this.Request(ServiceType.RoomManager, MsgType._RoomManager_ImportRoomConfig, msg);
         }
+        public async Task<MyResponse> CreateRoom(MsgRoomManagerCreateRoom msg)
+        {
+            return await this.Request(ServiceType.RoomManager, MsgType._RoomManager_CreateRoom, msg);
+        }
+        public async Task<MyResponse> PrepareCreateRoom(MsgRoomManagerPrepareCreateRoom msg)
+        {
+            return await this.Request(ServiceType.RoomManager, MsgType._RoomManager_PrepareCreateRoom, msg);
+        }
 
         #endregion auto_proxy
     }

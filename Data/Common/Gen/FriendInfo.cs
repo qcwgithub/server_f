@@ -9,6 +9,8 @@ namespace Data
         public long userId;
         [Key(1)]
         public long timeS;
+        [Key(2)]
+        public long privateRoomId;
 
         public static FriendInfo Ensure(FriendInfo? p)
         {
@@ -34,6 +36,10 @@ namespace Data
             {
                 return true;
             }
+            if (this.privateRoomId != other.privateRoomId)
+            {
+                return true;
+            }
             return false;
         }
 
@@ -41,6 +47,7 @@ namespace Data
         {
             this.userId = other.userId;
             this.timeS = other.timeS;
+            this.privateRoomId = other.privateRoomId;
         }
     }
 }

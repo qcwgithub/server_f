@@ -62,5 +62,6 @@ namespace Data
         IncomingFriendRequestNotExist = 123,
         OutgoingFriendRequestAlreadyExist = 124,
         NotFriends = 125,
+        Duplicate = 126,
     }
 }

@@ -23,10 +23,11 @@ namespace Script
             return ECode.Success;
         }
 
-        public RoomInfo NewRoomInfo(long roomId)
+        public RoomInfo NewRoomInfo(long roomId, RoomType roomType)
         {
             RoomInfo roomInfo = RoomInfo.Ensure(null);
             roomInfo.roomId = roomId;
+            roomInfo.roomType = roomType;
 
             long nowS = TimeUtils.GetTimeS();
             roomInfo.createTimeS = nowS;

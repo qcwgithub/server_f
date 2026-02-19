@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    [AutoRegister(false)]
+    [AutoRegister]
     public class User_SendFriendRequest : Handler<UserService, MsgSendFriendRequest, ResSendFriendRequest>
     {
         public override MsgType msgType => MsgType.SendFriendRequest;

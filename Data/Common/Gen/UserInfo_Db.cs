@@ -29,6 +29,8 @@ namespace Data
         public List<IncomingFriendRequest_Db> incomingFriendRequests;
         [BsonIgnoreIfNull]
         public List<BlockedUser_Db> blockedUsers;
+        [BsonIgnoreIfNull]
+        public List<FriendInfo_Db> removedFriends;
 
         public bool DeepCopyFrom(UserInfo other)
         {
@@ -96,6 +98,12 @@ namespace Data
 
             this.blockedUsers = XInfoHelper_Db.Copy_ListClass<BlockedUser_Db, BlockedUser>(other.blockedUsers);
             if (this.blockedUsers != null)
+            {
+                empty = false;
+            }
+
+            this.removedFriends = XInfoHelper_Db.Copy_ListClass<FriendInfo_Db, FriendInfo>(other.removedFriends);
+            if (this.removedFriends != null)
             {
                 empty = false;
             }

@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    [AutoRegister(false)]
+    [AutoRegister]
     public class User_SearchRoom : Handler<UserService, MsgSearchRoom, ResSearchRoom>
     {
         public User_SearchRoom(Server server, UserService service) : base(server, service)

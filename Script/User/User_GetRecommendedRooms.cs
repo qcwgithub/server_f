@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    [AutoRegister(false)]
+    [AutoRegister]
     public class User_GetRecommendedRooms : Handler<UserService, MsgGetRecommendedRooms, ResGetRecommendedRooms>
     {
         public User_GetRecommendedRooms(Server server, UserService service) : base(server, service)

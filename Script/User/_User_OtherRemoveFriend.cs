@@ -3,7 +3,7 @@ using Data;
 namespace Script
 {
     // 别人删除我
-    [AutoRegister(false)]
+    [AutoRegister]
     public class _User_OtherRemoveFriend : Handler<UserService, MsgOtherRemoveFriend, ResOtherRemoveFriend>
     {
         public override MsgType msgType => MsgType._User_OtherRemoveFriend;
@@ -26,23 +26,27 @@ namespace Script
                 }
             }
 
-            int index = user.userInfo.friends.FindIndex(x => x.userId == msg.otherUserId);
-            if (index < 0)
+            UserInfo userInfo = user.userInfo;
+
+            int friendIndex = userInfo.friends.FindIndex(x => x.userId == msg.otherUserId);
+            if (friendIndex < 0)
             {
                 return ECode.Success; // !
             }
 
             //// ok
 
-            user.userInfo.friends.RemoveAt(index);
+            FriendInfo removedFriendInfo = this.service.friendScript.DoRemoveFriend(userInfo, msg.otherUserId, friendIndex, TimeUtils.GetTimeS());
 
             if (user.connection != null)
             {
-                user.connection.Send(MsgType.ARemoveFriend, new MsgARemoveFriend
+                var broadcast = new MsgARemoveFriend
                 {
                     friendUserId = msg.otherUserId,
                     reason = RemoveFriendReason.OtherRemoveYou,
-                }, null);
+                    removedFriendInfo = removedFriendInfo,
+                };
+                user.connection.Send(MsgType.ARemoveFriend, broadcast, null);
             }
             return ECode.Success;
         }

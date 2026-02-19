@@ -9,5 +9,7 @@ namespace Data
         public long friendUserId;
         [Key(1)]
         public RemoveFriendReason reason;
+        [Key(2)]
+        public FriendInfo removedFriendInfo;
     }
 }

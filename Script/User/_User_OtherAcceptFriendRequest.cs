@@ -3,7 +3,7 @@ using Data;
 namespace Script
 {
     // 别人同意我的好友申请
-    [AutoRegister(false)]
+    [AutoRegister]
     public class _User_OtherAcceptFriendRequest : Handler<UserService, MsgOtherAcceptFriendRequest, ResOtherAcceptFriendRequest>
     {
         public override MsgType msgType => MsgType._User_OtherAcceptFriendRequest;
@@ -14,6 +14,7 @@ namespace Script
         public override async Task<ECode> Handle(MessageContext context, MsgOtherAcceptFriendRequest msg, ResOtherAcceptFriendRequest res)
         {
             this.service.logger.Info($"{this.msgType} otherUserId {msg.otherUserId}");
+            MyDebug.Assert(msg.privateRoomId > 0);
 
             ECode e;
             User? user = await this.service.LockUser(msg.userId, context);
@@ -26,20 +27,21 @@ namespace Script
                 }
             }
 
-            bool blocked = user.userInfo.blockedUsers.Exists(x => x.userId == msg.otherUserId);
+            UserInfo userInfo = user!.userInfo;
+
+            bool blocked = userInfo.blockedUsers.Exists(x => x.userId == msg.otherUserId);
             if (blocked)
             {
                 return ECode.Blocked;
             }
 
-
-            int index = user.userInfo.outgoingFriendRequests.FindIndex(x => x.toUserId == msg.otherUserId);
+            int index = userInfo.outgoingFriendRequests.FindIndex(x => x.toUserId == msg.otherUserId);
             if (index < 0)
             {
                 return ECode.OutgoingFriendRequestNotExist;
             }
 
-            OutgoingFriendRequest req = user.userInfo.outgoingFriendRequests[index];
+            OutgoingFriendRequest req = userInfo.outgoingFriendRequests[index];
             if (req.result != FriendRequestResult.Wait)
             {
                 return ECode.FriendRequestResultNotWait;
@@ -48,20 +50,7 @@ namespace Script
             //// ok
 
             req.result = FriendRequestResult.Accepted;
-
-            int friendIndex = user.userInfo.friends.FindIndex(x => x.userId == msg.otherUserId);
-            FriendInfo friendInfo;
-            if (friendIndex >= 0)
-            {
-                friendInfo = user.userInfo.friends[friendIndex];
-            }
-            else
-            {
-                friendInfo = FriendInfo.Ensure(null);
-                friendInfo.userId = msg.otherUserId;
-                friendInfo.timeS = TimeUtils.GetTimeS();
-                user.userInfo.friends.Add(friendInfo);
-            }
+            FriendInfo friendInfo = this.service.friendScript.DoAddFriend(userInfo, msg.otherUserId, TimeUtils.GetTimeS(), msg.privateRoomId);
 
             if (user.connection != null)
             {

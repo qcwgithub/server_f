@@ -30,7 +30,7 @@ namespace Script
                 string desc = helper.ReadString(nameof(desc));
 
                 long roomId = this.service.roomIdSnowflakeScript.NextRoomId();
-                RoomInfo roomInfo = this.service.ss.NewRoomInfo(roomId);
+                RoomInfo roomInfo = this.service.ss.NewRoomInfo(roomId, RoomType.Public);
                 roomInfo.title = title;
                 roomInfo.desc = desc;
 

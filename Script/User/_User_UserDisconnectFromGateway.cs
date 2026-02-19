@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    [AutoRegister(false)]
+    [AutoRegister]
     public class _User_UserDisconnectFromGateway : Handler<UserService, MsgUserDisconnectFromGateway, ResUserDisconnectFromGateway>
     {
         public _User_UserDisconnectFromGateway(Server server, UserService service) : base(server, service)

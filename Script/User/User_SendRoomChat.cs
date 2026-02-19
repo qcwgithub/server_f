@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    [AutoRegister(false)]
+    [AutoRegister]
     public class User_SendRoomChat : Handler<UserService, MsgSendRoomChat, ResSendRoomChat>
     {
         public override MsgType msgType => MsgType.SendRoomChat;

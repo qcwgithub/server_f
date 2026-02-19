@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    [AutoRegister(false)]
+    [AutoRegister]
     public class User_AcceptFriendRequest : Handler<UserService, MsgAcceptFriendRequest, ResAcceptFriendRequest>
     {
         public override MsgType msgType => MsgType.AcceptFriendRequest;
@@ -20,19 +20,21 @@ namespace Script
                 return ECode.UserNotExist;
             }
 
-            bool alreadyFriends = user.userInfo.friends.Exists(x => x.userId == msg.fromUserId);
+            UserInfo userInfo = user.userInfo;
+
+            bool alreadyFriends = userInfo.friends.Exists(x => x.userId == msg.fromUserId);
             if (alreadyFriends)
             {
                 return ECode.AlreadyFriends;
             }
 
-            int index = user.userInfo.incomingFriendRequests.FindIndex(x => x.fromUserId == msg.fromUserId);
+            int index = userInfo.incomingFriendRequests.FindIndex(x => x.fromUserId == msg.fromUserId);
             if (index < 0)
             {
                 return ECode.IncomingFriendRequestNotExist;
             }
 
-            IncomingFriendRequest req = user.userInfo.incomingFriendRequests[index];
+            IncomingFriendRequest req = userInfo.incomingFriendRequests[index];
             if (req.result == FriendRequestResult.Accepted)
             {
                 return ECode.Success;
@@ -42,11 +44,45 @@ namespace Script
                 return ECode.FriendRequestResultNotWait;
             }
 
-            var r = await this.service.userManagerServiceProxy.ForwardToUserService(msg.fromUserId, MsgType._User_OtherAcceptFriendRequest, new MsgOtherAcceptFriendRequest
+            MyResponse r;
+
+            int removedFriendIndex = userInfo.removedFriends.FindIndex(x => x.userId == msg.fromUserId);
+
+            long privateRoomId = 0;
+            if (removedFriendIndex >= 0)
+            {
+                privateRoomId = userInfo.removedFriends[removedFriendIndex].privateRoomId;
+            }
+            else
+            {
+                var msgCreateRoom = new MsgRoomManagerCreateRoom
+                {
+                    roomType = RoomType.Private,
+                    participants = [user.userId, msg.fromUserId],
+                    title = string.Empty,
+                    desc = string.Empty,
+                };
+
+                r = await this.service.roomManagerServiceProxy.CreateRoom(msgCreateRoom);
+                if (r.e != ECode.Success)
+                {
+                    return r.e;
+                }
+
+                var resCreateRoom = r.CastRes<ResRoomManagerCreateRoom>();
+                MyDebug.Assert(resCreateRoom.roomInfo.roomId > 0);
+                privateRoomId = resCreateRoom.roomInfo.roomId;
+            }
+            MyDebug.Assert(privateRoomId > 0);
+
+            var msgOther = new MsgOtherAcceptFriendRequest
             {
                 userId = msg.fromUserId,
                 otherUserId = user.userId,
-            });
+                privateRoomId = privateRoomId,
+            };
+
+            r = await this.service.userManagerServiceProxy.ForwardToUserService(msg.fromUserId, MsgType._User_OtherAcceptFriendRequest, msgOther);
             if (r.e != ECode.Success)
             {
                 return r.e;
@@ -56,10 +92,7 @@ namespace Script
 
             req.result = FriendRequestResult.Accepted;
 
-            var friendInfo = FriendInfo.Ensure(null);
-            friendInfo.userId = msg.fromUserId;
-            friendInfo.timeS = TimeUtils.GetTimeS();
-            user.userInfo.friends.Add(friendInfo);
+            this.service.friendScript.DoAddFriend(userInfo, msg.fromUserId, TimeUtils.GetTimeS(), privateRoomId);
 
             return ECode.Success;
         }

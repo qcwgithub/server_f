@@ -180,6 +180,14 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((MsgRoomManagerImportRoomConfig)msg);
                     break;
 
+                case MsgType._RoomManager_CreateRoom:
+                    msgBytes = MessagePackSerializer.Serialize((MsgRoomManagerCreateRoom)msg);
+                    break;
+
+                case MsgType._RoomManager_PrepareCreateRoom:
+                    msgBytes = MessagePackSerializer.Serialize((MsgRoomManagerPrepareCreateRoom)msg);
+                    break;
+
                 case MsgType._Save_AccountInfo:
                     msgBytes = MessagePackSerializer.Serialize((MsgSave_AccountInfo)msg);
                     break;

@@ -2,7 +2,7 @@ using Data;
 
 namespace Script
 {
-    [AutoRegister(false)]
+    [AutoRegister]
     public class User_SetName : Handler<UserService, MsgSetName, ResSetName>
     {
         public override MsgType msgType => MsgType.SetName;

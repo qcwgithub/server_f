@@ -3,7 +3,7 @@ using Data;
 namespace Script
 {
     // 别人给我发送好友申请
-    [AutoRegister(false)]
+    [AutoRegister]
     public class _User_ReceiveFriendRequest : Handler<UserService, MsgReceiveFriendRequest, ResReceiveFriendRequest>
     {
         public override MsgType msgType => MsgType._User_ReceiveFriendRequest;

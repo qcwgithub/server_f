@@ -27,6 +27,8 @@ namespace Data
         public List<IncomingFriendRequest> incomingFriendRequests;
         [Key(10)]
         public List<BlockedUser> blockedUsers;
+        [Key(11)]
+        public List<FriendInfo> removedFriends;
 
         public static UserInfo Ensure(UserInfo? p)
         {
@@ -76,6 +78,14 @@ namespace Data
             {
                 this.blockedUsers[i] = BlockedUser.Ensure(this.blockedUsers[i]);
             }
+            if (this.removedFriends == null)
+            {
+                this.removedFriends = new List<FriendInfo>();
+            }
+            for (int i = 0; i < this.removedFriends.Count; i++)
+            {
+                this.removedFriends[i] = FriendInfo.Ensure(this.removedFriends[i]);
+            }
         }
 
         public bool IsDifferent(UserInfo other)
@@ -124,6 +134,10 @@ namespace Data
             {
                 return true;
             }
+            if (this.removedFriends.IsDifferent_ListClass(other.removedFriends))
+            {
+                return true;
+            }
             return false;
         }
 
@@ -140,6 +154,7 @@ namespace Data
             this.outgoingFriendRequests.DeepCopyFrom_ListClass(other.outgoingFriendRequests);
             this.incomingFriendRequests.DeepCopyFrom_ListClass(other.incomingFriendRequests);
             this.blockedUsers.DeepCopyFrom_ListClass(other.blockedUsers);
+            this.removedFriends.DeepCopyFrom_ListClass(other.removedFriends);
         }
     }
 }

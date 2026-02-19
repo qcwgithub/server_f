@@ -129,6 +129,15 @@ public partial class collection_user_info
             updList.Add(upd);
         }
 
+        if (infoNullable.removedFriends != null)
+        {
+            var removedFriends_Db = XInfoHelper_Db.Copy_ListClass<FriendInfo_Db, FriendInfo>(infoNullable.removedFriends);
+            var upd = removedFriends_Db != null
+                ? Builders<UserInfo_Db>.Update.Set(nameof(UserInfo_Db.removedFriends), removedFriends_Db)
+                : Builders<UserInfo_Db>.Update.Unset(nameof(UserInfo_Db.removedFriends));
+            updList.Add(upd);
+        }
+
 
         #endregion autoSave
 

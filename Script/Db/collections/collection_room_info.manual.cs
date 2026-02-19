@@ -94,6 +94,24 @@ public partial class collection_room_info
             updList.Add(upd);
         }
 
+        if (infoNullable.roomType != null)
+        {
+            var roomType_Db = XInfoHelper_Db.Copy_Enum(infoNullable.roomType);
+            var upd = roomType_Db != null
+                ? Builders<RoomInfo_Db>.Update.Set(nameof(RoomInfo_Db.roomType), roomType_Db)
+                : Builders<RoomInfo_Db>.Update.Unset(nameof(RoomInfo_Db.roomType));
+            updList.Add(upd);
+        }
+
+        if (infoNullable.participants != null)
+        {
+            var participants_Db = XInfoHelper_Db.Copy_ListClass<RoomParticipant_Db, RoomParticipant>(infoNullable.participants);
+            var upd = participants_Db != null
+                ? Builders<RoomInfo_Db>.Update.Set(nameof(RoomInfo_Db.participants), participants_Db)
+                : Builders<RoomInfo_Db>.Update.Unset(nameof(RoomInfo_Db.participants));
+            updList.Add(upd);
+        }
+
 
         #endregion autoSave
 
