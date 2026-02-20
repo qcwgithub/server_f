@@ -4,15 +4,15 @@ namespace Tool
 {
     public partial class Robot
     {
-        public async Task<(ECode, ResEnterRoom)> EnterRoom(long roomId)
+        public async Task<(ECode, ResEnterRoom)> EnterScene(long roomId)
         {
             this.Log($"EnterRoom roomId {roomId}");
 
-            var msg = new MsgEnterRoom();
+            var msg = new MsgEnterScene();
             msg.roomId = roomId;
             msg.lastMessageId = 0;
 
-            var r = await this.connection.Request(MsgType.EnterRoom, msg);
+            var r = await this.connection.Request(MsgType.EnterScene, msg);
             this.Log($"EnterRoom result {r.e}");
             if (r.e != ECode.Success)
             {
@@ -40,17 +40,17 @@ namespace Tool
                     while (lastMessageId > 0)
                     {
                         Console.WriteLine();
-                        Console.WriteLine("Requesting room chat history..., lastMessageId {0}", lastMessageId);
+                        Console.WriteLine("Requesting scene chat history..., lastMessageId {0}", lastMessageId);
 
-                        var msgHistory = new MsgGetRoomChatHistory
+                        var msgHistory = new MsgGetSceneChatHistory
                         {
                             roomId = roomId,
                             lastMessageId = lastMessageId,
                         };
 
-                        r = await this.connection.Request(MsgType.GetRoomChatHistory, msgHistory);
+                        r = await this.connection.Request(MsgType.GetSceneChatHistory, msgHistory);
 
-                        var resHistory = r.CastRes<ResGetRoomChatHistory>();
+                        var resHistory = r.CastRes<ResGetSceneChatHistory>();
                         Console.WriteLine("history count: {0}", resHistory.history.Count);
                         for (int i = 0; i < resHistory.history.Count; i++)
                         {

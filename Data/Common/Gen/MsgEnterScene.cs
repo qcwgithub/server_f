@@ -3,7 +3,7 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class MsgEnterRoom
+    public class MsgEnterScene
     {
         [Key(0)]
         public long roomId;

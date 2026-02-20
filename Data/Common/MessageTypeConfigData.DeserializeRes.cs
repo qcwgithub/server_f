@@ -273,27 +273,27 @@ namespace Data
                     ob = MessagePackSerializer.Deserialize<ResKick>(resBytes);
                     break;
 
-                case MsgType.EnterRoom:
-                    ob = MessagePackSerializer.Deserialize<ResEnterRoom>(resBytes);
+                case MsgType.EnterScene:
+                    ob = MessagePackSerializer.Deserialize<ResEnterScene>(resBytes);
                     break;
 
-                case MsgType.LeaveRoom:
-                    ob = MessagePackSerializer.Deserialize<ResLeaveRoom>(resBytes);
+                case MsgType.LeaveScene:
+                    ob = MessagePackSerializer.Deserialize<ResLeaveScene>(resBytes);
                     break;
 
-                case MsgType.SendRoomChat:
-                    ob = MessagePackSerializer.Deserialize<ResSendRoomChat>(resBytes);
+                case MsgType.SendSceneChat:
+                    ob = MessagePackSerializer.Deserialize<ResSendSceneChat>(resBytes);
                     break;
 
                 case MsgType.ARoomChat:
                     throw new Exception("Missing config for MsgType.ARoomChat");
 
-                case MsgType.SearchRoom:
-                    ob = MessagePackSerializer.Deserialize<ResSearchRoom>(resBytes);
+                case MsgType.SearchScene:
+                    ob = MessagePackSerializer.Deserialize<ResSearchScene>(resBytes);
                     break;
 
-                case MsgType.GetRecommendedRooms:
-                    ob = MessagePackSerializer.Deserialize<ResGetRecommendedRooms>(resBytes);
+                case MsgType.GetRecommendedScenes:
+                    ob = MessagePackSerializer.Deserialize<ResGetRecommendedScenes>(resBytes);
                     break;
 
                 case MsgType.SetName:
@@ -304,12 +304,12 @@ namespace Data
                     ob = MessagePackSerializer.Deserialize<ResSetAvatarIndex>(resBytes);
                     break;
 
-                case MsgType.GetRoomChatHistory:
-                    ob = MessagePackSerializer.Deserialize<ResGetRoomChatHistory>(resBytes);
+                case MsgType.GetSceneChatHistory:
+                    ob = MessagePackSerializer.Deserialize<ResGetSceneChatHistory>(resBytes);
                     break;
 
-                case MsgType.ReportRoomMessage:
-                    ob = MessagePackSerializer.Deserialize<ResReportRoomMessage>(resBytes);
+                case MsgType.ReportMessage:
+                    ob = MessagePackSerializer.Deserialize<ResReportMessage>(resBytes);
                     break;
 
                 case MsgType.ReportUser:
@@ -354,6 +354,10 @@ namespace Data
 
                 case MsgType.GetUserBriefInfos:
                     ob = MessagePackSerializer.Deserialize<ResGetUserBriefInfos>(resBytes);
+                    break;
+
+                case MsgType.SendPrivateChat:
+                    ob = MessagePackSerializer.Deserialize<ResSendPrivateChat>(resBytes);
                     break;
 
                 case MsgType.Count:

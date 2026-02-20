@@ -3,9 +3,9 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class MsgSearchRoom
+    public class ResGetRecommendedScenes
     {
         [Key(0)]
-        public string keyword;
+        public List<RoomInfo> roomInfos;
     }
 }

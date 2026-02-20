@@ -14,7 +14,7 @@ namespace Data
         [Key(3)]
         public long messageId;
         [Key(4)]
-        public RoomMessageReportReason reason;
+        public MessageReportReason reason;
         [Key(5)]
         public long timeS;
 

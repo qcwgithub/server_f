@@ -3,14 +3,14 @@ using Data;
 namespace Script
 {
     [AutoRegister]
-    public class User_GetRoomChatHistory : Handler<UserService, MsgGetRoomChatHistory, ResGetRoomChatHistory>
+    public class User_GetSceneChatHistory : Handler<UserService, MsgGetSceneChatHistory, ResGetSceneChatHistory>
     {
-        public override MsgType msgType => MsgType.GetRoomChatHistory;
-        public User_GetRoomChatHistory(Server server, UserService service) : base(server, service)
+        public override MsgType msgType => MsgType.GetSceneChatHistory;
+        public User_GetSceneChatHistory(Server server, UserService service) : base(server, service)
         {
         }
 
-        public override async Task<ECode> Handle(MessageContext context, MsgGetRoomChatHistory msg, ResGetRoomChatHistory res)
+        public override async Task<ECode> Handle(MessageContext context, MsgGetSceneChatHistory msg, ResGetSceneChatHistory res)
         {
             this.service.logger.Info($"{this.msgType} userId {context.msg_userId} roomId {msg.roomId} lastMessageId {msg.lastMessageId}");
 
@@ -41,7 +41,7 @@ namespace Script
             return ECode.Success;
         }
 
-        public override void PostHandle(MessageContext context, MsgGetRoomChatHistory msg, ECode e, ResGetRoomChatHistory res)
+        public override void PostHandle(MessageContext context, MsgGetSceneChatHistory msg, ECode e, ResGetSceneChatHistory res)
         {
             this.service.TryUnlockUser(context.msg_userId, context);
 

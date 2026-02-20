@@ -24,6 +24,7 @@ namespace Script
         }
 
         public readonly RoomServiceScript ss;
+        public readonly RoomChatScript chatScript;
 
         public RoomService(Server server, int serviceId) : base(server, serviceId)
         {
@@ -34,6 +35,7 @@ namespace Script
             this.AddServiceProxy(this.roomManagerServiceProxy = new RoomManagerServiceProxy(this));
 
             this.ss = new RoomServiceScript(this.server, this);
+            this.chatScript = new RoomChatScript(this.server, this);
         }
 
         public override void Attach()

@@ -3,9 +3,9 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class ResGetRecommendedRooms
+    public class ResEnterScene
     {
         [Key(0)]
-        public List<RoomInfo> roomInfos;
+        public List<ChatMessage> recentMessages;
     }
 }

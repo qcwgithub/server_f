@@ -22,79 +22,12 @@ namespace Script
                 return e;
             }
 
-            ServerConfig.MessageConfig messageConfig;
-            switch (msg.roomType)
+            ServerConfig.MessageConfig messageConfig = this.server.data.serverConfig.GetMessageConfig(msg.roomType);
+
+            e = this.service.chatScript.CheckRoomSendChat(msg, messageConfig);
+            if (e != ECode.Success)
             {
-                case RoomType.Private:
-                    {
-                        messageConfig = this.server.data.serverConfig.privateMessageConfig;
-                    }
-                    break;
-                case RoomType.Public:
-                    {
-                        messageConfig = this.server.data.serverConfig.roomMessageConfig;
-                    }
-                    break;
-                default:
-                    throw new Exception($"Not handled roomType.{msg.roomType}");
-            }
-
-            switch (msg.type)
-            {
-                case ChatMessageType.Text:
-                    {
-                        if (msg.content == null)
-                        {
-                            return ECode.ChatEmpty;
-                        }
-                        msg.content = msg.content.Trim();
-
-                        if (msg.content.Length < messageConfig.minLength)
-                        {
-                            return ECode.ChatTooShort;
-                        }
-                        if (msg.content.Length > messageConfig.maxLength)
-                        {
-                            return ECode.ChatTooLong;
-                        }
-
-                        bool allSpace = true;
-                        foreach (char c in msg.content)
-                        {
-                            if (!char.IsWhiteSpace(c))
-                            {
-                                allSpace = false;
-                                break;
-                            }
-                        }
-                        if (allSpace)
-                        {
-                            return ECode.ChatAllSpace;
-                        }
-                    }
-                    break;
-
-                case ChatMessageType.Image:
-                    {
-                        ChatMessageImageContent? imageContent = msg.imageContent;
-                        if (imageContent == null)
-                        {
-                            return ECode.ChatMissingImageContent;
-                        }
-
-                        if (string.IsNullOrEmpty(imageContent.url) ||
-                            imageContent.width <= 0 ||
-                            imageContent.height <= 0 ||
-                            imageContent.size <= 0)
-                        {
-                            return ECode.InvalidParam;
-                        }
-                    }
-                    break;
-
-                case ChatMessageType.System: // Not allowed
-                default:
-                    return ECode.ChatInvalidType;
+                return e;
             }
 
             Room? room = await this.service.LockRoom(msg.roomId, context);

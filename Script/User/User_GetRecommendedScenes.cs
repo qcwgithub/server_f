@@ -3,15 +3,15 @@ using Data;
 namespace Script
 {
     [AutoRegister]
-    public class User_GetRecommendedRooms : Handler<UserService, MsgGetRecommendedRooms, ResGetRecommendedRooms>
+    public class User_GetRecommendedScenes : Handler<UserService, MsgGetRecommendedScenes, ResGetRecommendedScenes>
     {
-        public User_GetRecommendedRooms(Server server, UserService service) : base(server, service)
+        public User_GetRecommendedScenes(Server server, UserService service) : base(server, service)
         {
         }
 
-        public override MsgType msgType => MsgType.GetRecommendedRooms;
+        public override MsgType msgType => MsgType.GetRecommendedScenes;
 
-        public override async Task<ECode> Handle(MessageContext context, MsgGetRecommendedRooms msg, ResGetRecommendedRooms res)
+        public override async Task<ECode> Handle(MessageContext context, MsgGetRecommendedScenes msg, ResGetRecommendedScenes res)
         {
             this.service.logger.Info($"{this.msgType} userId {context.msg_userId}");
 
@@ -36,7 +36,7 @@ namespace Script
             return ECode.Success;
         }
 
-        public override void PostHandle(MessageContext context, MsgGetRecommendedRooms msg, ECode e, ResGetRecommendedRooms res)
+        public override void PostHandle(MessageContext context, MsgGetRecommendedScenes msg, ECode e, ResGetRecommendedScenes res)
         {
             this.service.TryUnlockUser(context.msg_userId, context);
 

@@ -1,6 +1,6 @@
 namespace Data
 {
-    public enum RoomMessageReportReason
+    public enum MessageReportReason
     {
         Other = 0, // default for dart
         Spam = 1,

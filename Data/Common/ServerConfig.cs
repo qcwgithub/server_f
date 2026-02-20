@@ -67,6 +67,19 @@ namespace Data
         public MessageConfig roomMessageConfig;
         public MessageConfig privateMessageConfig;
 
+        public MessageConfig GetMessageConfig(RoomType roomType)
+        {
+            switch (roomType)
+            {
+                case RoomType.Private:
+                    return this.privateMessageConfig;
+                case RoomType.Public:
+                    return this.roomMessageConfig;
+                default:
+                    throw new Exception($"Not handled roomType.{roomType}");
+            }
+        }
+
         public class UserNameConfig
         {
             public int minIntervalS;

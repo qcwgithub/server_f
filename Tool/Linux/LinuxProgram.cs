@@ -49,7 +49,7 @@ namespace Tool
                         break;
 
                     case Action.SearchRoom:
-                        await this.SearchRoom();
+                        await this.SearchScene();
                         break;
 
                     case Action.UserResetName:

@@ -3,28 +3,16 @@ using Data;
 namespace Script
 {
     [AutoRegister]
-    public class User_SendRoomChat : Handler<UserService, MsgSendRoomChat, ResSendRoomChat>
+    public class User_SendPrivateChat : Handler<UserService, MsgSendPrivateChat, ResSendPrivateChat>
     {
-        public override MsgType msgType => MsgType.SendRoomChat;
-        public User_SendRoomChat(Server server, UserService service) : base(server, service)
+        public override MsgType msgType => MsgType.SendPrivateChat;
+        public User_SendPrivateChat(Server server, UserService service) : base(server, service)
         {
         }
 
-        public override async Task<ECode> Handle(MessageContext context, MsgSendRoomChat msg, ResSendRoomChat res)
+        public override async Task<ECode> Handle(MessageContext context, MsgSendPrivateChat msg, ResSendPrivateChat res)
         {
-            ECode e = RoomUtils.CheckRoomId(msg.roomId);
-            if (e != ECode.Success)
-            {
-                return ECode.InvalidRoomId;
-            }
-
-            e = RoomUtils.CheckRoomType(msg.roomType);
-            if (e != ECode.Success)
-            {
-                return e;
-            }
-
-            e = ChatUtils.CheckChatMessageType(msg.chatMessageType);
+            ECode e = ChatUtils.CheckChatMessageType(msg.chatMessageType);
             if (e != ECode.Success)
             {
                 return e;
@@ -36,7 +24,7 @@ namespace Script
                 return ECode.UserNotExist;
             }
 
-            e = this.service.roomScript.CheckSendRoomChat(user, msg);
+            e = this.service.roomScript.CheckSendPrivateChat(user, msg);
             if (e != ECode.Success)
             {
                 return e;
@@ -44,16 +32,19 @@ namespace Script
 
             UserInfo userInfo = user.userInfo;
 
-            MyResponse r;
+            int friendIndex = userInfo.friends.FindIndex(x => x.userId == msg.friendUserId);
+            FriendInfo friendInfo = userInfo.friends[friendIndex];
 
-            stObjectLocation location = await this.service.roomLocator.GetLocation(msg.roomId);
+            stObjectLocation location = await this.service.roomLocator.GetLocation(friendInfo.privateRoomId);
             if (!location.IsValid())
             {
                 return ECode.RoomLocationNotExist;
             }
 
+            MyResponse r;
+
             var msgR = new MsgRoomSendChat();
-            msgR.roomId = msg.roomId;
+            msgR.roomId = friendInfo.privateRoomId;
             msgR.userId = user.userId;
             msgR.type = msg.chatMessageType;
             msgR.content = msg.content;
@@ -61,7 +52,7 @@ namespace Script
             msgR.avatarIndex = user.userInfo.avatarIndex;
             msgR.clientMessageId = msg.clientMessageId;
             msgR.imageContent = msg.imageContent;
-            msgR.roomType = msg.roomType;
+            msgR.roomType = RoomType.Private;
 
             r = await this.service.roomServiceProxy.SendChat(location.serviceId, msgR);
             if (r.e != ECode.Success)
@@ -76,7 +67,7 @@ namespace Script
             return ECode.Success;
         }
 
-        public override void PostHandle(MessageContext context, MsgSendRoomChat msg, ECode e, ResSendRoomChat res)
+        public override void PostHandle(MessageContext context, MsgSendPrivateChat msg, ECode e, ResSendPrivateChat res)
         {
             this.service.TryUnlockUser(context.msg_userId, context);
 

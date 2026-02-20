@@ -3,18 +3,19 @@ using Data;
 namespace Script
 {
     [AutoRegister]
-    public class User_EnterRoom : Handler<UserService, MsgEnterRoom, ResEnterRoom>
+    public class User_EnterScene : Handler<UserService, MsgEnterScene, ResEnterScene>
     {
-        public override MsgType msgType => MsgType.EnterRoom;
-        public User_EnterRoom(Server server, UserService service) : base(server, service)
+        public override MsgType msgType => MsgType.EnterScene;
+        public User_EnterScene(Server server, UserService service) : base(server, service)
         {
         }
 
-        public override async Task<ECode> Handle(MessageContext context, MsgEnterRoom msg, ResEnterRoom res)
+        public override async Task<ECode> Handle(MessageContext context, MsgEnterScene msg, ResEnterScene res)
         {
             this.service.logger.Info($"{this.msgType} userId {context.msg_userId} roomId {msg.roomId} lastMessageId {msg.lastMessageId}");
 
-            if (msg.roomId <= 0)
+            ECode e = RoomUtils.CheckRoomId(msg.roomId);
+            if (e != ECode.Success)
             {
                 return ECode.InvalidRoomId;
             }
@@ -80,15 +81,16 @@ namespace Script
                 return r.e;
             }
 
-            var resEnter = r.CastRes<ResRoomUserEnter>();
-            res.recentMessages = resEnter.recentMessages;
+            //// ok
 
             user.publicRoomId = msg.roomId;
 
+            var resEnter = r.CastRes<ResRoomUserEnter>();
+            res.recentMessages = resEnter.recentMessages;
             return ECode.Success;
         }
 
-        public override void PostHandle(MessageContext context, MsgEnterRoom msg, ECode e, ResEnterRoom res)
+        public override void PostHandle(MessageContext context, MsgEnterScene msg, ECode e, ResEnterScene res)
         {
             this.service.TryUnlockUser(context.msg_userId, context);
 

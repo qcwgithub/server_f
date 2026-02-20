@@ -3,9 +3,9 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class MsgLeaveRoom
+    public class ResGetSceneChatHistory
     {
         [Key(0)]
-        public long roomId;
+        public List<ChatMessage> history;
     }
 }

@@ -3,15 +3,15 @@ using Data;
 namespace Script
 {
     [AutoRegister]
-    public class User_SearchRoom : Handler<UserService, MsgSearchRoom, ResSearchRoom>
+    public class User_SearchScene : Handler<UserService, MsgSearchScene, ResSearchScene>
     {
-        public User_SearchRoom(Server server, UserService service) : base(server, service)
+        public User_SearchScene(Server server, UserService service) : base(server, service)
         {
         }
 
-        public override MsgType msgType => MsgType.SearchRoom;
+        public override MsgType msgType => MsgType.SearchScene;
 
-        public override async Task<ECode> Handle(MessageContext context, MsgSearchRoom msg, ResSearchRoom res)
+        public override async Task<ECode> Handle(MessageContext context, MsgSearchScene msg, ResSearchScene res)
         {
             this.service.logger.Info($"{this.msgType} userId {context.msg_userId} keyword {msg.keyword}");
             if (string.IsNullOrEmpty(msg.keyword))
@@ -45,7 +45,7 @@ namespace Script
             return ECode.Success;
         }
 
-        public override void PostHandle(MessageContext context, MsgSearchRoom msg, ECode e, ResSearchRoom res)
+        public override void PostHandle(MessageContext context, MsgSearchScene msg, ECode e, ResSearchScene res)
         {
             this.service.TryUnlockUser(context.msg_userId, context);
 

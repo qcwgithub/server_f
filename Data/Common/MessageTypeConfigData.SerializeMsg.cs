@@ -275,28 +275,28 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((MsgKick)msg);
                     break;
 
-                case MsgType.EnterRoom:
-                    msgBytes = MessagePackSerializer.Serialize((MsgEnterRoom)msg);
+                case MsgType.EnterScene:
+                    msgBytes = MessagePackSerializer.Serialize((MsgEnterScene)msg);
                     break;
 
-                case MsgType.LeaveRoom:
-                    msgBytes = MessagePackSerializer.Serialize((MsgLeaveRoom)msg);
+                case MsgType.LeaveScene:
+                    msgBytes = MessagePackSerializer.Serialize((MsgLeaveScene)msg);
                     break;
 
-                case MsgType.SendRoomChat:
-                    msgBytes = MessagePackSerializer.Serialize((MsgSendRoomChat)msg);
+                case MsgType.SendSceneChat:
+                    msgBytes = MessagePackSerializer.Serialize((MsgSendSceneChat)msg);
                     break;
 
                 case MsgType.ARoomChat:
                     msgBytes = MessagePackSerializer.Serialize((MsgARoomChat)msg);
                     break;
 
-                case MsgType.SearchRoom:
-                    msgBytes = MessagePackSerializer.Serialize((MsgSearchRoom)msg);
+                case MsgType.SearchScene:
+                    msgBytes = MessagePackSerializer.Serialize((MsgSearchScene)msg);
                     break;
 
-                case MsgType.GetRecommendedRooms:
-                    msgBytes = MessagePackSerializer.Serialize((MsgGetRecommendedRooms)msg);
+                case MsgType.GetRecommendedScenes:
+                    msgBytes = MessagePackSerializer.Serialize((MsgGetRecommendedScenes)msg);
                     break;
 
                 case MsgType.SetName:
@@ -307,12 +307,12 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((MsgSetAvatarIndex)msg);
                     break;
 
-                case MsgType.GetRoomChatHistory:
-                    msgBytes = MessagePackSerializer.Serialize((MsgGetRoomChatHistory)msg);
+                case MsgType.GetSceneChatHistory:
+                    msgBytes = MessagePackSerializer.Serialize((MsgGetSceneChatHistory)msg);
                     break;
 
-                case MsgType.ReportRoomMessage:
-                    msgBytes = MessagePackSerializer.Serialize((MsgReportRoomMessage)msg);
+                case MsgType.ReportMessage:
+                    msgBytes = MessagePackSerializer.Serialize((MsgReportMessage)msg);
                     break;
 
                 case MsgType.ReportUser:
@@ -361,6 +361,10 @@ namespace Data
 
                 case MsgType.GetUserBriefInfos:
                     msgBytes = MessagePackSerializer.Serialize((MsgGetUserBriefInfos)msg);
+                    break;
+
+                case MsgType.SendPrivateChat:
+                    msgBytes = MessagePackSerializer.Serialize((MsgSendPrivateChat)msg);
                     break;
 
                 case MsgType.Count:

@@ -3,14 +3,14 @@ using Data;
 namespace Script
 {
     [AutoRegister]
-    public class User_LeaveRoom : Handler<UserService, MsgLeaveRoom, ResLeaveRoom>
+    public class User_LeaveScene : Handler<UserService, MsgLeaveScene, ResLeaveScene>
     {
-        public override MsgType msgType => MsgType.LeaveRoom;
-        public User_LeaveRoom(Server server, UserService service) : base(server, service)
+        public override MsgType msgType => MsgType.LeaveScene;
+        public User_LeaveScene(Server server, UserService service) : base(server, service)
         {
         }
 
-        public override async Task<ECode> Handle(MessageContext context, MsgLeaveRoom msg, ResLeaveRoom res)
+        public override async Task<ECode> Handle(MessageContext context, MsgLeaveScene msg, ResLeaveScene res)
         {
             User? user = await this.service.LockUser(context.msg_userId, context);
             if (user == null)
@@ -48,7 +48,7 @@ namespace Script
             return ECode.Success;
         }
 
-        public override void PostHandle(MessageContext context, MsgLeaveRoom msg, ECode e, ResLeaveRoom res)
+        public override void PostHandle(MessageContext context, MsgLeaveScene msg, ECode e, ResLeaveScene res)
         {
             this.service.TryUnlockUser(context.msg_userId, context);
 

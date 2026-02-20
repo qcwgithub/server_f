@@ -23,7 +23,7 @@ namespace Tool
         ToolConnectionCallback connectionCallback;
         ToolConnection connection;
         ResLogin resLogin;
-        ResGetRecommendedRooms resGetRecommendedRooms;
+        ResGetRecommendedScenes resGetRecommendedScenes;
         long roomId;
         public async Task Start()
         {
@@ -65,32 +65,32 @@ namespace Tool
                     break;
                 }
 
-                (e, this.resGetRecommendedRooms) = await this.GetRecommendedRooms();
+                (e, this.resGetRecommendedScenes) = await this.GetRecommendedScenes();
                 if (e != ECode.Success)
                 {
                     Console.ReadLine();
                     break;
                 }
 
-                if (this.resGetRecommendedRooms.roomInfos.Count == 0)
+                if (this.resGetRecommendedScenes.roomInfos.Count == 0)
                 {
                     Console.ReadLine();
                     break;
                 }
 
                 ResEnterRoom resEnterRoom;
-                (e, resEnterRoom) = await this.EnterRoom(this.resGetRecommendedRooms.roomInfos[0].roomId);
+                (e, resEnterRoom) = await this.EnterScene(this.resGetRecommendedScenes.roomInfos[0].roomId);
                 if (e != ECode.Success)
                 {
                     Console.ReadLine();
                     break;
                 }
 
-                this.roomId = this.resGetRecommendedRooms.roomInfos[0].roomId;
+                this.roomId = this.resGetRecommendedScenes.roomInfos[0].roomId;
 
                 if (resEnterRoom.recentMessages.Count > 0)
                 {
-                    e = await this.ReportRoomMessage(this.roomId, resEnterRoom.recentMessages[0].messageId);
+                    e = await this.ReportSceneMessage(this.roomId, resEnterRoom.recentMessages[0].messageId);
                     if (e != ECode.Success)
                     {
                         Console.ReadLine();
@@ -100,7 +100,7 @@ namespace Tool
 
                 for (int i = 0; i < 100; i++)
                 {
-                    e = await this.SendRoomChat(this.roomId, $"Hello {DateTime.Now}!");
+                    e = await this.SendSceneChat(this.roomId, $"Hello {DateTime.Now}!");
                     if (e != ECode.Success)
                     {
                         Console.ReadLine();

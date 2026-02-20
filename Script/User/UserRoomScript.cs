@@ -8,31 +8,25 @@ namespace Script
         {
         }
 
-        public ECode CheckSendRoomChat(User user, MsgSendRoomChat msg)
+        public ECode CheckSendSceneChat(User user, MsgSendSceneChat msg)
+        {
+            if (msg.roomId != user.publicRoomId)
+            {
+                return ECode.WrongRoomId;
+            }
+            return ECode.Success;
+        }
+
+        public ECode CheckSendPrivateChat(User user, MsgSendPrivateChat msg)
         {
             UserInfo userInfo = user.userInfo;
-            switch (msg.roomType)
+
+            int friendIndex = userInfo.friends.FindIndex(x => x.userId == msg.friendUserId);
+            if (friendIndex < 0)
             {
-                case RoomType.Private:
-                    {
-                        int friendIndex = userInfo.friends.FindIndex(x => x.privateRoomId == msg.roomId);
-                        if (friendIndex < 0)
-                        {
-                            return ECode.WrongRoomId;
-                        }
-                    }
-                    break;
-                case RoomType.Public:
-                    {
-                        if (msg.roomId != user.publicRoomId)
-                        {
-                            return ECode.WrongRoomId;
-                        }
-                    }
-                    break;
-                default:
-                    throw new Exception($"Not handled roomType.{msg.roomType}");
+                return ECode.NotFriends;
             }
+
             return ECode.Success;
         }
     }
