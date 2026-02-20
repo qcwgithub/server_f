@@ -65,6 +65,7 @@ namespace Data
             }
         }
         public MessageConfig roomMessageConfig;
+        public MessageConfig privateMessageConfig;
 
         public class UserNameConfig
         {
@@ -198,6 +199,7 @@ namespace Data
 
             this.socketSecurityConfig.Init();
             this.roomMessageConfig.Init();
+            this.privateMessageConfig.Init();
             this.userNameConfig.Init();
             this.userAvatarConfig.Init();
             this.redisConfig.Init();

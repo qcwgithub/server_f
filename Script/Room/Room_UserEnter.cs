@@ -41,7 +41,7 @@ namespace Script
 
             // +recentMessages
             res.recentMessages = new List<ChatMessage>();
-            foreach (ChatMessage message in this.service.sd.recentMessages)
+            foreach (ChatMessage message in room.recentMessages)
             {
                 if (msg.lastMessageId < message.messageId)
                 {

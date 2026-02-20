@@ -40,5 +40,6 @@ namespace Data
         {
             this.userDict.Add(user.userId, user);
         }
+        public readonly Queue<ChatMessage> recentMessages = new();
     }
 }

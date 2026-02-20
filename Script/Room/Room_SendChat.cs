@@ -16,12 +16,28 @@ namespace Script
         {
             this.service.logger.Info($"{this.msgType} userId {msg.userId} roomId {msg.roomId} type {msg.type} content {msg.content}");
 
-            if (msg.type < 0 || msg.type >= ChatMessageType.Count)
+            ECode e = ChatUtils.CheckChatMessageType(msg.type);
+            if (e != ECode.Success)
             {
-                return ECode.ChatInvalidType;
+                return e;
             }
 
-            var roomMessageConfig = this.server.data.serverConfig.roomMessageConfig;
+            ServerConfig.MessageConfig messageConfig;
+            switch (msg.roomType)
+            {
+                case RoomType.Private:
+                    {
+                        messageConfig = this.server.data.serverConfig.privateMessageConfig;
+                    }
+                    break;
+                case RoomType.Public:
+                    {
+                        messageConfig = this.server.data.serverConfig.roomMessageConfig;
+                    }
+                    break;
+                default:
+                    throw new Exception($"Not handled roomType.{msg.roomType}");
+            }
 
             switch (msg.type)
             {
@@ -33,11 +49,11 @@ namespace Script
                         }
                         msg.content = msg.content.Trim();
 
-                        if (msg.content.Length < roomMessageConfig.minLength)
+                        if (msg.content.Length < messageConfig.minLength)
                         {
                             return ECode.ChatTooShort;
                         }
-                        if (msg.content.Length > roomMessageConfig.maxLength)
+                        if (msg.content.Length > messageConfig.maxLength)
                         {
                             return ECode.ChatTooLong;
                         }
@@ -94,15 +110,15 @@ namespace Script
             }
 
             long now = TimeUtils.GetTime();
-            if (user.lastSendChatStamp > 0 && now - user.lastSendChatStamp < roomMessageConfig.minIntervalMs)
+            if (user.lastSendChatStamp > 0 && now - user.lastSendChatStamp < messageConfig.minIntervalMs)
             {
                 return ECode.Chat_TooFast;
             }
 
-            if (user.sendChatTimestamps.Count >= roomMessageConfig.periodMaxCount)
+            if (user.sendChatTimestamps.Count >= messageConfig.periodMaxCount)
             {
-                int count = user.sendChatTimestamps.Count(ts => now - ts < roomMessageConfig.periodMs);
-                if (count >= roomMessageConfig.periodMaxCount)
+                int count = user.sendChatTimestamps.Count(ts => now - ts < messageConfig.periodMs);
+                if (count >= messageConfig.periodMaxCount)
                 {
                     return ECode.Chat_TooFast;
                 }
@@ -112,7 +128,7 @@ namespace Script
 
             // last send
             user.lastSendChatStamp = now;
-            user.sendChatTimestamps.RemoveAll(ts => now - ts >= roomMessageConfig.periodMs);
+            user.sendChatTimestamps.RemoveAll(ts => now - ts >= messageConfig.periodMs);
             user.sendChatTimestamps.Add(now);
 
             // create message
@@ -137,15 +153,15 @@ namespace Script
 
             if (message.messageId % 100 == 0)
             {
-                await this.server.roomMessagesRedis.Trim(room.roomId, roomMessageConfig.maxMessagesCount);
+                await this.server.roomMessagesRedis.Trim(room.roomId, messageConfig.maxMessagesCount);
             }
 
             // -> memory
 
-            this.service.sd.recentMessages.Enqueue(message);
-            while (this.service.sd.recentMessages.Count > roomMessageConfig.recentMessagesCount)
+            room.recentMessages.Enqueue(message);
+            while (room.recentMessages.Count > messageConfig.recentMessagesCount)
             {
-                this.service.sd.recentMessages.Dequeue();
+                room.recentMessages.Dequeue();
             }
 
             // -> other users
@@ -163,7 +179,7 @@ namespace Script
                 List<RoomUser> roomUsers = pair.Value;
 
                 long[] userIds = roomUsers.Select(x => x.userId).ToArray();
-                ECode e = this.service.gatewayServiceProxy.BroadcastToClient(gatewayServiceId, userIds, MsgType.ARoomChat, broadcast);
+                e = this.service.gatewayServiceProxy.BroadcastToClient(gatewayServiceId, userIds, MsgType.ARoomChat, broadcast);
                 if (e == ECode.NotConnected)
                 {
                     this.service.logger.Warn($"{this.msgType} gatewayServiceId {gatewayServiceId} is not connected");

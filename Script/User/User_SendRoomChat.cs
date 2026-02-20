@@ -12,9 +12,22 @@ namespace Script
 
         public override async Task<ECode> Handle(MessageContext context, MsgSendRoomChat msg, ResSendRoomChat res)
         {
-            if (msg.roomId <= 0)
+            ECode e = RoomUtils.CheckRoomId(msg.roomId);
+            if (e != ECode.Success)
             {
                 return ECode.InvalidRoomId;
+            }
+
+            e = RoomUtils.CheckRoomType(msg.roomType);
+            if (e != ECode.Success)
+            {
+                return e;
+            }
+
+            e = ChatUtils.CheckChatMessageType(msg.chatMessageType);
+            if (e != ECode.Success)
+            {
+                return e;
             }
 
             User? user = await this.service.LockUser(context.msg_userId, context);
@@ -23,17 +36,20 @@ namespace Script
                 return ECode.UserNotExist;
             }
 
-            if (msg.roomId != user.roomId)
+            e = this.service.roomScript.CheckSendRoomChat(user, msg);
+            if (e != ECode.Success)
             {
-                return ECode.WrongRoomId;
+                return e;
             }
+
+            UserInfo userInfo = user.userInfo;
 
             MyResponse r;
 
             stObjectLocation location = await this.service.roomLocator.GetLocation(msg.roomId);
             if (!location.IsValid())
             {
-                return ECode.RoomLocationNotFound;
+                return ECode.RoomLocationNotExist;
             }
 
             var msgR = new MsgRoomSendChat();
@@ -45,6 +61,7 @@ namespace Script
             msgR.avatarIndex = user.userInfo.avatarIndex;
             msgR.clientMessageId = msg.clientMessageId;
             msgR.imageContent = msg.imageContent;
+            msgR.roomType = msg.roomType;
 
             r = await this.service.roomServiceProxy.SendChat(location.serviceId, msgR);
             if (r.e != ECode.Success)

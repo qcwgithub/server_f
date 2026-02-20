@@ -30,7 +30,7 @@ namespace Script
                 return ECode.UserNotExist;
             }
 
-            if (msg.roomId != user.roomId)
+            if (msg.roomId != user.publicRoomId)
             {
                 return ECode.WrongRoomId;
             }

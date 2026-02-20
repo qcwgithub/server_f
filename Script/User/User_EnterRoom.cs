@@ -28,13 +28,13 @@ namespace Script
             MyResponse r;
 
             stObjectLocation location;
-            if (user.roomId != 0 && user.roomId != msg.roomId)
+            if (user.publicRoomId != 0 && user.publicRoomId != msg.roomId)
             {
                 // leave first
-                location = await this.service.roomLocator.GetLocation(user.roomId);
+                location = await this.service.roomLocator.GetLocation(user.publicRoomId);
                 if (!location.IsValid())
                 {
-                    return ECode.RoomLocationNotFound;
+                    return ECode.RoomLocationNotExist;
                 }
 
                 var msgLeave = new MsgRoomUserLeave();
@@ -47,7 +47,7 @@ namespace Script
                     return r.e;
                 }
 
-                user.roomId = 0;
+                user.publicRoomId = 0;
             }
 
             location = await this.service.roomLocator.GetLocation(msg.roomId);
@@ -83,7 +83,7 @@ namespace Script
             var resEnter = r.CastRes<ResRoomUserEnter>();
             res.recentMessages = resEnter.recentMessages;
 
-            user.roomId = msg.roomId;
+            user.publicRoomId = msg.roomId;
 
             return ECode.Success;
         }

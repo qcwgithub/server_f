@@ -113,6 +113,7 @@ enum_,ChatMessageType,,,,chatMessageType,,,,
 string_,,,,,content,,,,
 long_,,,,,clientMessageId,,,,
 class_,ChatMessageImageContent,,,,imageContent?,,,,
+enum_,RoomType,,,,roomType,,,,
 @ResSendRoomChat,,,,,,,,,1
 @MsgSetAvatarIndex,,,,,,,,,1
 int_,,,,,avatarIndex,,,,

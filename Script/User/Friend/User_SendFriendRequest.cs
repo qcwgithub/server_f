@@ -47,7 +47,7 @@ namespace Script
                 fromUserId = user.userId,
                 say = msg.say,
                 fromUserBriefInfo = UserServiceScript.CreateUserBriefInfo(user.userInfo),
-            });
+            }, true);
             if (r.e != ECode.Success)
             {
                 return r.e;

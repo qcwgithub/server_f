@@ -25,18 +25,19 @@ namespace Script
 
         #endregion auto_proxy
 
-        public async Task<MyResponse> ForwardToUserService(long toUserId, MsgType innerMsgType, object innerMsg)
+        public async Task<MyResponse> ForwardToUserService(long toUserId, MsgType innerMsgType, object innerMsg, bool simulateLoginIfOffline)
         {
             var msg = new MsgForwardToUserService();
             msg.userId = toUserId;
             msg.innerMsgType = innerMsgType;
             msg.innerMsgBytes = MessageTypeConfigData.SerializeMsg(innerMsgType, innerMsg);
+            msg.simulateLoginIfOffline = simulateLoginIfOffline;
 
             var r = await this.ForwardToUserService(msg);
 
             var res = r.CastRes<ResForwardToUserService>();
             var innerRes = MessageTypeConfigData.DeserializeRes(innerMsgType, res.innerResBytes);
-            return new MyResponse(r.e, innerRes); 
+            return new MyResponse(r.e, innerRes);
         }
     }
 }

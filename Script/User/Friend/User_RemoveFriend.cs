@@ -42,7 +42,7 @@ namespace Script
             {
                 userId = msg.friendUserId,
                 otherUserId = user.userId
-            });
+            }, true);
             if (r.e != ECode.Success)
             {
                 return r.e;

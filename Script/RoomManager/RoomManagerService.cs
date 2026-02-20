@@ -17,6 +17,7 @@ namespace Script
         public readonly GatewayServiceProxy gatewayServiceProxy;
         public readonly RoomIdSnowflakeScript roomIdSnowflakeScript;
         public readonly RoomManagerServiceScript ss;
+        public readonly RoomManagerRoomScript roomScript;
         public readonly ObjectLocator roomLocator;
         public readonly ObjectLocationAssignment roomLocationAssignment;
         public readonly RoomServiceProxy roomServiceProxy;
@@ -31,6 +32,7 @@ namespace Script
 
             this.roomIdSnowflakeScript = new RoomIdSnowflakeScript(this.server, this);
             this.ss = new RoomManagerServiceScript(this.server, this);
+            this.roomScript = new RoomManagerRoomScript(this.server, this);
             this.roomLocator = ObjectLocator.CreateRoomLocator(this.server, this, this.sd.roomLocatorData);
             this.roomLocationAssignment = ObjectLocationAssignment.CreateRoomLocationAssignment(this.server, this, this.sd.roomLocationAssignmentData);
         }

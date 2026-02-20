@@ -86,7 +86,5 @@ namespace Data
         {
             return this.lockedRoomDict.TryGetValue(roomId, out var lockedRoom) && lockedRoom.owner != null;
         }
-
-        public readonly Queue<ChatMessage> recentMessages = new();
     }
 }

@@ -40,7 +40,7 @@ namespace Script
             {
                 userId = msg.fromUserId,
                 otherUserId = user.userId,
-            });
+            }, true);
             if (r.e != ECode.Success)
             {
                 if (r.e == ECode.OutgoingFriendRequestNotExist ||

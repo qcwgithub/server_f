@@ -20,6 +20,16 @@
 		"periodMs": 60000,
 		"periodMaxCount": 60
 	},
+	"privateMessageConfig": {
+		"recentMessagesCount": 10,
+		"maxMessagesCount": 5000,
+		"getHistoryMessageCount": 2,
+		"minLength": 1,
+		"maxLength": 200,
+		"minIntervalMs": 500,
+		"periodMs": 60000,
+		"periodMaxCount": 60
+	},
 	"userNameConfig": {
 		"minIntervalS": 1,
 		"minLength": 2,

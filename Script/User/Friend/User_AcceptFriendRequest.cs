@@ -82,7 +82,7 @@ namespace Script
                 privateRoomId = privateRoomId,
             };
 
-            r = await this.service.userManagerServiceProxy.ForwardToUserService(msg.fromUserId, MsgType._User_OtherAcceptFriendRequest, msgOther);
+            r = await this.service.userManagerServiceProxy.ForwardToUserService(msg.fromUserId, MsgType._User_OtherAcceptFriendRequest, msgOther, true);
             if (r.e != ECode.Success)
             {
                 return r.e;

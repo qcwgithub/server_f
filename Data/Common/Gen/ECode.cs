@@ -28,7 +28,7 @@ namespace Data
         MsgProcessing = 88,
         MonitorRunLoop = 89,
         NotEnoughCount = 90,
-        RoomLocationNotFound = 91,
+        RoomLocationNotExist = 91,
         AlreadyIs = 92,
         NoAvailableRoomService = 93,
         RetryFailed = 95,
@@ -63,5 +63,6 @@ namespace Data
         OutgoingFriendRequestAlreadyExist = 124,
         NotFriends = 125,
         Duplicate = 126,
+        InvalidRoomType = 127,
     }
 }

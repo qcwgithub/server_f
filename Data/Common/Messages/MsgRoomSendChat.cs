@@ -23,6 +23,8 @@ namespace Data
         public long clientMessageId;
         [Key(8)]
         public ChatMessageImageContent? imageContent;
+        [Key(9)]
+        public RoomType roomType;
     }
 
     [MessagePackObject]

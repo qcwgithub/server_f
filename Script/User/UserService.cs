@@ -30,6 +30,7 @@ namespace Script
         }
 
         public readonly UserServiceScript ss;
+        public readonly UserRoomScript roomScript;
         public readonly ObjectLocator roomLocator;
         public readonly FriendScript friendScript;
 
@@ -44,6 +45,7 @@ namespace Script
             this.AddServiceProxy(this.userManagerServiceProxy = new UserManagerServiceProxy(this));
 
             this.ss = new UserServiceScript(this.server, this);
+            this.roomScript = new UserRoomScript(this.server, this);
 
             this.roomLocator = ObjectLocator.CreateRoomLocator(this.server, this, this.sd.roomLocatorData);
             this.friendScript = new FriendScript(this.server, this);

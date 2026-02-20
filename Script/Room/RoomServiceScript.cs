@@ -71,7 +71,7 @@ namespace Script
             this.service.logger.Info($"LoadRoom recent messages count {recents.Count}");
             foreach (ChatMessage message in recents)
             {
-                this.service.sd.recentMessages.Enqueue(message);
+                room.recentMessages.Enqueue(message);
             }
 
             return (ECode.Success, room);

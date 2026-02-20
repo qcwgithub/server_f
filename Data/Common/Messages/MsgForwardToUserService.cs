@@ -15,6 +15,8 @@ namespace Data
         public string channel; // used by UserManager
         [Key(4)]
         public string channelUserId; // used by UserManager
+        [Key(5)]
+        public bool simulateLoginIfOffline;
     }
 
     [MessagePackObject]

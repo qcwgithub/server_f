@@ -15,5 +15,7 @@ namespace Data
         public long clientMessageId;
         [Key(4)]
         public ChatMessageImageContent? imageContent;
+        [Key(5)]
+        public RoomType roomType;
     }
 }

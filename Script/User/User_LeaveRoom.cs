@@ -22,15 +22,15 @@ namespace Script
                 return ECode.InvalidRoomId;
             }
 
-            if (user.roomId == 0)
+            if (user.publicRoomId == 0)
             {
                 return ECode.Success;
             }
 
-            stObjectLocation location = await this.service.roomLocator.GetLocation(user.roomId);
+            stObjectLocation location = await this.service.roomLocator.GetLocation(user.publicRoomId);
             if (!location.IsValid())
             {
-                return ECode.RoomLocationNotFound;
+                return ECode.RoomLocationNotExist;
             }
 
             var msgR = new MsgRoomUserLeave();
@@ -43,7 +43,7 @@ namespace Script
                 return r.e;
             }
 
-            user.roomId = 0;
+            user.publicRoomId = 0;
 
             return ECode.Success;
         }
