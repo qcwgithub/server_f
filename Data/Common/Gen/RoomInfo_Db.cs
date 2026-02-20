@@ -18,8 +18,6 @@ namespace Data
         [BsonIgnoreIfNull]
         public long? messageId;
         [BsonIgnoreIfNull]
-        public RoomType roomType;
-        [BsonIgnoreIfNull]
         public List<RoomParticipant_Db> participants;
 
         public bool DeepCopyFrom(RoomInfo other)
@@ -55,9 +53,6 @@ namespace Data
             {
                 empty = false;
             }
-
-            this.roomType = XInfoHelper_Db.Copy_Enum(other.roomType);
-            empty = false;
 
             this.participants = XInfoHelper_Db.Copy_ListClass<RoomParticipant_Db, RoomParticipant>(other.participants);
             if (this.participants != null)

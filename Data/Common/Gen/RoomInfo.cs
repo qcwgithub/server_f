@@ -16,8 +16,6 @@ namespace Data
         [Key(4)]
         public long messageId;
         [Key(5)]
-        public RoomType roomType;
-        [Key(6)]
         public List<RoomParticipant> participants;
 
         public static RoomInfo Ensure(RoomInfo? p)
@@ -72,10 +70,6 @@ namespace Data
             {
                 return true;
             }
-            if (this.roomType != other.roomType)
-            {
-                return true;
-            }
             if (this.participants.IsDifferent_ListClass(other.participants))
             {
                 return true;
@@ -90,7 +84,6 @@ namespace Data
             this.title = other.title;
             this.desc = other.desc;
             this.messageId = other.messageId;
-            this.roomType = other.roomType;
             this.participants.DeepCopyFrom_ListClass(other.participants);
         }
     }

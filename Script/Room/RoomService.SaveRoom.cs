@@ -62,13 +62,6 @@ namespace Script
                 if (buffer == null) buffer = new List<string>();
                 buffer.Add("messageId");
             }
-            if (last.roomType != curr.roomType)
-            {
-                infoNullable.roomType = curr.roomType;
-                last.roomType = curr.roomType;
-                if (buffer == null) buffer = new List<string>();
-                buffer.Add("roomType");
-            }
             if (last.participants.IsDifferent_ListClass(curr.participants))
             {
                 infoNullable.participants = curr.participants;

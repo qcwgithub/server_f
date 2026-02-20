@@ -1,0 +1,1 @@
+dotnet CodeGen\bin\Debug\net10.0\CodeGen.dll action=XInfo,ServerData,Message,Enum
