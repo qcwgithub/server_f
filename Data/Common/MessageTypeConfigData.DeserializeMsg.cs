@@ -244,8 +244,8 @@ namespace Data
                     ob = MessagePackSerializer.Deserialize<MsgSearch_RoomInfo>(msgBytes);
                     break;
 
-                case MsgType._Save_RoomMessageReportInfo:
-                    ob = MessagePackSerializer.Deserialize<MsgSave_RoomMessageReportInfo>(msgBytes);
+                case MsgType._Save_MessageReportInfo:
+                    ob = MessagePackSerializer.Deserialize<MsgSave_MessageReportInfo>(msgBytes);
                     break;
 
                 case MsgType._Save_UserReportInfo:

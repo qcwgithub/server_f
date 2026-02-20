@@ -59,7 +59,7 @@ namespace Data
         _Insert_RoomInfo = 5011,
         _Save_RoomInfo = 5012,
         _Search_RoomInfo = 5013,
-        _Save_RoomMessageReportInfo = 5014,
+        _Save_MessageReportInfo = 5014,
         _Save_UserReportInfo = 5015,
         _Save_UserBriefInfo = 5016,
         _Query_UserBriefInfo_by_userId = 5017,

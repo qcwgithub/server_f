@@ -41,7 +41,7 @@ namespace Script
 
             ChatMessage? message = await this.server.roomMessagesRedis.QueryOne(msg.roomId, msg.messageId);
 
-            var info = new RoomMessageReportInfo();
+            var info = new MessageReportInfo();
             info.reportUserId = user.userId;
             info.targetUserId = message == null ? 0 : message.senderId;
             info.roomId = user.publicRoomId;
@@ -49,10 +49,10 @@ namespace Script
             info.reason = msg.reason;
             info.timeS = TimeUtils.GetTimeS();
 
-            var msgDb = new MsgSave_RoomMessageReportInfo();
+            var msgDb = new MsgSave_MessageReportInfo();
             msgDb.info = info;
 
-            await this.service.dbServiceProxy.Save_RoomMessageReportInfo(msgDb);
+            await this.service.dbServiceProxy.Save_MessageReportInfo(msgDb);
 
             return ECode.Success;
         }

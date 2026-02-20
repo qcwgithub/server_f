@@ -46,7 +46,7 @@ public static class XInfoHelper_Db
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static T Copy_Enum<T>(T other) where T : Enum
+    public static T? Copy_Enum<T>(T other) where T : Enum
     {
         return other;
     }

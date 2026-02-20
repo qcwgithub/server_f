@@ -3,7 +3,7 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class RoomMessageReportInfo : IIsDifferent<RoomMessageReportInfo>
+    public class MessageReportInfo : IIsDifferent<MessageReportInfo>
     {
         [Key(0)]
         public long reportUserId;
@@ -18,11 +18,11 @@ namespace Data
         [Key(5)]
         public long timeS;
 
-        public static RoomMessageReportInfo Ensure(RoomMessageReportInfo? p)
+        public static MessageReportInfo Ensure(MessageReportInfo? p)
         {
             if (p == null)
             {
-                p = new RoomMessageReportInfo();
+                p = new MessageReportInfo();
             }
             p.Ensure();
             return p;
@@ -32,7 +32,7 @@ namespace Data
         {
         }
 
-        public bool IsDifferent(RoomMessageReportInfo other)
+        public bool IsDifferent(MessageReportInfo other)
         {
             if (this.reportUserId != other.reportUserId)
             {
@@ -61,7 +61,7 @@ namespace Data
             return false;
         }
 
-        public void DeepCopyFrom(RoomMessageReportInfo other)
+        public void DeepCopyFrom(MessageReportInfo other)
         {
             this.reportUserId = other.reportUserId;
             this.targetUserId = other.targetUserId;

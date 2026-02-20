@@ -96,7 +96,7 @@ public partial class collection_room_info
 
         if (infoNullable.roomType != null)
         {
-            var roomType_Db = XInfoHelper_Db.Copy_Enum(infoNullable.roomType);
+            var roomType_Db = XInfoHelper_Db.Copy_Enum(infoNullable.roomType.Value);
             var upd = roomType_Db != null
                 ? Builders<RoomInfo_Db>.Update.Set(nameof(RoomInfo_Db.roomType), roomType_Db)
                 : Builders<RoomInfo_Db>.Update.Unset(nameof(RoomInfo_Db.roomType));

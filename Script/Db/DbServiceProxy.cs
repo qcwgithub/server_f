@@ -71,9 +71,9 @@ namespace Script
         {
             return await this.Request(ServiceType.Db, MsgType._Search_RoomInfo, msg);
         }
-        public async Task<MyResponse> Save_RoomMessageReportInfo(MsgSave_RoomMessageReportInfo msg)
+        public async Task<MyResponse> Save_MessageReportInfo(MsgSave_MessageReportInfo msg)
         {
-            return await this.Request(ServiceType.Db, MsgType._Save_RoomMessageReportInfo, msg);
+            return await this.Request(ServiceType.Db, MsgType._Save_MessageReportInfo, msg);
         }
         public async Task<MyResponse> Save_UserReportInfo(MsgSave_UserReportInfo msg)
         {

@@ -614,7 +614,7 @@ public static partial class FieldTypeExt
             case FieldType.enum_:
                 {
                     canCompareNull = false;
-                    f.Push("{0} = XInfoHelper_Db.Copy_Enum({1});\n".Format(accessThis, accessOther));
+                    f.Push("{0} = XInfoHelper_Db.Copy_Enum({1}{2});\n".Format(accessThis, accessOther, accessOther_appendValueIfPrimitive ? ".Value" : string.Empty));
                 }
                 break;
 

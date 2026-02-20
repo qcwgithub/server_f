@@ -243,8 +243,8 @@ namespace Data
                     ob = MessagePackSerializer.Deserialize<ResSearch_RoomInfo>(resBytes);
                     break;
 
-                case MsgType._Save_RoomMessageReportInfo:
-                    ob = MessagePackSerializer.Deserialize<ResSave_RoomMessageReportInfo>(resBytes);
+                case MsgType._Save_MessageReportInfo:
+                    ob = MessagePackSerializer.Deserialize<ResSave_MessageReportInfo>(resBytes);
                     break;
 
                 case MsgType._Save_UserReportInfo:
