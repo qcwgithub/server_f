@@ -35,7 +35,7 @@ namespace Script
                 return ECode.WrongRoomId;
             }
 
-            var roomMessageConfig = this.server.data.serverConfig.roomMessageConfig;
+            var roomMessageConfig = this.server.data.serverConfig.sceneMessageConfig;
             res.history = await this.server.roomMessagesRedis.GetHistory(msg.roomId, msg.lastMessageId, roomMessageConfig.getHistoryMessageCount);
 
             return ECode.Success;

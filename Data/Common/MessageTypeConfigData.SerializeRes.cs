@@ -167,8 +167,12 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((ResSaveRoomImmediately)res);
                     break;
 
-                case MsgType._Room_SendChat:
-                    msgBytes = MessagePackSerializer.Serialize((ResRoomSendChat)res);
+                case MsgType._Room_SendSceneChat:
+                    msgBytes = MessagePackSerializer.Serialize((ResRoomSendSceneChat)res);
+                    break;
+
+                case MsgType._Room_SendPrivateChat:
+                    msgBytes = MessagePackSerializer.Serialize((ResRoomSendPrivateChat)res);
                     break;
 
                 case MsgType._RoomManager_LoadRoom:
@@ -285,8 +289,8 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((ResSendSceneChat)res);
                     break;
 
-                case MsgType.ARoomChat:
-                    throw new Exception("Missing config for MsgType.ARoomChat");
+                case MsgType.AChatMessage:
+                    throw new Exception("Missing config for MsgType.AChatMessage");
 
                 case MsgType.SearchScene:
                     msgBytes = MessagePackSerializer.Serialize((ResSearchScene)res);

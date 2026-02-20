@@ -46,7 +46,7 @@ namespace Script
                 return ECode.RoomLocationNotExist;
             }
 
-            var msgR = new MsgRoomSendChat();
+            var msgR = new MsgRoomSendSceneChat();
             msgR.roomId = msg.roomId;
             msgR.userId = user.userId;
             msgR.type = msg.chatMessageType;
@@ -55,15 +55,14 @@ namespace Script
             msgR.avatarIndex = user.userInfo.avatarIndex;
             msgR.clientMessageId = msg.clientMessageId;
             msgR.imageContent = msg.imageContent;
-            msgR.roomType = RoomType.Public;
 
-            r = await this.service.roomServiceProxy.SendChat(location.serviceId, msgR);
+            r = await this.service.roomServiceProxy.SendSceneChat(location.serviceId, msgR);
             if (r.e != ECode.Success)
             {
                 return r.e;
             }
 
-            var resR = r.CastRes<ResRoomSendChat>();
+            var resR = r.CastRes<ResRoomSendSceneChat>();
 
             await Task.Delay(1000);
 

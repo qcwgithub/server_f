@@ -168,8 +168,12 @@ namespace Data
                     ob = MessagePackSerializer.Deserialize<MsgSaveRoomImmediately>(msgBytes);
                     break;
 
-                case MsgType._Room_SendChat:
-                    ob = MessagePackSerializer.Deserialize<MsgRoomSendChat>(msgBytes);
+                case MsgType._Room_SendSceneChat:
+                    ob = MessagePackSerializer.Deserialize<MsgRoomSendSceneChat>(msgBytes);
+                    break;
+
+                case MsgType._Room_SendPrivateChat:
+                    ob = MessagePackSerializer.Deserialize<MsgRoomSendPrivateChat>(msgBytes);
                     break;
 
                 case MsgType._RoomManager_LoadRoom:
@@ -287,8 +291,8 @@ namespace Data
                     ob = MessagePackSerializer.Deserialize<MsgSendSceneChat>(msgBytes);
                     break;
 
-                case MsgType.ARoomChat:
-                    ob = MessagePackSerializer.Deserialize<MsgARoomChat>(msgBytes);
+                case MsgType.AChatMessage:
+                    ob = MessagePackSerializer.Deserialize<MsgAChatMessage>(msgBytes);
                     break;
 
                 case MsgType.SearchScene:

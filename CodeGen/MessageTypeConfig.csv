@@ -42,7 +42,8 @@ _Room_SaveRoomInfoToFile,603,MsgSaveRoomInfoToFile,ResSaveRoomInfoToFile,1,1
 _Room_UserEnter,604,MsgRoomUserEnter,ResRoomUserEnter,1,1
 _Room_UserLeave,605,MsgRoomUserLeave,ResRoomUserLeave,1,1
 _Room_SaveRoomImmediately,607,MsgSaveRoomImmediately,ResSaveRoomImmediately,1,1
-_Room_SendChat,608,MsgRoomSendChat,ResRoomSendChat,1,1
+_Room_SendSceneChat,608,MsgRoomSendSceneChat,ResRoomSendSceneChat,1,1
+_Room_SendPrivateChat,609,MsgRoomSendPrivateChat,ResRoomSendPrivateChat,1,1
 #,,,,,
 _RoomManager_LoadRoom,800,MsgRoomManagerLoadRoom,ResRoomManagerLoadRoom,1,0
 _RoomManager_ImportRoomConfig,801,MsgRoomManagerImportRoomConfig,ResRoomManagerImportRoomConfig,1,0
@@ -76,7 +77,7 @@ Kick,10003,MsgKick,ResKick,,
 EnterScene,10004,MsgEnterScene,ResEnterScene,,
 LeaveScene,10005,MsgLeaveScene,ResLeaveScene,,
 SendSceneChat,10006,MsgSendSceneChat,ResSendSceneChat,,
-ARoomChat,10007,MsgARoomChat,,,
+AChatMessage,10007,MsgAChatMessage,,,
 SearchScene,10008,MsgSearchScene,ResSearchScene,,
 GetRecommendedScenes,10009,MsgGetRecommendedScenes,ResGetRecommendedScenes,,
 SetName,10010,MsgSetName,ResSetName,,

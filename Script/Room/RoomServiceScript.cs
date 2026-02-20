@@ -64,7 +64,7 @@ namespace Script
             }
 
             this.service.ss.ClearDestroyTimer(room, RoomClearDestroyTimerReason.RoomLoginSuccess);
-            var roomMessageConfig = this.server.data.serverConfig.roomMessageConfig;
+            var roomMessageConfig = this.server.data.serverConfig.sceneMessageConfig;
 
             //
             List<ChatMessage> recents = await this.server.roomMessagesRedis.GetRecents(roomId, roomMessageConfig.recentMessagesCount);

@@ -35,9 +35,9 @@ namespace Tool
             {
                 switch (msgType)
                 {
-                    case MsgType.ARoomChat:
+                    case MsgType.AChatMessage:
                         {
-                            var chatMsg = ((MsgARoomChat)msg).message;
+                            var chatMsg = ((MsgAChatMessage)msg).message;
                             Console.WriteLine($"Received chat message from {chatMsg.senderId}: {chatMsg.content} reply == null? {reply == null}");
                         }
                         break;

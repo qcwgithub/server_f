@@ -10,7 +10,7 @@
 		"maxSendQueueCount": 200,
 		"maxSendQueueBytes": 524288
 	},
-	"roomMessageConfig": {
+	"sceneMessageConfig": {
 		"recentMessagesCount": 10,
 		"maxMessagesCount": 5000,
 		"getHistoryMessageCount": 2,

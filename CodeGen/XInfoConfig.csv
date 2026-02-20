@@ -138,7 +138,7 @@ int_,,,,,senderAvatarIndex,,,,
 long_,,,,,clientMessageId,,,,
 enum_,ChatMessageStatus,,,,status,,,,
 class_,ChatMessageImageContent,,,,imageContent?,,,,
-@MsgARoomChat,,,,,,,,,1
+@MsgAChatMessage,,,,,,,,,1
 class_,ChatMessage,,,,message,,,,
 @ChatMessageImageContent,,,,,,,,,1
 string_,,,,,url,,,,

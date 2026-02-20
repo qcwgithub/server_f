@@ -43,7 +43,7 @@ namespace Script
 
             MyResponse r;
 
-            var msgR = new MsgRoomSendChat();
+            var msgR = new MsgRoomSendPrivateChat();
             msgR.roomId = friendInfo.privateRoomId;
             msgR.userId = user.userId;
             msgR.type = msg.chatMessageType;
@@ -52,15 +52,14 @@ namespace Script
             msgR.avatarIndex = user.userInfo.avatarIndex;
             msgR.clientMessageId = msg.clientMessageId;
             msgR.imageContent = msg.imageContent;
-            msgR.roomType = RoomType.Private;
 
-            r = await this.service.roomServiceProxy.SendChat(location.serviceId, msgR);
+            r = await this.service.roomServiceProxy.SendPrivateChat(location.serviceId, msgR);
             if (r.e != ECode.Success)
             {
                 return r.e;
             }
 
-            var resR = r.CastRes<ResRoomSendChat>();
+            var resR = r.CastRes<ResRoomSendPrivateChat>();
 
             await Task.Delay(1000);
 

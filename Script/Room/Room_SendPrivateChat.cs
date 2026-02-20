@@ -4,15 +4,15 @@ using MessagePack;
 namespace Script
 {
     [AutoRegister]
-    public class Room_SendChat : Handler<RoomService, MsgRoomSendChat, ResRoomSendChat>
+    public class Room_SendPrivateChat : Handler<RoomService, MsgRoomSendPrivateChat, ResRoomSendPrivateChat>
     {
-        public Room_SendChat(Server server, RoomService service) : base(server, service)
+        public Room_SendPrivateChat(Server server, RoomService service) : base(server, service)
         {
         }
 
-        public override MsgType msgType => MsgType._Room_SendChat;
+        public override MsgType msgType => MsgType._Room_SendPrivateChat;
 
-        public override async Task<ECode> Handle(MessageContext context, MsgRoomSendChat msg, ResRoomSendChat res)
+        public override async Task<ECode> Handle(MessageContext context, MsgRoomSendPrivateChat msg, ResRoomSendPrivateChat res)
         {
             this.service.logger.Info($"{this.msgType} userId {msg.userId} roomId {msg.roomId} type {msg.type} content {msg.content}");
 
@@ -22,9 +22,9 @@ namespace Script
                 return e;
             }
 
-            ServerConfig.MessageConfig messageConfig = this.server.data.serverConfig.GetMessageConfig(msg.roomType);
+            ServerConfig.MessageConfig messageConfig = this.server.data.serverConfig.privateMessageConfig;
 
-            e = this.service.chatScript.CheckRoomSendChat(msg, messageConfig);
+            e = this.service.chatScript.CheckRoomSendPrivateChat(msg, messageConfig);
             if (e != ECode.Success)
             {
                 return e;
@@ -103,7 +103,7 @@ namespace Script
                 .GroupBy(pair => pair.Value.gatewayServiceId, pair => pair.Value)
                 .ToDictionary(group => group.Key, group => group.ToList());
 
-            var broadcast = new MsgARoomChat();
+            var broadcast = new MsgAChatMessage();
             broadcast.message = message;
 
             foreach (var pair in dict)
@@ -112,7 +112,7 @@ namespace Script
                 List<RoomUser> roomUsers = pair.Value;
 
                 long[] userIds = roomUsers.Select(x => x.userId).ToArray();
-                e = this.service.gatewayServiceProxy.BroadcastToClient(gatewayServiceId, userIds, MsgType.ARoomChat, broadcast);
+                e = this.service.gatewayServiceProxy.BroadcastToClient(gatewayServiceId, userIds, MsgType.AChatMessage, broadcast);
                 if (e == ECode.NotConnected)
                 {
                     this.service.logger.Warn($"{this.msgType} gatewayServiceId {gatewayServiceId} is not connected");
@@ -122,7 +122,7 @@ namespace Script
             return ECode.Success;
         }
 
-        public override void PostHandle(MessageContext context, MsgRoomSendChat msg, ECode e, ResRoomSendChat res)
+        public override void PostHandle(MessageContext context, MsgRoomSendPrivateChat msg, ECode e, ResRoomSendPrivateChat res)
         {
             this.service.TryUnlockRoom(msg.roomId, context);
 
