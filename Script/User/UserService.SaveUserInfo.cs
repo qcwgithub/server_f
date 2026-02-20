@@ -4,7 +4,7 @@ namespace Script
 {
     public partial class UserService
     {
-        public async Task<ECode> SaveUser(User user, string reason)
+        public async Task<ECode> SaveUserInfo(User user, string reason)
         {
             await this.server.userLocationRedisW.WriteLocation(user.userId, this.serviceId, this.sd.saveIntervalS + 60);
 

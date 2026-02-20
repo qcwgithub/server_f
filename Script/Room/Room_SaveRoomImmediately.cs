@@ -19,7 +19,7 @@ namespace Script
                 return ECode.RoomNotExist;
             }
 
-            ECode e = await this.service.SaveRoom(room, msg.reason);
+            ECode e = await this.service.SaveSceneInfo(room, msg.reason);
             return e;
         }
 

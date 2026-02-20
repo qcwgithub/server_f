@@ -4,12 +4,12 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class RoomInfoNullable
+    public class SceneInfoNullable
     {
         #region auto
 
         [Key(0)]
-        public long? roomId;
+        public long? sceneId;
         [Key(1)]
         public long? createTimeS;
         [Key(2)]

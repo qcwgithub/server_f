@@ -8,30 +8,29 @@ namespace Script
         {
         }
 
-        public async Task<ECode> InsertRoomInfo(RoomInfo roomInfo)
+        public async Task<ECode> InsertSceneInfo(SceneInfo sceneInfo)
         {
-            var msgDb = new MsgInsert_RoomInfo();
-            msgDb.roomInfo = roomInfo;
+            var msgDb = new MsgInsert_SceneInfo();
+            msgDb.sceneInfo = sceneInfo;
 
-            var r = await this.service.dbServiceProxy.Insert_RoomInfo(msgDb);
+            var r = await this.service.dbServiceProxy.Insert_SceneInfo(msgDb);
             if (r.e != ECode.Success)
             {
-                this.service.logger.Error($"InsertRoomInfo({roomInfo.roomId}) r.e {r.e}");
+                this.service.logger.Error($"InsertSceneInfo({sceneInfo.sceneId}) r.e {r.e}");
                 return r.e;
             }
 
             return ECode.Success;
         }
 
-        public RoomInfo NewRoomInfo(long roomId, RoomType roomType)
+        public SceneInfo NewSceneInfo(long roomId)
         {
-            RoomInfo roomInfo = RoomInfo.Ensure(null);
-            roomInfo.roomId = roomId;
-            roomInfo.roomType = roomType;
+            var sceneInfo = SceneInfo.Ensure(null);
+            sceneInfo.sceneId = roomId;
 
             long nowS = TimeUtils.GetTimeS();
-            roomInfo.createTimeS = nowS;
-            return roomInfo;
+            sceneInfo.createTimeS = nowS;
+            return sceneInfo;
         }
 
         public ECode CheckCreateRoom(MsgRoomManagerCreateRoom msg)

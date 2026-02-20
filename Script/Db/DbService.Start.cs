@@ -10,7 +10,7 @@ namespace Script
 
             await this.collection_user_info.CreateIndex();
             await this.collection_account_info.CreateIndex();
-            await this.collection_room_info.CreateIndex();
+            await this.collection_scene_info.CreateIndex();
             await this.collection_user_brief_info.CreateIndex();
 
             #endregion auto_callCreateIndex

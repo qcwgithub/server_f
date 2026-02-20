@@ -22,7 +22,7 @@ namespace Script
             }
 
             long roomId = this.service.roomIdSnowflakeScript.NextRoomId();
-            RoomInfo roomInfo = this.service.roomScript.NewRoomInfo(roomId, msg.roomType);
+            SceneInfo sceneInfo = this.service.roomScript.NewSceneInfo(roomId);
 
             switch (msg.roomType)
             {
@@ -34,30 +34,30 @@ namespace Script
                             var participant = RoomParticipant.Ensure(null);
                             participant.userId = userId;
                             participant.joinTimeS = nowS;
-                            roomInfo.participants.Add(participant);
+                            sceneInfo.participants.Add(participant);
                         }
-                        roomInfo.title = string.Empty;
-                        roomInfo.desc = string.Empty;
+                        sceneInfo.title = string.Empty;
+                        sceneInfo.desc = string.Empty;
                     }
                     break;
 
                 case RoomType.Public:
                     {
-                        roomInfo.title = msg.title;
-                        roomInfo.desc = msg.desc;
+                        sceneInfo.title = msg.title;
+                        sceneInfo.desc = msg.desc;
                     }
                     break;
                 default:
                     throw new Exception($"Not handled roomType.{msg.roomType}");
             }
 
-            e = await this.service.roomScript.InsertRoomInfo(roomInfo);
+            e = await this.service.roomScript.InsertSceneInfo(sceneInfo);
             if (e != ECode.Success)
             {
                 return e;
             }
 
-            res.roomInfo = roomInfo;
+            res.sceneInfo = sceneInfo;
             return ECode.Success;
         }
     }

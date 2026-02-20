@@ -20,7 +20,7 @@ namespace Tool
                 if (r.e == ECode.Success)
                 {
                     var res = r.CastRes<ResSearchScene>();
-                    Console.WriteLine(JsonUtils.stringifyIndent(res.roomInfos));
+                    Console.WriteLine(JsonUtils.stringifyIndent(res.sceneInfos));
                 }
             }
         }

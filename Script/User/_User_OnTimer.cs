@@ -27,7 +27,7 @@ namespace Script
                             return ECode.Success;
                         }
 
-                        return await this.service.SaveUser(user, "timer");
+                        return await this.service.SaveUserInfo(user, "timer");
                     }
 
                 case TimerType.DestroyUser:

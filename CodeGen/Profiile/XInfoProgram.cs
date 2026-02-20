@@ -59,7 +59,7 @@ public class XInfoProgram
 
         Gen_XInfo_Db.Do(xinfoConfig);
 
-        ReplaceFile($"Script/{x}/{x}Service.Save{x}.cs", new Mark[]
+        ReplaceFile($"Script/{xinfoConfig.cacheService}/{xinfoConfig.cacheService}Service.Save{xinfoConfig.name}.cs", new Mark[]
         {
             new Mark { startMark = "#region auto", text = Gen_X_SaveX.Do(fields) }
         });
@@ -121,6 +121,14 @@ public class XInfoProgram
                 xinfoConfig.ensureEx = helper.ReadBool("ensureEx");
                 xinfoConfig.deepCopy = helper.ReadBool("deepCopy");
                 xinfoConfig.cacheType = helper.ReadEnum<CacheType>("cacheType", CacheType.None);
+                xinfoConfig.cacheService = helper.ReadString("cacheService");
+                if (xinfoConfig.cacheType == CacheType.Memory)
+                {
+                    if (string.IsNullOrEmpty(xinfoConfig.cacheService))
+                    {
+                        throw new Exception();
+                    }
+                }
                 xinfoConfig.dart = helper.ReadBool("dart");
 
                 if (xinfoConfig.cacheType.IsRedis())

@@ -70,8 +70,8 @@ namespace Script
                 }
 
                 var resCreateRoom = r.CastRes<ResRoomManagerCreateRoom>();
-                MyDebug.Assert(resCreateRoom.roomInfo.roomId > 0);
-                privateRoomId = resCreateRoom.roomInfo.roomId;
+                MyDebug.Assert(resCreateRoom.sceneInfo.sceneId > 0);
+                privateRoomId = resCreateRoom.sceneInfo.sceneId;
             }
             MyDebug.Assert(privateRoomId > 0);
 

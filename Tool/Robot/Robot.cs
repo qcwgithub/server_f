@@ -72,21 +72,21 @@ namespace Tool
                     break;
                 }
 
-                if (this.resGetRecommendedScenes.roomInfos.Count == 0)
+                if (this.resGetRecommendedScenes.sceneInfos.Count == 0)
                 {
                     Console.ReadLine();
                     break;
                 }
 
                 ResEnterRoom resEnterRoom;
-                (e, resEnterRoom) = await this.EnterScene(this.resGetRecommendedScenes.roomInfos[0].roomId);
+                (e, resEnterRoom) = await this.EnterScene(this.resGetRecommendedScenes.sceneInfos[0].sceneId);
                 if (e != ECode.Success)
                 {
                     Console.ReadLine();
                     break;
                 }
 
-                this.roomId = this.resGetRecommendedScenes.roomInfos[0].roomId;
+                this.roomId = this.resGetRecommendedScenes.sceneInfos[0].sceneId;
 
                 if (resEnterRoom.recentMessages.Count > 0)
                 {

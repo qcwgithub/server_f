@@ -93,5 +93,6 @@ public class XInfoConfig
     public bool math;
     public bool createFromHelper;
     public CacheType cacheType;
+    public string cacheService;
     public bool dart;
 }

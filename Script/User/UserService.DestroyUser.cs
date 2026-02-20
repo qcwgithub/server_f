@@ -13,7 +13,7 @@ namespace Script
             this.ss.ClearDestroyTimer(user, UserClearDestroyTimerReason.Destroy);
 
             // Save once
-            ECode e = await this.SaveUser(user, "DestroyUser");
+            ECode e = await this.SaveUserInfo(user, "DestroyUser");
             if (e != ECode.Success)
             {
                 return e;

@@ -3,10 +3,10 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class RoomInfo : IIsDifferent<RoomInfo>
+    public class SceneInfo : IIsDifferent<SceneInfo>
     {
         [Key(0)]
-        public long roomId;
+        public long sceneId;
         [Key(1)]
         public long createTimeS;
         [Key(2)]
@@ -18,11 +18,11 @@ namespace Data
         [Key(5)]
         public List<RoomParticipant> participants;
 
-        public static RoomInfo Ensure(RoomInfo? p)
+        public static SceneInfo Ensure(SceneInfo? p)
         {
             if (p == null)
             {
-                p = new RoomInfo();
+                p = new SceneInfo();
             }
             p.Ensure();
             return p;
@@ -48,9 +48,9 @@ namespace Data
             }
         }
 
-        public bool IsDifferent(RoomInfo other)
+        public bool IsDifferent(SceneInfo other)
         {
-            if (this.roomId != other.roomId)
+            if (this.sceneId != other.sceneId)
             {
                 return true;
             }
@@ -77,9 +77,9 @@ namespace Data
             return false;
         }
 
-        public void DeepCopyFrom(RoomInfo other)
+        public void DeepCopyFrom(SceneInfo other)
         {
-            this.roomId = other.roomId;
+            this.sceneId = other.sceneId;
             this.createTimeS = other.createTimeS;
             this.title = other.title;
             this.desc = other.desc;

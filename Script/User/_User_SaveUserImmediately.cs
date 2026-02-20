@@ -19,7 +19,7 @@ namespace Script
                 return ECode.UserNotExist;
             }
 
-            ECode e = await this.service.SaveUser(user, msg.reason);
+            ECode e = await this.service.SaveUserInfo(user, msg.reason);
             return e;
         }
 

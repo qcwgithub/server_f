@@ -20,7 +20,7 @@ namespace Script
 
         public collection_user_info collection_user_info;
         public collection_account_info collection_account_info;
-        public collection_room_info collection_room_info;
+        public collection_scene_info collection_scene_info;
         public collection_message_report_info collection_message_report_info;
         public collection_user_report_info collection_user_report_info;
         public collection_user_brief_info collection_user_brief_info;
@@ -38,7 +38,7 @@ namespace Script
 
             this.collection_user_info = new collection_user_info(server, this);
             this.collection_account_info = new collection_account_info(server, this);
-            this.collection_room_info = new collection_room_info(server, this);
+            this.collection_scene_info = new collection_scene_info(server, this);
             this.collection_message_report_info = new collection_message_report_info(server, this);
             this.collection_user_report_info = new collection_user_report_info(server, this);
             this.collection_user_brief_info = new collection_user_brief_info(server, this);
@@ -62,8 +62,8 @@ namespace Script
             this.dispatcher.AddHandler(new Query_AccountInfo_by_channelUserId(server, this));
             this.dispatcher.AddHandler(new Query_AccountInfo_byElementOf_userIds(server, this));
             this.dispatcher.AddHandler(new Query_listOf_AccountInfo_byElementOf_userIds(server, this));
-            this.dispatcher.AddHandler(new Query_RoomInfo_by_roomId(server, this));
-            this.dispatcher.AddHandler(new Query_RoomInfo_maxOf_roomId(server, this));
+            this.dispatcher.AddHandler(new Query_SceneInfo_by_sceneId(server, this));
+            this.dispatcher.AddHandler(new Query_SceneInfo_maxOf_sceneId(server, this));
             this.dispatcher.AddHandler(new Save_MessageReportInfo(server, this));
             this.dispatcher.AddHandler(new Save_UserReportInfo(server, this));
             this.dispatcher.AddHandler(new Save_UserBriefInfo(server, this));
@@ -74,9 +74,9 @@ namespace Script
             this.dispatcher.AddHandler(new Insert_UserInfo(this.server, this));
             this.dispatcher.AddHandler(new Save_UserInfo(this.server, this));
 
-            this.dispatcher.AddHandler(new Insert_RoomInfo(this.server, this));
-            this.dispatcher.AddHandler(new Save_RoomInfo(this.server, this));
-            this.dispatcher.AddHandler(new Search_RoomInfo(this.server, this));
+            this.dispatcher.AddHandler(new Insert_SceneInfo(this.server, this));
+            this.dispatcher.AddHandler(new Save_SceneInfo(this.server, this));
+            this.dispatcher.AddHandler(new Search_SceneInfo(this.server, this));
 
             this.dispatcher.AddHandler(new Db_OnTimer(this.server, this), true);
         }

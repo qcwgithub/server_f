@@ -19,6 +19,6 @@ namespace Data
     public class ResRoomManagerCreateRoom
     {
         [Key(0)]
-        public RoomInfo roomInfo;
+        public SceneInfo sceneInfo;
     }
 }

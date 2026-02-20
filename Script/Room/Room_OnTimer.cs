@@ -23,7 +23,7 @@ namespace Script
                             return ECode.Success;
                         }
 
-                        return await this.service.SaveRoom(room, "timer");
+                        return await this.service.SaveSceneInfo(room, "timer");
                     }
 
                 default:

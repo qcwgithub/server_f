@@ -5,17 +5,17 @@ namespace Data
 {
     //// AUTO CREATED ////
     [MessagePackObject]
-    public sealed class MsgQuery_RoomInfo_by_roomId
+    public sealed class MsgQuery_SceneInfo_by_sceneId
     {
         [Key(0)]
-        public long roomId;
+        public long sceneId;
     }
     
     //// AUTO CREATED ////
     [MessagePackObject]
-    public sealed class ResQuery_RoomInfo_by_roomId
+    public sealed class ResQuery_SceneInfo_by_sceneId
     {
         [Key(0)]
-        public RoomInfo? result;
+        public SceneInfo? result;
     }
 }

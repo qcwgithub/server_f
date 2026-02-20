@@ -4,35 +4,35 @@ namespace Script
 {
     public partial class RoomService
     {
-        public async Task<ECode> SaveRoom(Room room, string reason)
+        public async Task<ECode> SaveSceneInfo(Room room, string reason)
         {
             await this.server.roomLocationRedisW.WriteLocation(room.roomId, this.serviceId, this.sd.saveIntervalS + 60);
 
-            var msgDb = new MsgSave_RoomInfo
+            var msgDb = new MsgSave_SceneInfo
             {
                 roomId = room.roomId,
-                roomInfoNullable = new RoomInfoNullable()
+                sceneInfoNullable = new SceneInfoNullable()
             };
-            var infoNullable = msgDb.roomInfoNullable;
+            var infoNullable = msgDb.sceneInfoNullable;
 
             List<string>? buffer = null;
-            if (room.lastRoomInfo == null)
+            if (room.lastSceneInfo == null)
             {
-                this.logger.Error($"SaveRoom room.lastRoomInfo == null");
+                this.logger.Error($"SaveRoom room.SceneInfo == null");
                 return ECode.Error;
             }
 
-            RoomInfo last = room.lastRoomInfo;
-            RoomInfo curr = room.roomInfo;
+            SceneInfo last = room.lastSceneInfo;
+            SceneInfo curr = room.sceneInfo;
 
             #region auto
 
-            if (last.roomId != curr.roomId)
+            if (last.sceneId != curr.sceneId)
             {
-                infoNullable.roomId = curr.roomId;
-                last.roomId = curr.roomId;
+                infoNullable.sceneId = curr.sceneId;
+                last.sceneId = curr.sceneId;
                 if (buffer == null) buffer = new List<string>();
-                buffer.Add("roomId");
+                buffer.Add("sceneId");
             }
             if (last.createTimeS != curr.createTimeS)
             {
@@ -72,7 +72,7 @@ namespace Script
 
             #endregion auto
 
-            // player.lastRoomInfo = curr; // 先假设一定成功吧
+            // player.lastSceneInfo = curr; // 先假设一定成功吧
             if (last.IsDifferent(curr))
             {
                 this.logger.Error("last.IsDifferent(curr)!!!");
@@ -89,13 +89,13 @@ namespace Script
             if (buffer != null)
             {
 #if DEBUG
-                msgDb.roomInfo_debug = RoomInfo.Ensure(null);
-                msgDb.roomInfo_debug.DeepCopyFrom(curr);
+                msgDb.sceneInfo_debug = SceneInfo.Ensure(null);
+                msgDb.sceneInfo_debug.DeepCopyFrom(curr);
 #endif
-                var r = await this.dbServiceProxy.Save_RoomInfo(msgDb);
+                var r = await this.dbServiceProxy.Save_SceneInfo(msgDb);
                 if (r.e != ECode.Success)
                 {
-                    this.logger.ErrorFormat("{0} error: {1}, roomId {2}", MsgType._Save_RoomInfo, r.e, room.roomId);
+                    this.logger.ErrorFormat("{0} error: {1}, roomId {2}", MsgType._Save_SceneInfo, r.e, room.roomId);
                     return r.e;
                 }
             }

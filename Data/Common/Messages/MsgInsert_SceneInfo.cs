@@ -3,14 +3,14 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class MsgInsert_RoomInfo
+    public class MsgInsert_SceneInfo
     {
         [Key(0)]
-        public RoomInfo roomInfo;
+        public SceneInfo sceneInfo;
     }
 
     [MessagePackObject]
-    public class ResInsert_RoomInfo
+    public class ResInsert_SceneInfo
     {
 
     }

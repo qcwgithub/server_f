@@ -10,16 +10,16 @@ namespace Script
 
         public async Task<ECode> InitRoomIdSnowflakeData(long workerId)
         {
-            var msgDb = new MsgQuery_RoomInfo_maxOf_roomId();
+            var msgDb = new MsgQuery_SceneInfo_maxOf_sceneId();
 
-            var r = await this.service.dbServiceProxy.Query_RoomInfo_maxOf_roomId(msgDb);
+            var r = await this.service.dbServiceProxy.Query_SceneInfo_maxOf_sceneId(msgDb);
             if (r.e != ECode.Success)
             {
-                this.service.logger.Error($"Query_RoomInfo_maxOf_roomId ECode.{r.e}");
+                this.service.logger.Error($"Query_SceneInfo_maxOf_sceneId ECode.{r.e}");
                 return r.e;
             }
 
-            var resDb = r.CastRes<ResQuery_RoomInfo_maxOf_roomId>();
+            var resDb = r.CastRes<ResQuery_SceneInfo_maxOf_sceneId>();
 
             long maxRoomId = resDb.result;
 

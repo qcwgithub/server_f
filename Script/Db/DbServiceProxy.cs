@@ -51,25 +51,25 @@ namespace Script
         {
             return await this.Request(ServiceType.Db, MsgType._Query_UserInfo_maxOf_userId, msg);
         }
-        public async Task<MyResponse> Query_RoomInfo_by_roomId(MsgQuery_RoomInfo_by_roomId msg)
+        public async Task<MyResponse> Query_SceneInfo_by_sceneId(MsgQuery_SceneInfo_by_sceneId msg)
         {
-            return await this.Request(ServiceType.Db, MsgType._Query_RoomInfo_by_roomId, msg);
+            return await this.Request(ServiceType.Db, MsgType._Query_SceneInfo_by_sceneId, msg);
         }
-        public async Task<MyResponse> Query_RoomInfo_maxOf_roomId(MsgQuery_RoomInfo_maxOf_roomId msg)
+        public async Task<MyResponse> Query_SceneInfo_maxOf_sceneId(MsgQuery_SceneInfo_maxOf_sceneId msg)
         {
-            return await this.Request(ServiceType.Db, MsgType._Query_RoomInfo_maxOf_roomId, msg);
+            return await this.Request(ServiceType.Db, MsgType._Query_SceneInfo_maxOf_sceneId, msg);
         }
-        public async Task<MyResponse> Insert_RoomInfo(MsgInsert_RoomInfo msg)
+        public async Task<MyResponse> Insert_SceneInfo(MsgInsert_SceneInfo msg)
         {
-            return await this.Request(ServiceType.Db, MsgType._Insert_RoomInfo, msg);
+            return await this.Request(ServiceType.Db, MsgType._Insert_SceneInfo, msg);
         }
-        public async Task<MyResponse> Save_RoomInfo(MsgSave_RoomInfo msg)
+        public async Task<MyResponse> Save_SceneInfo(MsgSave_SceneInfo msg)
         {
-            return await this.Request(ServiceType.Db, MsgType._Save_RoomInfo, msg);
+            return await this.Request(ServiceType.Db, MsgType._Save_SceneInfo, msg);
         }
-        public async Task<MyResponse> Search_RoomInfo(MsgSearch_RoomInfo msg)
+        public async Task<MyResponse> Search_SceneInfo(MsgSearch_SceneInfo msg)
         {
-            return await this.Request(ServiceType.Db, MsgType._Search_RoomInfo, msg);
+            return await this.Request(ServiceType.Db, MsgType._Search_SceneInfo, msg);
         }
         public async Task<MyResponse> Save_MessageReportInfo(MsgSave_MessageReportInfo msg)
         {
