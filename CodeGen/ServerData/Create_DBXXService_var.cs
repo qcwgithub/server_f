@@ -111,7 +111,6 @@ public class Create_DBXXService_var
             {
                 new Mark { startMark = "#region auto_collection_var_decl", text = _.varDecl.GetString() },
                 new Mark { startMark = "#region auto_collection_var_create", text = _.varCreate.GetString() },
-                new Mark { startMark = "#region auto_handler_create", text = _.handlerCreate.GetString() },
             });
         }
 

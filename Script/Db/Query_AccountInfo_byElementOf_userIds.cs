@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 namespace Script
 {
     //// AUTO CREATED ////
+    [AutoRegister]
     public sealed class Query_AccountInfo_byElementOf_userIds : Handler<DbService, MsgQuery_AccountInfo_byElementOf_userIds, ResQuery_AccountInfo_byElementOf_userIds>
     {
         public override MsgType msgType => MsgType._Query_AccountInfo_byElementOf_userIds;

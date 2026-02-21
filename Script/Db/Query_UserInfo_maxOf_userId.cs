@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 namespace Script
 {
     //// AUTO CREATED ////
+    [AutoRegister]
     public sealed class Query_UserInfo_maxOf_userId : Handler<DbService, MsgQuery_UserInfo_maxOf_userId, ResQuery_UserInfo_maxOf_userId>
     {
         public override MsgType msgType => MsgType._Query_UserInfo_maxOf_userId;

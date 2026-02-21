@@ -33,6 +33,7 @@ public class Create_Query_XInfo
         {
             ff.TabPush("//// AUTO CREATED ////\n");
             
+            ff.TabPush("[AutoRegister]\n");
             ff.TabPushF("public sealed class {0}{1} : Handler<{2}, Msg{0}, Res{0}>\n", query.methodName, config.postfix, config.dbFilesConfig.serviceClassName);
             ff.BlockStart();
             {

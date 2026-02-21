@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 namespace Script
 {
     //// AUTO CREATED ////
+    [AutoRegister]
     public sealed class Query_UserBriefInfo_by_userId : Handler<DbService, MsgQuery_UserBriefInfo_by_userId, ResQuery_UserBriefInfo_by_userId>
     {
         public override MsgType msgType => MsgType._Query_UserBriefInfo_by_userId;

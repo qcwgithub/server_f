@@ -2,6 +2,7 @@ using Data;
 
 namespace Script
 {
+    [AutoRegister(true)]
     public class Db_OnTimer : OnTimer<DbService>
     {
         public Db_OnTimer(Server server, DbService service) : base(server, service)

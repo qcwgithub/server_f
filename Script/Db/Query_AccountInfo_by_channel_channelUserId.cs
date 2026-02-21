@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 namespace Script
 {
     //// AUTO CREATED ////
+    [AutoRegister]
     public sealed class Query_AccountInfo_by_channel_channelUserId : Handler<DbService, MsgQuery_AccountInfo_by_channel_channelUserId, ResQuery_AccountInfo_by_channel_channelUserId>
     {
         public override MsgType msgType => MsgType._Query_AccountInfo_by_channel_channelUserId;

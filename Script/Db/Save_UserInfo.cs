@@ -2,12 +2,12 @@ using Data;
 
 namespace Script
 {
+    [AutoRegister]
     public class Save_UserInfo : Handler<DbService, MsgSave_UserInfo, ResSave_UserInfo>
     {
         public Save_UserInfo(Server server, DbService service) : base(server, service)
         {
         }
-
 
         public override MsgType msgType => MsgType._Save_UserInfo;
         public override async Task<ECode> Handle(MessageContext context, MsgSave_UserInfo msg, ResSave_UserInfo res)

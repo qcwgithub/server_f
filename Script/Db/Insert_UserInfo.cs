@@ -2,6 +2,7 @@ using Data;
 
 namespace Script
 {
+    [AutoRegister]
     public class Insert_UserInfo : Handler<DbService, MsgInsert_UserInfo, ResInsert_UserInfo>
     {
         public Insert_UserInfo(Server server, DbService service) : base(server, service)

@@ -2,12 +2,12 @@ using Data;
 
 namespace Script
 {
+    [AutoRegister]
     public class Save_SceneInfo : Handler<DbService, MsgSave_SceneInfo, ResSave_SceneInfo>
     {
         public Save_SceneInfo(Server server, DbService service) : base(server, service)
         {
         }
-
 
         public override MsgType msgType => MsgType._Save_SceneInfo;
         public override async Task<ECode> Handle(MessageContext context, MsgSave_SceneInfo msg, ResSave_SceneInfo res)

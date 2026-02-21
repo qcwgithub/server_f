@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 namespace Script
 {
     //// AUTO CREATED ////
+    [AutoRegister]
     public sealed class Save_UserBriefInfo : Handler<DbService, MsgSave_UserBriefInfo, ResSave_UserBriefInfo>
     {
         public override MsgType msgType => MsgType._Save_UserBriefInfo;

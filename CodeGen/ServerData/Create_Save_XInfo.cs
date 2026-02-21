@@ -28,6 +28,8 @@ public class Create_Save_XInfo
         ff.BlockStart();
         {
             ff.TabPush("//// AUTO CREATED ////\n");
+            
+            ff.TabPush("[AutoRegister]\n");
             ff.TabPushF("public sealed class Save_{0}{1} : Handler<{2}, MsgSave_{0}, ResSave_{0}>\n", config.xinfoType, config.postfix, config.dbFilesConfig.serviceClassName);
             ff.BlockStart();
             {

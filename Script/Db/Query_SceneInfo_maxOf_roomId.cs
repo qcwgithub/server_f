@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 namespace Script
 {
     //// AUTO CREATED ////
+    [AutoRegister]
     public sealed class Query_SceneInfo_maxOf_roomId : Handler<DbService, MsgQuery_SceneInfo_maxOf_roomId, ResQuery_SceneInfo_maxOf_roomId>
     {
         public override MsgType msgType => MsgType._Query_SceneInfo_maxOf_roomId;

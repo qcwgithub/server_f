@@ -54,35 +54,6 @@ namespace Script
             base.AddHandler<DbService>();
 
             MongoRegister.Init();
-
-            #region auto_handler_create
-
-            this.dispatcher.AddHandler(new Query_UserInfo_by_userId(server, this));
-            this.dispatcher.AddHandler(new Query_UserInfo_maxOf_userId(server, this));
-            this.dispatcher.AddHandler(new Save_AccountInfo(server, this));
-            this.dispatcher.AddHandler(new Query_AccountInfo_by_channel_channelUserId(server, this));
-            this.dispatcher.AddHandler(new Query_AccountInfo_by_channelUserId(server, this));
-            this.dispatcher.AddHandler(new Query_AccountInfo_byElementOf_userIds(server, this));
-            this.dispatcher.AddHandler(new Query_listOf_AccountInfo_byElementOf_userIds(server, this));
-            this.dispatcher.AddHandler(new Query_SceneInfo_by_roomId(server, this));
-            this.dispatcher.AddHandler(new Query_SceneInfo_maxOf_roomId(server, this));
-            this.dispatcher.AddHandler(new Save_MessageReportInfo(server, this));
-            this.dispatcher.AddHandler(new Save_UserReportInfo(server, this));
-            this.dispatcher.AddHandler(new Save_UserBriefInfo(server, this));
-            this.dispatcher.AddHandler(new Query_UserBriefInfo_by_userId(server, this));
-            this.dispatcher.AddHandler(new Query_PrivateRoomInfo_by_roomId(server, this));
-            this.dispatcher.AddHandler(new Query_PrivateRoomInfo_maxOf_roomId(server, this));
-
-            #endregion auto_handler_create
-
-            this.dispatcher.AddHandler(new Insert_UserInfo(this.server, this));
-            this.dispatcher.AddHandler(new Save_UserInfo(this.server, this));
-
-            this.dispatcher.AddHandler(new Insert_SceneInfo(this.server, this));
-            this.dispatcher.AddHandler(new Save_SceneInfo(this.server, this));
-            this.dispatcher.AddHandler(new Search_SceneInfo(this.server, this));
-
-            this.dispatcher.AddHandler(new Db_OnTimer(this.server, this), true);
         }
     }
 }
