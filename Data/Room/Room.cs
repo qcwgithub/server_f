@@ -2,23 +2,45 @@ namespace Data
 {
     public sealed class Room
     {
-        public readonly SceneInfo sceneInfo;
+        public readonly RoomType roomType;
+        readonly SceneInfo? _sceneInfo;
+        readonly PrivateRoomInfo? _privateRoomInfo;
+        public readonly long roomId;
         public Room(SceneInfo sceneInfo)
         {
-            this.sceneInfo = sceneInfo;
+            this.roomType = RoomType.Public;
+            _sceneInfo = sceneInfo;
+            this.roomId = sceneInfo.roomId;
+            _privateRoomInfo = null;
+        }
+        public Room(PrivateRoomInfo privateRoomInfo)
+        {
+            this.roomType = RoomType.Private;
+            _sceneInfo = null;
+            this.roomId = privateRoomInfo.roomId;
+            _privateRoomInfo = privateRoomInfo;
         }
 
-        public long roomId
+        public SceneInfo sceneInfo
         {
             get
             {
-                return this.sceneInfo.sceneId;
+                return _sceneInfo!;
+            }
+        }
+
+        public PrivateRoomInfo privateRoomInfo
+        {
+            get
+            {
+                return _privateRoomInfo!;
             }
         }
 
         public ITimer? destroyTimer;
         public ITimer? saveTimer;
         public SceneInfo? lastSceneInfo;
+        public PrivateRoomInfo? lastPrivateRoomInfo;
 
         public Dictionary<long, RoomUser> userDict = new();
         public int userCount

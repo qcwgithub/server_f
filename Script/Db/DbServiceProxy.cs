@@ -51,13 +51,13 @@ namespace Script
         {
             return await this.Request(ServiceType.Db, MsgType._Query_UserInfo_maxOf_userId, msg);
         }
-        public async Task<MyResponse> Query_SceneInfo_by_sceneId(MsgQuery_SceneInfo_by_sceneId msg)
+        public async Task<MyResponse> Query_SceneInfo_by_roomId(MsgQuery_SceneInfo_by_roomId msg)
         {
-            return await this.Request(ServiceType.Db, MsgType._Query_SceneInfo_by_sceneId, msg);
+            return await this.Request(ServiceType.Db, MsgType._Query_SceneInfo_by_roomId, msg);
         }
-        public async Task<MyResponse> Query_SceneInfo_maxOf_sceneId(MsgQuery_SceneInfo_maxOf_sceneId msg)
+        public async Task<MyResponse> Query_SceneInfo_maxOf_roomId(MsgQuery_SceneInfo_maxOf_roomId msg)
         {
-            return await this.Request(ServiceType.Db, MsgType._Query_SceneInfo_maxOf_sceneId, msg);
+            return await this.Request(ServiceType.Db, MsgType._Query_SceneInfo_maxOf_roomId, msg);
         }
         public async Task<MyResponse> Insert_SceneInfo(MsgInsert_SceneInfo msg)
         {
@@ -86,6 +86,22 @@ namespace Script
         public async Task<MyResponse> Query_UserBriefInfo_by_userId(MsgQuery_UserBriefInfo_by_userId msg)
         {
             return await this.Request(ServiceType.Db, MsgType._Query_UserBriefInfo_by_userId, msg);
+        }
+        public async Task<MyResponse> Query_PrivateRoomInfo_by_roomId(MsgQuery_PrivateRoomInfo_by_roomId msg)
+        {
+            return await this.Request(ServiceType.Db, MsgType._Query_PrivateRoomInfo_by_roomId, msg);
+        }
+        public async Task<MyResponse> Query_PrivateRoomInfo_maxOf_roomId(MsgQuery_PrivateRoomInfo_maxOf_roomId msg)
+        {
+            return await this.Request(ServiceType.Db, MsgType._Query_PrivateRoomInfo_maxOf_roomId, msg);
+        }
+        public async Task<MyResponse> Insert_PrivateRoomInfo(MsgInsert_PrivateRoomInfo msg)
+        {
+            return await this.Request(ServiceType.Db, MsgType._Insert_PrivateRoomInfo, msg);
+        }
+        public async Task<MyResponse> Save_PrivateRoomInfo(MsgSave_PrivateRoomInfo msg)
+        {
+            return await this.Request(ServiceType.Db, MsgType._Save_PrivateRoomInfo, msg);
         }
 
         #endregion auto_proxy

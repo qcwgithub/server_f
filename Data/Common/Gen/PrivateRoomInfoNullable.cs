@@ -4,7 +4,7 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class SceneInfoNullable
+    public class PrivateRoomInfoNullable
     {
         #region auto
 
@@ -13,12 +13,8 @@ namespace Data
         [Key(1)]
         public long? createTimeS;
         [Key(2)]
-        public string title;
-        [Key(3)]
-        public string desc;
-        [Key(4)]
         public long? messageId;
-        [Key(5)]
+        [Key(3)]
         public List<RoomParticipant> participants;
 
         #endregion auto

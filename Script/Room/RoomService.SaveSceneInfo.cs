@@ -18,7 +18,7 @@ namespace Script
             List<string>? buffer = null;
             if (room.lastSceneInfo == null)
             {
-                this.logger.Error($"SaveRoom room.SceneInfo == null");
+                this.logger.Error($"SaveRoom room.lastSceneInfo == null");
                 return ECode.Error;
             }
 
@@ -27,12 +27,12 @@ namespace Script
 
             #region auto
 
-            if (last.sceneId != curr.sceneId)
+            if (last.roomId != curr.roomId)
             {
-                infoNullable.sceneId = curr.sceneId;
-                last.sceneId = curr.sceneId;
+                infoNullable.roomId = curr.roomId;
+                last.roomId = curr.roomId;
                 if (buffer == null) buffer = new List<string>();
-                buffer.Add("sceneId");
+                buffer.Add("roomId");
             }
             if (last.createTimeS != curr.createTimeS)
             {

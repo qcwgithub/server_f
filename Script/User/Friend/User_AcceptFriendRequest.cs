@@ -55,23 +55,20 @@ namespace Script
             }
             else
             {
-                var msgCreateRoom = new MsgRoomManagerCreateRoom
+                var msgCreateRoom = new MsgRoomManagerCreatePrivateRoom
                 {
-                    roomType = RoomType.Private,
                     participants = [user.userId, msg.fromUserId],
-                    title = string.Empty,
-                    desc = string.Empty,
                 };
 
-                r = await this.service.roomManagerServiceProxy.CreateRoom(msgCreateRoom);
+                r = await this.service.roomManagerServiceProxy.CreatePrivateRoom(msgCreateRoom);
                 if (r.e != ECode.Success)
                 {
                     return r.e;
                 }
 
-                var resCreateRoom = r.CastRes<ResRoomManagerCreateRoom>();
-                MyDebug.Assert(resCreateRoom.sceneInfo.sceneId > 0);
-                privateRoomId = resCreateRoom.sceneInfo.sceneId;
+                var resCreateRoom = r.CastRes<ResRoomManagerCreatePrivateRoom>();
+                MyDebug.Assert(resCreateRoom.privateRoomInfo.roomId > 0);
+                privateRoomId = resCreateRoom.privateRoomInfo.roomId;
             }
             MyDebug.Assert(privateRoomId > 0);
 

@@ -5,22 +5,18 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Data
 {
-    public class SceneInfo_Db : IIsDifferent_Db<SceneInfo>
+    public class PrivateRoomInfo_Db : IIsDifferent_Db<PrivateRoomInfo>
     {
         [BsonIgnoreIfNull]
         public long? roomId;
         [BsonIgnoreIfNull]
         public long? createTimeS;
         [BsonIgnoreIfNull]
-        public string title;
-        [BsonIgnoreIfNull]
-        public string desc;
-        [BsonIgnoreIfNull]
         public long? messageId;
         [BsonIgnoreIfNull]
         public List<RoomParticipant_Db> participants;
 
-        public bool DeepCopyFrom(SceneInfo other)
+        public bool DeepCopyFrom(PrivateRoomInfo other)
         {
             bool empty = true;
 
@@ -32,18 +28,6 @@ namespace Data
 
             this.createTimeS = XInfoHelper_Db.Copy_long(other.createTimeS);
             if (this.createTimeS != null)
-            {
-                empty = false;
-            }
-
-            this.title = XInfoHelper_Db.Copy_string(other.title);
-            if (this.title != null)
-            {
-                empty = false;
-            }
-
-            this.desc = XInfoHelper_Db.Copy_string(other.desc);
-            if (this.desc != null)
             {
                 empty = false;
             }

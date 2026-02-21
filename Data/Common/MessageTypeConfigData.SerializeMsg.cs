@@ -184,12 +184,8 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((MsgRoomManagerImportRoomConfig)msg);
                     break;
 
-                case MsgType._RoomManager_CreateRoom:
-                    msgBytes = MessagePackSerializer.Serialize((MsgRoomManagerCreateRoom)msg);
-                    break;
-
-                case MsgType._RoomManager_PrepareCreateRoom:
-                    msgBytes = MessagePackSerializer.Serialize((MsgRoomManagerPrepareCreateRoom)msg);
+                case MsgType._RoomManager_CreatePrivateRoom:
+                    msgBytes = MessagePackSerializer.Serialize((MsgRoomManagerCreatePrivateRoom)msg);
                     break;
 
                 case MsgType._Save_AccountInfo:
@@ -228,12 +224,12 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((MsgQuery_UserInfo_maxOf_userId)msg);
                     break;
 
-                case MsgType._Query_SceneInfo_by_sceneId:
-                    msgBytes = MessagePackSerializer.Serialize((MsgQuery_SceneInfo_by_sceneId)msg);
+                case MsgType._Query_SceneInfo_by_roomId:
+                    msgBytes = MessagePackSerializer.Serialize((MsgQuery_SceneInfo_by_roomId)msg);
                     break;
 
-                case MsgType._Query_SceneInfo_maxOf_sceneId:
-                    msgBytes = MessagePackSerializer.Serialize((MsgQuery_SceneInfo_maxOf_sceneId)msg);
+                case MsgType._Query_SceneInfo_maxOf_roomId:
+                    msgBytes = MessagePackSerializer.Serialize((MsgQuery_SceneInfo_maxOf_roomId)msg);
                     break;
 
                 case MsgType._Insert_SceneInfo:
@@ -262,6 +258,22 @@ namespace Data
 
                 case MsgType._Query_UserBriefInfo_by_userId:
                     msgBytes = MessagePackSerializer.Serialize((MsgQuery_UserBriefInfo_by_userId)msg);
+                    break;
+
+                case MsgType._Query_PrivateRoomInfo_by_roomId:
+                    msgBytes = MessagePackSerializer.Serialize((MsgQuery_PrivateRoomInfo_by_roomId)msg);
+                    break;
+
+                case MsgType._Query_PrivateRoomInfo_maxOf_roomId:
+                    msgBytes = MessagePackSerializer.Serialize((MsgQuery_PrivateRoomInfo_maxOf_roomId)msg);
+                    break;
+
+                case MsgType._Insert_PrivateRoomInfo:
+                    msgBytes = MessagePackSerializer.Serialize((MsgInsert_PrivateRoomInfo)msg);
+                    break;
+
+                case MsgType._Save_PrivateRoomInfo:
+                    msgBytes = MessagePackSerializer.Serialize((MsgSave_PrivateRoomInfo)msg);
                     break;
 
                 case MsgType.ClientStart:

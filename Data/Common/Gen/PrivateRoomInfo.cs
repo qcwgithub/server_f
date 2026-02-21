@@ -3,26 +3,22 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class SceneInfo : IIsDifferent<SceneInfo>
+    public class PrivateRoomInfo : IIsDifferent<PrivateRoomInfo>
     {
         [Key(0)]
         public long roomId;
         [Key(1)]
         public long createTimeS;
         [Key(2)]
-        public string title;
-        [Key(3)]
-        public string desc;
-        [Key(4)]
         public long messageId;
-        [Key(5)]
+        [Key(3)]
         public List<RoomParticipant> participants;
 
-        public static SceneInfo Ensure(SceneInfo? p)
+        public static PrivateRoomInfo Ensure(PrivateRoomInfo? p)
         {
             if (p == null)
             {
-                p = new SceneInfo();
+                p = new PrivateRoomInfo();
             }
             p.Ensure();
             return p;
@@ -30,14 +26,6 @@ namespace Data
 
         public void Ensure()
         {
-            if (this.title == null)
-            {
-                this.title = string.Empty;
-            }
-            if (this.desc == null)
-            {
-                this.desc = string.Empty;
-            }
             if (this.participants == null)
             {
                 this.participants = new List<RoomParticipant>();
@@ -48,21 +36,13 @@ namespace Data
             }
         }
 
-        public bool IsDifferent(SceneInfo other)
+        public bool IsDifferent(PrivateRoomInfo other)
         {
             if (this.roomId != other.roomId)
             {
                 return true;
             }
             if (this.createTimeS != other.createTimeS)
-            {
-                return true;
-            }
-            if (this.title != other.title)
-            {
-                return true;
-            }
-            if (this.desc != other.desc)
             {
                 return true;
             }
@@ -77,12 +57,10 @@ namespace Data
             return false;
         }
 
-        public void DeepCopyFrom(SceneInfo other)
+        public void DeepCopyFrom(PrivateRoomInfo other)
         {
             this.roomId = other.roomId;
             this.createTimeS = other.createTimeS;
-            this.title = other.title;
-            this.desc = other.desc;
             this.messageId = other.messageId;
             this.participants.DeepCopyFrom_ListClass(other.participants);
         }

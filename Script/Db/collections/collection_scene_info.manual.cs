@@ -44,17 +44,17 @@ public partial class collection_scene_info
     {
         var collection_Db = this.GetCollection_Db();
 
-        var filter = Builders<SceneInfo_Db>.Filter.Eq(nameof(SceneInfo_Db.sceneId), roomId);
+        var filter = Builders<SceneInfo_Db>.Filter.Eq(nameof(SceneInfo_Db.roomId), roomId);
         var updList = new List<UpdateDefinition<SceneInfo_Db>>();
 
         #region autoSave
 
-        if (infoNullable.sceneId != null)
+        if (infoNullable.roomId != null)
         {
-            var sceneId_Db = XInfoHelper_Db.Copy_long(infoNullable.sceneId.Value);
-            var upd = sceneId_Db != null
-                ? Builders<SceneInfo_Db>.Update.Set(nameof(SceneInfo_Db.sceneId), sceneId_Db)
-                : Builders<SceneInfo_Db>.Update.Unset(nameof(SceneInfo_Db.sceneId));
+            var roomId_Db = XInfoHelper_Db.Copy_long(infoNullable.roomId.Value);
+            var upd = roomId_Db != null
+                ? Builders<SceneInfo_Db>.Update.Set(nameof(SceneInfo_Db.roomId), roomId_Db)
+                : Builders<SceneInfo_Db>.Update.Unset(nameof(SceneInfo_Db.roomId));
             updList.Add(upd);
         }
 

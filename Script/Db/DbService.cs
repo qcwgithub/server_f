@@ -24,6 +24,7 @@ namespace Script
         public collection_message_report_info collection_message_report_info;
         public collection_user_report_info collection_user_report_info;
         public collection_user_brief_info collection_user_brief_info;
+        public collection_private_room_info collection_private_room_info;
 
         #endregion auto_collection_var_decl
 
@@ -42,6 +43,7 @@ namespace Script
             this.collection_message_report_info = new collection_message_report_info(server, this);
             this.collection_user_report_info = new collection_user_report_info(server, this);
             this.collection_user_brief_info = new collection_user_brief_info(server, this);
+            this.collection_private_room_info = new collection_private_room_info(server, this);
 
             #endregion auto_collection_var_create
         }
@@ -62,12 +64,14 @@ namespace Script
             this.dispatcher.AddHandler(new Query_AccountInfo_by_channelUserId(server, this));
             this.dispatcher.AddHandler(new Query_AccountInfo_byElementOf_userIds(server, this));
             this.dispatcher.AddHandler(new Query_listOf_AccountInfo_byElementOf_userIds(server, this));
-            this.dispatcher.AddHandler(new Query_SceneInfo_by_sceneId(server, this));
-            this.dispatcher.AddHandler(new Query_SceneInfo_maxOf_sceneId(server, this));
+            this.dispatcher.AddHandler(new Query_SceneInfo_by_roomId(server, this));
+            this.dispatcher.AddHandler(new Query_SceneInfo_maxOf_roomId(server, this));
             this.dispatcher.AddHandler(new Save_MessageReportInfo(server, this));
             this.dispatcher.AddHandler(new Save_UserReportInfo(server, this));
             this.dispatcher.AddHandler(new Save_UserBriefInfo(server, this));
             this.dispatcher.AddHandler(new Query_UserBriefInfo_by_userId(server, this));
+            this.dispatcher.AddHandler(new Query_PrivateRoomInfo_by_roomId(server, this));
+            this.dispatcher.AddHandler(new Query_PrivateRoomInfo_maxOf_roomId(server, this));
 
             #endregion auto_handler_create
 

@@ -79,14 +79,14 @@ namespace Tool
                 }
 
                 ResEnterRoom resEnterRoom;
-                (e, resEnterRoom) = await this.EnterScene(this.resGetRecommendedScenes.sceneInfos[0].sceneId);
+                (e, resEnterRoom) = await this.EnterScene(this.resGetRecommendedScenes.sceneInfos[0].roomId);
                 if (e != ECode.Success)
                 {
                     Console.ReadLine();
                     break;
                 }
 
-                this.roomId = this.resGetRecommendedScenes.sceneInfos[0].sceneId;
+                this.roomId = this.resGetRecommendedScenes.sceneInfos[0].roomId;
 
                 if (resEnterRoom.recentMessages.Count > 0)
                 {

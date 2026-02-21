@@ -18,7 +18,7 @@ namespace Script
             ECode e = await this.service.collection_scene_info.Save(msg.roomId, msg.sceneInfoNullable);
 
 #if DEBUG
-            SceneInfo info_check = await this.service.collection_scene_info.Query_SceneInfo_by_sceneId(msg.roomId);
+            SceneInfo info_check = await this.service.collection_scene_info.Query_SceneInfo_by_roomId(msg.roomId);
             info_check.Ensure();
             if (!msg.sceneInfo_debug!.IsDifferent(info_check))
             {

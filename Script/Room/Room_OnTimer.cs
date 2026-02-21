@@ -23,7 +23,18 @@ namespace Script
                             return ECode.Success;
                         }
 
-                        return await this.service.SaveSceneInfo(room, "timer");
+                        switch (room.roomType)
+                        {
+                            case RoomType.Public:
+                                return await this.service.SaveSceneInfo(room, "timer");
+
+                            case RoomType.Private:
+                                return await this.service.SavePrivateRoomInfo(room, "timer");
+
+                            default:
+                                throw new Exception("Not handled RoomType." + room.roomType);
+                        }
+
                     }
 
                 default:

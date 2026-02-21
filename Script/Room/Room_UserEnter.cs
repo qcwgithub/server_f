@@ -18,7 +18,7 @@ namespace Script
             if (room == null)
             {
                 ECode e;
-                (e, room) = await this.service.ss.LoadRoom(msg.roomId);
+                (e, room) = await this.service.ss.LoadSceneRoom(msg.roomId);
                 if (e != ECode.Success)
                 {
                     return e;

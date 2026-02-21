@@ -12,24 +12,24 @@ namespace Script
 
         public async Task<(ECode, SceneInfo?)> QuerySceneInfo(long roomId)
         {
-            var msgDb = new MsgQuery_SceneInfo_by_sceneId();
-            msgDb.sceneId = roomId;
+            var msgDb = new MsgQuery_SceneInfo_by_roomId();
+            msgDb.roomId = roomId;
 
-            var r = await this.service.dbServiceProxy.Query_SceneInfo_by_sceneId(msgDb);
+            var r = await this.service.dbServiceProxy.Query_SceneInfo_by_roomId(msgDb);
             if (r.e != ECode.Success)
             {
                 this.service.logger.Error($"QuerySceneInfo({roomId}) r.err {r.e}");
                 return (r.e, null);
             }
 
-            var resDb = r.CastRes<ResQuery_SceneInfo_by_sceneId>();
+            var resDb = r.CastRes<ResQuery_SceneInfo_by_roomId>();
 
             SceneInfo? sceneInfo = resDb.result;
             if (sceneInfo != null)
             {
-                if (sceneInfo.sceneId != roomId)
+                if (sceneInfo.roomId != roomId)
                 {
-                    this.service.logger.Error($"QuerySceneInfo({roomId}) different sceneInfo.roomId {sceneInfo.sceneId}");
+                    this.service.logger.Error($"QuerySceneInfo({roomId}) different sceneInfo.roomId {sceneInfo.roomId}");
                     return (ECode.Error, null);
                 }
 
@@ -39,9 +39,9 @@ namespace Script
             return (ECode.Success, sceneInfo);
         }
 
-        public async Task<(ECode, Room?)> LoadRoom(long roomId)
+        public async Task<(ECode, Room?)> LoadSceneRoom(long roomId)
         {
-            (ECode e, SceneInfo? sceneInfo) = await this.service.ss.QuerySceneInfo(roomId);
+            (ECode e, SceneInfo? sceneInfo) = await this.QuerySceneInfo(roomId);
             if (e != ECode.Success)
             {
                 return (e, null);
@@ -53,6 +53,73 @@ namespace Script
             }
 
             var room = new Room(sceneInfo);
+
+            await this.server.roomLocationRedisW.WriteLocation(roomId, this.service.serviceId, this.service.sd.saveIntervalS + 60);
+
+            this.AddRoomToDict(room);
+
+            if (!room.saveTimer.IsAlive())
+            {
+                this.service.ss.SetSaveTimer(room);
+            }
+
+            this.service.ss.ClearDestroyTimer(room, RoomClearDestroyTimerReason.RoomLoginSuccess);
+            var roomMessageConfig = this.server.data.serverConfig.sceneMessageConfig;
+
+            //
+            List<ChatMessage> recents = await this.server.roomMessagesRedis.GetRecents(roomId, roomMessageConfig.recentMessagesCount);
+            this.service.logger.Info($"LoadRoom recent messages count {recents.Count}");
+            foreach (ChatMessage message in recents)
+            {
+                room.recentMessages.Enqueue(message);
+            }
+
+            return (ECode.Success, room);
+        }
+
+        public async Task<(ECode, PrivateRoomInfo?)> QueryPrivateRoomInfo(long roomId)
+        {
+            var msgDb = new MsgQuery_PrivateRoomInfo_by_roomId();
+            msgDb.roomId = roomId;
+
+            var r = await this.service.dbServiceProxy.Query_PrivateRoomInfo_by_roomId(msgDb);
+            if (r.e != ECode.Success)
+            {
+                this.service.logger.Error($"QueryPrivateRoomInfo({roomId}) r.err {r.e}");
+                return (r.e, null);
+            }
+
+            var resDb = r.CastRes<ResQuery_PrivateRoomInfo_by_roomId>();
+
+            PrivateRoomInfo? privateRoomInfo = resDb.result;
+            if (privateRoomInfo != null)
+            {
+                if (privateRoomInfo.roomId != roomId)
+                {
+                    this.service.logger.Error($"QueryPrivateRoomInfo({roomId}) different privateRoomInfo.roomId {privateRoomInfo.roomId}");
+                    return (ECode.Error, null);
+                }
+
+                privateRoomInfo.Ensure();
+            }
+
+            return (ECode.Success, privateRoomInfo);
+        }
+
+        public async Task<(ECode, Room?)> LoadPrivateRoom(long roomId)
+        {
+            (ECode e, PrivateRoomInfo? privateRoomInfo) = await this.QueryPrivateRoomInfo(roomId);
+            if (e != ECode.Success)
+            {
+                return (e, null);
+            }
+
+            if (privateRoomInfo == null)
+            {
+                return (ECode.RoomNotExist, null);
+            }
+
+            var room = new Room(privateRoomInfo);
 
             await this.server.roomLocationRedisW.WriteLocation(roomId, this.service.serviceId, this.service.sd.saveIntervalS + 60);
 

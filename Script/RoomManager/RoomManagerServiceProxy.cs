@@ -18,13 +18,9 @@ namespace Script
         {
             return await this.Request(ServiceType.RoomManager, MsgType._RoomManager_ImportRoomConfig, msg);
         }
-        public async Task<MyResponse> CreateRoom(MsgRoomManagerCreateRoom msg)
+        public async Task<MyResponse> CreatePrivateRoom(MsgRoomManagerCreatePrivateRoom msg)
         {
-            return await this.Request(ServiceType.RoomManager, MsgType._RoomManager_CreateRoom, msg);
-        }
-        public async Task<MyResponse> PrepareCreateRoom(MsgRoomManagerPrepareCreateRoom msg)
-        {
-            return await this.Request(ServiceType.RoomManager, MsgType._RoomManager_PrepareCreateRoom, msg);
+            return await this.Request(ServiceType.RoomManager, MsgType._RoomManager_CreatePrivateRoom, msg);
         }
 
         #endregion auto_proxy

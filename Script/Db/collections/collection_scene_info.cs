@@ -30,16 +30,16 @@ public partial  class collection_scene_info : ServiceScript<DbService>
     //// AUTO CREATED ////
     public async Task CreateIndex()
     {
-        await MongoHelper.CreateIndex(this.mongoClient, this.dbName, COLLECTION, nameof(SceneInfo.sceneId), true, true, this.service.logger);
+        await MongoHelper.CreateIndex(this.mongoClient, this.dbName, COLLECTION, nameof(SceneInfo.roomId), true, true, this.service.logger);
         await MongoHelper.CreateIndex(this.mongoClient, this.dbName, COLLECTION, nameof(SceneInfo.title), true, false, this.service.logger);
         await MongoHelper.CreateIndex(this.mongoClient, this.dbName, COLLECTION, nameof(SceneInfo.desc), true, false, this.service.logger);
     }
 
     //// AUTO CREATED ////
-    public async Task<SceneInfo> Query_SceneInfo_by_sceneId(long sceneId)
+    public async Task<SceneInfo> Query_SceneInfo_by_roomId(long roomId)
     {
         var collection = this.GetCollection();
-        var filter = Builders<SceneInfo>.Filter.Eq(nameof(SceneInfo.sceneId), sceneId);
+        var filter = Builders<SceneInfo>.Filter.Eq(nameof(SceneInfo.roomId), roomId);
         var find = collection.Find(filter);
 
         var result = await find.FirstOrDefaultAsync();
@@ -47,19 +47,19 @@ public partial  class collection_scene_info : ServiceScript<DbService>
     }
 
     //// AUTO CREATED ////
-    public async Task<long> Query_SceneInfo_maxOf_sceneId()
+    public async Task<long> Query_SceneInfo_maxOf_roomId()
     {
         var collection = this.GetCollection();
-        var filter = Builders<SceneInfo>.Filter.Gt(nameof(SceneInfo.sceneId), 0);
-        var projection = Builders<SceneInfo>.Projection.Include(nameof(SceneInfo.sceneId));
+        var filter = Builders<SceneInfo>.Filter.Gt(nameof(SceneInfo.roomId), 0);
+        var projection = Builders<SceneInfo>.Projection.Include(nameof(SceneInfo.roomId));
         var find = collection.Find(filter)
-            .SortByDescending(x => x.sceneId)
+            .SortByDescending(x => x.roomId)
             .Skip(0)
             .Limit(1)
             .Project(projection);
 
         var result = await find.ToListAsync();
-        return result.Count > 0 ? (long)result[0][nameof(SceneInfo.sceneId)] : default(long);
+        return result.Count > 0 ? (long)result[0][nameof(SceneInfo.roomId)] : default(long);
     }
 }
 

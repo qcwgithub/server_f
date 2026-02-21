@@ -49,7 +49,7 @@ public class XInfoProgram
     static void DoMemoryXInfoStuff(XInfoConfig xinfoConfig)
     {
         string x = xinfoConfig.name.Substring(0, xinfoConfig.name.IndexOf("Info"));
-        string x_lower = x.ToLower();
+        string x_lower = XInfoConfig.NameToLowerName(x);
 
         List<XInfoFieldConfig> fields = xinfoConfig.fields;
         ReplaceFile($"Data/Common/Gen/{xinfoConfig.name}Nullable.cs", new Mark[]

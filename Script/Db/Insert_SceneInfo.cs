@@ -12,7 +12,7 @@ namespace Script
         public override MsgType msgType => MsgType._Insert_SceneInfo;
         public override async Task<ECode> Handle(MessageContext context, MsgInsert_SceneInfo msg, ResInsert_SceneInfo res)
         {
-            this.service.logger.InfoFormat("{0}, roomId: {1}", this.msgType, msg.sceneInfo.sceneId);
+            this.service.logger.InfoFormat("{0}, roomId: {1}", this.msgType, msg.sceneInfo.roomId);
 
             await this.service.collection_scene_info.Insert(msg.sceneInfo);
             return ECode.Success;
