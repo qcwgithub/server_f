@@ -46,6 +46,10 @@ namespace Script
         {
             return await this.Request(serviceId, MsgType._User_ResetName, msg);
         }
+        public async Task<MyResponse> ReceiveChatMessage(int serviceId, MsgReceiveChatMessage msg)
+        {
+            return await this.Request(serviceId, MsgType._User_ReceiveChatMessage, msg);
+        }
 
         #endregion auto_proxy
     }

@@ -15,7 +15,7 @@ namespace Data
         [Key(2)]
         public long? messageId;
         [Key(3)]
-        public List<RoomParticipant> participants;
+        public List<PrivateRoomUser> users;
 
         #endregion auto
     }

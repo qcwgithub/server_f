@@ -17,8 +17,6 @@ namespace Data
         public string desc;
         [BsonIgnoreIfNull]
         public long? messageId;
-        [BsonIgnoreIfNull]
-        public List<RoomParticipant_Db> participants;
 
         public bool DeepCopyFrom(SceneInfo other)
         {
@@ -50,12 +48,6 @@ namespace Data
 
             this.messageId = XInfoHelper_Db.Copy_long(other.messageId);
             if (this.messageId != null)
-            {
-                empty = false;
-            }
-
-            this.participants = XInfoHelper_Db.Copy_ListClass<RoomParticipant_Db, RoomParticipant>(other.participants);
-            if (this.participants != null)
             {
                 empty = false;
             }

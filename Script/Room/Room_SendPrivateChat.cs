@@ -30,50 +30,34 @@ namespace Script
                 return e;
             }
 
-            Room? room = await this.service.LockRoom(msg.roomId, context);
-            if (room == null)
+            var privateRoom = await this.service.LockRoom<PrivateRoom>(msg.roomId, context);
+            if (privateRoom == null)
             {
                 return ECode.RoomNotExist;
             }
 
-            RoomUser? user = room.GetUser(msg.userId);
-            if (user == null)
-            {
-                return ECode.UserNotInRoom;
-            }
-
             long now = TimeUtils.GetTime();
-            if (user.lastSendChatStamp > 0 && now - user.lastSendChatStamp < messageConfig.minIntervalMs)
+            e = this.service.chatScript.CheckChatTooFast(privateRoom, messageConfig, msg.userId, now);
+            if (e != ECode.Success)
             {
-                return ECode.Chat_TooFast;
-            }
-
-            if (user.sendChatTimestamps.Count >= messageConfig.periodMaxCount)
-            {
-                int count = user.sendChatTimestamps.Count(ts => now - ts < messageConfig.periodMs);
-                if (count >= messageConfig.periodMaxCount)
-                {
-                    return ECode.Chat_TooFast;
-                }
+                return e;
             }
 
             //// ok
 
             // last send
-            user.lastSendChatStamp = now;
-            user.sendChatTimestamps.RemoveAll(ts => now - ts >= messageConfig.periodMs);
-            user.sendChatTimestamps.Add(now);
+            this.service.chatScript.WriteChatStamp(privateRoom, messageConfig, msg.userId, now);
 
             // create message
             var message = new ChatMessage();
-            message.messageId = ++room.sceneInfo.messageId;
-            message.roomId = room.roomId;
-            message.senderId = user.userId;
+            message.messageId = ++privateRoom.privateRoomInfo.messageId;
+            message.roomId = privateRoom.roomId;
+            message.senderId = msg.userId;
             message.senderName = string.Empty;
             message.senderAvatar = string.Empty;
             message.type = msg.type;
             message.content = msg.content;
-            message.timestamp = TimeUtils.GetTime();
+            message.timestamp = now;
             message.replyTo = 0;
             message.senderName = msg.userName;
             message.senderAvatarIndex = msg.avatarIndex;
@@ -84,38 +68,25 @@ namespace Script
             // -> redis
             await this.server.roomMessagesRedis.Add(message);
 
-            if (message.messageId % 100 == 0)
+            if (messageConfig.maxMessagesCount != -1 && message.messageId % 100 == 0)
             {
-                await this.server.roomMessagesRedis.Trim(room.roomId, messageConfig.maxMessagesCount);
-            }
-
-            // -> memory
-
-            room.recentMessages.Enqueue(message);
-            while (room.recentMessages.Count > messageConfig.recentMessagesCount)
-            {
-                room.recentMessages.Dequeue();
+                await this.server.roomMessagesRedis.Trim(privateRoom.roomId, messageConfig.maxMessagesCount);
             }
 
             // -> other users
-
-            Dictionary<int, List<RoomUser>> dict = room.userDict
-                .GroupBy(pair => pair.Value.gatewayServiceId, pair => pair.Value)
-                .ToDictionary(group => group.Key, group => group.ToList());
-
-            var broadcast = new MsgAChatMessage();
-            broadcast.message = message;
-
-            foreach (var pair in dict)
+            foreach (PrivateRoomUser user in privateRoom.privateRoomInfo.users)
             {
-                int gatewayServiceId = pair.Key;
-                List<RoomUser> roomUsers = pair.Value;
-
-                long[] userIds = roomUsers.Select(x => x.userId).ToArray();
-                e = this.service.gatewayServiceProxy.BroadcastToClient(gatewayServiceId, userIds, MsgType.AChatMessage, broadcast);
-                if (e == ECode.NotConnected)
+                if (user.userId != msg.userId)
                 {
-                    this.service.logger.Warn($"{this.msgType} gatewayServiceId {gatewayServiceId} is not connected");
+                    stObjectLocation location = await this.service.userLocator.GetLocation(user.userId);
+                    if (location.IsValid())
+                    {
+                        await this.service.userServiceProxy.ReceiveChatMessage(location.serviceId, new MsgReceiveChatMessage
+                        {
+                            userId = user.userId,
+                            message = message,
+                        });
+                    }
                 }
             }
 

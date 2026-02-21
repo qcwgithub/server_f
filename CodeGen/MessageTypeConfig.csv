@@ -32,6 +32,7 @@ _User_ReceiveFriendRequest,311,MsgReceiveFriendRequest,ResReceiveFriendRequest,,
 _User_OtherAcceptFriendRequest,312,MsgOtherAcceptFriendRequest,ResOtherAcceptFriendRequest,,1
 _User_OtherRejectFriendRequest,313,MsgOtherRejectFriendRequest,ResOtherRejectFriendRequest,,1
 _User_OtherRemoveFriend,314,MsgOtherRemoveFriend,ResOtherRemoveFriend,,1
+_User_ReceiveChatMessage,315,MsgReceiveChatMessage,ResReceiveChatMessage,1,1
 #,,,,,
 _UserManager_UserLogin,500,MsgUserManagerUserLogin,ResUserManagerUserLogin,1,0
 _UserManager_GetUserLocation,501,MsgUserManagerGetUserLocation,ResUserManagerGetUserLocation,1,0
@@ -39,8 +40,8 @@ _UserManager_ForwardToUserService,502,MsgForwardToUserService,ResForwardToUserSe
 #,,,,,
 _Room_ServerAction,600,MsgRoomServiceAction,ResRoomServiceAction,1,1
 _Room_SaveSceneInfoToFile,603,MsgSaveSceneInfoToFile,ResSaveSceneInfoToFile,1,1
-_Room_UserEnter,604,MsgRoomUserEnter,ResRoomUserEnter,1,1
-_Room_UserLeave,605,MsgRoomUserLeave,ResRoomUserLeave,1,1
+_Room_UserEnterScene,604,MsgRoomUserEnterScene,ResRoomUserEnterScene,1,1
+_Room_UserLeaveScene,605,MsgRoomUserLeaveScene,ResRoomUserLeaveScene,1,1
 _Room_SaveRoomImmediately,607,MsgSaveRoomImmediately,ResSaveRoomImmediately,1,1
 _Room_SendSceneChat,608,MsgRoomSendSceneChat,ResRoomSendSceneChat,1,1
 _Room_SendPrivateChat,609,MsgRoomSendPrivateChat,ResRoomSendPrivateChat,1,1

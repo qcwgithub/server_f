@@ -3,45 +3,45 @@ using Data;
 namespace Script
 {
     [AutoRegister]
-    public class Room_UserEnter : Handler<RoomService, MsgRoomUserEnter, ResRoomUserEnter>
+    public class Room_UserEnterScene : Handler<RoomService, MsgRoomUserEnterScene, ResRoomUserEnterScene>
     {
-        public Room_UserEnter(Server server, RoomService service) : base(server, service)
+        public Room_UserEnterScene(Server server, RoomService service) : base(server, service)
         {
         }
 
-        public override MsgType msgType => MsgType._Room_UserEnter;
-        public override async Task<ECode> Handle(MessageContext context, MsgRoomUserEnter msg, ResRoomUserEnter res)
+        public override MsgType msgType => MsgType._Room_UserEnterScene;
+        public override async Task<ECode> Handle(MessageContext context, MsgRoomUserEnterScene msg, ResRoomUserEnterScene res)
         {
             this.service.logger.Info($"{this.msgType} userId {msg.userId} roomId {msg.roomId} gatewayServiceId {msg.gatewayServiceId}");
 
-            Room? room = await this.service.LockRoom(msg.roomId, context);
-            if (room == null)
+            var sceneRoom = await this.service.LockRoom<SceneRoom>(msg.roomId, context);
+            if (sceneRoom == null)
             {
                 ECode e;
-                (e, room) = await this.service.ss.LoadSceneRoom(msg.roomId);
+                (e, sceneRoom) = await this.service.ss.LoadSceneRoom(msg.roomId);
                 if (e != ECode.Success)
                 {
                     return e;
                 }
-                if (room == null)
+                if (sceneRoom == null)
                 {
                     return ECode.RoomNotExist;
                 }
             }
 
-            RoomUser? user = room.GetUser(msg.userId);
+            SceneRoomUser? user = sceneRoom.GetUser(msg.userId);
             if (user == null)
             {
-                user = new RoomUser();
+                user = new SceneRoomUser();
                 user.userId = msg.userId;
-                room.AddUser(user);
+                sceneRoom.AddUser(user);
             }
 
             user.gatewayServiceId = msg.gatewayServiceId;
 
             // +recentMessages
             res.recentMessages = new List<ChatMessage>();
-            foreach (ChatMessage message in room.recentMessages)
+            foreach (ChatMessage message in sceneRoom.recentMessages)
             {
                 if (msg.lastMessageId < message.messageId)
                 {
@@ -52,7 +52,7 @@ namespace Script
             return ECode.Success;
         }
 
-        public override void PostHandle(MessageContext context, MsgRoomUserEnter msg, ECode e, ResRoomUserEnter res)
+        public override void PostHandle(MessageContext context, MsgRoomUserEnterScene msg, ECode e, ResRoomUserEnterScene res)
         {
             this.service.TryUnlockRoom(msg.roomId, context);
 

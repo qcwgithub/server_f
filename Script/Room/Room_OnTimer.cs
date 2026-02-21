@@ -17,7 +17,7 @@ namespace Script
                     {
                         var save = (TimerSaveRoom)msg.data;
 
-                        Room? room = await this.service.LockRoom(save.roomId, context);
+                        Room? room = await this.service.LockRoom<Room>(save.roomId, context);
                         if (room == null)
                         {
                             return ECode.Success;
@@ -25,11 +25,11 @@ namespace Script
 
                         switch (room.roomType)
                         {
-                            case RoomType.Public:
-                                return await this.service.SaveSceneInfo(room, "timer");
+                            case RoomType.Scene:
+                                return await this.service.SaveSceneInfo((SceneRoom)room, "timer");
 
                             case RoomType.Private:
-                                return await this.service.SavePrivateRoomInfo(room, "timer");
+                                return await this.service.SavePrivateRoomInfo((PrivateRoom)room, "timer");
 
                             default:
                                 throw new Exception("Not handled RoomType." + room.roomType);

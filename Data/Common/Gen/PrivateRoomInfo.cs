@@ -12,7 +12,7 @@ namespace Data
         [Key(2)]
         public long messageId;
         [Key(3)]
-        public List<RoomParticipant> participants;
+        public List<PrivateRoomUser> users;
 
         public static PrivateRoomInfo Ensure(PrivateRoomInfo? p)
         {
@@ -26,13 +26,13 @@ namespace Data
 
         public void Ensure()
         {
-            if (this.participants == null)
+            if (this.users == null)
             {
-                this.participants = new List<RoomParticipant>();
+                this.users = new List<PrivateRoomUser>();
             }
-            for (int i = 0; i < this.participants.Count; i++)
+            for (int i = 0; i < this.users.Count; i++)
             {
-                this.participants[i] = RoomParticipant.Ensure(this.participants[i]);
+                this.users[i] = PrivateRoomUser.Ensure(this.users[i]);
             }
         }
 
@@ -50,7 +50,7 @@ namespace Data
             {
                 return true;
             }
-            if (this.participants.IsDifferent_ListClass(other.participants))
+            if (this.users.IsDifferent_ListClass(other.users))
             {
                 return true;
             }
@@ -62,7 +62,7 @@ namespace Data
             this.roomId = other.roomId;
             this.createTimeS = other.createTimeS;
             this.messageId = other.messageId;
-            this.participants.DeepCopyFrom_ListClass(other.participants);
+            this.users.DeepCopyFrom_ListClass(other.users);
         }
     }
 }

@@ -30,10 +30,9 @@ namespace Script
                 return ECode.UserNotExist;
             }
 
-            e = this.service.roomScript.CheckSendSceneChat(user, msg);
-            if (e != ECode.Success)
+            if (msg.roomId != user.sceneId)
             {
-                return e;
+                return ECode.WrongRoomId;
             }
 
             UserInfo userInfo = user.userInfo;

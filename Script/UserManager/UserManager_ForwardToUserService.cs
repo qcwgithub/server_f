@@ -16,6 +16,11 @@ namespace Script
             stObjectLocation location = await this.service.userLocator.GetLocation(msg.userId);
             if (!location.IsValid())
             {
+                if (!msg.simulateLoginIfOffline)
+                {
+                    return ECode.Offline;
+                }
+
                 var ret = await this.service.ss.CheckUserExistAndAddLocation(context, msg.userId);
                 if (ret.e != ECode.Success)
                 {

@@ -3,17 +3,16 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class MsgRoomUserLeave
+    public class MsgReceiveChatMessage
     {
         [Key(0)]
         public long userId;
         [Key(1)]
-        public long roomId;
+        public ChatMessage message;
     }
 
     [MessagePackObject]
-    public class ResRoomUserLeave
+    public class ResReceiveChatMessage
     {
-        
     }
 }

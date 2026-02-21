@@ -39,9 +39,11 @@ namespace Data
 
             public void Init()
             {
-                if (this.recentMessagesCount <= 0 || this.maxMessagesCount <= 0 || this.getHistoryMessageCount <= 0)
+                if (this.recentMessagesCount <= 0 || 
+                    (this.maxMessagesCount != -1 && this.maxMessagesCount <= 0) || 
+                    this.getHistoryMessageCount <= 0)
                 {
-                    Program.LogStartError("this.initMessagesCount <= 0 || this.maxMessagesCount <= 0 || this.getHistoryMessageCount <= 0");
+                    Program.LogStartError("this.initMessagesCount <= 0 || (this.maxMessagesCount != -1 && <= 0) || this.getHistoryMessageCount <= 0");
                     return;
                 }
 

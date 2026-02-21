@@ -4,26 +4,26 @@ namespace Script
 {
     public partial class RoomService
     {
-        public async Task<ECode> SaveSceneInfo(Room room, string reason)
+        public async Task<ECode> SaveSceneInfo(SceneRoom sceneRoom, string reason)
         {
-            await this.server.roomLocationRedisW.WriteLocation(room.roomId, this.serviceId, this.sd.saveIntervalS + 60);
+            await this.server.roomLocationRedisW.WriteLocation(sceneRoom.roomId, this.serviceId, this.sd.saveIntervalS + 60);
 
             var msgDb = new MsgSave_SceneInfo
             {
-                roomId = room.roomId,
+                roomId = sceneRoom.roomId,
                 sceneInfoNullable = new SceneInfoNullable()
             };
             var infoNullable = msgDb.sceneInfoNullable;
 
             List<string>? buffer = null;
-            if (room.lastSceneInfo == null)
+            if (sceneRoom.lastSceneInfo == null)
             {
                 this.logger.Error($"SaveRoom room.lastSceneInfo == null");
                 return ECode.Error;
             }
 
-            SceneInfo last = room.lastSceneInfo;
-            SceneInfo curr = room.sceneInfo;
+            SceneInfo last = sceneRoom.lastSceneInfo;
+            SceneInfo curr = sceneRoom.sceneInfo;
 
             #region auto
 
@@ -62,13 +62,6 @@ namespace Script
                 if (buffer == null) buffer = new List<string>();
                 buffer.Add("messageId");
             }
-            if (last.participants.IsDifferent_ListClass(curr.participants))
-            {
-                infoNullable.participants = curr.participants;
-                last.participants.DeepCopyFrom_ListClass(curr.participants);
-                if (buffer == null) buffer = new List<string>();
-                buffer.Add("participants");
-            }
 
             #endregion auto
 
@@ -83,7 +76,7 @@ namespace Script
             {
                 fieldsStr = string.Join(", ", buffer.ToArray());
 
-                this.logger.InfoFormat("SaveRoom roomId {0}, reason {1}, fields [{2}]", room.roomId, reason, fieldsStr);
+                this.logger.InfoFormat("SaveRoom roomId {0}, reason {1}, fields [{2}]", sceneRoom.roomId, reason, fieldsStr);
             }
 
             if (buffer != null)
@@ -95,7 +88,7 @@ namespace Script
                 var r = await this.dbServiceProxy.Save_SceneInfo(msgDb);
                 if (r.e != ECode.Success)
                 {
-                    this.logger.ErrorFormat("{0} error: {1}, roomId {2}", MsgType._Save_SceneInfo, r.e, room.roomId);
+                    this.logger.ErrorFormat("{0} error: {1}, roomId {2}", MsgType._Save_SceneInfo, r.e, sceneRoom.roomId);
                     return r.e;
                 }
             }

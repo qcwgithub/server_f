@@ -25,8 +25,6 @@ namespace Script
             return new GatewayConnectionCallbackScript(this.server, this);
         }
         public readonly GatewayServiceScript ss;
-        public readonly ObjectLocator userLocator;
-        public readonly ObjectLocationAssignment userLocationAssignmentScript;
 
         public GatewayService(Server server, int serviceId) : base(server, serviceId)
         {
@@ -36,8 +34,6 @@ namespace Script
             this.AddServiceProxy(this.roomServiceProxy = new RoomServiceProxy(this));
 
             this.ss = new GatewayServiceScript(this.server, this);
-            this.userLocator = ObjectLocator.CreateUserLocator(this.server, this, this.sd.userLocatorData);
-            this.userLocationAssignmentScript = ObjectLocationAssignment.CreateUserLocationAssignment(this.server, this, this.sd.userServiceAllocatorData);
         }
 
         public override void Attach()

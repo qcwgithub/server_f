@@ -41,6 +41,46 @@ namespace Script
             return location;
         }
 
+        public async Task<stObjectLocation[]> GetLocations(List<long> objectIds)
+        {
+            long nowS = TimeUtils.GetTimeS();
+            var locations = new stObjectLocation[objectIds.Count];
+            List<(int, long)>? missing = null;
+
+            for (int i = 0; i < objectIds.Count; i++)
+            {
+                long objectId = objectIds[i];
+                stObjectLocation location = this.locatorData.GetLocation(objectId, nowS);
+                if (location.IsValid())
+                {
+                    locations[i] = location;
+                }
+                else
+                {
+                    if (missing == null)
+                    {
+                        missing = new List<(int, long)>();
+                    }
+                    missing.Add((i, objectId));
+                }
+            }
+
+            if (missing != null)
+            {
+                var locs = await this.locationRedis.GetLocations(missing.Select(x => x.Item2));
+                for (int i = 0; i < missing.Count; i++)
+                {
+                    locations[missing[i].Item1] = locs[i];
+                    if (locs[i].IsValid())
+                    {
+                        this.locatorData.SaveLocation(missing[i].Item2, locs[i]);
+                    }
+                }
+            }
+
+            return locations;
+        }
+
         public void CacheLocation(long objectId, stObjectLocation location)
         {
             this.locatorData.SaveLocation(objectId, location);

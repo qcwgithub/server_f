@@ -14,7 +14,7 @@ namespace Data
         [BsonIgnoreIfNull]
         public long? messageId;
         [BsonIgnoreIfNull]
-        public List<RoomParticipant_Db> participants;
+        public List<PrivateRoomUser_Db> users;
 
         public bool DeepCopyFrom(PrivateRoomInfo other)
         {
@@ -38,8 +38,8 @@ namespace Data
                 empty = false;
             }
 
-            this.participants = XInfoHelper_Db.Copy_ListClass<RoomParticipant_Db, RoomParticipant>(other.participants);
-            if (this.participants != null)
+            this.users = XInfoHelper_Db.Copy_ListClass<PrivateRoomUser_Db, PrivateRoomUser>(other.users);
+            if (this.users != null)
             {
                 empty = false;
             }

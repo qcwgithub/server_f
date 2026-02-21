@@ -3,7 +3,7 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class MsgRoomUserEnter
+    public class MsgRoomUserEnterScene
     {
         [Key(0)]
         public long userId;
@@ -16,7 +16,7 @@ namespace Data
     }
 
     [MessagePackObject]
-    public class ResRoomUserEnter
+    public class ResRoomUserEnterScene
     {
         [Key(0)]
         public List<ChatMessage> recentMessages;

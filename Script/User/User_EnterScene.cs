@@ -29,26 +29,26 @@ namespace Script
             MyResponse r;
 
             stObjectLocation location;
-            if (user.publicRoomId != 0 && user.publicRoomId != msg.roomId)
+            if (user.sceneId != 0 && user.sceneId != msg.roomId)
             {
                 // leave first
-                location = await this.service.roomLocator.GetLocation(user.publicRoomId);
+                location = await this.service.roomLocator.GetLocation(user.sceneId);
                 if (!location.IsValid())
                 {
                     return ECode.RoomLocationNotExist;
                 }
 
-                var msgLeave = new MsgRoomUserLeave();
+                var msgLeave = new MsgRoomUserLeaveScene();
                 msgLeave.userId = user.userId;
                 msgLeave.roomId = msg.roomId;
 
-                r = await this.service.roomServiceProxy.UserLeave(location.serviceId, msgLeave);
+                r = await this.service.roomServiceProxy.UserLeaveScene(location.serviceId, msgLeave);
                 if (r.e != ECode.Success)
                 {
                     return r.e;
                 }
 
-                user.publicRoomId = 0;
+                user.sceneId = 0;
             }
 
             location = await this.service.roomLocator.GetLocation(msg.roomId);
@@ -69,13 +69,13 @@ namespace Script
                 this.service.roomLocator.CacheLocation(msg.roomId, location);
             }
 
-            var msgEnter = new MsgRoomUserEnter();
+            var msgEnter = new MsgRoomUserEnterScene();
             msgEnter.userId = user.userId;
             msgEnter.roomId = msg.roomId;
             msgEnter.gatewayServiceId = user.connection.gatewayServiceId;
             msgEnter.lastMessageId = msg.lastMessageId;
 
-            r = await this.service.roomServiceProxy.UserEnter(location.serviceId, msgEnter);
+            r = await this.service.roomServiceProxy.UserEnterScene(location.serviceId, msgEnter);
             if (r.e != ECode.Success)
             {
                 return r.e;
@@ -83,9 +83,9 @@ namespace Script
 
             //// ok
 
-            user.publicRoomId = msg.roomId;
+            user.sceneId = msg.roomId;
 
-            var resEnter = r.CastRes<ResRoomUserEnter>();
+            var resEnter = r.CastRes<ResRoomUserEnterScene>();
             res.recentMessages = resEnter.recentMessages;
             return ECode.Success;
         }

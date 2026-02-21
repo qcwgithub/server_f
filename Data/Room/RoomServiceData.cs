@@ -10,6 +10,10 @@ namespace Data
                 return this.roomDict.Count;
             }
         }
+        public T? GetRoomAs<T>(long roomId) where T : Room
+        {
+            return this.roomDict.TryGetValue(roomId, out Room? room) ? room as T : null;
+        }
         public Room? GetRoom(long roomId)
         {
             return this.roomDict.TryGetValue(roomId, out Room? room) ? room : null;
@@ -34,6 +38,7 @@ namespace Data
         public int saveIntervalS = 60;
         public bool allowNewRoom;
 
+        public readonly ObjectLocatorData userLocatorData;
         //------------------------------------------------------
 
         public static readonly List<ServiceType> s_connectToServiceIds = new List<ServiceType>
@@ -50,6 +55,7 @@ namespace Data
             this.LoadConfigs();
 
             this.allowNewRoom = true;
+            this.userLocatorData = new ObjectLocatorData();
         }
 
         void LoadConfigs()

@@ -133,5 +133,40 @@ namespace Script
 
             return ECode.Success;
         }
+
+        public ECode CheckChatTooFast(Room room, ServerConfig.MessageConfig messageConfig, long userId, long now)
+        {
+            if (room.lastSendChatStampDict.TryGetValue(userId, out long lastSendChatStamp) &&
+                lastSendChatStamp > 0 && now - lastSendChatStamp < messageConfig.minIntervalMs)
+            {
+                return ECode.ChatTooFast;
+            }
+
+            if (room.sendChatTimestampsDict.TryGetValue(userId, out var sendChatTimestamps) &&
+                sendChatTimestamps.Count >= messageConfig.periodMaxCount)
+            {
+                int count = sendChatTimestamps.Count(ts => now - ts < messageConfig.periodMs);
+                if (count >= messageConfig.periodMaxCount)
+                {
+                    return ECode.ChatTooFast;
+                }
+            }
+
+            return ECode.Success;
+        }
+
+        public void WriteChatStamp(Room room, ServerConfig.MessageConfig messageConfig, long userId, long now)
+        {
+            room.lastSendChatStampDict[userId] = now;
+
+            if (!room.sendChatTimestampsDict.TryGetValue(userId, out var sendChatTimestamps))
+            {
+                sendChatTimestamps = new();
+                room.sendChatTimestampsDict.Add(userId, sendChatTimestamps);
+            }
+
+            sendChatTimestamps.RemoveAll(ts => now - ts >= messageConfig.periodMs);
+            sendChatTimestamps.Add(now);
+        }
     }
 }

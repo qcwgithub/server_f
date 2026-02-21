@@ -39,7 +39,7 @@ namespace Script
             return (ECode.Success, sceneInfo);
         }
 
-        public async Task<(ECode, Room?)> LoadSceneRoom(long roomId)
+        public async Task<(ECode, SceneRoom?)> LoadSceneRoom(long roomId)
         {
             (ECode e, SceneInfo? sceneInfo) = await this.QuerySceneInfo(roomId);
             if (e != ECode.Success)
@@ -52,7 +52,7 @@ namespace Script
                 return (ECode.RoomNotExist, null);
             }
 
-            var room = new Room(sceneInfo);
+            var room = new SceneRoom(sceneInfo);
 
             await this.server.roomLocationRedisW.WriteLocation(roomId, this.service.serviceId, this.service.sd.saveIntervalS + 60);
 
@@ -106,7 +106,7 @@ namespace Script
             return (ECode.Success, privateRoomInfo);
         }
 
-        public async Task<(ECode, Room?)> LoadPrivateRoom(long roomId)
+        public async Task<(ECode, PrivateRoom?)> LoadPrivateRoom(long roomId)
         {
             (ECode e, PrivateRoomInfo? privateRoomInfo) = await this.QueryPrivateRoomInfo(roomId);
             if (e != ECode.Success)
@@ -119,7 +119,7 @@ namespace Script
                 return (ECode.RoomNotExist, null);
             }
 
-            var room = new Room(privateRoomInfo);
+            var room = new PrivateRoom(privateRoomInfo);
 
             await this.server.roomLocationRedisW.WriteLocation(roomId, this.service.serviceId, this.service.sd.saveIntervalS + 60);
 
@@ -131,15 +131,6 @@ namespace Script
             }
 
             this.service.ss.ClearDestroyTimer(room, RoomClearDestroyTimerReason.RoomLoginSuccess);
-            var roomMessageConfig = this.server.data.serverConfig.sceneMessageConfig;
-
-            //
-            List<ChatMessage> recents = await this.server.roomMessagesRedis.GetRecents(roomId, roomMessageConfig.recentMessagesCount);
-            this.service.logger.Info($"LoadRoom recent messages count {recents.Count}");
-            foreach (ChatMessage message in recents)
-            {
-                room.recentMessages.Enqueue(message);
-            }
 
             return (ECode.Success, room);
         }
@@ -149,11 +140,7 @@ namespace Script
             // runtime 初始化
             this.service.sd.AddRoom(room);
 
-            // 有值就不能再赋值了，不然玩家上线下线就错了
-            MyDebug.Assert(room.lastSceneInfo == null);
-
-            room.lastSceneInfo = SceneInfo.Ensure(null);
-            room.lastSceneInfo.DeepCopyFrom(room.sceneInfo);
+            room.OnAddedToDict();
 
             // qiucw
             // 这句会修改 sceneInfo，必须放在 lastSceneInfo.DeepCopyFrom 后面

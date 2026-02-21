@@ -32,7 +32,7 @@ namespace Data
         public UserInfo? lastUserInfo;
 
         public bool isGm = false;
-        public long publicRoomId;
+        public long sceneId;
 
         public UserBriefInfo? lastBriefInfo;
     }

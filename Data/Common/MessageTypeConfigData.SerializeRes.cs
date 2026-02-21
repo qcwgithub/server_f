@@ -135,6 +135,10 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((ResOtherRemoveFriend)res);
                     break;
 
+                case MsgType._User_ReceiveChatMessage:
+                    msgBytes = MessagePackSerializer.Serialize((ResReceiveChatMessage)res);
+                    break;
+
                 case MsgType._UserManager_UserLogin:
                     msgBytes = MessagePackSerializer.Serialize((ResUserManagerUserLogin)res);
                     break;
@@ -155,12 +159,12 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((ResSaveSceneInfoToFile)res);
                     break;
 
-                case MsgType._Room_UserEnter:
-                    msgBytes = MessagePackSerializer.Serialize((ResRoomUserEnter)res);
+                case MsgType._Room_UserEnterScene:
+                    msgBytes = MessagePackSerializer.Serialize((ResRoomUserEnterScene)res);
                     break;
 
-                case MsgType._Room_UserLeave:
-                    msgBytes = MessagePackSerializer.Serialize((ResRoomUserLeave)res);
+                case MsgType._Room_UserLeaveScene:
+                    msgBytes = MessagePackSerializer.Serialize((ResRoomUserLeaveScene)res);
                     break;
 
                 case MsgType._Room_SaveRoomImmediately:

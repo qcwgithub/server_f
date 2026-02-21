@@ -24,7 +24,7 @@ namespace Script
                 return ECode.InvalidRoomId;
             }
 
-            if (msg.roomId != user.publicRoomId)
+            if (msg.roomId != user.sceneId)
             {
                 return ECode.WrongRoomId;
             }
@@ -44,7 +44,7 @@ namespace Script
             var info = new MessageReportInfo();
             info.reportUserId = user.userId;
             info.targetUserId = message == null ? 0 : message.senderId;
-            info.roomId = user.publicRoomId;
+            info.roomId = user.sceneId;
             info.messageId = msg.messageId;
             info.reason = msg.reason;
             info.timeS = TimeUtils.GetTimeS();

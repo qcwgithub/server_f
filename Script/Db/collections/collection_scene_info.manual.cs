@@ -94,15 +94,6 @@ public partial class collection_scene_info
             updList.Add(upd);
         }
 
-        if (infoNullable.participants != null)
-        {
-            var participants_Db = XInfoHelper_Db.Copy_ListClass<RoomParticipant_Db, RoomParticipant>(infoNullable.participants);
-            var upd = participants_Db != null
-                ? Builders<SceneInfo_Db>.Update.Set(nameof(SceneInfo_Db.participants), participants_Db)
-                : Builders<SceneInfo_Db>.Update.Unset(nameof(SceneInfo_Db.participants));
-            updList.Add(upd);
-        }
-
 
         #endregion autoSave
 

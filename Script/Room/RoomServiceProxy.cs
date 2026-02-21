@@ -18,13 +18,13 @@ namespace Script
         {
             return await this.Request(serviceId, MsgType._Room_SaveSceneInfoToFile, msg);
         }
-        public async Task<MyResponse> UserEnter(int serviceId, MsgRoomUserEnter msg)
+        public async Task<MyResponse> UserEnterScene(int serviceId, MsgRoomUserEnterScene msg)
         {
-            return await this.Request(serviceId, MsgType._Room_UserEnter, msg);
+            return await this.Request(serviceId, MsgType._Room_UserEnterScene, msg);
         }
-        public async Task<MyResponse> UserLeave(int serviceId, MsgRoomUserLeave msg)
+        public async Task<MyResponse> UserLeaveScene(int serviceId, MsgRoomUserLeaveScene msg)
         {
-            return await this.Request(serviceId, MsgType._Room_UserLeave, msg);
+            return await this.Request(serviceId, MsgType._Room_UserLeaveScene, msg);
         }
         public async Task<MyResponse> SaveRoomImmediately(int serviceId, MsgSaveRoomImmediately msg)
         {

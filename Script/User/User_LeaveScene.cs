@@ -22,28 +22,28 @@ namespace Script
                 return ECode.InvalidRoomId;
             }
 
-            if (user.publicRoomId == 0)
+            if (user.sceneId == 0)
             {
                 return ECode.Success;
             }
 
-            stObjectLocation location = await this.service.roomLocator.GetLocation(user.publicRoomId);
+            stObjectLocation location = await this.service.roomLocator.GetLocation(user.sceneId);
             if (!location.IsValid())
             {
                 return ECode.RoomLocationNotExist;
             }
 
-            var msgR = new MsgRoomUserLeave();
+            var msgR = new MsgRoomUserLeaveScene();
             msgR.userId = user.userId;
             msgR.roomId = msg.roomId;
 
-            var r = await this.service.roomServiceProxy.UserLeave(location.serviceId, msgR);
+            var r = await this.service.roomServiceProxy.UserLeaveScene(location.serviceId, msgR);
             if (r.e != ECode.Success)
             {
                 return r.e;
             }
 
-            user.publicRoomId = 0;
+            user.sceneId = 0;
 
             return ECode.Success;
         }

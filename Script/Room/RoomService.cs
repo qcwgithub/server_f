@@ -17,6 +17,7 @@ namespace Script
         public readonly GlobalServiceProxy globalServiceProxy;
         public readonly GatewayServiceProxy gatewayServiceProxy;
         public readonly RoomManagerServiceProxy roomManagerServiceProxy;
+        public readonly UserServiceProxy userServiceProxy;
 
         protected override MessageDispatcher CreateMessageDispatcher()
         {
@@ -25,6 +26,7 @@ namespace Script
 
         public readonly RoomServiceScript ss;
         public readonly RoomChatScript chatScript;
+        public readonly ObjectLocator userLocator;
 
         public RoomService(Server server, int serviceId) : base(server, serviceId)
         {
@@ -33,9 +35,11 @@ namespace Script
             this.AddServiceProxy(this.globalServiceProxy = new GlobalServiceProxy(this));
             this.AddServiceProxy(this.gatewayServiceProxy = new GatewayServiceProxy(this));
             this.AddServiceProxy(this.roomManagerServiceProxy = new RoomManagerServiceProxy(this));
+            this.AddServiceProxy(this.userServiceProxy = new UserServiceProxy(this));
 
             this.ss = new RoomServiceScript(this.server, this);
             this.chatScript = new RoomChatScript(this.server, this);
+            this.userLocator = ObjectLocator.CreateUserLocator(this.server, this, this.sd.userLocatorData);
         }
 
         public override void Attach()
@@ -72,7 +76,7 @@ namespace Script
             }
         }
 
-        public async Task<Room?> LockRoom(long roomId, object owner)
+        public async Task<T?> LockRoom<T>(long roomId, object owner) where T : Room
         {
             MyDebug.Assert(owner != null);
 
@@ -84,18 +88,18 @@ namespace Script
                 {
                     owner = owner,
                 };
-                return room;
+                return room as T;
             }
 
             if (lockedRoom.owner == null)
             {
                 lockedRoom.owner = owner;
-                return room;
+                return room as T;
             }
 
             if (lockedRoom.owner == owner)
             {
-                return room;
+                return room as T;
             }
 
             if (lockedRoom.waiting == null)
@@ -109,7 +113,7 @@ namespace Script
 
             MyDebug.Assert(lockedRoom.owner == null);
             lockedRoom.owner = owner;
-            return room;
+            return room as T;
         }
 
         public void TryUnlockRoom(long roomId, object owner)

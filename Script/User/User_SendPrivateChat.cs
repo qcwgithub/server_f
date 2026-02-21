@@ -24,15 +24,14 @@ namespace Script
                 return ECode.UserNotExist;
             }
 
-            e = this.service.roomScript.CheckSendPrivateChat(user, msg);
-            if (e != ECode.Success)
-            {
-                return e;
-            }
-
             UserInfo userInfo = user.userInfo;
 
             int friendIndex = userInfo.friends.FindIndex(x => x.userId == msg.friendUserId);
+            if (friendIndex < 0)
+            {
+                return ECode.NotFriends;
+            }
+
             FriendInfo friendInfo = userInfo.friends[friendIndex];
 
             stObjectLocation location = await this.service.roomLocator.GetLocation(friendInfo.privateRoomId);

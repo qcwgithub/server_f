@@ -23,9 +23,6 @@ namespace Data
             this.userDict.Add(user.userId, user);
         }
 
-        public readonly ObjectLocatorData userLocatorData = new();
-        public readonly ObjectLocationAssignmentData userServiceAllocatorData = new();
-
         public static readonly List<ServiceType> s_connectToServiceIds = new List<ServiceType>
         {
             ServiceType.Global,

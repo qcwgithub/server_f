@@ -58,12 +58,12 @@ public partial class collection_private_room_info
             updList.Add(upd);
         }
 
-        if (infoNullable.participants != null)
+        if (infoNullable.users != null)
         {
-            var participants_Db = XInfoHelper_Db.Copy_ListClass<RoomParticipant_Db, RoomParticipant>(infoNullable.participants);
-            var upd = participants_Db != null
-                ? Builders<PrivateRoomInfo_Db>.Update.Set(nameof(PrivateRoomInfo_Db.participants), participants_Db)
-                : Builders<PrivateRoomInfo_Db>.Update.Unset(nameof(PrivateRoomInfo_Db.participants));
+            var users_Db = XInfoHelper_Db.Copy_ListClass<PrivateRoomUser_Db, PrivateRoomUser>(infoNullable.users);
+            var upd = users_Db != null
+                ? Builders<PrivateRoomInfo_Db>.Update.Set(nameof(PrivateRoomInfo_Db.users), users_Db)
+                : Builders<PrivateRoomInfo_Db>.Update.Unset(nameof(PrivateRoomInfo_Db.users));
             updList.Add(upd);
         }
 

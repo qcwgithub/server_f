@@ -4,26 +4,26 @@ namespace Script
 {
     public partial class RoomService
     {
-        public async Task<ECode> SavePrivateRoomInfo(Room room, string reason)
+        public async Task<ECode> SavePrivateRoomInfo(PrivateRoom privateRoom, string reason)
         {
-            await this.server.roomLocationRedisW.WriteLocation(room.roomId, this.serviceId, this.sd.saveIntervalS + 60);
+            await this.server.roomLocationRedisW.WriteLocation(privateRoom.roomId, this.serviceId, this.sd.saveIntervalS + 60);
 
             var msgDb = new MsgSave_PrivateRoomInfo
             {
-                roomId = room.roomId,
+                roomId = privateRoom.roomId,
                 privateRoomInfoNullable = new PrivateRoomInfoNullable()
             };
             var infoNullable = msgDb.privateRoomInfoNullable;
 
             List<string>? buffer = null;
-            if (room.lastPrivateRoomInfo == null)
+            if (privateRoom.lastPrivateRoomInfo == null)
             {
                 this.logger.Error($"SaveRoom room.lastPrivateRoomInfo == null");
                 return ECode.Error;
             }
 
-            PrivateRoomInfo last = room.lastPrivateRoomInfo;
-            PrivateRoomInfo curr = room.privateRoomInfo;
+            PrivateRoomInfo last = privateRoom.lastPrivateRoomInfo;
+            PrivateRoomInfo curr = privateRoom.privateRoomInfo;
 
             #region auto
 
@@ -48,12 +48,12 @@ namespace Script
                 if (buffer == null) buffer = new List<string>();
                 buffer.Add("messageId");
             }
-            if (last.participants.IsDifferent_ListClass(curr.participants))
+            if (last.users.IsDifferent_ListClass(curr.users))
             {
-                infoNullable.participants = curr.participants;
-                last.participants.DeepCopyFrom_ListClass(curr.participants);
+                infoNullable.users = curr.users;
+                last.users.DeepCopyFrom_ListClass(curr.users);
                 if (buffer == null) buffer = new List<string>();
-                buffer.Add("participants");
+                buffer.Add("users");
             }
 
             #endregion auto
@@ -69,7 +69,7 @@ namespace Script
             {
                 fieldsStr = string.Join(", ", buffer.ToArray());
 
-                this.logger.InfoFormat("SaveRoom roomId {0}, reason {1}, fields [{2}]", room.roomId, reason, fieldsStr);
+                this.logger.InfoFormat("SaveRoom roomId {0}, reason {1}, fields [{2}]", privateRoom.roomId, reason, fieldsStr);
             }
 
             if (buffer != null)
@@ -81,7 +81,7 @@ namespace Script
                 var r = await this.dbServiceProxy.Save_PrivateRoomInfo(msgDb);
                 if (r.e != ECode.Success)
                 {
-                    this.logger.ErrorFormat("{0} error: {1}, roomId {2}", MsgType._Save_PrivateRoomInfo, r.e, room.roomId);
+                    this.logger.ErrorFormat("{0} error: {1}, roomId {2}", MsgType._Save_PrivateRoomInfo, r.e, privateRoom.roomId);
                     return r.e;
                 }
             }

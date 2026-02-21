@@ -18,8 +18,6 @@ namespace Data
         public string desc;
         [Key(4)]
         public long? messageId;
-        [Key(5)]
-        public List<RoomParticipant> participants;
 
         #endregion auto
     }

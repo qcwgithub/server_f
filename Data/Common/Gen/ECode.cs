@@ -37,7 +37,7 @@ namespace Data
         NoHandler = 98,
         InvalidRoomId = 99,
         FileNotExist = 100,
-        Chat_TooFast = 101,
+        ChatTooFast = 101,
         NotSupported = 102,
         NameTooShort = 103,
         NameTooLong = 104,
@@ -64,5 +64,6 @@ namespace Data
         NotFriends = 125,
         Duplicate = 126,
         InvalidRoomType = 127,
+        Offline = 128,
     }
 }

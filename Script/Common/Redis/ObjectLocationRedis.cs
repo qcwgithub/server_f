@@ -40,10 +40,8 @@ namespace Script
         {
         }
 
-        public async Task<stObjectLocation> GetLocation(long objectId)
+        stObjectLocation FromValue(RedisValue redisValue)
         {
-            string key = this.getKeyFunc(objectId);
-            RedisValue redisValue = await GetDb().StringGetAsync(key);
             if (redisValue.IsNullOrEmpty)
             {
                 return default;
@@ -55,6 +53,20 @@ namespace Script
             int serviceId = int.Parse(s.Substring(0, dot));
             long expiry = long.Parse(s.Substring(dot + 1));
             return new stObjectLocation { serviceId = serviceId, expiry = expiry };
+        }
+
+        public async Task<stObjectLocation> GetLocation(long objectId)
+        {
+            string key = this.getKeyFunc(objectId);
+            RedisValue redisValue = await GetDb().StringGetAsync(key);
+            return FromValue(redisValue);
+        }
+
+        public async Task<stObjectLocation[]> GetLocations(IEnumerable<long> objectIds)
+        {
+            RedisKey[] keys = objectIds.Select(objectId => new RedisKey(this.getKeyFunc(objectId))).ToArray();
+            RedisValue[] redisValues = await GetDb().StringGetAsync(keys);
+            return redisValues.Select(v => FromValue(v)).ToArray();
         }
     }
 }

@@ -30,15 +30,14 @@ long_,,,,,createTimeS,,,,,
 string_,,,,,title,,,,,
 string_,,,,,desc,,,,,
 long_,,,,,messageId,,,,,
-list_,class_,RoomParticipant,,,participants,,,,,
-@RoomParticipant,,,,,,1,1,MemoryChild,,1
+@PrivateRoomUser,,,,,,1,1,MemoryChild,,1
 long_,,,,,userId,,,,,
 long_,,,,,joinTimeS,,,,,
 @PrivateRoomInfo,,,,,,1,1,Memory,Room,1
 long_,,,,,roomId,,,,,
 long_,,,,,createTimeS,,,,,
 long_,,,,,messageId,,,,,
-list_,class_,RoomParticipant,,,participants,,,,,
+list_,class_,PrivateRoomUser,,,users,,,,,
 #,,,,,,,,,,
 @MessageReportInfo,,,,,,1,1,,,
 long_,,,,,reportUserId,,,,,
