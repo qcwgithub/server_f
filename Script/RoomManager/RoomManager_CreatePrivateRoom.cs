@@ -44,7 +44,7 @@ namespace Script
                 privateRoomInfo.participants.Add(participant);
             }
 
-            ECode e = await this.service.roomScript.InsertPrivateSceneRoomInfo(privateRoomInfo);
+            ECode e = await this.service.roomScript.InsertPrivateSceneInfo(privateRoomInfo);
             if (e != ECode.Success)
             {
                 return e;

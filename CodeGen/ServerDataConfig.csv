@@ -2,7 +2,7 @@ xinfoType,_0,createCollectionCs,fileName,partial,collectionName,dbName,index,que
 #,,,,,,二选一,索引,查询,,,,,,,when createProxy=1,,,,,
 UserInfo,*,1,collection_user_info,1,user_info,dbPlayer,[1 userId][0 userName],[eq long userId one * info][max long userId one long userId],,*,,,,*,NoKey,0,0,1,1,Memory
 AccountInfo,*,1,collection_account_info,0,account_info,dbPlayer,[1 channel channelUserId][0 userIds],[eq2 string channel string channelUserId one * info][eq string channelUserId one * info][ele long userIds one * info][ele long userIds list * info],[eq2 string channel string channelUserId],*,db,AccountKey.AccountInfo,[string channel][string channelUserId],*,SecondKey,0,0,1,1,RedisBinary
-SceneRoomInfo,*,1,collection_scene_room_info,1,scene_room_info,dbPlayer,[1 roomId][0 title][0 desc],[eq long roomId one * info][max long roomId one long roomId],,*,,,,*,NoKey,0,0,1,1,Memory
+SceneInfo,*,1,collection_scene_info,1,scene_info,dbPlayer,[1 roomId][0 title][0 desc],[eq long roomId one * info][max long roomId one long roomId],,*,,,,*,NoKey,0,0,1,1,Memory
 MessageReportInfo,*,1,collection_message_report_info,0,message_report_info,dbPlayer,,,multiple,*,,,,,NoKey,,,,,None
 UserReportInfo,*,1,collection_user_report_info,0,room_user_report_info,dbPlayer,,,multiple,*,,,,,NoKey,,,,,None
 UserBriefInfo,*,1,collection_user_brief_info,0,user_brief_info,dbPlayer,[1 userId],[eq long userId one * info],[eq long userId],*,db,UserKey.UserBriefInfo,[long userId],*,FirstKey,,,1,1,RedisBinary

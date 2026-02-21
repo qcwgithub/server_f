@@ -21,18 +21,18 @@ namespace Script
                 return ECode.UserNotExist;
             }
 
-            var msgDb = new MsgSearch_SceneRoomInfo();
+            var msgDb = new MsgSearch_SceneInfo();
             msgDb.keyword = "apartment";
 
-            var r = await this.service.dbServiceProxy.Search_SceneRoomInfo(msgDb);
+            var r = await this.service.dbServiceProxy.Search_SceneInfo(msgDb);
             if (r.e != ECode.Success)
             {
                 return r.e;
             }
 
-            var resDb = r.CastRes<ResSearch_SceneRoomInfo>();
+            var resDb = r.CastRes<ResSearch_SceneInfo>();
 
-            res.sceneRoomInfos = resDb.sceneRoomInfos;
+            res.sceneInfos = resDb.sceneInfos;
             return ECode.Success;
         }
 

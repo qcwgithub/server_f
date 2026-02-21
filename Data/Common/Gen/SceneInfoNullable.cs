@@ -4,7 +4,7 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class SceneRoomInfoNullable
+    public class SceneInfoNullable
     {
         #region auto
 
@@ -18,6 +18,8 @@ namespace Data
         public string desc;
         [Key(4)]
         public long? messageId;
+        [Key(5)]
+        public List<RoomParticipant> participants;
 
         #endregion auto
     }

@@ -152,8 +152,8 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((MsgRoomServiceAction)msg);
                     break;
 
-                case MsgType._Room_SaveSceneRoomInfoToFile:
-                    msgBytes = MessagePackSerializer.Serialize((MsgSaveSceneRoomInfoToFile)msg);
+                case MsgType._Room_SaveSceneInfoToFile:
+                    msgBytes = MessagePackSerializer.Serialize((MsgSaveSceneInfoToFile)msg);
                     break;
 
                 case MsgType._Room_UserEnter:
@@ -224,24 +224,24 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((MsgQuery_UserInfo_maxOf_userId)msg);
                     break;
 
-                case MsgType._Query_SceneRoomInfo_by_roomId:
-                    msgBytes = MessagePackSerializer.Serialize((MsgQuery_SceneRoomInfo_by_roomId)msg);
+                case MsgType._Query_SceneInfo_by_roomId:
+                    msgBytes = MessagePackSerializer.Serialize((MsgQuery_SceneInfo_by_roomId)msg);
                     break;
 
-                case MsgType._Query_SceneRoomInfo_maxOf_roomId:
-                    msgBytes = MessagePackSerializer.Serialize((MsgQuery_SceneRoomInfo_maxOf_roomId)msg);
+                case MsgType._Query_SceneInfo_maxOf_roomId:
+                    msgBytes = MessagePackSerializer.Serialize((MsgQuery_SceneInfo_maxOf_roomId)msg);
                     break;
 
-                case MsgType._Insert_SceneRoomInfo:
-                    msgBytes = MessagePackSerializer.Serialize((MsgInsert_SceneRoomInfo)msg);
+                case MsgType._Insert_SceneInfo:
+                    msgBytes = MessagePackSerializer.Serialize((MsgInsert_SceneInfo)msg);
                     break;
 
-                case MsgType._Save_SceneRoomInfo:
-                    msgBytes = MessagePackSerializer.Serialize((MsgSave_SceneRoomInfo)msg);
+                case MsgType._Save_SceneInfo:
+                    msgBytes = MessagePackSerializer.Serialize((MsgSave_SceneInfo)msg);
                     break;
 
-                case MsgType._Search_SceneRoomInfo:
-                    msgBytes = MessagePackSerializer.Serialize((MsgSearch_SceneRoomInfo)msg);
+                case MsgType._Search_SceneInfo:
+                    msgBytes = MessagePackSerializer.Serialize((MsgSearch_SceneInfo)msg);
                     break;
 
                 case MsgType._Save_MessageReportInfo:

@@ -25,8 +25,8 @@ namespace Script
 
                         switch (room.roomType)
                         {
-                            case RoomType.Scene:
-                                return await this.service.SaveSceneRoomInfo(room, "timer");
+                            case RoomType.Public:
+                                return await this.service.SaveSceneInfo(room, "timer");
 
                             case RoomType.Private:
                                 return await this.service.SavePrivateRoomInfo(room, "timer");

@@ -30,11 +30,11 @@ namespace Script
                 string desc = helper.ReadString(nameof(desc));
 
                 long roomId = this.service.roomIdSnowflakeScript.NextRoomId();
-                SceneRoomInfo sceneRoomInfo = this.service.roomScript.NewSceneRoomInfo(roomId);
-                sceneRoomInfo.title = title;
-                sceneRoomInfo.desc = desc;
+                SceneInfo sceneInfo = this.service.roomScript.NewSceneInfo(roomId);
+                sceneInfo.title = title;
+                sceneInfo.desc = desc;
 
-                ECode e = await this.service.roomScript.InsertSceneRoomInfo(sceneRoomInfo);
+                ECode e = await this.service.roomScript.InsertSceneInfo(sceneInfo);
                 if (e == ECode.Success)
                 {
                     successCount++;

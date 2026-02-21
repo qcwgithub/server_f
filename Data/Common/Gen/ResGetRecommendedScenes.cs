@@ -6,6 +6,6 @@ namespace Data
     public class ResGetRecommendedScenes
     {
         [Key(0)]
-        public List<SceneRoomInfo> sceneRoomInfos;
+        public List<SceneInfo> sceneInfos;
     }
 }
