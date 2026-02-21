@@ -24,13 +24,12 @@ long_,,,,,unblockTime,,,,,
 string_,,,,,blockPrompt,,,,,
 string_,,,,,blockOrUnblockReason,,,,,
 long_,,,,,lastLoginUserId,,,,,
-@SceneInfo,,,,,,1,1,Memory,Room,1
+@SceneRoomInfo,,,,,,1,1,Memory,Room,1
 long_,,,,,roomId,,,,,
 long_,,,,,createTimeS,,,,,
 string_,,,,,title,,,,,
 string_,,,,,desc,,,,,
 long_,,,,,messageId,,,,,
-list_,class_,RoomParticipant,,,participants,,,,,
 @RoomParticipant,,,,,,1,1,MemoryChild,,1
 long_,,,,,userId,,,,,
 long_,,,,,joinTimeS,,,,,
@@ -93,7 +92,7 @@ string_,,,,,userName,,,,,
 @MsgSearchScene,,,,,,,,,,1
 string_,,,,,keyword,,,,,
 @ResSearchScene,,,,,,,,,,1
-list_,class_,SceneInfo,,,sceneInfos,,,,,
+list_,class_,SceneRoomInfo,,,sceneRoomInfos,,,,,
 @MsgReportMessage,,,,,,,,,,1
 long_,,,,,roomId,,,,,
 long_,,,,,messageId,,,,,
@@ -101,7 +100,7 @@ enum_,MessageReportReason,,,,reason,,,,,
 @ResReportMessage,,,,,,,,,,1
 @MsgGetRecommendedScenes,,,,,,,,,,1
 @ResGetRecommendedScenes,,,,,,,,,,1
-list_,class_,SceneInfo,,,sceneInfos,,,,,
+list_,class_,SceneRoomInfo,,,sceneRoomInfos,,,,,
 @MsgGetSceneChatHistory,,,,,,,,,,1
 long_,,,,,roomId,,,,,
 long_,,,,,lastMessageId,,,,,

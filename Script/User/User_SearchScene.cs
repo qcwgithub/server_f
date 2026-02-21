@@ -30,18 +30,18 @@ namespace Script
                 return ECode.UserNotExist;
             }
 
-            var msgDb = new MsgSearch_SceneInfo();
+            var msgDb = new MsgSearch_SceneRoomInfo();
             msgDb.keyword = msg.keyword;
 
-            var r = await this.service.dbServiceProxy.Search_SceneInfo(msgDb);
+            var r = await this.service.dbServiceProxy.Search_SceneRoomInfo(msgDb);
             if (r.e != ECode.Success)
             {
                 return r.e;
             }
 
-            var resDb = r.CastRes<ResSearch_SceneInfo>();
+            var resDb = r.CastRes<ResSearch_SceneRoomInfo>();
 
-            res.sceneInfos = resDb.sceneInfos;
+            res.sceneRoomInfos = resDb.sceneRoomInfos;
             return ECode.Success;
         }
 

@@ -66,7 +66,7 @@ namespace Script
 
             // create message
             var message = new ChatMessage();
-            message.messageId = ++room.sceneInfo.messageId;
+            message.messageId = ++room.sceneRoomInfo.messageId;
             message.roomId = room.roomId;
             message.senderId = user.userId;
             message.senderName = string.Empty;

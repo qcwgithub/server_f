@@ -3,18 +3,18 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class MsgSave_SceneInfo
+    public class MsgSave_SceneRoomInfo
     {
         [Key(0)]
         public long roomId;
         [Key(1)]
-        required public SceneInfoNullable sceneInfoNullable;
+        required public SceneRoomInfoNullable sceneRoomInfoNullable;
         [Key(2)]
-        public SceneInfo? sceneInfo_debug;
+        public SceneRoomInfo? sceneRoomInfo_debug;
     }
 
     [MessagePackObject]
-    public class ResSave_SceneInfo
+    public class ResSave_SceneRoomInfo
     {
     }
 }

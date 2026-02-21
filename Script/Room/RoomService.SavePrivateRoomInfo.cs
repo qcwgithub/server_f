@@ -18,7 +18,7 @@ namespace Script
             List<string>? buffer = null;
             if (room.lastPrivateRoomInfo == null)
             {
-                this.logger.Error($"SaveRoom room.lastPrivateRoomInfo == null");
+                this.logger.Error($"SavePrivateRoomInfo room.lastPrivateRoomInfo == null");
                 return ECode.Error;
             }
 
@@ -58,7 +58,7 @@ namespace Script
 
             #endregion auto
 
-            // player.lastSceneInfo = curr; // 先假设一定成功吧
+            // player.lastSceneRoomInfo = curr; // 先假设一定成功吧
             if (last.IsDifferent(curr))
             {
                 this.logger.Error("last.IsDifferent(curr)!!!");
@@ -69,7 +69,7 @@ namespace Script
             {
                 fieldsStr = string.Join(", ", buffer.ToArray());
 
-                this.logger.InfoFormat("SaveRoom roomId {0}, reason {1}, fields [{2}]", room.roomId, reason, fieldsStr);
+                this.logger.InfoFormat("SavePrivateRoomInfo roomId {0}, reason {1}, fields [{2}]", room.roomId, reason, fieldsStr);
             }
 
             if (buffer != null)

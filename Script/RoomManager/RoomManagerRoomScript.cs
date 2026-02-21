@@ -8,32 +8,32 @@ namespace Script
         {
         }
 
-        public async Task<ECode> InsertSceneInfo(SceneInfo sceneInfo)
+        public async Task<ECode> InsertSceneRoomInfo(SceneRoomInfo sceneRoomInfo)
         {
-            var msgDb = new MsgInsert_SceneInfo();
-            msgDb.sceneInfo = sceneInfo;
+            var msgDb = new MsgInsert_SceneRoomInfo();
+            msgDb.sceneRoomInfo = sceneRoomInfo;
 
-            var r = await this.service.dbServiceProxy.Insert_SceneInfo(msgDb);
+            var r = await this.service.dbServiceProxy.Insert_SceneRoomInfo(msgDb);
             if (r.e != ECode.Success)
             {
-                this.service.logger.Error($"InsertSceneInfo({sceneInfo.roomId}) r.e {r.e}");
+                this.service.logger.Error($"InsertSceneRoomInfo({sceneRoomInfo.roomId}) r.e {r.e}");
                 return r.e;
             }
 
             return ECode.Success;
         }
 
-        public SceneInfo NewSceneInfo(long roomId)
+        public SceneRoomInfo NewSceneRoomInfo(long roomId)
         {
-            var sceneInfo = SceneInfo.Ensure(null);
-            sceneInfo.roomId = roomId;
+            var sceneRoomInfo = SceneRoomInfo.Ensure(null);
+            sceneRoomInfo.roomId = roomId;
 
             long nowS = TimeUtils.GetTimeS();
-            sceneInfo.createTimeS = nowS;
-            return sceneInfo;
+            sceneRoomInfo.createTimeS = nowS;
+            return sceneRoomInfo;
         }
 
-        public async Task<ECode> InsertPrivateSceneInfo(PrivateRoomInfo privateRoomInfo)
+        public async Task<ECode> InsertPrivateSceneRoomInfo(PrivateRoomInfo privateRoomInfo)
         {
             var msgDb = new MsgInsert_PrivateRoomInfo();
             msgDb.privateRoomInfo = privateRoomInfo;
@@ -41,7 +41,7 @@ namespace Script
             var r = await this.service.dbServiceProxy.Insert_PrivateRoomInfo(msgDb);
             if (r.e != ECode.Success)
             {
-                this.service.logger.Error($"InsertPrivateSceneInfo({privateRoomInfo.roomId}) r.e {r.e}");
+                this.service.logger.Error($"InsertPrivateSceneRoomInfo({privateRoomInfo.roomId}) r.e {r.e}");
                 return r.e;
             }
 

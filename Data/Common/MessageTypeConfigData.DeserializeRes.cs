@@ -151,8 +151,8 @@ namespace Data
                     ob = MessagePackSerializer.Deserialize<ResRoomServiceAction>(resBytes);
                     break;
 
-                case MsgType._Room_SaveSceneInfoToFile:
-                    ob = MessagePackSerializer.Deserialize<ResSaveSceneInfoToFile>(resBytes);
+                case MsgType._Room_SaveSceneRoomInfoToFile:
+                    ob = MessagePackSerializer.Deserialize<ResSaveSceneRoomInfoToFile>(resBytes);
                     break;
 
                 case MsgType._Room_UserEnter:
@@ -223,24 +223,24 @@ namespace Data
                     ob = MessagePackSerializer.Deserialize<ResQuery_UserInfo_maxOf_userId>(resBytes);
                     break;
 
-                case MsgType._Query_SceneInfo_by_roomId:
-                    ob = MessagePackSerializer.Deserialize<ResQuery_SceneInfo_by_roomId>(resBytes);
+                case MsgType._Query_SceneRoomInfo_by_roomId:
+                    ob = MessagePackSerializer.Deserialize<ResQuery_SceneRoomInfo_by_roomId>(resBytes);
                     break;
 
-                case MsgType._Query_SceneInfo_maxOf_roomId:
-                    ob = MessagePackSerializer.Deserialize<ResQuery_SceneInfo_maxOf_roomId>(resBytes);
+                case MsgType._Query_SceneRoomInfo_maxOf_roomId:
+                    ob = MessagePackSerializer.Deserialize<ResQuery_SceneRoomInfo_maxOf_roomId>(resBytes);
                     break;
 
-                case MsgType._Insert_SceneInfo:
-                    ob = MessagePackSerializer.Deserialize<ResInsert_SceneInfo>(resBytes);
+                case MsgType._Insert_SceneRoomInfo:
+                    ob = MessagePackSerializer.Deserialize<ResInsert_SceneRoomInfo>(resBytes);
                     break;
 
-                case MsgType._Save_SceneInfo:
-                    ob = MessagePackSerializer.Deserialize<ResSave_SceneInfo>(resBytes);
+                case MsgType._Save_SceneRoomInfo:
+                    ob = MessagePackSerializer.Deserialize<ResSave_SceneRoomInfo>(resBytes);
                     break;
 
-                case MsgType._Search_SceneInfo:
-                    ob = MessagePackSerializer.Deserialize<ResSearch_SceneInfo>(resBytes);
+                case MsgType._Search_SceneRoomInfo:
+                    ob = MessagePackSerializer.Deserialize<ResSearch_SceneRoomInfo>(resBytes);
                     break;
 
                 case MsgType._Save_MessageReportInfo:

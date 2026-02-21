@@ -11,7 +11,7 @@ namespace Script
             this.ss.ClearSaveTimer(room);
 
             // Save once
-            ECode e = await this.SaveSceneInfo(room, "DestroyRoom");
+            ECode e = await this.SaveSceneRoomInfo(room, "DestroyRoom");
             if (e != ECode.Success)
             {
                 return e;

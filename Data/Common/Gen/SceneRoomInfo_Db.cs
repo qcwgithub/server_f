@@ -5,7 +5,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Data
 {
-    public class SceneInfo_Db : IIsDifferent_Db<SceneInfo>
+    public class SceneRoomInfo_Db : IIsDifferent_Db<SceneRoomInfo>
     {
         [BsonIgnoreIfNull]
         public long? roomId;
@@ -17,10 +17,8 @@ namespace Data
         public string desc;
         [BsonIgnoreIfNull]
         public long? messageId;
-        [BsonIgnoreIfNull]
-        public List<RoomParticipant_Db> participants;
 
-        public bool DeepCopyFrom(SceneInfo other)
+        public bool DeepCopyFrom(SceneRoomInfo other)
         {
             bool empty = true;
 
@@ -50,12 +48,6 @@ namespace Data
 
             this.messageId = XInfoHelper_Db.Copy_long(other.messageId);
             if (this.messageId != null)
-            {
-                empty = false;
-            }
-
-            this.participants = XInfoHelper_Db.Copy_ListClass<RoomParticipant_Db, RoomParticipant>(other.participants);
-            if (this.participants != null)
             {
                 empty = false;
             }
