@@ -42,7 +42,7 @@ namespace Data
         _Room_UserLeaveScene = 605,
         _Room_SaveRoomImmediately = 607,
         _Room_SendSceneChat = 608,
-        _Room_SendPrivateChat = 609,
+        _Room_SendFriendChat = 609,
         _RoomManager_LoadRoom = 800,
         _RoomManager_ImportRoomConfig = 801,
         _RoomManager_CreatePrivateRoom = 802,
@@ -94,7 +94,7 @@ namespace Data
         AOtherRejectFriendRequest = 10023,
         ARemoveFriend = 10024,
         GetUserBriefInfos = 10025,
-        SendPrivateChat = 10026,
+        SendFriendChat = 10026,
         Count = 10027,
     }
 }

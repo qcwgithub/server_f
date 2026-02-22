@@ -3,14 +3,14 @@ using Data;
 namespace Script
 {
     [AutoRegister]
-    public class User_SendPrivateChat : Handler<UserService, MsgSendPrivateChat, ResSendPrivateChat>
+    public class User_SendFriendChat : Handler<UserService, MsgSendFriendChat, ResSendFriendChat>
     {
-        public override MsgType msgType => MsgType.SendPrivateChat;
-        public User_SendPrivateChat(Server server, UserService service) : base(server, service)
+        public override MsgType msgType => MsgType.SendFriendChat;
+        public User_SendFriendChat(Server server, UserService service) : base(server, service)
         {
         }
 
-        public override async Task<ECode> Handle(MessageContext context, MsgSendPrivateChat msg, ResSendPrivateChat res)
+        public override async Task<ECode> Handle(MessageContext context, MsgSendFriendChat msg, ResSendFriendChat res)
         {
             ECode e = ChatUtils.CheckChatMessageType(msg.chatMessageType);
             if (e != ECode.Success)
@@ -42,7 +42,7 @@ namespace Script
 
             MyResponse r;
 
-            var msgR = new MsgRoomSendPrivateChat();
+            var msgR = new MsgRoomSendFriendChat();
             msgR.roomId = friendInfo.roomId;
             msgR.userId = user.userId;
             msgR.type = msg.chatMessageType;
@@ -52,20 +52,20 @@ namespace Script
             msgR.clientMessageId = msg.clientMessageId;
             msgR.imageContent = msg.imageContent;
 
-            r = await this.service.roomServiceProxy.SendPrivateChat(location.serviceId, msgR);
+            r = await this.service.roomServiceProxy.SendFriendChat(location.serviceId, msgR);
             if (r.e != ECode.Success)
             {
                 return r.e;
             }
 
-            var resR = r.CastRes<ResRoomSendPrivateChat>();
+            var resR = r.CastRes<ResRoomSendFriendChat>();
 
             await Task.Delay(1000);
 
             return ECode.Success;
         }
 
-        public override void PostHandle(MessageContext context, MsgSendPrivateChat msg, ECode e, ResSendPrivateChat res)
+        public override void PostHandle(MessageContext context, MsgSendFriendChat msg, ECode e, ResSendFriendChat res)
         {
             this.service.TryUnlockUser(context.msg_userId, context);
 

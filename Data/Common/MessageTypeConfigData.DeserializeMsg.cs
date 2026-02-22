@@ -176,8 +176,8 @@ namespace Data
                     ob = MessagePackSerializer.Deserialize<MsgRoomSendSceneChat>(msgBytes);
                     break;
 
-                case MsgType._Room_SendPrivateChat:
-                    ob = MessagePackSerializer.Deserialize<MsgRoomSendPrivateChat>(msgBytes);
+                case MsgType._Room_SendFriendChat:
+                    ob = MessagePackSerializer.Deserialize<MsgRoomSendFriendChat>(msgBytes);
                     break;
 
                 case MsgType._RoomManager_LoadRoom:
@@ -383,8 +383,8 @@ namespace Data
                     ob = MessagePackSerializer.Deserialize<MsgGetUserBriefInfos>(msgBytes);
                     break;
 
-                case MsgType.SendPrivateChat:
-                    ob = MessagePackSerializer.Deserialize<MsgSendPrivateChat>(msgBytes);
+                case MsgType.SendFriendChat:
+                    ob = MessagePackSerializer.Deserialize<MsgSendFriendChat>(msgBytes);
                     break;
 
                 case MsgType.Count:

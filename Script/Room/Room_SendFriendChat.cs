@@ -4,15 +4,15 @@ using MessagePack;
 namespace Script
 {
     [AutoRegister]
-    public class Room_SendPrivateChat : Handler<RoomService, MsgRoomSendPrivateChat, ResRoomSendPrivateChat>
+    public class Room_SendFriendChat : Handler<RoomService, MsgRoomSendFriendChat, ResRoomSendFriendChat>
     {
-        public Room_SendPrivateChat(Server server, RoomService service) : base(server, service)
+        public Room_SendFriendChat(Server server, RoomService service) : base(server, service)
         {
         }
 
-        public override MsgType msgType => MsgType._Room_SendPrivateChat;
+        public override MsgType msgType => MsgType._Room_SendFriendChat;
 
-        public override async Task<ECode> Handle(MessageContext context, MsgRoomSendPrivateChat msg, ResRoomSendPrivateChat res)
+        public override async Task<ECode> Handle(MessageContext context, MsgRoomSendFriendChat msg, ResRoomSendFriendChat res)
         {
             this.service.logger.Info($"{this.msgType} userId {msg.userId} roomId {msg.roomId} type {msg.type} content {msg.content}");
 
@@ -93,7 +93,7 @@ namespace Script
             return ECode.Success;
         }
 
-        public override void PostHandle(MessageContext context, MsgRoomSendPrivateChat msg, ECode e, ResRoomSendPrivateChat res)
+        public override void PostHandle(MessageContext context, MsgRoomSendFriendChat msg, ECode e, ResRoomSendFriendChat res)
         {
             this.service.TryUnlockRoom(msg.roomId, context);
 

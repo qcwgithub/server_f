@@ -113,13 +113,13 @@ string_,,,,,content,,,,,
 long_,,,,,clientMessageId,,,,,
 class_,ChatMessageImageContent,,,,imageContent?,,,,,
 @ResSendSceneChat,,,,,,,,,,1
-@MsgSendPrivateChat,,,,,,,,,,1
+@MsgSendFriendChat,,,,,,,,,,1
 long_,,,,,friendUserId,,,,,
 enum_,ChatMessageType,,,,chatMessageType,,,,,
 string_,,,,,content,,,,,
 long_,,,,,clientMessageId,,,,,
 class_,ChatMessageImageContent,,,,imageContent?,,,,,
-@ResSendPrivateChat,,,,,,,,,,1
+@ResSendFriendChat,,,,,,,,,,1
 @MsgSetAvatarIndex,,,,,,,,,,1
 int_,,,,,avatarIndex,,,,,
 @ResSetAvatarIndex,,,,,,,,,,1

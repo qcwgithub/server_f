@@ -175,8 +175,8 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((ResRoomSendSceneChat)res);
                     break;
 
-                case MsgType._Room_SendPrivateChat:
-                    msgBytes = MessagePackSerializer.Serialize((ResRoomSendPrivateChat)res);
+                case MsgType._Room_SendFriendChat:
+                    msgBytes = MessagePackSerializer.Serialize((ResRoomSendFriendChat)res);
                     break;
 
                 case MsgType._RoomManager_LoadRoom:
@@ -376,8 +376,8 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((ResGetUserBriefInfos)res);
                     break;
 
-                case MsgType.SendPrivateChat:
-                    msgBytes = MessagePackSerializer.Serialize((ResSendPrivateChat)res);
+                case MsgType.SendFriendChat:
+                    msgBytes = MessagePackSerializer.Serialize((ResSendFriendChat)res);
                     break;
 
                 case MsgType.Count:

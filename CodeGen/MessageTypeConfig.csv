@@ -44,7 +44,7 @@ _Room_UserEnterScene,604,MsgRoomUserEnterScene,ResRoomUserEnterScene,1,1
 _Room_UserLeaveScene,605,MsgRoomUserLeaveScene,ResRoomUserLeaveScene,1,1
 _Room_SaveRoomImmediately,607,MsgSaveRoomImmediately,ResSaveRoomImmediately,1,1
 _Room_SendSceneChat,608,MsgRoomSendSceneChat,ResRoomSendSceneChat,1,1
-_Room_SendPrivateChat,609,MsgRoomSendPrivateChat,ResRoomSendPrivateChat,1,1
+_Room_SendFriendChat,609,MsgRoomSendFriendChat,ResRoomSendFriendChat,1,1
 #,,,,,
 _RoomManager_LoadRoom,800,MsgRoomManagerLoadRoom,ResRoomManagerLoadRoom,1,0
 _RoomManager_ImportRoomConfig,801,MsgRoomManagerImportRoomConfig,ResRoomManagerImportRoomConfig,1,0
@@ -100,5 +100,5 @@ AOtherAcceptFriendRequest,10022,MsgAOtherAcceptFriendRequest,,,
 AOtherRejectFriendRequest,10023,MsgAOtherRejectFriendRequest,,,
 ARemoveFriend,10024,MsgARemoveFriend,,,
 GetUserBriefInfos,10025,MsgGetUserBriefInfos,ResGetUserBriefInfos,,
-SendPrivateChat,10026,MsgSendPrivateChat,ResSendPrivateChat,,
+SendFriendChat,10026,MsgSendFriendChat,ResSendFriendChat,,
 Count,10027,,,,

@@ -71,7 +71,7 @@ namespace Script
             return ECode.Success;
         }
 
-        public ECode CheckRoomSendPrivateChat(MsgRoomSendPrivateChat msg, ServerConfig.MessageConfig messageConfig)
+        public ECode CheckRoomSendPrivateChat(MsgRoomSendFriendChat msg, ServerConfig.MessageConfig messageConfig)
         {
             switch (msg.type)
             {

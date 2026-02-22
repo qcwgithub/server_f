@@ -34,9 +34,9 @@ namespace Script
         {
             return await this.Request(serviceId, MsgType._Room_SendSceneChat, msg);
         }
-        public async Task<MyResponse> SendPrivateChat(int serviceId, MsgRoomSendPrivateChat msg)
+        public async Task<MyResponse> SendFriendChat(int serviceId, MsgRoomSendFriendChat msg)
         {
-            return await this.Request(serviceId, MsgType._Room_SendPrivateChat, msg);
+            return await this.Request(serviceId, MsgType._Room_SendFriendChat, msg);
         }
 
         #endregion auto_proxy

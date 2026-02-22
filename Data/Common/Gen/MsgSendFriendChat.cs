@@ -3,7 +3,7 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class MsgSendPrivateChat
+    public class MsgSendFriendChat
     {
         [Key(0)]
         public long friendUserId;

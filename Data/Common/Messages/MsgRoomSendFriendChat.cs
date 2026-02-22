@@ -3,7 +3,7 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class MsgRoomSendPrivateChat
+    public class MsgRoomSendFriendChat
     {
         [Key(0)]
         public long roomId;
@@ -26,7 +26,7 @@ namespace Data
     }
 
     [MessagePackObject]
-    public class ResRoomSendPrivateChat
+    public class ResRoomSendFriendChat
     {
 
     }
