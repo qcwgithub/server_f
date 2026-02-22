@@ -5,7 +5,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Data
 {
-    public class PrivateRoomInfo_Db : IIsDifferent_Db<PrivateRoomInfo>
+    public class FriendChatInfo_Db : IIsDifferent_Db<FriendChatInfo>
     {
         [BsonIgnoreIfNull]
         public long? roomId;
@@ -16,7 +16,7 @@ namespace Data
         [BsonIgnoreIfNull]
         public List<PrivateRoomUser_Db> users;
 
-        public bool DeepCopyFrom(PrivateRoomInfo other)
+        public bool DeepCopyFrom(FriendChatInfo other)
         {
             bool empty = true;
 

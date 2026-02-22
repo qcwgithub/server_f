@@ -13,6 +13,6 @@ namespace Data
     public class ResRoomManagerCreatePrivateRoom
     {
         [Key(0)]
-        public PrivateRoomInfo privateRoomInfo;
+        public FriendChatInfo friendChatInfo;
     }
 }

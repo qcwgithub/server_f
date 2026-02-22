@@ -11,10 +11,19 @@ namespace Script
             this.ss.ClearSaveTimer(room);
 
             // Save once
-            ECode e = await this.SaveSceneInfo(room, "DestroyRoom");
-            if (e != ECode.Success)
+            ECode e;
+            switch (room.roomType)
             {
-                return e;
+                case RoomType.Scene:
+                    e = await this.SaveSceneInfo((SceneRoom)room, "DestroyRoom");
+                    break;
+
+                case RoomType.Private:
+                    e = await this.SaveFriendChatInfo((FriendChatRoom)room, "DestroyRoom");
+                    break;
+
+                default:
+                    throw new Exception("Not handled RoomType." + room.roomType);
             }
 
             sd.RemoveRoom(room.roomId);

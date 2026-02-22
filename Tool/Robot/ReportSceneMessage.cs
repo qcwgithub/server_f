@@ -14,7 +14,7 @@ namespace Tool
             msg.reason = MessageReportReason.Ads;
 
             var r = await this.connection.Request(MsgType.ReportMessage, msg);
-            this.Log($"ReportMessage result {r.e}");
+            this.Log($"ReportSceneMessage result {r.e}");
             if (r.e != ECode.Success)
             {
                 return r.e;

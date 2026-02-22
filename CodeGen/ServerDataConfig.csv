@@ -6,4 +6,4 @@ SceneInfo,*,1,collection_scene_info,1,scene_info,dbPlayer,[1 roomId][0 title][0 
 MessageReportInfo,*,1,collection_message_report_info,0,message_report_info,dbPlayer,,,multiple,*,,,,,NoKey,,,,,None
 UserReportInfo,*,1,collection_user_report_info,0,room_user_report_info,dbPlayer,,,multiple,*,,,,,NoKey,,,,,None
 UserBriefInfo,*,1,collection_user_brief_info,0,user_brief_info,dbPlayer,[1 userId],[eq long userId one * info],[eq long userId],*,db,UserKey.UserBriefInfo,[long userId],*,FirstKey,,,1,1,RedisBinary
-PrivateRoomInfo,*,1,collection_private_room_info,1,private_room_info,dbPlayer,[1 roomId],[eq long roomId one * info][max long roomId one long roomId],,*,,,,*,NoKey,0,0,1,1,Memory
+FriendChatInfo,*,1,collection_friend_chat_info,1,friend_chat_info,dbPlayer,[1 roomId],[eq long roomId one * info][max long roomId one long roomId],,*,,,,*,NoKey,0,0,1,1,Memory

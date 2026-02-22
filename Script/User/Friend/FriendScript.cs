@@ -16,7 +16,7 @@ namespace Script
             if (friendIndex >= 0)
             {
                 friendInfo = userInfo.friends[friendIndex];
-                friendInfo.privateRoomId = privateRoomId;
+                friendInfo.roomId = privateRoomId;
             }
             else
             {
@@ -25,7 +25,7 @@ namespace Script
                 userInfo.friends.Add(friendInfo);
             }
             friendInfo.timeS = timeS;
-            friendInfo.privateRoomId = privateRoomId;
+            friendInfo.roomId = privateRoomId;
 
             // 2
             int removedFriendIndex = userInfo.removedFriends.FindIndex(x => x.userId == friendUserId);

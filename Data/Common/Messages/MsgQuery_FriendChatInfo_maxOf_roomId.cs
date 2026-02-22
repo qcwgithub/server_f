@@ -5,17 +5,15 @@ namespace Data
 {
     //// AUTO CREATED ////
     [MessagePackObject]
-    public sealed class MsgQuery_PrivateRoomInfo_by_roomId
+    public sealed class MsgQuery_FriendChatInfo_maxOf_roomId
     {
-        [Key(0)]
-        public long roomId;
     }
     
     //// AUTO CREATED ////
     [MessagePackObject]
-    public sealed class ResQuery_PrivateRoomInfo_by_roomId
+    public sealed class ResQuery_FriendChatInfo_maxOf_roomId
     {
         [Key(0)]
-        public PrivateRoomInfo? result;
+        public long result;
     }
 }

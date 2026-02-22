@@ -77,49 +77,49 @@ namespace Script
             return (ECode.Success, room);
         }
 
-        public async Task<(ECode, PrivateRoomInfo?)> QueryPrivateRoomInfo(long roomId)
+        public async Task<(ECode, FriendChatInfo?)> QueryFriendChatInfo(long roomId)
         {
-            var msgDb = new MsgQuery_PrivateRoomInfo_by_roomId();
+            var msgDb = new MsgQuery_FriendChatInfo_by_roomId();
             msgDb.roomId = roomId;
 
-            var r = await this.service.dbServiceProxy.Query_PrivateRoomInfo_by_roomId(msgDb);
+            var r = await this.service.dbServiceProxy.Query_FriendChatInfo_by_roomId(msgDb);
             if (r.e != ECode.Success)
             {
-                this.service.logger.Error($"QueryPrivateRoomInfo({roomId}) r.err {r.e}");
+                this.service.logger.Error($"QueryFriendChatInfo({roomId}) r.err {r.e}");
                 return (r.e, null);
             }
 
-            var resDb = r.CastRes<ResQuery_PrivateRoomInfo_by_roomId>();
+            var resDb = r.CastRes<ResQuery_FriendChatInfo_by_roomId>();
 
-            PrivateRoomInfo? privateRoomInfo = resDb.result;
-            if (privateRoomInfo != null)
+            FriendChatInfo? friendChatInfo = resDb.result;
+            if (friendChatInfo != null)
             {
-                if (privateRoomInfo.roomId != roomId)
+                if (friendChatInfo.roomId != roomId)
                 {
-                    this.service.logger.Error($"QueryPrivateRoomInfo({roomId}) different privateRoomInfo.roomId {privateRoomInfo.roomId}");
+                    this.service.logger.Error($"QueryFriendChatInfo({roomId}) different friendChatInfo.roomId {friendChatInfo.roomId}");
                     return (ECode.Error, null);
                 }
 
-                privateRoomInfo.Ensure();
+                friendChatInfo.Ensure();
             }
 
-            return (ECode.Success, privateRoomInfo);
+            return (ECode.Success, friendChatInfo);
         }
 
-        public async Task<(ECode, PrivateRoom?)> LoadPrivateRoom(long roomId)
+        public async Task<(ECode, FriendChatRoom?)> LoadPrivateRoom(long roomId)
         {
-            (ECode e, PrivateRoomInfo? privateRoomInfo) = await this.QueryPrivateRoomInfo(roomId);
+            (ECode e, FriendChatInfo? friendChatInfo) = await this.QueryFriendChatInfo(roomId);
             if (e != ECode.Success)
             {
                 return (e, null);
             }
 
-            if (privateRoomInfo == null)
+            if (friendChatInfo == null)
             {
                 return (ECode.RoomNotExist, null);
             }
 
-            var room = new PrivateRoom(privateRoomInfo);
+            var room = new FriendChatRoom(friendChatInfo);
 
             await this.server.roomLocationRedisW.WriteLocation(roomId, this.service.serviceId, this.service.sd.saveIntervalS + 60);
 

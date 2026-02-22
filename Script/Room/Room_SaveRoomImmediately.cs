@@ -12,15 +12,24 @@ namespace Script
 
         public override async Task<ECode> Handle(MessageContext context, MsgSaveRoomImmediately msg, ResSaveRoomImmediately res)
         {
-            Room? room = await this.service.LockRoom(msg.roomId, context);
+            Room? room = await this.service.LockRoom<Room>(msg.roomId, context);
             if (room == null)
             {
                 this.service.logger.Error($"{this.msgType} roomId {msg.roomId} room == null");
                 return ECode.RoomNotExist;
             }
 
-            ECode e = await this.service.SaveSceneInfo(room, msg.reason);
-            return e;
+            switch (room.roomType)
+            {
+                case RoomType.Scene:
+                    return await this.service.SaveSceneInfo((SceneRoom)room, msg.reason);
+
+                case RoomType.Private:
+                    return await this.service.SaveFriendChatInfo((FriendChatRoom)room, msg.reason);
+
+                default:
+                    throw new Exception("Not handled RoomType." + room.roomType);
+            }
         }
 
         public override void PostHandle(MessageContext context, MsgSaveRoomImmediately msg, ECode e, ResSaveRoomImmediately res)

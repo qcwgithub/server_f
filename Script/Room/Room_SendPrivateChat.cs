@@ -30,7 +30,7 @@ namespace Script
                 return e;
             }
 
-            var privateRoom = await this.service.LockRoom<PrivateRoom>(msg.roomId, context);
+            var privateRoom = await this.service.LockRoom<FriendChatRoom>(msg.roomId, context);
             if (privateRoom == null)
             {
                 return ECode.RoomNotExist;
@@ -50,7 +50,7 @@ namespace Script
 
             // create message
             var message = new ChatMessage();
-            message.seq = ++privateRoom.privateRoomInfo.seq;
+            message.seq = ++privateRoom.friendChatInfo.seq;
             message.roomId = privateRoom.roomId;
             message.senderId = msg.userId;
             message.senderName = string.Empty;
@@ -74,7 +74,7 @@ namespace Script
             }
 
             // -> other users
-            foreach (PrivateRoomUser user in privateRoom.privateRoomInfo.users)
+            foreach (PrivateRoomUser user in privateRoom.friendChatInfo.users)
             {
                 if (user.userId != msg.userId)
                 {

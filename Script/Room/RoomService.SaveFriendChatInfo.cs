@@ -4,26 +4,26 @@ namespace Script
 {
     public partial class RoomService
     {
-        public async Task<ECode> SavePrivateRoomInfo(PrivateRoom privateRoom, string reason)
+        public async Task<ECode> SaveFriendChatInfo(FriendChatRoom privateRoom, string reason)
         {
             await this.server.roomLocationRedisW.WriteLocation(privateRoom.roomId, this.serviceId, this.sd.saveIntervalS + 60);
 
-            var msgDb = new MsgSave_PrivateRoomInfo
+            var msgDb = new MsgSave_FriendChatInfo
             {
                 roomId = privateRoom.roomId,
-                privateRoomInfoNullable = new PrivateRoomInfoNullable()
+                privateRoomInfoNullable = new FriendChatInfoInfoNullable()
             };
             var infoNullable = msgDb.privateRoomInfoNullable;
 
             List<string>? buffer = null;
-            if (privateRoom.lastPrivateRoomInfo == null)
+            if (privateRoom.lastFriendChatInfo == null)
             {
                 this.logger.Error($"SaveRoom room.lastPrivateRoomInfo == null");
                 return ECode.Error;
             }
 
-            PrivateRoomInfo last = privateRoom.lastPrivateRoomInfo;
-            PrivateRoomInfo curr = privateRoom.privateRoomInfo;
+            FriendChatInfo last = privateRoom.lastFriendChatInfo;
+            FriendChatInfo curr = privateRoom.friendChatInfo;
 
             #region auto
 
@@ -75,13 +75,13 @@ namespace Script
             if (buffer != null)
             {
 #if DEBUG
-                msgDb.privateRoomInfo_debug = PrivateRoomInfo.Ensure(null);
-                msgDb.privateRoomInfo_debug.DeepCopyFrom(curr);
+                msgDb.friendChatInfo_debug = FriendChatInfo.Ensure(null);
+                msgDb.friendChatInfo_debug.DeepCopyFrom(curr);
 #endif
-                var r = await this.dbServiceProxy.Save_PrivateRoomInfo(msgDb);
+                var r = await this.dbServiceProxy.Save_FriendChatInfo(msgDb);
                 if (r.e != ECode.Success)
                 {
-                    this.logger.ErrorFormat("{0} error: {1}, roomId {2}", MsgType._Save_PrivateRoomInfo, r.e, privateRoom.roomId);
+                    this.logger.ErrorFormat("{0} error: {1}, roomId {2}", MsgType._Save_FriendChatInfo, r.e, privateRoom.roomId);
                     return r.e;
                 }
             }

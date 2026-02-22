@@ -4,22 +4,22 @@ namespace Tool
 {
     public partial class Robot
     {
-        public async Task<(ECode, ResEnterRoom)> EnterScene(long roomId)
+        public async Task<(ECode, ResEnterScene)> EnterScene(long roomId)
         {
-            this.Log($"EnterRoom roomId {roomId}");
+            this.Log($"EnterScene roomId {roomId}");
 
             var msg = new MsgEnterScene();
             msg.roomId = roomId;
             msg.lastSeq = 0;
 
             var r = await this.connection.Request(MsgType.EnterScene, msg);
-            this.Log($"EnterRoom result {r.e}");
+            this.Log($"EnterScene result {r.e}");
             if (r.e != ECode.Success)
             {
                 return (r.e, null);
             }
 
-            var res = r.CastRes<ResEnterRoom>();
+            var res = r.CastRes<ResEnterScene>();
             if (res.recentMessages == null)
             {
                 Console.WriteLine("res.recentMessages == null");

@@ -78,8 +78,8 @@ namespace Tool
                     break;
                 }
 
-                ResEnterRoom resEnterRoom;
-                (e, resEnterRoom) = await this.EnterScene(this.resGetRecommendedScenes.sceneInfos[0].roomId);
+                ResEnterScene resEnterScene;
+                (e, resEnterScene) = await this.EnterScene(this.resGetRecommendedScenes.sceneInfos[0].roomId);
                 if (e != ECode.Success)
                 {
                     Console.ReadLine();
@@ -88,9 +88,9 @@ namespace Tool
 
                 this.roomId = this.resGetRecommendedScenes.sceneInfos[0].roomId;
 
-                if (resEnterRoom.recentMessages.Count > 0)
+                if (resEnterScene.recentMessages.Count > 0)
                 {
-                    e = await this.ReportSceneMessage(this.roomId, resEnterRoom.recentMessages[0].seq);
+                    e = await this.ReportSceneMessage(this.roomId, resEnterScene.recentMessages[0].seq);
                     if (e != ECode.Success)
                     {
                         Console.ReadLine();

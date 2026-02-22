@@ -12,7 +12,7 @@ namespace Data
         [BsonIgnoreIfNull]
         public long? timeS;
         [BsonIgnoreIfNull]
-        public long? privateRoomId;
+        public long? roomId;
 
         public bool DeepCopyFrom(FriendInfo other)
         {
@@ -30,8 +30,8 @@ namespace Data
                 empty = false;
             }
 
-            this.privateRoomId = XInfoHelper_Db.Copy_long(other.privateRoomId);
-            if (this.privateRoomId != null)
+            this.roomId = XInfoHelper_Db.Copy_long(other.roomId);
+            if (this.roomId != null)
             {
                 empty = false;
             }

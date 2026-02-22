@@ -34,7 +34,7 @@ namespace Script
 
             FriendInfo friendInfo = userInfo.friends[friendIndex];
 
-            stObjectLocation location = await this.service.roomLocator.GetLocation(friendInfo.privateRoomId);
+            stObjectLocation location = await this.service.roomLocator.GetLocation(friendInfo.roomId);
             if (!location.IsValid())
             {
                 return ECode.RoomLocationNotExist;
@@ -43,7 +43,7 @@ namespace Script
             MyResponse r;
 
             var msgR = new MsgRoomSendPrivateChat();
-            msgR.roomId = friendInfo.privateRoomId;
+            msgR.roomId = friendInfo.roomId;
             msgR.userId = user.userId;
             msgR.type = msg.chatMessageType;
             msgR.content = msg.content;

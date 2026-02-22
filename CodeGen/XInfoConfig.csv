@@ -33,7 +33,7 @@ long_,,,,,seq,,,,,
 @PrivateRoomUser,,,,,,1,1,MemoryChild,,1
 long_,,,,,userId,,,,,
 long_,,,,,joinTimeS,,,,,
-@PrivateRoomInfo,,,,,,1,1,Memory,Room,1
+@FriendChatInfo,,,,,,1,1,Memory,Room,1
 long_,,,,,roomId,,,,,
 long_,,,,,createTimeS,,,,,
 long_,,,,,seq,,,,,
@@ -180,7 +180,7 @@ enum_,FriendRequestResult,,,,result,,,,,
 @FriendInfo,,,,,,1,1,MemoryChild,,1
 long_,,,,,userId,,,,,
 long_,,,,,timeS,,,,,
-long_,,,,,privateRoomId,,,,,
+long_,,,,,roomId,,,,,
 @BlockedUser,,,,,,1,1,MemoryChild,,1
 long_,,,,,userId,,,,,
 long_,,,,,timeS,,,,,

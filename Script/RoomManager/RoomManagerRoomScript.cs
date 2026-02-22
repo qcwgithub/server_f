@@ -33,12 +33,12 @@ namespace Script
             return sceneInfo;
         }
 
-        public async Task<ECode> InsertPrivateSceneInfo(PrivateRoomInfo privateRoomInfo)
+        public async Task<ECode> InsertPrivateSceneInfo(FriendChatInfo privateRoomInfo)
         {
-            var msgDb = new MsgInsert_PrivateRoomInfo();
+            var msgDb = new MsgInsert_FriendChatInfo();
             msgDb.privateRoomInfo = privateRoomInfo;
 
-            var r = await this.service.dbServiceProxy.Insert_PrivateRoomInfo(msgDb);
+            var r = await this.service.dbServiceProxy.Insert_FriendChatInfo(msgDb);
             if (r.e != ECode.Success)
             {
                 this.service.logger.Error($"InsertPrivateSceneInfo({privateRoomInfo.roomId}) r.e {r.e}");
@@ -48,9 +48,9 @@ namespace Script
             return ECode.Success;
         }
 
-        public PrivateRoomInfo NewPrivateRoomInfo(long roomId)
+        public FriendChatInfo NewPrivateRoomInfo(long roomId)
         {
-            var privateRoomInfo = PrivateRoomInfo.Ensure(null);
+            var privateRoomInfo = FriendChatInfo.Ensure(null);
             privateRoomInfo.roomId = roomId;
 
             long nowS = TimeUtils.GetTimeS();

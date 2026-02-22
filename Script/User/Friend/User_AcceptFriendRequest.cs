@@ -51,7 +51,7 @@ namespace Script
             long privateRoomId = 0;
             if (removedFriendIndex >= 0)
             {
-                privateRoomId = userInfo.removedFriends[removedFriendIndex].privateRoomId;
+                privateRoomId = userInfo.removedFriends[removedFriendIndex].roomId;
             }
             else
             {
@@ -67,8 +67,8 @@ namespace Script
                 }
 
                 var resCreateRoom = r.CastRes<ResRoomManagerCreatePrivateRoom>();
-                MyDebug.Assert(resCreateRoom.privateRoomInfo.roomId > 0);
-                privateRoomId = resCreateRoom.privateRoomInfo.roomId;
+                MyDebug.Assert(resCreateRoom.friendChatInfo.roomId > 0);
+                privateRoomId = resCreateRoom.friendChatInfo.roomId;
             }
             MyDebug.Assert(privateRoomId > 0);
 

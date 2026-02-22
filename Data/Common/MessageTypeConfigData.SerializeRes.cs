@@ -263,20 +263,20 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((ResQuery_UserBriefInfo_by_userId)res);
                     break;
 
-                case MsgType._Query_PrivateRoomInfo_by_roomId:
-                    msgBytes = MessagePackSerializer.Serialize((ResQuery_PrivateRoomInfo_by_roomId)res);
+                case MsgType._Query_FriendChatInfo_by_roomId:
+                    msgBytes = MessagePackSerializer.Serialize((ResQuery_FriendChatInfo_by_roomId)res);
                     break;
 
-                case MsgType._Query_PrivateRoomInfo_maxOf_roomId:
-                    msgBytes = MessagePackSerializer.Serialize((ResQuery_PrivateRoomInfo_maxOf_roomId)res);
+                case MsgType._Query_FriendChatInfo_maxOf_roomId:
+                    msgBytes = MessagePackSerializer.Serialize((ResQuery_FriendChatInfo_maxOf_roomId)res);
                     break;
 
-                case MsgType._Insert_PrivateRoomInfo:
-                    msgBytes = MessagePackSerializer.Serialize((ResInsert_PrivateRoomInfo)res);
+                case MsgType._Insert_FriendChatInfo:
+                    msgBytes = MessagePackSerializer.Serialize((ResInsert_FriendChatInfo)res);
                     break;
 
-                case MsgType._Save_PrivateRoomInfo:
-                    msgBytes = MessagePackSerializer.Serialize((ResSave_PrivateRoomInfo)res);
+                case MsgType._Save_FriendChatInfo:
+                    msgBytes = MessagePackSerializer.Serialize((ResSave_FriendChatInfo)res);
                     break;
 
                 case MsgType.ClientStart:

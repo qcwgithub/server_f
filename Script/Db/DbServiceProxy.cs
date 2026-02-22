@@ -87,21 +87,21 @@ namespace Script
         {
             return await this.Request(ServiceType.Db, MsgType._Query_UserBriefInfo_by_userId, msg);
         }
-        public async Task<MyResponse> Query_PrivateRoomInfo_by_roomId(MsgQuery_PrivateRoomInfo_by_roomId msg)
+        public async Task<MyResponse> Query_FriendChatInfo_by_roomId(MsgQuery_FriendChatInfo_by_roomId msg)
         {
-            return await this.Request(ServiceType.Db, MsgType._Query_PrivateRoomInfo_by_roomId, msg);
+            return await this.Request(ServiceType.Db, MsgType._Query_FriendChatInfo_by_roomId, msg);
         }
-        public async Task<MyResponse> Query_PrivateRoomInfo_maxOf_roomId(MsgQuery_PrivateRoomInfo_maxOf_roomId msg)
+        public async Task<MyResponse> Query_FriendChatInfo_maxOf_roomId(MsgQuery_FriendChatInfo_maxOf_roomId msg)
         {
-            return await this.Request(ServiceType.Db, MsgType._Query_PrivateRoomInfo_maxOf_roomId, msg);
+            return await this.Request(ServiceType.Db, MsgType._Query_FriendChatInfo_maxOf_roomId, msg);
         }
-        public async Task<MyResponse> Insert_PrivateRoomInfo(MsgInsert_PrivateRoomInfo msg)
+        public async Task<MyResponse> Insert_FriendChatInfo(MsgInsert_FriendChatInfo msg)
         {
-            return await this.Request(ServiceType.Db, MsgType._Insert_PrivateRoomInfo, msg);
+            return await this.Request(ServiceType.Db, MsgType._Insert_FriendChatInfo, msg);
         }
-        public async Task<MyResponse> Save_PrivateRoomInfo(MsgSave_PrivateRoomInfo msg)
+        public async Task<MyResponse> Save_FriendChatInfo(MsgSave_FriendChatInfo msg)
         {
-            return await this.Request(ServiceType.Db, MsgType._Save_PrivateRoomInfo, msg);
+            return await this.Request(ServiceType.Db, MsgType._Save_FriendChatInfo, msg);
         }
 
         #endregion auto_proxy
