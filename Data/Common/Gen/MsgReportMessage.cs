@@ -8,7 +8,7 @@ namespace Data
         [Key(0)]
         public long roomId;
         [Key(1)]
-        public long messageId;
+        public long seq;
         [Key(2)]
         public MessageReportReason reason;
     }

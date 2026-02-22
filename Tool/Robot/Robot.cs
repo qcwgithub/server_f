@@ -90,7 +90,7 @@ namespace Tool
 
                 if (resEnterRoom.recentMessages.Count > 0)
                 {
-                    e = await this.ReportSceneMessage(this.roomId, resEnterRoom.recentMessages[0].messageId);
+                    e = await this.ReportSceneMessage(this.roomId, resEnterRoom.recentMessages[0].seq);
                     if (e != ECode.Success)
                     {
                         Console.ReadLine();
@@ -116,7 +116,7 @@ namespace Tool
                 //     break;
                 // }
 
-                // (e, resEnterRoom) = await this.EnterRoom(this.roomId, lastMessageId);
+                // (e, resEnterRoom) = await this.EnterRoom(this.roomId, lastSeq);
                 // if (e != ECode.Success)
                 // {
                 //     Console.ReadLine();

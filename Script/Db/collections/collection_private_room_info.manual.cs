@@ -49,12 +49,12 @@ public partial class collection_private_room_info
             updList.Add(upd);
         }
 
-        if (infoNullable.messageId != null)
+        if (infoNullable.seq != null)
         {
-            var messageId_Db = XInfoHelper_Db.Copy_long(infoNullable.messageId.Value);
-            var upd = messageId_Db != null
-                ? Builders<PrivateRoomInfo_Db>.Update.Set(nameof(PrivateRoomInfo_Db.messageId), messageId_Db)
-                : Builders<PrivateRoomInfo_Db>.Update.Unset(nameof(PrivateRoomInfo_Db.messageId));
+            var seq_Db = XInfoHelper_Db.Copy_long(infoNullable.seq.Value);
+            var upd = seq_Db != null
+                ? Builders<PrivateRoomInfo_Db>.Update.Set(nameof(PrivateRoomInfo_Db.seq), seq_Db)
+                : Builders<PrivateRoomInfo_Db>.Update.Unset(nameof(PrivateRoomInfo_Db.seq));
             updList.Add(upd);
         }
 

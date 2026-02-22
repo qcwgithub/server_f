@@ -22,7 +22,7 @@ namespace Script
         public readonly ObjectLocationRedisW roomLocationRedisW;
         public readonly ServiceRuntimeInfoRedisW userServiceRuntimeInfoRedisW;
         public readonly ServiceRuntimeInfoRedisW roomServiceRuntimeInfoRedisW;
-        public readonly RoomMessagesRedis roomMessagesRedis;
+        public readonly SceneMessagesRedis sceneMessagesRedis;
 
         public Server()
         {
@@ -36,7 +36,7 @@ namespace Script
             this.userServiceRuntimeInfoRedisW = new ServiceRuntimeInfoRedisW(this, CommonKey.UserServiceRuntimeInfos());
             this.roomServiceRuntimeInfoRedisW = new ServiceRuntimeInfoRedisW(this, CommonKey.RoomServiceRuntimeInfos());
 
-            this.roomMessagesRedis = new RoomMessagesRedis(this);
+            this.sceneMessagesRedis = new SceneMessagesRedis(this);
         }
 
         int seq;

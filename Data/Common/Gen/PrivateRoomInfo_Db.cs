@@ -12,7 +12,7 @@ namespace Data
         [BsonIgnoreIfNull]
         public long? createTimeS;
         [BsonIgnoreIfNull]
-        public long? messageId;
+        public long? seq;
         [BsonIgnoreIfNull]
         public List<PrivateRoomUser_Db> users;
 
@@ -32,8 +32,8 @@ namespace Data
                 empty = false;
             }
 
-            this.messageId = XInfoHelper_Db.Copy_long(other.messageId);
-            if (this.messageId != null)
+            this.seq = XInfoHelper_Db.Copy_long(other.seq);
+            if (this.seq != null)
             {
                 empty = false;
             }

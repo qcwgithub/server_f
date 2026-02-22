@@ -17,7 +17,7 @@ namespace Data
         [Key(3)]
         public string desc;
         [Key(4)]
-        public long? messageId;
+        public long? seq;
 
         #endregion auto
     }

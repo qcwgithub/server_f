@@ -13,7 +13,7 @@ namespace Data
         [Key(1)]
         public long? createTimeS;
         [Key(2)]
-        public long? messageId;
+        public long? seq;
         [Key(3)]
         public List<PrivateRoomUser> users;
 

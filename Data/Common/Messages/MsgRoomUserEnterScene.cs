@@ -12,7 +12,7 @@ namespace Data
         [Key(2)]
         public int gatewayServiceId;
         [Key(3)]
-        public long lastMessageId;
+        public long lastSeq;
     }
 
     [MessagePackObject]

@@ -12,7 +12,7 @@ namespace Script
 
         public override async Task<ECode> Handle(MessageContext context, MsgReportMessage msg, ResReportMessage res)
         {
-            this.service.logger.Info($"{this.msgType} userId {context.msg_userId} roomId {msg.roomId} messageId {msg.messageId} reason {msg.reason}");
+            this.service.logger.Info($"{this.msgType} userId {context.msg_userId} roomId {msg.roomId} seq {msg.seq} reason {msg.reason}");
 
             User? user = await this.service.LockUser(context.msg_userId, context);
             if (user == null)
@@ -34,18 +34,18 @@ namespace Script
                 return ECode.InvalidParam;
             }
 
-            if (msg.messageId <= 0)
+            if (msg.seq <= 0)
             {
                 return ECode.InvalidParam;
             }
 
-            ChatMessage? message = await this.server.roomMessagesRedis.QueryOne(msg.roomId, msg.messageId);
+            ChatMessage? message = await this.server.sceneMessagesRedis.QueryOne(msg.roomId, msg.seq);
 
             var info = new MessageReportInfo();
             info.reportUserId = user.userId;
             info.targetUserId = message == null ? 0 : message.senderId;
             info.roomId = user.sceneId;
-            info.messageId = msg.messageId;
+            info.seq = msg.seq;
             info.reason = msg.reason;
             info.timeS = TimeUtils.GetTimeS();
 

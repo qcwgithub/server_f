@@ -6,7 +6,7 @@ namespace Data
     public class ChatMessage
     {
         [Key(0)]
-        public long messageId;
+        public long seq;
         [Key(1)]
         public long roomId;
         [Key(2)]

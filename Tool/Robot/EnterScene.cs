@@ -10,7 +10,7 @@ namespace Tool
 
             var msg = new MsgEnterScene();
             msg.roomId = roomId;
-            msg.lastMessageId = 0;
+            msg.lastSeq = 0;
 
             var r = await this.connection.Request(MsgType.EnterScene, msg);
             this.Log($"EnterRoom result {r.e}");
@@ -31,21 +31,21 @@ namespace Tool
                 for (int i = 0; i < res.recentMessages.Count; i++)
                 {
                     var m = res.recentMessages[i];
-                    Console.WriteLine($"recent[{i}] messageId: {m.messageId} {TimeUtils.MillisecondsToDateTime(m.timestamp)} senderId: {m.senderId} content: {m.content}");
+                    Console.WriteLine($"recent[{i}] seq: {m.seq} {TimeUtils.MillisecondsToDateTime(m.timestamp)} senderId: {m.senderId} content: {m.content}");
                 }
 
                 if (res.recentMessages.Count > 0)
                 {
-                    long lastMessageId = res.recentMessages[0].messageId;
-                    while (lastMessageId > 0)
+                    long lastSeq = res.recentMessages[0].seq;
+                    while (lastSeq > 0)
                     {
                         Console.WriteLine();
-                        Console.WriteLine("Requesting scene chat history..., lastMessageId {0}", lastMessageId);
+                        Console.WriteLine("Requesting scene chat history..., lastSeq {0}", lastSeq);
 
                         var msgHistory = new MsgGetSceneChatHistory
                         {
                             roomId = roomId,
-                            lastMessageId = lastMessageId,
+                            lastSeq = lastSeq,
                         };
 
                         r = await this.connection.Request(MsgType.GetSceneChatHistory, msgHistory);
@@ -55,12 +55,12 @@ namespace Tool
                         for (int i = 0; i < resHistory.history.Count; i++)
                         {
                             var m = resHistory.history[i];
-                            Console.WriteLine($"history[{i}] messageId: {m.messageId} {TimeUtils.MillisecondsToDateTime(m.timestamp)} senderId: {m.senderId} content: {m.content}");
+                            Console.WriteLine($"history[{i}] seq: {m.seq} {TimeUtils.MillisecondsToDateTime(m.timestamp)} senderId: {m.senderId} content: {m.content}");
                         }
 
                         if (resHistory.history.Count > 0)
                         {
-                            lastMessageId = resHistory.history[0].messageId;
+                            lastSeq = resHistory.history[0].seq;
                         }
                         else
                         {

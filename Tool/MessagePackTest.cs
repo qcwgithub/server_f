@@ -7,7 +7,7 @@ namespace Tool
     public sealed class ChatMessageOld
     {
         [Key(0)]
-        public long messageId;
+        public long seq;
         // [Key(1)]
         // public long roomId;
         // [Key(2)]
@@ -27,7 +27,7 @@ namespace Tool
     public sealed class ChatMessageMiddle
     {
         [Key(0)]
-        public long messageId;
+        public long seq;
         [Key(1)]
         public long roomId;
         [Key(2)]
@@ -52,7 +52,7 @@ namespace Tool
     public sealed class ChatMessageNew
     {
         [Key(0)]
-        public long messageId;
+        public long seq;
         [Key(1)]
         public long roomId;
         [Key(2)]
@@ -91,15 +91,15 @@ namespace Tool
             // single
             {
                 var middle = new ChatMessageMiddle();
-                middle.messageId = 9999;
+                middle.seq = 9999;
                 middle.roomId = 333;
 
                 var middleBytes = MessagePackSerializer.Serialize(middle);
                 var old = MessagePackSerializer.Deserialize<ChatMessageOld>(middleBytes);
-                Assert(old.messageId == middle.messageId);
+                Assert(old.seq == middle.seq);
 
                 var new_ = MessagePackSerializer.Deserialize<ChatMessageNew>(middleBytes);
-                Assert(new_.messageId == middle.messageId);
+                Assert(new_.seq == middle.seq);
             }
 
             // list
@@ -107,16 +107,16 @@ namespace Tool
                 var middle = new List<ChatMessageMiddle>();
                 middle.Add(new ChatMessageMiddle
                 {
-                    messageId = 9999,
+                    seq = 9999,
                     roomId = 333
                 });
 
                 var middleBytes = MessagePackSerializer.Serialize(middle);
                 var old = MessagePackSerializer.Deserialize<List<ChatMessageOld>>(middleBytes);
-                Assert(old.Count == middle.Count && old[0].messageId == middle[0].messageId);
+                Assert(old.Count == middle.Count && old[0].seq == middle[0].seq);
 
                 var new_ = MessagePackSerializer.Deserialize<List<ChatMessageNew>>(middleBytes);
-                Assert(new_.Count == middle.Count && new_[0].messageId == middle[0].messageId);
+                Assert(new_.Count == middle.Count && new_[0].seq == middle[0].seq);
             }
         }
     }

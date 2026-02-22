@@ -12,7 +12,7 @@ namespace Data
         [Key(2)]
         public long roomId;
         [Key(3)]
-        public long messageId;
+        public long seq;
         [Key(4)]
         public MessageReportReason reason;
         [Key(5)]
@@ -46,7 +46,7 @@ namespace Data
             {
                 return true;
             }
-            if (this.messageId != other.messageId)
+            if (this.seq != other.seq)
             {
                 return true;
             }
@@ -66,7 +66,7 @@ namespace Data
             this.reportUserId = other.reportUserId;
             this.targetUserId = other.targetUserId;
             this.roomId = other.roomId;
-            this.messageId = other.messageId;
+            this.seq = other.seq;
             this.reason = other.reason;
             this.timeS = other.timeS;
         }

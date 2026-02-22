@@ -56,7 +56,7 @@ namespace Script
 
             // create message
             var message = new ChatMessage();
-            message.messageId = ++sceneRoom.sceneInfo.messageId;
+            message.seq = ++sceneRoom.sceneInfo.seq;
             message.roomId = sceneRoom.roomId;
             message.senderId = msg.userId;
             message.senderName = string.Empty;
@@ -72,11 +72,11 @@ namespace Script
             message.imageContent = msg.imageContent;
 
             // -> redis
-            await this.server.roomMessagesRedis.Add(message);
+            await this.server.sceneMessagesRedis.Add(message);
 
-            if (messageConfig.maxMessagesCount != -1 && message.messageId % 100 == 0)
+            if (messageConfig.maxMessagesCount != -1 && message.seq % 100 == 0)
             {
-                await this.server.roomMessagesRedis.Trim(sceneRoom.roomId, messageConfig.maxMessagesCount);
+                await this.server.sceneMessagesRedis.Trim(sceneRoom.roomId, messageConfig.maxMessagesCount);
             }
 
             // -> memory

@@ -67,7 +67,7 @@ namespace Script
             var roomMessageConfig = this.server.data.serverConfig.sceneMessageConfig;
 
             //
-            List<ChatMessage> recents = await this.server.roomMessagesRedis.GetRecents(roomId, roomMessageConfig.recentMessagesCount);
+            List<ChatMessage> recents = await this.server.sceneMessagesRedis.GetRecents(roomId, roomMessageConfig.recentMessagesCount);
             this.service.logger.Info($"LoadRoom recent messages count {recents.Count}");
             foreach (ChatMessage message in recents)
             {

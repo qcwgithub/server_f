@@ -8,6 +8,6 @@ namespace Data
         [Key(0)]
         public long roomId;
         [Key(1)]
-        public long lastMessageId;
+        public long lastSeq;
     }
 }

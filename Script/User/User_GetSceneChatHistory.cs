@@ -12,14 +12,14 @@ namespace Script
 
         public override async Task<ECode> Handle(MessageContext context, MsgGetSceneChatHistory msg, ResGetSceneChatHistory res)
         {
-            this.service.logger.Info($"{this.msgType} userId {context.msg_userId} roomId {msg.roomId} lastMessageId {msg.lastMessageId}");
+            this.service.logger.Info($"{this.msgType} userId {context.msg_userId} roomId {msg.roomId} lastSeq {msg.lastSeq}");
 
             if (msg.roomId <= 0)
             {
                 return ECode.InvalidRoomId;
             }
 
-            if (msg.lastMessageId <= 0)
+            if (msg.lastSeq <= 0)
             {
                 return ECode.InvalidParam;
             }
@@ -36,7 +36,7 @@ namespace Script
             }
 
             var roomMessageConfig = this.server.data.serverConfig.sceneMessageConfig;
-            res.history = await this.server.roomMessagesRedis.GetHistory(msg.roomId, msg.lastMessageId, roomMessageConfig.getHistoryMessageCount);
+            res.history = await this.server.sceneMessagesRedis.GetHistory(msg.roomId, msg.lastSeq, roomMessageConfig.getHistoryMessageCount);
 
             return ECode.Success;
         }

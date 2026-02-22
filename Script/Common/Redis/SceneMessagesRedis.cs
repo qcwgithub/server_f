@@ -4,9 +4,9 @@ using StackExchange.Redis;
 
 namespace Script
 {
-    public class RoomMessagesRedis : ServerScript
+    public class SceneMessagesRedis : ServerScript
     {
-        public RoomMessagesRedis(Server server) : base(server)
+        public SceneMessagesRedis(Server server) : base(server)
         {
 
         }
@@ -27,7 +27,7 @@ namespace Script
             string key = Key(message.roomId);
 
             byte[] bytes = MessagePackSerializer.Serialize(message);
-            await this.GetDb().SortedSetAddAsync(key, bytes, message.messageId);
+            await this.GetDb().SortedSetAddAsync(key, bytes, message.seq);
         }
 
         public async Task Trim(long roomId, int keepCount)
@@ -58,12 +58,12 @@ namespace Script
         }
 
         // 返回值是从旧到新
-        public async Task<List<ChatMessage>> GetHistory(long roomId, long lastMessageId, int count)
+        public async Task<List<ChatMessage>> GetHistory(long roomId, long lastSeq, int count)
         {
             string key = Key(roomId);
             RedisValue[] redisValues = await this.GetDb().SortedSetRangeByScoreAsync(key,
                 start: double.NegativeInfinity,
-                stop: lastMessageId,
+                stop: lastSeq,
                 exclude: Exclude.Stop,
                 order: Order.Descending,
                 take: count);
@@ -76,13 +76,13 @@ namespace Script
             return list;
         }
 
-        public async Task<ChatMessage?> QueryOne(long roomId, long messageId)
+        public async Task<ChatMessage?> QueryOne(long roomId, long seq)
         {
             string key = Key(roomId);
 
             RedisValue[] redisValues = await this.GetDb().SortedSetRangeByScoreAsync(key,
-                start: messageId,
-                stop: messageId,
+                start: seq,
+                stop: seq,
                 exclude: Exclude.None,
                 order: Order.Descending,
                 take: 1);

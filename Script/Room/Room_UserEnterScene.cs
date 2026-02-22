@@ -43,7 +43,7 @@ namespace Script
             res.recentMessages = new List<ChatMessage>();
             foreach (ChatMessage message in sceneRoom.recentMessages)
             {
-                if (msg.lastMessageId < message.messageId)
+                if (msg.lastSeq < message.seq)
                 {
                     res.recentMessages.Add(message);
                 }
