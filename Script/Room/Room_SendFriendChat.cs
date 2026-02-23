@@ -30,14 +30,14 @@ namespace Script
                 return e;
             }
 
-            var privateRoom = await this.service.LockRoom<FriendChatRoom>(msg.roomId, context);
-            if (privateRoom == null)
+            var friendChatRoom = await this.service.LockRoom<FriendChatRoom>(msg.roomId, context);
+            if (friendChatRoom == null)
             {
                 return ECode.RoomNotExist;
             }
 
             long now = TimeUtils.GetTime();
-            e = this.service.chatScript.CheckChatTooFast(privateRoom, messageConfig, msg.userId, now);
+            e = this.service.chatScript.CheckChatTooFast(friendChatRoom, messageConfig, msg.userId, now);
             if (e != ECode.Success)
             {
                 return e;
@@ -46,35 +46,32 @@ namespace Script
             //// ok
 
             // last send
-            this.service.chatScript.WriteChatStamp(privateRoom, messageConfig, msg.userId, now);
+            this.service.chatScript.WriteChatStamp(friendChatRoom, messageConfig, msg.userId, now);
 
             // create message
-            var message = new ChatMessage();
-            message.seq = ++privateRoom.friendChatInfo.seq;
-            message.roomId = privateRoom.roomId;
-            message.senderId = msg.userId;
-            message.senderName = string.Empty;
-            message.senderAvatar = string.Empty;
-            message.type = msg.type;
-            message.content = msg.content;
-            message.timestamp = now;
-            message.replyTo = 0;
-            message.senderName = msg.userName;
-            message.senderAvatarIndex = msg.avatarIndex;
-            message.clientMessageId = msg.clientMessageId;
-            message.status = ChatMessageStatus.Normal;
-            message.imageContent = msg.imageContent;
+            ChatMessage message = RoomChatScript.CreateChatMessage(
+                seq: ++friendChatRoom.friendChatInfo.messageSeq,
+                roomId: friendChatRoom.roomId,
+                senderId: msg.userId,
+                senderName: msg.userName,
+                senderAvatar: string.Empty,
+                type: msg.type,
+                content: msg.content,
+                timestamp: now,
+                replyTo: 0,
+                senderAvatarIndex: msg.avatarIndex,
+                clientMessageId: msg.clientMessageId,
+                status: ChatMessageStatus.Normal,
+                imageContent: msg.imageContent,
+                messageId: this.service.messageIdSnowflakeScript.NextMessageId()
+            );
 
             // -> redis
-            await this.server.sceneMessagesRedis.Add(message);
+            await this.server.friendChatMessagesRedis.Add(message);
 
-            if (messageConfig.maxMessagesCount != -1 && message.seq % 100 == 0)
-            {
-                await this.server.sceneMessagesRedis.Trim(privateRoom.roomId, messageConfig.maxMessagesCount);
-            }
-
-            // -> other users
-            foreach (PrivateRoomUser user in privateRoom.friendChatInfo.users)
+            // -> broadcast
+            // TODO Not one-by-one
+            foreach (PrivateRoomUser user in friendChatRoom.friendChatInfo.users)
             {
                 if (user.userId != msg.userId)
                 {

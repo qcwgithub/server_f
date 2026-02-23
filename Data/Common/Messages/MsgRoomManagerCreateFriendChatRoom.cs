@@ -3,14 +3,14 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class MsgRoomManagerCreatePrivateRoom
+    public class MsgRoomManagerCreateFriendChatRoom
     {
         [Key(0)]
-        public List<long> participants;
+        public List<long> userIds;
     }
 
     [MessagePackObject]
-    public class ResRoomManagerCreatePrivateRoom
+    public class ResRoomManagerCreateFriendChatRoom
     {
         [Key(0)]
         public FriendChatInfo friendChatInfo;

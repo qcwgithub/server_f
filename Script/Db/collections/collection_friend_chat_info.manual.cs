@@ -49,12 +49,12 @@ public partial class collection_friend_chat_info
             updList.Add(upd);
         }
 
-        if (infoNullable.seq != null)
+        if (infoNullable.messageSeq != null)
         {
-            var seq_Db = XInfoHelper_Db.Copy_long(infoNullable.seq.Value);
-            var upd = seq_Db != null
-                ? Builders<FriendChatInfo_Db>.Update.Set(nameof(FriendChatInfo_Db.seq), seq_Db)
-                : Builders<FriendChatInfo_Db>.Update.Unset(nameof(FriendChatInfo_Db.seq));
+            var messageSeq_Db = XInfoHelper_Db.Copy_long(infoNullable.messageSeq.Value);
+            var upd = messageSeq_Db != null
+                ? Builders<FriendChatInfo_Db>.Update.Set(nameof(FriendChatInfo_Db.messageSeq), messageSeq_Db)
+                : Builders<FriendChatInfo_Db>.Update.Unset(nameof(FriendChatInfo_Db.messageSeq));
             updList.Add(upd);
         }
 

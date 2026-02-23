@@ -45,7 +45,7 @@ namespace Data
         _Room_SendFriendChat = 609,
         _RoomManager_LoadRoom = 800,
         _RoomManager_ImportRoomConfig = 801,
-        _RoomManager_CreatePrivateRoom = 802,
+        _RoomManager_CreateFriendChatRoom = 802,
         _Save_AccountInfo = 5000,
         _Query_AccountInfo_byElementOf_userIds = 5001,
         _Query_AccountInfo_by_channelUserId = 5002,

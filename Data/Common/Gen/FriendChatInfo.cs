@@ -10,7 +10,7 @@ namespace Data
         [Key(1)]
         public long createTimeS;
         [Key(2)]
-        public long seq;
+        public long messageSeq;
         [Key(3)]
         public List<PrivateRoomUser> users;
 
@@ -46,7 +46,7 @@ namespace Data
             {
                 return true;
             }
-            if (this.seq != other.seq)
+            if (this.messageSeq != other.messageSeq)
             {
                 return true;
             }
@@ -61,7 +61,7 @@ namespace Data
         {
             this.roomId = other.roomId;
             this.createTimeS = other.createTimeS;
-            this.seq = other.seq;
+            this.messageSeq = other.messageSeq;
             this.users.DeepCopyFrom_ListClass(other.users);
         }
     }

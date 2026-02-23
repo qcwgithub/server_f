@@ -38,6 +38,7 @@ namespace Data
         public int saveIntervalS = 60;
         public bool allowNewRoom;
 
+        public readonly SnowflakeData messageIdSnowflakeData;
         public readonly ObjectLocatorData userLocatorData;
         //------------------------------------------------------
 
@@ -55,6 +56,7 @@ namespace Data
             this.LoadConfigs();
 
             this.allowNewRoom = true;
+            this.messageIdSnowflakeData = new SnowflakeData();
             this.userLocatorData = new ObjectLocatorData();
         }
 

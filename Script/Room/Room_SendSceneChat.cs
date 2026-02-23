@@ -55,21 +55,22 @@ namespace Script
             this.service.chatScript.WriteChatStamp(sceneRoom, messageConfig, msg.userId, now);
 
             // create message
-            var message = new ChatMessage();
-            message.seq = ++sceneRoom.sceneInfo.seq;
-            message.roomId = sceneRoom.roomId;
-            message.senderId = msg.userId;
-            message.senderName = string.Empty;
-            message.senderAvatar = string.Empty;
-            message.type = msg.type;
-            message.content = msg.content;
-            message.timestamp = now;
-            message.replyTo = 0;
-            message.senderName = msg.userName;
-            message.senderAvatarIndex = msg.avatarIndex;
-            message.clientMessageId = msg.clientMessageId;
-            message.status = ChatMessageStatus.Normal;
-            message.imageContent = msg.imageContent;
+            ChatMessage message = RoomChatScript.CreateChatMessage(
+                seq: ++sceneRoom.sceneInfo.messageSeq,
+                roomId: sceneRoom.roomId,
+                senderId: msg.userId,
+                senderName: msg.userName,
+                senderAvatar: string.Empty,
+                type: msg.type,
+                content: msg.content,
+                timestamp: now,
+                replyTo: 0,
+                senderAvatarIndex: msg.avatarIndex,
+                clientMessageId: msg.clientMessageId,
+                status: ChatMessageStatus.Normal,
+                imageContent: msg.imageContent,
+                messageId: this.service.messageIdSnowflakeScript.NextMessageId()
+            );
 
             // -> redis
             await this.server.sceneMessagesRedis.Add(message);
@@ -80,15 +81,13 @@ namespace Script
             }
 
             // -> memory
-
             sceneRoom.recentMessages.Enqueue(message);
             while (sceneRoom.recentMessages.Count > messageConfig.recentMessagesCount)
             {
                 sceneRoom.recentMessages.Dequeue();
             }
 
-            // -> other users
-
+            // -> broadcast
             Dictionary<int, List<SceneRoomUser>> dict = sceneRoom.userDict
                 .GroupBy(pair => pair.Value.gatewayServiceId, pair => pair.Value)
                 .ToDictionary(group => group.Key, group => group.ToList());

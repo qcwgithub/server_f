@@ -85,12 +85,12 @@ public partial class collection_scene_info
             updList.Add(upd);
         }
 
-        if (infoNullable.seq != null)
+        if (infoNullable.messageSeq != null)
         {
-            var seq_Db = XInfoHelper_Db.Copy_long(infoNullable.seq.Value);
-            var upd = seq_Db != null
-                ? Builders<SceneInfo_Db>.Update.Set(nameof(SceneInfo_Db.seq), seq_Db)
-                : Builders<SceneInfo_Db>.Update.Unset(nameof(SceneInfo_Db.seq));
+            var messageSeq_Db = XInfoHelper_Db.Copy_long(infoNullable.messageSeq.Value);
+            var upd = messageSeq_Db != null
+                ? Builders<SceneInfo_Db>.Update.Set(nameof(SceneInfo_Db.messageSeq), messageSeq_Db)
+                : Builders<SceneInfo_Db>.Update.Unset(nameof(SceneInfo_Db.messageSeq));
             updList.Add(upd);
         }
 

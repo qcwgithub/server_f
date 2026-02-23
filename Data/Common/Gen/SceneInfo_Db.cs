@@ -16,7 +16,7 @@ namespace Data
         [BsonIgnoreIfNull]
         public string desc;
         [BsonIgnoreIfNull]
-        public long? seq;
+        public long? messageSeq;
 
         public bool DeepCopyFrom(SceneInfo other)
         {
@@ -46,8 +46,8 @@ namespace Data
                 empty = false;
             }
 
-            this.seq = XInfoHelper_Db.Copy_long(other.seq);
-            if (this.seq != null)
+            this.messageSeq = XInfoHelper_Db.Copy_long(other.messageSeq);
+            if (this.messageSeq != null)
             {
                 empty = false;
             }

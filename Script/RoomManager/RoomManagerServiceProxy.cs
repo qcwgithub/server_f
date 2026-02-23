@@ -18,9 +18,9 @@ namespace Script
         {
             return await this.Request(ServiceType.RoomManager, MsgType._RoomManager_ImportRoomConfig, msg);
         }
-        public async Task<MyResponse> CreatePrivateRoom(MsgRoomManagerCreatePrivateRoom msg)
+        public async Task<MyResponse> CreateFriendChatRoom(MsgRoomManagerCreateFriendChatRoom msg)
         {
-            return await this.Request(ServiceType.RoomManager, MsgType._RoomManager_CreatePrivateRoom, msg);
+            return await this.Request(ServiceType.RoomManager, MsgType._RoomManager_CreateFriendChatRoom, msg);
         }
 
         #endregion auto_proxy

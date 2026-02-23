@@ -48,7 +48,7 @@ _Room_SendFriendChat,609,MsgRoomSendFriendChat,ResRoomSendFriendChat,1,1
 #,,,,,
 _RoomManager_LoadRoom,800,MsgRoomManagerLoadRoom,ResRoomManagerLoadRoom,1,0
 _RoomManager_ImportRoomConfig,801,MsgRoomManagerImportRoomConfig,ResRoomManagerImportRoomConfig,1,0
-_RoomManager_CreatePrivateRoom,802,MsgRoomManagerCreatePrivateRoom,ResRoomManagerCreatePrivateRoom,1,
+_RoomManager_CreateFriendChatRoom,802,MsgRoomManagerCreateFriendChatRoom,ResRoomManagerCreateFriendChatRoom,1,
 #,,,,,
 #,,,,,
 _Save_AccountInfo,5000,MsgSave_AccountInfo,ResSave_AccountInfo,1,0

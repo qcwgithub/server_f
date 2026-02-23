@@ -14,7 +14,7 @@ namespace Data
         [Key(3)]
         public string desc;
         [Key(4)]
-        public long seq;
+        public long messageSeq;
 
         public static SceneInfo Ensure(SceneInfo? p)
         {
@@ -56,7 +56,7 @@ namespace Data
             {
                 return true;
             }
-            if (this.seq != other.seq)
+            if (this.messageSeq != other.messageSeq)
             {
                 return true;
             }
@@ -69,7 +69,7 @@ namespace Data
             this.createTimeS = other.createTimeS;
             this.title = other.title;
             this.desc = other.desc;
-            this.seq = other.seq;
+            this.messageSeq = other.messageSeq;
         }
     }
 }

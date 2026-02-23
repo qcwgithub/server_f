@@ -19,5 +19,7 @@ namespace Data
             this.lastFriendChatInfo = FriendChatInfo.Ensure(null);
             this.lastFriendChatInfo.DeepCopyFrom(this.friendChatInfo);
         }
+
+        public readonly List<ChatMessage> recentMessages = new();
     }
 }

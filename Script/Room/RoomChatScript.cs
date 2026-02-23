@@ -168,5 +168,39 @@ namespace Script
             sendChatTimestamps.RemoveAll(ts => now - ts >= messageConfig.periodMs);
             sendChatTimestamps.Add(now);
         }
+
+        public static ChatMessage CreateChatMessage(
+            long seq,
+            long roomId,
+            long senderId,
+            string senderName,
+            string senderAvatar,
+            ChatMessageType type,
+            string content,
+            long timestamp,
+            long replyTo,
+            int senderAvatarIndex,
+            long clientMessageId,
+            ChatMessageStatus status,
+            ChatMessageImageContent? imageContent,
+            long messageId)
+        {
+            var message = new ChatMessage();
+            message.seq = seq;
+            message.roomId = roomId;
+            message.senderId = senderId;
+            message.senderName = senderName;
+            message.senderAvatar = senderAvatar;
+            message.type = type;
+            message.content = content;
+            message.timestamp = timestamp;
+            message.replyTo = replyTo;
+            message.senderAvatarIndex = senderAvatarIndex;
+            message.clientMessageId = clientMessageId;
+            message.status = status;
+            message.imageContent = imageContent;
+            message.messageId = messageId;
+            return message;
+        }
     }
 }

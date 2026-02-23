@@ -21,13 +21,34 @@ namespace Script
             return RoomKey.Messages(roomId);
         }
 
+        bool logPrecisionError = true;
+        double ConvertSeqToScore(ChatMessage message)
+        {
+            double score = message.seq;
+            if (!logPrecisionError)
+            {
+                return score;
+            }
+
+            // Check precision loss, 2^53
+            long seq2 = (long)score;
+            if (seq2 != message.seq)
+            {
+                logPrecisionError = false;
+                this.server.services[0].logger.Error($"Redis score precision loss, roomId {message.roomId} seq {message.seq}");
+            }
+
+            return score;
+        }
+
         public async Task Add(ChatMessage message)
         {
             MyDebug.Assert(message.roomId > 0);
             string key = Key(message.roomId);
 
             byte[] bytes = MessagePackSerializer.Serialize(message);
-            await this.GetDb().SortedSetAddAsync(key, bytes, message.seq);
+            double score = ConvertSeqToScore(message);
+            await this.GetDb().SortedSetAddAsync(key, bytes, score);
         }
 
         public async Task Trim(long roomId, int keepCount)

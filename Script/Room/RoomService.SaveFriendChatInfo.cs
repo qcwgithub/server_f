@@ -41,12 +41,12 @@ namespace Script
                 if (buffer == null) buffer = new List<string>();
                 buffer.Add("createTimeS");
             }
-            if (last.seq != curr.seq)
+            if (last.messageSeq != curr.messageSeq)
             {
-                infoNullable.seq = curr.seq;
-                last.seq = curr.seq;
+                infoNullable.messageSeq = curr.messageSeq;
+                last.messageSeq = curr.messageSeq;
                 if (buffer == null) buffer = new List<string>();
-                buffer.Add("seq");
+                buffer.Add("messageSeq");
             }
             if (last.users.IsDifferent_ListClass(curr.users))
             {

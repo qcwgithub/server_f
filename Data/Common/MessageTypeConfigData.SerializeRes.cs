@@ -187,8 +187,8 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((ResRoomManagerImportRoomConfig)res);
                     break;
 
-                case MsgType._RoomManager_CreatePrivateRoom:
-                    msgBytes = MessagePackSerializer.Serialize((ResRoomManagerCreatePrivateRoom)res);
+                case MsgType._RoomManager_CreateFriendChatRoom:
+                    msgBytes = MessagePackSerializer.Serialize((ResRoomManagerCreateFriendChatRoom)res);
                     break;
 
                 case MsgType._Save_AccountInfo:
