@@ -4,9 +4,9 @@ using StackExchange.Redis;
 
 namespace Script
 {
-    public class FriendChatMessagesRedis : ServerScript
+    public class UserFriendChatInBoxRedis : ServerScript
     {
-        public FriendChatMessagesRedis(Server server) : base(server)
+        public UserFriendChatInBoxRedis(Server server) : base(server)
         {
 
         }
@@ -18,10 +18,10 @@ namespace Script
 
         string Key(long roomId)
         {
-            return RoomKey.Messages(roomId);
+            return UserKey.FriendChatInBox(roomId);
         }
 
-        public async Task Add(ChatMessage message)
+        public async Task Add(UserFriendChatInBoxItem item)
         {
             MyDebug.Assert(message.roomId > 0);
             string key = Key(message.roomId);
@@ -29,7 +29,7 @@ namespace Script
             byte[] bytes = MessagePackSerializer.Serialize(message);
             await Task.WhenAll(
                 this.GetDb().ListRightPushAsync(key, bytes),
-                this.server.persistence_taskQueueRedis.RPushToTaskQueue(0/* ! */, DirtyElementManual.FriendChatMessagesEncode(message.roomId))
+                this.server.persistence_taskQueueRedis.RPushToTaskQueue(0, DirtyElementManual.FriendChatMessagesEncode(message.roomId))
             );
         }
 

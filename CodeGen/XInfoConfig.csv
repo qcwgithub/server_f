@@ -208,3 +208,7 @@ class_,FriendInfo,,,,removedFriendInfo,,,,,
 hashset_,long_,,,,userIds,,,,,
 @ResGetUserBriefInfos,,,,,,,,,,1
 list_,class_,UserBriefInfo,,,userBriefInfos,,,,,
+@UserFriendChatState,,,,,,,,,,
+long_,,,,,userId,,,,,
+long_,,,,,roomId,,,,,
+long_,,,,,messageId,,,,,

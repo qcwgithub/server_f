@@ -32,7 +32,7 @@ namespace Script
         //// AUTO CREATED ////
         protected override RedisKey Key(long userId, int _2 = 0)
         {
-            return UserKey.UserBriefInfo(userId);
+            return UserKey.BriefInfo(userId);
         }
 
         //// AUTO CREATED ////
