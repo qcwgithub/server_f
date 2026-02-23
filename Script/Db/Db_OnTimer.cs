@@ -16,6 +16,11 @@ namespace Script
             {
                 case TimerType.Persistence:
                     e = await this.service.Persistence(false);
+
+                    if (this.service.data.state < ServiceState.ShuttingDown)
+                    {
+                        this.service.sd.timer_persistence_taskQueueHandler_Loop = this.server.timerScript.SetTimer(this.service.serviceId, 1,  TimerType.Persistence, null);
+                    }
                     break;
 
                 default:

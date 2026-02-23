@@ -213,7 +213,25 @@ namespace Script
             // this.logger.InfoFormat("PersistenceScript taskQueue {0} save {1}", taskQueue, dirtyElement);
 
             ECode err;
-            bool putBack = false;
+            bool putBack;
+
+            if (dirtyElement.StartsWith(DirtyElementManual.FriendChatMessagesPrefix))
+            {
+                if (!DirtyElementManual.FriendChatMessageDecode(this.logger, dirtyElement, out long roomId))
+                {
+                    return new stPersistenceResult { taskQueue = taskQueue, dirtyElement = dirtyElement, e = ECode.Exception, putBack = true };
+                }
+
+                (err, putBack) = await this.SaveFriendChatMessages(roomId);
+
+                return new stPersistenceResult
+                {
+                    taskQueue = taskQueue,
+                    dirtyElement = dirtyElement,
+                    e = err,
+                    putBack = putBack
+                };
+            }
 
             stDirtyElement element = stDirtyElement.FromString(dirtyElement);
 

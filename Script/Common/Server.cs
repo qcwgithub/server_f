@@ -23,6 +23,7 @@ namespace Script
         public readonly ServiceRuntimeInfoRedisW userServiceRuntimeInfoRedisW;
         public readonly ServiceRuntimeInfoRedisW roomServiceRuntimeInfoRedisW;
         public readonly SceneMessagesRedis sceneMessagesRedis;
+        public readonly FriendChatMessagesRedis friendChatMessagesRedis;
 
         public Server()
         {

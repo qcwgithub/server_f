@@ -28,6 +28,8 @@ namespace Script
 
         #endregion auto_collection_var_decl
 
+        public collection_friend_chat_message collection_friend_chat_message;
+
         public DbService(Server server, int serviceId) : base(server, serviceId)
         {
             this.lockController = new LockController(this.server, this, this.sd.lockControllerData, DbKey.TakeLockControl(), DbKey.LockedHash(), DbKey.LockPrefix());
@@ -46,6 +48,8 @@ namespace Script
             this.collection_friend_chat_info = new collection_friend_chat_info(server, this);
 
             #endregion auto_collection_var_create
+
+            this.collection_friend_chat_message = new collection_friend_chat_message(server, this);
         }
 
         public override void Attach()

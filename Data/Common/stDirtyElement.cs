@@ -6,7 +6,22 @@ namespace Data
 {
     public static class DirtyElementManual
     {
-        
+        //
+        public const string FriendChatMessagesPrefix = "manual:friendChatMessages:roomId:";
+        public static string FriendChatMessagesEncode(long roomId)
+        {
+            return FriendChatMessagesPrefix + roomId;
+        }
+        public static bool FriendChatMessageDecode(log4net.ILog logger, string str, out long roomId)
+        {
+            string sub = str.Substring(FriendChatMessagesPrefix.Length);
+            if (!long.TryParse(sub, out roomId))
+            {
+                logger.Fatal($"FriendChatMessageDecode error1, str {str}");
+                return false;
+            }
+            return true;
+        }
     }
 
     [MessagePackObject]
