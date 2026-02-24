@@ -15,7 +15,7 @@ namespace Script
         {
             this.service.logger.Info($"{this.msgType} participants {JsonUtils.stringify(msg.userIds)}");
 
-            if (msg.userIds == null || msg.userIds.Count < 2)
+            if (msg.userIds == null || msg.userIds.Count != 2)
             {
                 return ECode.InvalidParam;
             }

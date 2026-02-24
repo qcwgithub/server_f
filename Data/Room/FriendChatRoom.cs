@@ -10,6 +10,13 @@ namespace Data
             this.friendChatInfo = friendChatInfo;
         }
 
+        public long GetOtherUserId(long userId)
+        {
+            return this.friendChatInfo.users[0].userId == userId
+                ? this.friendChatInfo.users[1].userId
+                : this.friendChatInfo.users[0].userId;
+        }
+
         public FriendChatInfo? lastFriendChatInfo;
         public override void OnAddedToDict()
         {

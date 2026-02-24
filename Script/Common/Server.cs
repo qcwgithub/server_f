@@ -23,7 +23,8 @@ namespace Script
         public readonly ServiceRuntimeInfoRedisW userServiceRuntimeInfoRedisW;
         public readonly ServiceRuntimeInfoRedisW roomServiceRuntimeInfoRedisW;
         public readonly SceneMessagesRedis sceneMessagesRedis;
-        public readonly FriendChatMessagesRedis friendChatMessagesRedis;
+        public readonly FriendChatMessagesInBoxRedis friendChatMessagesInBoxRedis;
+        public readonly UserFriendChatInBoxRedis userFriendChatInBoxRedis;
 
         public Server()
         {
@@ -38,6 +39,8 @@ namespace Script
             this.roomServiceRuntimeInfoRedisW = new ServiceRuntimeInfoRedisW(this, CommonKey.RoomServiceRuntimeInfos());
 
             this.sceneMessagesRedis = new SceneMessagesRedis(this);
+            this.friendChatMessagesInBoxRedis = new FriendChatMessagesInBoxRedis(this);
+            this.userFriendChatInBoxRedis = new UserFriendChatInBoxRedis(this);
         }
 
         int seq;

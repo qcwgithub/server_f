@@ -31,7 +31,5 @@ namespace Data
         public ChatMessageStatus status;
         [Key(12)]
         public ChatMessageImageContent? imageContent;
-        [Key(13)]
-        public long messageId;
     }
 }

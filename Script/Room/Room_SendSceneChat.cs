@@ -55,8 +55,9 @@ namespace Script
             this.service.chatScript.WriteChatStamp(sceneRoom, messageConfig, msg.userId, now);
 
             // create message
+            long seq = ++sceneRoom.sceneInfo.messageSeq;
             ChatMessage message = RoomChatScript.CreateChatMessage(
-                seq: ++sceneRoom.sceneInfo.messageSeq,
+                seq: seq,
                 roomId: sceneRoom.roomId,
                 senderId: msg.userId,
                 senderName: msg.userName,
@@ -68,8 +69,7 @@ namespace Script
                 senderAvatarIndex: msg.avatarIndex,
                 clientMessageId: msg.clientMessageId,
                 status: ChatMessageStatus.Normal,
-                imageContent: msg.imageContent,
-                messageId: this.service.messageIdSnowflakeScript.NextMessageId()
+                imageContent: msg.imageContent
             );
 
             // -> redis

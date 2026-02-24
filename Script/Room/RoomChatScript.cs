@@ -182,8 +182,7 @@ namespace Script
             int senderAvatarIndex,
             long clientMessageId,
             ChatMessageStatus status,
-            ChatMessageImageContent? imageContent,
-            long messageId)
+            ChatMessageImageContent? imageContent)
         {
             var message = new ChatMessage();
             message.seq = seq;
@@ -199,7 +198,6 @@ namespace Script
             message.clientMessageId = clientMessageId;
             message.status = status;
             message.imageContent = imageContent;
-            message.messageId = messageId;
             return message;
         }
     }

@@ -1,9 +1,11 @@
+using System.Data.Common;
 using Data;
 using MessagePack;
 using StackExchange.Redis;
 
 namespace Script
 {
+    // 短时间停留 Redis
     public class UserFriendChatInBoxRedis : ServerScript
     {
         public UserFriendChatInBoxRedis(Server server) : base(server)
@@ -16,32 +18,36 @@ namespace Script
             return this.server.data.redis_db;
         }
 
-        string Key(long roomId)
+        string Key(long userId)
         {
-            return UserKey.FriendChatInBox(roomId);
+            return UserKey.FriendChatInBox(userId);
         }
 
-        public async Task Add(UserFriendChatInBoxItem item)
+        public async Task Add(long userId, long roomId)
         {
-            MyDebug.Assert(message.roomId > 0);
-            string key = Key(message.roomId);
-
-            byte[] bytes = MessagePackSerializer.Serialize(message);
             await Task.WhenAll(
-                this.GetDb().ListRightPushAsync(key, bytes),
-                this.server.persistence_taskQueueRedis.RPushToTaskQueue(0, DirtyElementManual.FriendChatMessagesEncode(message.roomId))
+                // roomId -> unread
+                this.GetDb().HashIncrementAsync(Key(userId), roomId),
+                // TODO 能不能只是 hash++，好像不行，有个顺序问题，先改的要先保存
+                this.server.persistence_taskQueueRedis.RPushToTaskQueue(0/* ! */, DirtyElementManual.UserFriendChatInBoxEncode(userId))
             );
         }
 
-        public async Task<ChatMessage[]> GetAll(long roomId)
+        // (roomId, unread)[]
+        public async Task<(long, int)[]> GetAll(long userId)
         {
-            RedisValue[] redisValues = await this.GetDb().ListRangeAsync(Key(roomId), 0, -1);
-            return redisValues.Select(x => MessagePackSerializer.Deserialize<ChatMessage>(x)).ToArray();
+            HashEntry[] hashEntries = await this.GetDb().HashGetAllAsync(Key(userId));
+            return hashEntries.Select(entry => ((long)entry.Name, (int)entry.Value)).ToArray();
         }
 
-        public async Task Trim(long roomId, int count)
+        public async Task Trim(long userId, (long, int)[] roomCounts)
         {
-            await this.GetDb().ListTrimAsync(Key(roomId), 0, count - 1);
+            RedisKey key = Key(userId);
+            await Task.WhenAll(roomCounts.Select(x =>
+            {
+                (long roomId, int count) = x;
+                return this.GetDb().HashDecrementAsync(key, roomId, count);
+            }));
         }
     }
 }

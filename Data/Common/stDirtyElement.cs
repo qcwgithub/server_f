@@ -7,7 +7,7 @@ namespace Data
     public static class DirtyElementManual
     {
         //
-        public const string FriendChatMessagesPrefix = "manual:friendChatMessages:roomId:";
+        public const string FriendChatMessagesPrefix = "manual:friendChatMessages:";
         public static string FriendChatMessagesEncode(long roomId)
         {
             return FriendChatMessagesPrefix + roomId;
@@ -18,6 +18,23 @@ namespace Data
             if (!long.TryParse(sub, out roomId))
             {
                 logger.Fatal($"FriendChatMessageDecode error1, str {str}");
+                return false;
+            }
+            return true;
+        }
+
+        //
+        public const string UserFriendChatInBoxPrefix = "manual:userFriendChatInBox:";
+        public static string UserFriendChatInBoxEncode(long userId)
+        {
+            return UserFriendChatInBoxPrefix + userId;
+        }
+        public static bool UserFriendChatInBoxDecode(log4net.ILog logger, string str, out long userId)
+        {
+            string sub = str.Substring(UserFriendChatInBoxPrefix.Length);
+            if (!long.TryParse(sub, out userId))
+            {
+                logger.Fatal($"UserFriendChatInBoxDecode error1, str {str}");
                 return false;
             }
             return true;

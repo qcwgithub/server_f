@@ -4,9 +4,10 @@ using StackExchange.Redis;
 
 namespace Script
 {
-    public class FriendChatMessagesRedis : ServerScript
+    // 短时间停留 Redis
+    public class FriendChatMessagesInBoxRedis : ServerScript
     {
-        public FriendChatMessagesRedis(Server server) : base(server)
+        public FriendChatMessagesInBoxRedis(Server server) : base(server)
         {
 
         }

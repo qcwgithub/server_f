@@ -49,9 +49,10 @@ namespace Script
             this.service.chatScript.WriteChatStamp(friendChatRoom, messageConfig, msg.userId, now);
 
             // create message
+            long seq = ++friendChatRoom.friendChatInfo.messageSeq;
             ChatMessage message = RoomChatScript.CreateChatMessage(
-                seq: ++friendChatRoom.friendChatInfo.messageSeq,
-                roomId: friendChatRoom.roomId,
+                seq: seq,
+                roomId: msg.roomId,
                 senderId: msg.userId,
                 senderName: msg.userName,
                 senderAvatar: string.Empty,
@@ -62,29 +63,25 @@ namespace Script
                 senderAvatarIndex: msg.avatarIndex,
                 clientMessageId: msg.clientMessageId,
                 status: ChatMessageStatus.Normal,
-                imageContent: msg.imageContent,
-                messageId: this.service.messageIdSnowflakeScript.NextMessageId()
+                imageContent: msg.imageContent
             );
 
+            long friendUserId = friendChatRoom.GetOtherUserId(msg.userId);
+
             // -> redis
-            await this.server.friendChatMessagesRedis.Add(message);
+            await Task.WhenAll(
+                this.server.friendChatMessagesInBoxRedis.Add(message),
+                this.server.userFriendChatInBoxRedis.Add(friendUserId, msg.roomId));
 
             // -> broadcast
-            // TODO Not one-by-one
-            foreach (PrivateRoomUser user in friendChatRoom.friendChatInfo.users)
+            stObjectLocation location = await this.service.userLocator.GetLocation(friendUserId);
+            if (location.IsValid())
             {
-                if (user.userId != msg.userId)
+                await this.service.userServiceProxy.ReceiveChatMessage(location.serviceId, new MsgReceiveChatMessage
                 {
-                    stObjectLocation location = await this.service.userLocator.GetLocation(user.userId);
-                    if (location.IsValid())
-                    {
-                        await this.service.userServiceProxy.ReceiveChatMessage(location.serviceId, new MsgReceiveChatMessage
-                        {
-                            userId = user.userId,
-                            message = message,
-                        });
-                    }
-                }
+                    userId = friendUserId,
+                    message = message,
+                });
             }
 
             return ECode.Success;
