@@ -73,6 +73,9 @@ _Query_FriendChatInfo_by_roomId,5018,MsgQuery_FriendChatInfo_by_roomId,ResQuery_
 _Query_FriendChatInfo_maxOf_roomId,5019,MsgQuery_FriendChatInfo_maxOf_roomId,ResQuery_FriendChatInfo_maxOf_roomId,1,0
 _Insert_FriendChatInfo,5020,MsgInsert_FriendChatInfo,ResInsert_FriendChatInfo,1,0
 _Save_FriendChatInfo,5021,MsgSave_FriendChatInfo,ResSave_FriendChatInfo,1,0
+_Save_UserFriendChatState,5022,MsgSave_UserFriendChatState,ResSave_UserFriendChatState,1,0
+_Query_UserFriendChatState_by_userId,5023,MsgQuery_UserFriendChatState_by_userId,ResQuery_UserFriendChatState_by_userId,1,0
+_Query_FriendChatMessages_by_roomId_readSeqs,5024,MsgQuery_FriendChatMessages_by_roomId_readSeqs,ResQuery_FriendChatMessages_by_roomId_readSeqs,1,0
 #,,,,,
 ClientStart,10000,,,,
 Forward,10001,MsgForward,,,
@@ -101,4 +104,7 @@ AOtherRejectFriendRequest,10023,MsgAOtherRejectFriendRequest,,,
 ARemoveFriend,10024,MsgARemoveFriend,,,
 GetUserBriefInfos,10025,MsgGetUserBriefInfos,ResGetUserBriefInfos,,
 SendFriendChat,10026,MsgSendFriendChat,ResSendFriendChat,,
-Count,10027,,,,
+GetFriendChatUnreadMessages,10027,MsgGetFriendChatUnreadMessages,ResGetFriendChatUnreadMessages,,
+AckFriendChatReadSeq1,10028,MsgAckFriendChatReadSeq1,ResAckFriendChatReadSeq1,,
+AckFriendChatReadSeqN,10029,MsgAckFriendChatReadSeqN,ResAckFriendChatReadSeqN,,
+Count,10030,,,,

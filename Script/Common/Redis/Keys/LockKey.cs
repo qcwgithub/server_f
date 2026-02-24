@@ -11,6 +11,7 @@ namespace Script
         {
             public static string AccountInfo(string channel, string channelUserId) => "lock:mongoLoad:accountInfo:" + channel + ":" + channelUserId;
             public static string UserBriefInfo(long userId) => "lock:mongoLoad:userBriefInfo:" + userId;
+            public static string UserFriendChatState(long userId) => "lock:mongoLoad:userFriendChatState:" + userId;
         }
     }
 }

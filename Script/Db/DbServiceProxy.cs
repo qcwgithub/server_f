@@ -103,6 +103,18 @@ namespace Script
         {
             return await this.Request(ServiceType.Db, MsgType._Save_FriendChatInfo, msg);
         }
+        public async Task<MyResponse> Save_UserFriendChatState(MsgSave_UserFriendChatState msg)
+        {
+            return await this.Request(ServiceType.Db, MsgType._Save_UserFriendChatState, msg);
+        }
+        public async Task<MyResponse> Query_UserFriendChatState_by_userId(MsgQuery_UserFriendChatState_by_userId msg)
+        {
+            return await this.Request(ServiceType.Db, MsgType._Query_UserFriendChatState_by_userId, msg);
+        }
+        public async Task<MyResponse> Query_FriendChatMessages_by_roomId_readSeqs(MsgQuery_FriendChatMessages_by_roomId_readSeqs msg)
+        {
+            return await this.Request(ServiceType.Db, MsgType._Query_FriendChatMessages_by_roomId_readSeqs, msg);
+        }
 
         #endregion auto_proxy
     }

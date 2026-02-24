@@ -23,8 +23,7 @@ namespace Script
         public readonly ServiceRuntimeInfoRedisW userServiceRuntimeInfoRedisW;
         public readonly ServiceRuntimeInfoRedisW roomServiceRuntimeInfoRedisW;
         public readonly SceneMessagesRedis sceneMessagesRedis;
-        public readonly FriendChatMessagesInBoxRedis friendChatMessagesInBoxRedis;
-        public readonly UserFriendChatInBoxRedis userFriendChatInBoxRedis;
+        public readonly FriendChatMessagesRedis friendChatMessagesRedis;
 
         public Server()
         {
@@ -39,8 +38,7 @@ namespace Script
             this.roomServiceRuntimeInfoRedisW = new ServiceRuntimeInfoRedisW(this, CommonKey.RoomServiceRuntimeInfos());
 
             this.sceneMessagesRedis = new SceneMessagesRedis(this);
-            this.friendChatMessagesInBoxRedis = new FriendChatMessagesInBoxRedis(this);
-            this.userFriendChatInBoxRedis = new UserFriendChatInBoxRedis(this);
+            this.friendChatMessagesRedis = new FriendChatMessagesRedis(this);
         }
 
         int seq;
@@ -80,6 +78,7 @@ namespace Script
 
         public AccountInfoProxy accountInfoProxy { get; private set; }
         public UserBriefInfoProxy userBriefInfoProxy { get; private set; }
+        public UserFriendChatStateProxy userFriendChatStateProxy { get; private set; }
 
         #endregion auto_proxy_var_decl
 
@@ -120,6 +119,7 @@ namespace Script
 
             this.accountInfoProxy = new AccountInfoProxy(this);
             this.userBriefInfoProxy = new UserBriefInfoProxy(this);
+            this.userFriendChatStateProxy = new UserFriendChatStateProxy(this);
 
             #endregion auto_proxy_var_create
 

@@ -5,13 +5,14 @@ public enum CacheType
     RedisJson,
     MemoryChild,
     RedisBinary,
+    RedisHash,
 }
 
 public static class CacheTypeExt
 {
     public static bool IsRedis(this CacheType e)
     {
-        return e == CacheType.RedisJson || e == CacheType.RedisBinary;
+        return e == CacheType.RedisJson || e == CacheType.RedisBinary || e == CacheType.RedisHash;
     }
 
     public static bool IsCreateProxy(this CacheType e)

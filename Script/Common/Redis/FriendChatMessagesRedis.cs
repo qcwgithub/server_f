@@ -5,9 +5,9 @@ using StackExchange.Redis;
 namespace Script
 {
     // 短时间停留 Redis
-    public class FriendChatMessagesInBoxRedis : ServerScript
+    public class FriendChatMessagesRedis : ServerScript
     {
-        public FriendChatMessagesInBoxRedis(Server server) : base(server)
+        public FriendChatMessagesRedis(Server server) : base(server)
         {
 
         }

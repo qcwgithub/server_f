@@ -68,6 +68,9 @@ namespace Data
         _Query_FriendChatInfo_maxOf_roomId = 5019,
         _Insert_FriendChatInfo = 5020,
         _Save_FriendChatInfo = 5021,
+        _Save_UserFriendChatState = 5022,
+        _Query_UserFriendChatState_by_userId = 5023,
+        _Query_FriendChatMessages_by_roomId_readSeqs = 5024,
         ClientStart = 10000,
         Forward = 10001,
         Login = 10002,
@@ -95,6 +98,9 @@ namespace Data
         ARemoveFriend = 10024,
         GetUserBriefInfos = 10025,
         SendFriendChat = 10026,
-        Count = 10027,
+        GetFriendChatUnreadMessages = 10027,
+        AckFriendChatReadSeq1 = 10028,
+        AckFriendChatReadSeqN = 10029,
+        Count = 10030,
     }
 }

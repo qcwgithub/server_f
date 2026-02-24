@@ -138,6 +138,10 @@ public class Create_XInfo_Proxy
                             ff.TabPushF("return \"binary\";\n");
                             break;
 
+                        case CacheType.RedisHash:
+                            ff.TabPushF("return \"hash\";\n");
+                            break;
+
                         default:
                             throw new Exception();
                     }

@@ -247,6 +247,10 @@ namespace Script
                     (err, putBack) = await this.SaveUserBriefInfo(element);
                     break;
 
+                case DirtyElementType.UserFriendChatState:
+                    (err, putBack) = await this.SaveUserFriendChatState(element);
+                    break;
+
 
                 #endregion auto_callSave
 

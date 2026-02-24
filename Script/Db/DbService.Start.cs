@@ -13,7 +13,7 @@ namespace Script
             await this.collection_scene_info.CreateIndex();
             await this.collection_user_brief_info.CreateIndex();
             await this.collection_friend_chat_info.CreateIndex();
-            await this.collection_user_friend_chat_in_box.CreateIndex();
+            await this.collection_user_friend_chat_state.CreateIndex();
             await this.collection_friend_chat_message.CreateIndex();
 
             #endregion auto_callCreateIndex

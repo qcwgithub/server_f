@@ -70,8 +70,10 @@ namespace Script
 
             // -> redis
             await Task.WhenAll(
-                this.server.friendChatMessagesInBoxRedis.Add(message),
-                this.server.userFriendChatInBoxRedis.Add(friendUserId, msg.roomId));
+                this.server.friendChatMessagesRedis.Add(message),
+                this.server.userFriendChatStateProxy.IncreaseUnreadCount(friendUserId, msg.roomId, inc: 1),
+                this.server.userFriendChatStateProxy.SetMaxSeq(friendUserId, msg.roomId, maxSeq: seq)
+                );
 
             // -> broadcast
             stObjectLocation location = await this.service.userLocator.GetLocation(friendUserId);

@@ -211,5 +211,17 @@ list_,class_,UserBriefInfo,,,userBriefInfos,,,,,
 long_,,,,,userId,,,,,
 dictionary_,long_,class_,UserFriendChatStateRoom,,roomDict,,,,,
 @UserFriendChatStateRoom,,,,,,1,1,,,
+long_,,,,,maxSeq,,,,,
 long_,,,,,readSeq,,,,,
 long_,,,,,unreadCount,,,,,
+@MsgGetFriendChatUnreadMessages,,,,,,,,,,1
+@ResGetFriendChatUnreadMessages,,,,,,,,,,1
+list_,class_,ChatMessage,,,messages,,,,,
+bool_,,,,,hasMore,,,,,
+@MsgAckFriendChatReadSeq1,,,,,,,,,,1
+long_,,,,,roomId,,,,,
+long_,,,,,readSeq,,,,,
+@ResAckFriendChatReadSeq1,,,,,,,,,,1
+@MsgAckFriendChatReadSeqN,,,,,,,,,,1
+dictionary_,long_,long_,,,roomIdToReadSeqs,,,,,
+@ResAckFriendChatReadSeqN,,,,,,,,,,1

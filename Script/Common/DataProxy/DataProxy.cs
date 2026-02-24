@@ -142,6 +142,12 @@ namespace Script
             // 其实也不是，是在步骤 1 时指定了 expiry = null
         }
 
+        protected Task RPushToTaskQueue(P1 p1, P2 p2)
+        {
+            stDirtyElement dirtyElement = this.DirtyElement(p1, p2);
+            return this.server.persistence_taskQueueRedis.RPushToTaskQueue(this.GetBelongTaskQueue(p1, p2), dirtyElement.ToString());
+        }
+
         static readonly TimeSpan S_EXPIRY = TimeSpan.FromDays(7);
         TimeSpan RandExpiry()
         {

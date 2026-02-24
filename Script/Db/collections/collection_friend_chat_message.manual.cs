@@ -40,9 +40,6 @@ public partial class collection_friend_chat_message : ServiceScript<DbService>
         }
     }
 
-    // roomIdToSeqs
-    //   Key = roomId
-    //   Value = messageSeqs
     public async Task<List<ChatMessage>> Query(Dictionary<long, List<long>> roomIdToSeqs)
     {
         if (roomIdToSeqs == null || roomIdToSeqs.Count == 0)
@@ -64,6 +61,35 @@ public partial class collection_friend_chat_message : ServiceScript<DbService>
             }
 
             var f = builder.And(builder.Eq(x => x.roomId, roomId), builder.In(x => x.seq, seqs));
+            filters.Add(f);
+        }
+        if (filters.Count == 0)
+        {
+            return [];
+        }
+
+        var finalFilter = builder.Or(filters);
+
+        var result = await collection.Find(finalFilter).ToListAsync();
+        return result;
+    }
+
+    public async Task<List<ChatMessage>> Query_FriendChatMessages_by_roomId_readSeqs(Dictionary<long, long> roomIdToReadSeqs)
+    {
+        if (roomIdToReadSeqs == null || roomIdToReadSeqs.Count == 0)
+        {
+            return [];
+        }
+
+        var collection = this.GetCollection();
+        var builder = Builders<ChatMessage>.Filter;
+        var filters = new List<FilterDefinition<ChatMessage>>();
+        foreach (var kv in roomIdToReadSeqs)
+        {
+            long roomId = kv.Key;
+            long readSeq = kv.Value;
+
+            var f = builder.And(builder.Eq(x => x.roomId, roomId), builder.Gt(x => x.seq, readSeq));
             filters.Add(f);
         }
         if (filters.Count == 0)

@@ -280,6 +280,18 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((MsgSave_FriendChatInfo)msg);
                     break;
 
+                case MsgType._Save_UserFriendChatState:
+                    msgBytes = MessagePackSerializer.Serialize((MsgSave_UserFriendChatState)msg);
+                    break;
+
+                case MsgType._Query_UserFriendChatState_by_userId:
+                    msgBytes = MessagePackSerializer.Serialize((MsgQuery_UserFriendChatState_by_userId)msg);
+                    break;
+
+                case MsgType._Query_FriendChatMessages_by_roomId_readSeqs:
+                    msgBytes = MessagePackSerializer.Serialize((MsgQuery_FriendChatMessages_by_roomId_readSeqs)msg);
+                    break;
+
                 case MsgType.ClientStart:
                     throw new Exception("Missing config for MsgType.ClientStart");
 
@@ -385,6 +397,18 @@ namespace Data
 
                 case MsgType.SendFriendChat:
                     msgBytes = MessagePackSerializer.Serialize((MsgSendFriendChat)msg);
+                    break;
+
+                case MsgType.GetFriendChatUnreadMessages:
+                    msgBytes = MessagePackSerializer.Serialize((MsgGetFriendChatUnreadMessages)msg);
+                    break;
+
+                case MsgType.AckFriendChatReadSeq1:
+                    msgBytes = MessagePackSerializer.Serialize((MsgAckFriendChatReadSeq1)msg);
+                    break;
+
+                case MsgType.AckFriendChatReadSeqN:
+                    msgBytes = MessagePackSerializer.Serialize((MsgAckFriendChatReadSeqN)msg);
                     break;
 
                 case MsgType.Count:
