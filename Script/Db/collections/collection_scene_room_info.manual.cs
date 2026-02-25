@@ -4,18 +4,18 @@ using MongoDB.Bson;
 using Script;
 using System.Text.RegularExpressions;
 
-public partial class collection_scene_info
+public partial class collection_scene_room_info
 {
-    public async Task<List<SceneInfo>> Search(string keyword)
+    public async Task<List<SceneRoomInfo>> Search(string keyword)
     {
         var collection = this.GetCollection();
 
         // Regex.Escape(keyword) 防止用户输入特殊正则字符崩掉查询
         var regex = new BsonRegularExpression(new Regex(Regex.Escape(keyword), RegexOptions.IgnoreCase));
 
-        var f_title = Builders<SceneInfo>.Filter.Regex(nameof(SceneInfo.title), regex);
-        var f_desc = Builders<SceneInfo>.Filter.Regex(nameof(SceneInfo.desc), regex);
-        var filter = Builders<SceneInfo>.Filter.Or(f_title, f_desc);
+        var f_title = Builders<SceneRoomInfo>.Filter.Regex(nameof(SceneRoomInfo.title), regex);
+        var f_desc = Builders<SceneRoomInfo>.Filter.Regex(nameof(SceneRoomInfo.desc), regex);
+        var filter = Builders<SceneRoomInfo>.Filter.Or(f_title, f_desc);
 
         var find = collection.Find(filter)
             .Limit(20); // 分页
@@ -24,28 +24,28 @@ public partial class collection_scene_info
         return result;
     }
 
-    public IMongoCollection<SceneInfo_Db> GetCollection_Db()
+    public IMongoCollection<SceneRoomInfo_Db> GetCollection_Db()
     {
         // It’s ok if the database doesn’t yet exist. It will be created upon first use.
         IMongoDatabase database = this.mongoClient.GetDatabase(this.dbName);
-        IMongoCollection<SceneInfo_Db> collection = database.GetCollection<SceneInfo_Db>(COLLECTION);
+        IMongoCollection<SceneRoomInfo_Db> collection = database.GetCollection<SceneRoomInfo_Db>(COLLECTION);
         return collection;
     }
 
-    public async Task Insert(SceneInfo info)
+    public async Task Insert(SceneRoomInfo info)
     {
-        var info_Db = XInfoHelper_Db.Copy_Class<SceneInfo_Db, SceneInfo>(info);
+        var info_Db = XInfoHelper_Db.Copy_Class<SceneRoomInfo_Db, SceneRoomInfo>(info);
 
         var collection_Db = this.GetCollection_Db();
         await collection_Db.InsertOneAsync(info_Db);
     }
 
-    public async Task<ECode> Save(long roomId, SceneInfoNullable infoNullable)
+    public async Task<ECode> Save(long roomId, SceneRoomInfoNullable infoNullable)
     {
         var collection_Db = this.GetCollection_Db();
 
-        var filter = Builders<SceneInfo_Db>.Filter.Eq(nameof(SceneInfo_Db.roomId), roomId);
-        var updList = new List<UpdateDefinition<SceneInfo_Db>>();
+        var filter = Builders<SceneRoomInfo_Db>.Filter.Eq(nameof(SceneRoomInfo_Db.roomId), roomId);
+        var updList = new List<UpdateDefinition<SceneRoomInfo_Db>>();
 
         #region autoSave
 
@@ -53,8 +53,8 @@ public partial class collection_scene_info
         {
             var roomId_Db = XInfoHelper_Db.Copy_long(infoNullable.roomId.Value);
             var upd = roomId_Db != null
-                ? Builders<SceneInfo_Db>.Update.Set(nameof(SceneInfo_Db.roomId), roomId_Db)
-                : Builders<SceneInfo_Db>.Update.Unset(nameof(SceneInfo_Db.roomId));
+                ? Builders<SceneRoomInfo_Db>.Update.Set(nameof(SceneRoomInfo_Db.roomId), roomId_Db)
+                : Builders<SceneRoomInfo_Db>.Update.Unset(nameof(SceneRoomInfo_Db.roomId));
             updList.Add(upd);
         }
 
@@ -62,8 +62,8 @@ public partial class collection_scene_info
         {
             var createTimeS_Db = XInfoHelper_Db.Copy_long(infoNullable.createTimeS.Value);
             var upd = createTimeS_Db != null
-                ? Builders<SceneInfo_Db>.Update.Set(nameof(SceneInfo_Db.createTimeS), createTimeS_Db)
-                : Builders<SceneInfo_Db>.Update.Unset(nameof(SceneInfo_Db.createTimeS));
+                ? Builders<SceneRoomInfo_Db>.Update.Set(nameof(SceneRoomInfo_Db.createTimeS), createTimeS_Db)
+                : Builders<SceneRoomInfo_Db>.Update.Unset(nameof(SceneRoomInfo_Db.createTimeS));
             updList.Add(upd);
         }
 
@@ -71,8 +71,8 @@ public partial class collection_scene_info
         {
             var title_Db = XInfoHelper_Db.Copy_string(infoNullable.title);
             var upd = title_Db != null
-                ? Builders<SceneInfo_Db>.Update.Set(nameof(SceneInfo_Db.title), title_Db)
-                : Builders<SceneInfo_Db>.Update.Unset(nameof(SceneInfo_Db.title));
+                ? Builders<SceneRoomInfo_Db>.Update.Set(nameof(SceneRoomInfo_Db.title), title_Db)
+                : Builders<SceneRoomInfo_Db>.Update.Unset(nameof(SceneRoomInfo_Db.title));
             updList.Add(upd);
         }
 
@@ -80,8 +80,8 @@ public partial class collection_scene_info
         {
             var desc_Db = XInfoHelper_Db.Copy_string(infoNullable.desc);
             var upd = desc_Db != null
-                ? Builders<SceneInfo_Db>.Update.Set(nameof(SceneInfo_Db.desc), desc_Db)
-                : Builders<SceneInfo_Db>.Update.Unset(nameof(SceneInfo_Db.desc));
+                ? Builders<SceneRoomInfo_Db>.Update.Set(nameof(SceneRoomInfo_Db.desc), desc_Db)
+                : Builders<SceneRoomInfo_Db>.Update.Unset(nameof(SceneRoomInfo_Db.desc));
             updList.Add(upd);
         }
 
@@ -89,15 +89,15 @@ public partial class collection_scene_info
         {
             var messageSeq_Db = XInfoHelper_Db.Copy_long(infoNullable.messageSeq.Value);
             var upd = messageSeq_Db != null
-                ? Builders<SceneInfo_Db>.Update.Set(nameof(SceneInfo_Db.messageSeq), messageSeq_Db)
-                : Builders<SceneInfo_Db>.Update.Unset(nameof(SceneInfo_Db.messageSeq));
+                ? Builders<SceneRoomInfo_Db>.Update.Set(nameof(SceneRoomInfo_Db.messageSeq), messageSeq_Db)
+                : Builders<SceneRoomInfo_Db>.Update.Unset(nameof(SceneRoomInfo_Db.messageSeq));
             updList.Add(upd);
         }
 
 
         #endregion autoSave
 
-        UpdateDefinition<SceneInfo_Db> finalUpd = Builders<SceneInfo_Db>.Update.Combine(updList);
+        UpdateDefinition<SceneRoomInfo_Db> finalUpd = Builders<SceneRoomInfo_Db>.Update.Combine(updList);
         var result = await collection_Db.UpdateOneAsync(filter, finalUpd, new UpdateOptions { IsUpsert = true });
         if (result.IsModifiedCountAvailable)
             return ECode.Success;

@@ -2,22 +2,22 @@ namespace Data
 {
     public class SceneRoom : Room
     {
-        public readonly SceneInfo sceneInfo;
-        public SceneRoom(SceneInfo sceneInfo)
+        public readonly SceneRoomInfo roomInfo;
+        public SceneRoom(SceneRoomInfo roomInfo)
         {
             this.roomType = RoomType.Scene;
-            this.roomId = sceneInfo.roomId;
-            this.sceneInfo = sceneInfo;
+            this.roomId = roomInfo.roomId;
+            this.roomInfo = roomInfo;
         }
 
-        public SceneInfo? lastSceneInfo;
+        public SceneRoomInfo? lastSceneRoomInfo;
         public override void OnAddedToDict()
         {
             // 有值就不能再赋值了，不然玩家上线下线就错了
-            MyDebug.Assert(this.lastSceneInfo == null);
+            MyDebug.Assert(this.lastSceneRoomInfo == null);
 
-            this.lastSceneInfo = SceneInfo.Ensure(null);
-            this.lastSceneInfo.DeepCopyFrom(this.sceneInfo);
+            this.lastSceneRoomInfo = SceneRoomInfo.Ensure(null);
+            this.lastSceneRoomInfo.DeepCopyFrom(this.roomInfo);
         }
 
         public Dictionary<long, SceneRoomUser> userDict = new();

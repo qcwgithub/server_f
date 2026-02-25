@@ -22,7 +22,7 @@ namespace Script
             switch (room.roomType)
             {
                 case RoomType.Scene:
-                    return await this.service.SaveSceneInfo((SceneRoom)room, msg.reason);
+                    return await this.service.SaveSceneRoomInfo((SceneRoom)room, msg.reason);
 
                 case RoomType.Private:
                     return await this.service.SaveFriendChatRoomInfo((FriendChatRoom)room, msg.reason);

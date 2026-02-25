@@ -55,7 +55,7 @@ namespace Script
             this.service.chatScript.WriteChatStamp(sceneRoom, messageConfig, msg.userId, now);
 
             // create message
-            long seq = ++sceneRoom.sceneInfo.messageSeq;
+            long seq = ++sceneRoom.roomInfo.messageSeq;
             ChatMessage message = RoomChatScript.CreateChatMessage(
                 seq: seq,
                 roomId: sceneRoom.roomId,

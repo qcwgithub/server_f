@@ -14,9 +14,9 @@ namespace Script
         {
             return await this.Request(serviceId, MsgType._Room_ServerAction, msg);
         }
-        public async Task<MyResponse> SaveSceneInfoToFile(int serviceId, MsgSaveSceneInfoToFile msg)
+        public async Task<MyResponse> SaveSceneRoomInfoToFile(int serviceId, MsgSaveSceneRoomInfoToFile msg)
         {
-            return await this.Request(serviceId, MsgType._Room_SaveSceneInfoToFile, msg);
+            return await this.Request(serviceId, MsgType._Room_SaveSceneRoomInfoToFile, msg);
         }
         public async Task<MyResponse> UserEnterScene(int serviceId, MsgRoomUserEnterScene msg)
         {

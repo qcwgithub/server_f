@@ -10,49 +10,49 @@ namespace Script
         {
         }
 
-        public async Task<(ECode, SceneInfo?)> QuerySceneInfo(long roomId)
+        public async Task<(ECode, SceneRoomInfo?)> QuerySceneRoomInfo(long roomId)
         {
-            var msgDb = new MsgQuery_SceneInfo_by_roomId();
+            var msgDb = new MsgQuery_SceneRoomInfo_by_roomId();
             msgDb.roomId = roomId;
 
-            var r = await this.service.dbServiceProxy.Query_SceneInfo_by_roomId(msgDb);
+            var r = await this.service.dbServiceProxy.Query_SceneRoomInfo_by_roomId(msgDb);
             if (r.e != ECode.Success)
             {
-                this.service.logger.Error($"QuerySceneInfo({roomId}) r.err {r.e}");
+                this.service.logger.Error($"QuerySceneRoomInfo({roomId}) r.err {r.e}");
                 return (r.e, null);
             }
 
-            var resDb = r.CastRes<ResQuery_SceneInfo_by_roomId>();
+            var resDb = r.CastRes<ResQuery_SceneRoomInfo_by_roomId>();
 
-            SceneInfo? sceneInfo = resDb.result;
-            if (sceneInfo != null)
+            SceneRoomInfo? roomInfo = resDb.result;
+            if (roomInfo != null)
             {
-                if (sceneInfo.roomId != roomId)
+                if (roomInfo.roomId != roomId)
                 {
-                    this.service.logger.Error($"QuerySceneInfo({roomId}) different sceneInfo.roomId {sceneInfo.roomId}");
+                    this.service.logger.Error($"QuerySceneRoomInfo({roomId}) different sceneRoomInfo.roomId {roomInfo.roomId}");
                     return (ECode.Error, null);
                 }
 
-                sceneInfo.Ensure();
+                roomInfo.Ensure();
             }
 
-            return (ECode.Success, sceneInfo);
+            return (ECode.Success, roomInfo);
         }
 
         public async Task<(ECode, SceneRoom?)> LoadSceneRoom(long roomId)
         {
-            (ECode e, SceneInfo? sceneInfo) = await this.QuerySceneInfo(roomId);
+            (ECode e, SceneRoomInfo? roomInfo) = await this.QuerySceneRoomInfo(roomId);
             if (e != ECode.Success)
             {
                 return (e, null);
             }
 
-            if (sceneInfo == null)
+            if (roomInfo == null)
             {
                 return (ECode.RoomNotExist, null);
             }
 
-            var room = new SceneRoom(sceneInfo);
+            var room = new SceneRoom(roomInfo);
 
             await this.server.roomLocationRedisW.WriteLocation(roomId, this.service.serviceId, this.service.sd.saveIntervalS + 60);
 
@@ -143,7 +143,7 @@ namespace Script
             room.OnAddedToDict();
 
             // qiucw
-            // 这句会修改 sceneInfo，必须放在 lastSceneInfo.DeepCopyFrom 后面
+            // 这句会修改 roomInfo，必须放在 lastSceneRoomInfo.DeepCopyFrom 后面
             // this.gameScripts.CallInit(room);
             this.service.CheckUpdateRuntimeInfo().Forget();
         }

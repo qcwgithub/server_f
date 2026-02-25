@@ -5,13 +5,13 @@ namespace Data
 {
     //// AUTO CREATED ////
     [MessagePackObject]
-    public sealed class MsgQuery_SceneInfo_maxOf_roomId
+    public sealed class MsgQuery_SceneRoomInfo_maxOf_roomId
     {
     }
     
     //// AUTO CREATED ////
     [MessagePackObject]
-    public sealed class ResQuery_SceneInfo_maxOf_roomId
+    public sealed class ResQuery_SceneRoomInfo_maxOf_roomId
     {
         [Key(0)]
         public long result;

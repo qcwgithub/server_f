@@ -58,7 +58,7 @@ namespace Script
 
             #endregion auto
 
-            // player.lastSceneInfo = curr; // 先假设一定成功吧
+            // player.lastSceneRoomInfo = curr; // 先假设一定成功吧
             if (last.IsDifferent(curr))
             {
                 this.logger.Error("last.IsDifferent(curr)!!!");

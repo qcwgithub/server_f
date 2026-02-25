@@ -8,29 +8,29 @@ namespace Script
         {
         }
 
-        public async Task<ECode> InsertSceneInfo(SceneInfo sceneInfo)
+        public async Task<ECode> InsertSceneRoomInfo(SceneRoomInfo roomInfo)
         {
-            var msgDb = new MsgInsert_SceneInfo();
-            msgDb.sceneInfo = sceneInfo;
+            var msgDb = new MsgInsert_SceneRoomInfo();
+            msgDb.roomInfo = roomInfo;
 
-            var r = await this.service.dbServiceProxy.Insert_SceneInfo(msgDb);
+            var r = await this.service.dbServiceProxy.Insert_SceneRoomInfo(msgDb);
             if (r.e != ECode.Success)
             {
-                this.service.logger.Error($"InsertSceneInfo({sceneInfo.roomId}) r.e {r.e}");
+                this.service.logger.Error($"InsertSceneRoomInfo({roomInfo.roomId}) r.e {r.e}");
                 return r.e;
             }
 
             return ECode.Success;
         }
 
-        public SceneInfo NewSceneInfo(long roomId)
+        public SceneRoomInfo NewSceneRoomInfo(long roomId)
         {
-            var sceneInfo = SceneInfo.Ensure(null);
-            sceneInfo.roomId = roomId;
+            var roomInfo = SceneRoomInfo.Ensure(null);
+            roomInfo.roomId = roomId;
 
             long nowS = TimeUtils.GetTimeS();
-            sceneInfo.createTimeS = nowS;
-            return sceneInfo;
+            roomInfo.createTimeS = nowS;
+            return roomInfo;
         }
 
         public async Task<ECode> InsertFriendChatRoomInfo(FriendChatRoomInfo roomInfo)
@@ -41,7 +41,7 @@ namespace Script
             var r = await this.service.dbServiceProxy.Insert_FriendChatRoomInfo(msgDb);
             if (r.e != ECode.Success)
             {
-                this.service.logger.Error($"InsertPrivateSceneInfo({roomInfo.roomId}) r.e {r.e}");
+                this.service.logger.Error($"InsertFriendChatRoomInfo({roomInfo.roomId}) r.e {r.e}");
                 return r.e;
             }
 

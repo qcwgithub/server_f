@@ -3,16 +3,15 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class MsgSearch_SceneInfo
+    public class MsgInsert_SceneRoomInfo
     {
         [Key(0)]
-        public string keyword;
+        public SceneRoomInfo roomInfo;
     }
 
     [MessagePackObject]
-    public class ResSearch_SceneInfo
+    public class ResInsert_SceneRoomInfo
     {
-        [Key(0)]
-        public List<SceneInfo> sceneInfos;
+
     }
 }

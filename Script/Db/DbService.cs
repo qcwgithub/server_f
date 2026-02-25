@@ -20,7 +20,7 @@ namespace Script
 
         public collection_user_info collection_user_info;
         public collection_account_info collection_account_info;
-        public collection_scene_info collection_scene_info;
+        public collection_scene_room_info collection_scene_room_info;
         public collection_message_report_info collection_message_report_info;
         public collection_user_report_info collection_user_report_info;
         public collection_user_brief_info collection_user_brief_info;
@@ -40,7 +40,7 @@ namespace Script
 
             this.collection_user_info = new collection_user_info(server, this);
             this.collection_account_info = new collection_account_info(server, this);
-            this.collection_scene_info = new collection_scene_info(server, this);
+            this.collection_scene_room_info = new collection_scene_room_info(server, this);
             this.collection_message_report_info = new collection_message_report_info(server, this);
             this.collection_user_report_info = new collection_user_report_info(server, this);
             this.collection_user_brief_info = new collection_user_brief_info(server, this);

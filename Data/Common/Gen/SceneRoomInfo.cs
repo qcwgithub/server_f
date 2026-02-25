@@ -3,7 +3,7 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class SceneInfo : IIsDifferent<SceneInfo>
+    public class SceneRoomInfo : IIsDifferent<SceneRoomInfo>
     {
         [Key(0)]
         public long roomId;
@@ -16,11 +16,11 @@ namespace Data
         [Key(4)]
         public long messageSeq;
 
-        public static SceneInfo Ensure(SceneInfo? p)
+        public static SceneRoomInfo Ensure(SceneRoomInfo? p)
         {
             if (p == null)
             {
-                p = new SceneInfo();
+                p = new SceneRoomInfo();
             }
             p.Ensure();
             return p;
@@ -38,7 +38,7 @@ namespace Data
             }
         }
 
-        public bool IsDifferent(SceneInfo other)
+        public bool IsDifferent(SceneRoomInfo other)
         {
             if (this.roomId != other.roomId)
             {
@@ -63,7 +63,7 @@ namespace Data
             return false;
         }
 
-        public void DeepCopyFrom(SceneInfo other)
+        public void DeepCopyFrom(SceneRoomInfo other)
         {
             this.roomId = other.roomId;
             this.createTimeS = other.createTimeS;

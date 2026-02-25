@@ -15,7 +15,7 @@ namespace Script
             switch (room.roomType)
             {
                 case RoomType.Scene:
-                    e = await this.SaveSceneInfo((SceneRoom)room, "DestroyRoom");
+                    e = await this.SaveSceneRoomInfo((SceneRoom)room, "DestroyRoom");
                     break;
 
                 case RoomType.Private:
