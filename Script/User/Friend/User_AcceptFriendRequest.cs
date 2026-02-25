@@ -46,12 +46,16 @@ namespace Script
 
             MyResponse r;
 
-            int removedFriendIndex = userInfo.removedFriends.FindIndex(x => x.userId == msg.fromUserId);
+            FriendInfo? removedFriendInfo = userInfo.removedFriends.Find(x => x.userId == msg.fromUserId);
 
             long privateRoomId = 0;
-            if (removedFriendIndex >= 0)
+            long readSeq = 0;
+            long receivedSeq = 0;
+            if (removedFriendInfo != null)
             {
-                privateRoomId = userInfo.removedFriends[removedFriendIndex].roomId;
+                privateRoomId = removedFriendInfo.roomId;
+                readSeq = removedFriendInfo.readSeq;
+                receivedSeq = removedFriendInfo.receivedSeq;
             }
             else
             {
@@ -89,7 +93,7 @@ namespace Script
 
             req.result = FriendRequestResult.Accepted;
 
-            this.service.friendScript.DoAddFriend(userInfo, msg.fromUserId, TimeUtils.GetTimeS(), privateRoomId);
+            this.service.friendScript.DoAddFriend(userInfo, msg.fromUserId, TimeUtils.GetTimeS(), privateRoomId, readSeq, receivedSeq);
 
             return ECode.Success;
         }

@@ -74,7 +74,7 @@ public partial class collection_friend_chat_message : ServiceScript<DbService>
         return result;
     }
 
-    public async Task<List<ChatMessage>> Query_FriendChatMessages_by_roomId_readSeqs(Dictionary<long, long> roomIdToReadSeqs)
+    public async Task<List<ChatMessage>> Query_FriendChatMessages_by_roomId_receivedSeqs(Dictionary<long, long> roomIdToReadSeqs)
     {
         if (roomIdToReadSeqs == null || roomIdToReadSeqs.Count == 0)
         {

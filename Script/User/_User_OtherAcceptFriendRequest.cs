@@ -13,7 +13,8 @@ namespace Script
 
         public override async Task<ECode> Handle(MessageContext context, MsgOtherAcceptFriendRequest msg, ResOtherAcceptFriendRequest res)
         {
-            this.service.logger.Info($"{this.msgType} otherUserId {msg.otherUserId}");
+            string log = $"{this.msgType} otherUserId {msg.otherUserId}";
+            this.service.logger.Info(log);
             MyDebug.Assert(msg.privateRoomId > 0);
 
             ECode e;
@@ -50,7 +51,24 @@ namespace Script
             //// ok
 
             req.result = FriendRequestResult.Accepted;
-            FriendInfo friendInfo = this.service.friendScript.DoAddFriend(userInfo, msg.otherUserId, TimeUtils.GetTimeS(), msg.privateRoomId);
+
+            FriendInfo? removedFriendInfo = userInfo.removedFriends.Find(x => x.userId == msg.otherUserId);
+
+            long readSeq = 0;
+            long receivedSeq = 0;
+            if (removedFriendInfo != null)
+            {
+                if (msg.privateRoomId == removedFriendInfo.roomId)
+                {
+                    readSeq = removedFriendInfo.readSeq;
+                    receivedSeq = removedFriendInfo.receivedSeq;
+                }
+                else
+                {
+                    this.service.logger.Error($"{log} msg.privateRoomId {msg.privateRoomId} != removedFriendInfo.roomId {removedFriendInfo.roomId}, set readSeq = 0, receivedSeq = 0");
+                }
+            }
+            FriendInfo friendInfo = this.service.friendScript.DoAddFriend(userInfo, msg.otherUserId, TimeUtils.GetTimeS(), msg.privateRoomId, readSeq, receivedSeq);
 
             if (user.connection != null)
             {

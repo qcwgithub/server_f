@@ -69,11 +69,7 @@ namespace Script
             long friendUserId = friendChatRoom.GetOtherUserId(msg.userId);
 
             // -> redis
-            await Task.WhenAll(
-                this.server.friendChatMessagesRedis.Add(message),
-                this.server.userFriendChatStateProxy.IncreaseUnreadCount(friendUserId, msg.roomId, inc: 1),
-                this.server.userFriendChatStateProxy.SetMaxSeq(friendUserId, msg.roomId, maxSeq: seq)
-                );
+            await this.server.friendChatMessagesRedis.Add(message);
 
             // -> broadcast
             stObjectLocation location = await this.service.userLocator.GetLocation(friendUserId);

@@ -24,7 +24,6 @@ namespace Data
 
         AccountInfo,
         UserBriefInfo,
-        UserFriendChatState,
 
         #endregion auto_enum
     }

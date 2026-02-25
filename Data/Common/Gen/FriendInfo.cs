@@ -11,6 +11,10 @@ namespace Data
         public long timeS;
         [Key(2)]
         public long roomId;
+        [Key(3)]
+        public long readSeq;
+        [Key(4)]
+        public long receivedSeq;
 
         public static FriendInfo Ensure(FriendInfo? p)
         {
@@ -40,6 +44,14 @@ namespace Data
             {
                 return true;
             }
+            if (this.readSeq != other.readSeq)
+            {
+                return true;
+            }
+            if (this.receivedSeq != other.receivedSeq)
+            {
+                return true;
+            }
             return false;
         }
 
@@ -48,6 +60,8 @@ namespace Data
             this.userId = other.userId;
             this.timeS = other.timeS;
             this.roomId = other.roomId;
+            this.readSeq = other.readSeq;
+            this.receivedSeq = other.receivedSeq;
         }
     }
 }

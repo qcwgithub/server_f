@@ -61,10 +61,6 @@ namespace Data
         {
             return new stDirtyElement { e = DirtyElementType.UserBriefInfo, s1 = userId.ToString() };
         }
-        public static stDirtyElement Create_UserFriendChatState(long userId)
-        {
-            return new stDirtyElement { e = DirtyElementType.UserFriendChatState, s1 = userId.ToString() };
-        }
 
         #endregion auto_create
 
@@ -80,9 +76,6 @@ namespace Data
                     return string.Join(SPLITER, this.e, this.s1, this.s2);
 
                 case DirtyElementType.UserBriefInfo:
-                    return string.Join(SPLITER, this.e, this.s1);
-
-                case DirtyElementType.UserFriendChatState:
                     return string.Join(SPLITER, this.e, this.s1);
 
 
@@ -120,10 +113,6 @@ namespace Data
                     break;
 
                 case DirtyElementType.UserBriefInfo:
-                    self.s1 = str.Substring(index + 1);
-                    break;
-
-                case DirtyElementType.UserFriendChatState:
                     self.s1 = str.Substring(index + 1);
                     break;
 

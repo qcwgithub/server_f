@@ -78,7 +78,6 @@ namespace Script
 
         public AccountInfoProxy accountInfoProxy { get; private set; }
         public UserBriefInfoProxy userBriefInfoProxy { get; private set; }
-        public UserFriendChatStateProxy userFriendChatStateProxy { get; private set; }
 
         #endregion auto_proxy_var_decl
 
@@ -119,7 +118,6 @@ namespace Script
 
             this.accountInfoProxy = new AccountInfoProxy(this);
             this.userBriefInfoProxy = new UserBriefInfoProxy(this);
-            this.userFriendChatStateProxy = new UserFriendChatStateProxy(this);
 
             #endregion auto_proxy_var_create
 
