@@ -18,7 +18,6 @@ namespace Script
         public readonly GatewayServiceProxy gatewayServiceProxy;
         public readonly RoomManagerServiceProxy roomManagerServiceProxy;
         public readonly UserServiceProxy userServiceProxy;
-        public readonly MessageIdSnowflakeScript messageIdSnowflakeScript;
 
         protected override MessageDispatcher CreateMessageDispatcher()
         {
@@ -37,7 +36,6 @@ namespace Script
             this.AddServiceProxy(this.gatewayServiceProxy = new GatewayServiceProxy(this));
             this.AddServiceProxy(this.roomManagerServiceProxy = new RoomManagerServiceProxy(this));
             this.AddServiceProxy(this.userServiceProxy = new UserServiceProxy(this));
-            this.messageIdSnowflakeScript = new MessageIdSnowflakeScript(this.server, this);
 
             this.ss = new RoomServiceScript(this.server, this);
             this.chatScript = new RoomChatScript(this.server, this);
