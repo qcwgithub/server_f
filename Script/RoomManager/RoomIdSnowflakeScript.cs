@@ -10,18 +10,35 @@ namespace Script
 
         public async Task<ECode> InitRoomIdSnowflakeData(long workerId)
         {
-            var msgDb = new MsgQuery_SceneRoomInfo_maxOf_roomId();
-
-            var r = await this.service.dbServiceProxy.Query_SceneRoomInfo_maxOf_roomId(msgDb);
-            if (r.e != ECode.Success)
+            long maxRoomId = 0;
             {
-                this.service.logger.Error($"Query_SceneRoomInfo_maxOf_roomId ECode.{r.e}");
-                return r.e;
+                var msgDb = new MsgQuery_SceneRoomInfo_maxOf_roomId();
+
+                var r = await this.service.dbServiceProxy.Query_SceneRoomInfo_maxOf_roomId(msgDb);
+                if (r.e != ECode.Success)
+                {
+                    this.service.logger.Error($"Query_SceneRoomInfo_maxOf_roomId ECode.{r.e}");
+                    return r.e;
+                }
+
+                var resDb = r.CastRes<ResQuery_SceneRoomInfo_maxOf_roomId>();
+
+                maxRoomId = Math.Max(maxRoomId, resDb.result);
             }
+            {
+                var msgDb = new MsgQuery_FriendChatRoomInfo_maxOf_roomId();
 
-            var resDb = r.CastRes<ResQuery_SceneRoomInfo_maxOf_roomId>();
+                var r = await this.service.dbServiceProxy.Query_FriendChatRoomInfo_maxOf_roomId(msgDb);
+                if (r.e != ECode.Success)
+                {
+                    this.service.logger.Error($"Query_FriendChatRoomInfo_maxOf_roomId ECode.{r.e}");
+                    return r.e;
+                }
 
-            long maxRoomId = resDb.result;
+                var resDb = r.CastRes<ResQuery_FriendChatRoomInfo_maxOf_roomId>();
+
+                maxRoomId = Math.Max(maxRoomId, resDb.result);
+            }
 
             long stamp = this.NowSnowflakeStamp();
             long preStamp;
