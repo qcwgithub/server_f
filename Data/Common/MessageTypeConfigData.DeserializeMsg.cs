@@ -264,20 +264,20 @@ namespace Data
                     ob = MessagePackSerializer.Deserialize<MsgQuery_UserBriefInfo_by_userId>(msgBytes);
                     break;
 
-                case MsgType._Query_FriendChatInfo_by_roomId:
-                    ob = MessagePackSerializer.Deserialize<MsgQuery_FriendChatInfo_by_roomId>(msgBytes);
+                case MsgType._Query_FriendChatRoomInfo_by_roomId:
+                    ob = MessagePackSerializer.Deserialize<MsgQuery_FriendChatRoomInfo_by_roomId>(msgBytes);
                     break;
 
-                case MsgType._Query_FriendChatInfo_maxOf_roomId:
-                    ob = MessagePackSerializer.Deserialize<MsgQuery_FriendChatInfo_maxOf_roomId>(msgBytes);
+                case MsgType._Query_FriendChatRoomInfo_maxOf_roomId:
+                    ob = MessagePackSerializer.Deserialize<MsgQuery_FriendChatRoomInfo_maxOf_roomId>(msgBytes);
                     break;
 
-                case MsgType._Insert_FriendChatInfo:
-                    ob = MessagePackSerializer.Deserialize<MsgInsert_FriendChatInfo>(msgBytes);
+                case MsgType._Insert_FriendChatRoomInfo:
+                    ob = MessagePackSerializer.Deserialize<MsgInsert_FriendChatRoomInfo>(msgBytes);
                     break;
 
-                case MsgType._Save_FriendChatInfo:
-                    ob = MessagePackSerializer.Deserialize<MsgSave_FriendChatInfo>(msgBytes);
+                case MsgType._Save_FriendChatRoomInfo:
+                    ob = MessagePackSerializer.Deserialize<MsgSave_FriendChatRoomInfo>(msgBytes);
                     break;
 
                 case MsgType._Query_FriendChatMessages_by_roomId_receivedSeqs:

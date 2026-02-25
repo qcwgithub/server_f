@@ -71,8 +71,8 @@ namespace Script
                 }
 
                 var resCreateRoom = r.CastRes<ResRoomManagerCreateFriendChatRoom>();
-                MyDebug.Assert(resCreateRoom.friendChatInfo.roomId > 0);
-                privateRoomId = resCreateRoom.friendChatInfo.roomId;
+                MyDebug.Assert(resCreateRoom.friendChatRoomInfo.roomId > 0);
+                privateRoomId = resCreateRoom.friendChatRoomInfo.roomId;
             }
             MyDebug.Assert(privateRoomId > 0);
 

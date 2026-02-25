@@ -19,7 +19,7 @@ namespace Script
                     break;
 
                 case RoomType.Private:
-                    e = await this.SaveFriendChatInfo((FriendChatRoom)room, "DestroyRoom");
+                    e = await this.SaveFriendChatRoomInfo((FriendChatRoom)room, "DestroyRoom");
                     break;
 
                 default:

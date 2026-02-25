@@ -49,7 +49,7 @@ namespace Script
             this.service.chatScript.WriteChatStamp(friendChatRoom, messageConfig, msg.userId, now);
 
             // create message
-            long seq = ++friendChatRoom.friendChatInfo.messageSeq;
+            long seq = ++friendChatRoom.friendChatRoomInfo.messageSeq;
             ChatMessage message = RoomChatScript.CreateChatMessage(
                 seq: seq,
                 roomId: msg.roomId,

@@ -3,18 +3,18 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class MsgSave_FriendChatInfo
+    public class MsgSave_FriendChatRoomInfo
     {
         [Key(0)]
         public long roomId;
         [Key(1)]
-        required public FriendChatInfoInfoNullable privateRoomInfoNullable;
+        required public FriendChatRoomInfoNullable roomInfoNullable;
         [Key(2)]
-        public FriendChatInfo? friendChatInfo_debug;
+        public FriendChatRoomInfo? roomInfo_debug;
     }
 
     [MessagePackObject]
-    public class ResSave_FriendChatInfo
+    public class ResSave_FriendChatRoomInfo
     {
     }
 }

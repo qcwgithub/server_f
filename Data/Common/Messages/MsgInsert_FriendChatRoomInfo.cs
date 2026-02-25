@@ -3,14 +3,14 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class MsgInsert_FriendChatInfo
+    public class MsgInsert_FriendChatRoomInfo
     {
         [Key(0)]
-        public FriendChatInfo privateRoomInfo;
+        public FriendChatRoomInfo roomInfo;
     }
 
     [MessagePackObject]
-    public class ResInsert_FriendChatInfo
+    public class ResInsert_FriendChatRoomInfo
     {
 
     }

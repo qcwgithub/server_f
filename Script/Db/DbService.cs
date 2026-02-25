@@ -24,7 +24,7 @@ namespace Script
         public collection_message_report_info collection_message_report_info;
         public collection_user_report_info collection_user_report_info;
         public collection_user_brief_info collection_user_brief_info;
-        public collection_friend_chat_info collection_friend_chat_info;
+        public collection_friend_chat_room_info collection_friend_chat_room_info;
         public collection_friend_chat_message collection_friend_chat_message;
 
         #endregion auto_collection_var_decl
@@ -44,7 +44,7 @@ namespace Script
             this.collection_message_report_info = new collection_message_report_info(server, this);
             this.collection_user_report_info = new collection_user_report_info(server, this);
             this.collection_user_brief_info = new collection_user_brief_info(server, this);
-            this.collection_friend_chat_info = new collection_friend_chat_info(server, this);
+            this.collection_friend_chat_room_info = new collection_friend_chat_room_info(server, this);
             this.collection_friend_chat_message = new collection_friend_chat_message(server, this);
 
             #endregion auto_collection_var_create

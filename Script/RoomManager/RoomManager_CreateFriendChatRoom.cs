@@ -33,7 +33,7 @@ namespace Script
             }
 
             long roomId = this.service.roomIdSnowflakeScript.NextRoomId();
-            FriendChatInfo privateRoomInfo = this.service.roomScript.NewPrivateRoomInfo(roomId);
+            FriendChatRoomInfo roomInfo = this.service.roomScript.NewFriendChatRoomInfo(roomId);
 
             long nowS = TimeUtils.GetTimeS();
             foreach (long userId in msg.userIds)
@@ -41,16 +41,16 @@ namespace Script
                 var roomUser = PrivateRoomUser.Ensure(null);
                 roomUser.userId = userId;
                 roomUser.joinTimeS = nowS;
-                privateRoomInfo.users.Add(roomUser);
+                roomInfo.users.Add(roomUser);
             }
 
-            ECode e = await this.service.roomScript.InsertPrivateSceneInfo(privateRoomInfo);
+            ECode e = await this.service.roomScript.InsertFriendChatRoomInfo(roomInfo);
             if (e != ECode.Success)
             {
                 return e;
             }
 
-            res.friendChatInfo = privateRoomInfo;
+            res.friendChatRoomInfo = roomInfo;
             return ECode.Success;
         }
     }

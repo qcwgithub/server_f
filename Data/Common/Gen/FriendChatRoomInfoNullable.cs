@@ -4,7 +4,7 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class FriendChatInfoInfoNullable
+    public class FriendChatRoomInfoNullable
     {
         #region auto
 

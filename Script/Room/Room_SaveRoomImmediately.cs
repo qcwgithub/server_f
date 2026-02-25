@@ -25,7 +25,7 @@ namespace Script
                     return await this.service.SaveSceneInfo((SceneRoom)room, msg.reason);
 
                 case RoomType.Private:
-                    return await this.service.SaveFriendChatInfo((FriendChatRoom)room, msg.reason);
+                    return await this.service.SaveFriendChatRoomInfo((FriendChatRoom)room, msg.reason);
 
                 default:
                     throw new Exception("Not handled RoomType." + room.roomType);

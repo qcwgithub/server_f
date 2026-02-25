@@ -3,7 +3,7 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class FriendChatInfo : IIsDifferent<FriendChatInfo>
+    public class FriendChatRoomInfo : IIsDifferent<FriendChatRoomInfo>
     {
         [Key(0)]
         public long roomId;
@@ -14,11 +14,11 @@ namespace Data
         [Key(3)]
         public List<PrivateRoomUser> users;
 
-        public static FriendChatInfo Ensure(FriendChatInfo? p)
+        public static FriendChatRoomInfo Ensure(FriendChatRoomInfo? p)
         {
             if (p == null)
             {
-                p = new FriendChatInfo();
+                p = new FriendChatRoomInfo();
             }
             p.Ensure();
             return p;
@@ -36,7 +36,7 @@ namespace Data
             }
         }
 
-        public bool IsDifferent(FriendChatInfo other)
+        public bool IsDifferent(FriendChatRoomInfo other)
         {
             if (this.roomId != other.roomId)
             {
@@ -57,7 +57,7 @@ namespace Data
             return false;
         }
 
-        public void DeepCopyFrom(FriendChatInfo other)
+        public void DeepCopyFrom(FriendChatRoomInfo other)
         {
             this.roomId = other.roomId;
             this.createTimeS = other.createTimeS;

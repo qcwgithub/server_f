@@ -29,7 +29,7 @@ namespace Script
                                 return await this.service.SaveSceneInfo((SceneRoom)room, "timer");
 
                             case RoomType.Private:
-                                return await this.service.SaveFriendChatInfo((FriendChatRoom)room, "timer");
+                                return await this.service.SaveFriendChatRoomInfo((FriendChatRoom)room, "timer");
 
                             default:
                                 throw new Exception("Not handled RoomType." + room.roomType);
