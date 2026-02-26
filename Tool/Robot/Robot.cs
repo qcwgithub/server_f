@@ -98,7 +98,7 @@ namespace Tool
                     }
                 }
 
-                for (int i = 0; i < 100; i++)
+                for (int i = 0; i < 1; i++)
                 {
                     e = await this.SendSceneChat(this.roomId, $"Hello {DateTime.Now}!");
                     if (e != ECode.Success)
