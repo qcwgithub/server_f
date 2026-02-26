@@ -56,10 +56,7 @@ namespace Script
         //// AUTO CREATED ////
         protected override UserBriefInfo CreatePlaceholder(long userId, int _2 = 0)
         {
-            var placeholder = new UserBriefInfo();
-            placeholder.userId = userId;
-            placeholder.SetIsPlaceholder();
-            return placeholder;
+            throw new NotImplementedException();
         }
 
         //// AUTO CREATED ////
@@ -80,6 +77,10 @@ namespace Script
             }
 
             var res = r.CastRes<ResQuery_UserBriefInfo_by_userId>().result;
+            if (res == null)
+            {
+                res = new UserBriefInfo().CreateDefaultForRedis(userId);
+            }
             return (ECode.Success, res);
         }
 

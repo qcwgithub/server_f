@@ -10,7 +10,7 @@ namespace Data
         [Key(1)]
         public long otherUserId;
         [Key(2)]
-        public long privateRoomId;
+        public long roomId;
     }
 
     [MessagePackObject]

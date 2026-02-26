@@ -35,6 +35,20 @@ public class EnumProgram
             }
         }
 
+        foreach (EnumConfig ec in list)
+        {
+            for (int i = 0; i < ec.fields.Count; i++)
+            {
+                for (int j = i + 1; j < ec.fields.Count; j++)
+                {
+                    if (ec.fields[i].value == ec.fields[j].value)
+                    {
+                        throw new Exception(string.Format("enum {0} has duplicate value {1} for fields {2} and {3}", ec.name, ec.fields[i].value, ec.fields[i].name, ec.fields[j].name));
+                    }
+                }
+            }
+        }
+
         for (int i = 0; i < list.Count; i++)
         {
             config = list[i];

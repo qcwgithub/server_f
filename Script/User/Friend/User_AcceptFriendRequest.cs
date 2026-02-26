@@ -22,24 +22,29 @@ namespace Script
 
             UserInfo userInfo = user.userInfo;
 
-            bool alreadyFriends = userInfo.friends.Exists(x => x.userId == msg.fromUserId);
-            if (alreadyFriends)
-            {
-                return ECode.AlreadyFriends;
-            }
+            // bool alreadyFriends = userInfo.friends.Exists(x => x.userId == msg.fromUserId);
+            // if (alreadyFriends)
+            // {
+            //     return ECode.AlreadyFriends;
+            // }
 
-            int index = userInfo.incomingFriendRequests.FindIndex(x => x.fromUserId == msg.fromUserId);
-            if (index < 0)
+            int incomingIndex = userInfo.incomingFriendRequests.FindIndex(x => x.fromUserId == msg.fromUserId);
+            if (incomingIndex < 0)
             {
                 return ECode.IncomingFriendRequestNotExist;
             }
 
-            IncomingFriendRequest req = userInfo.incomingFriendRequests[index];
-            if (req.result == FriendRequestResult.Accepted)
+            IncomingFriendRequest incomingReq = userInfo.incomingFriendRequests[incomingIndex];
+            if (incomingReq.result == FriendRequestResult.Accepted)
             {
-                return ECode.Success;
+                FriendInfo? exist = userInfo.friends.Find(x => x.userId == msg.fromUserId);
+                if (exist != null)
+                {
+                    res.friendInfo = exist;
+                    return ECode.Success;
+                }
             }
-            if (req.result != FriendRequestResult.Wait)
+            else if (incomingReq.result != FriendRequestResult.Wait)
             {
                 return ECode.FriendRequestResultNotWait;
             }
@@ -48,12 +53,12 @@ namespace Script
 
             FriendInfo? removedFriendInfo = userInfo.removedFriends.Find(x => x.userId == msg.fromUserId);
 
-            long privateRoomId = 0;
+            long roomId = 0;
             long readSeq = 0;
             long receivedSeq = 0;
             if (removedFriendInfo != null)
             {
-                privateRoomId = removedFriendInfo.roomId;
+                roomId = removedFriendInfo.roomId;
                 readSeq = removedFriendInfo.readSeq;
                 receivedSeq = removedFriendInfo.receivedSeq;
             }
@@ -72,15 +77,15 @@ namespace Script
 
                 var resCreateRoom = r.CastRes<ResRoomManagerCreateFriendChatRoom>();
                 MyDebug.Assert(resCreateRoom.friendChatRoomInfo.roomId > 0);
-                privateRoomId = resCreateRoom.friendChatRoomInfo.roomId;
+                roomId = resCreateRoom.friendChatRoomInfo.roomId;
             }
-            MyDebug.Assert(privateRoomId > 0);
+            MyDebug.Assert(roomId > 0);
 
             var msgOther = new MsgOtherAcceptFriendRequest
             {
                 userId = msg.fromUserId,
                 otherUserId = user.userId,
-                privateRoomId = privateRoomId,
+                roomId = roomId,
             };
 
             r = await this.service.userManagerServiceProxy.ForwardToUserService(msg.fromUserId, MsgType._User_OtherAcceptFriendRequest, msgOther, true);
@@ -91,10 +96,11 @@ namespace Script
 
             //// ok
 
-            req.result = FriendRequestResult.Accepted;
+            incomingReq.result = FriendRequestResult.Accepted;
 
-            this.service.friendScript.DoAddFriend(userInfo, msg.fromUserId, TimeUtils.GetTimeS(), privateRoomId, readSeq, receivedSeq);
+            FriendInfo friendInfo = this.service.friendScript.DoAddFriend(userInfo, msg.fromUserId, TimeUtils.GetTimeS(), roomId, readSeq, receivedSeq);
 
+            res.friendInfo = friendInfo;
             return ECode.Success;
         }
 

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using StackExchange.Redis;
 using System.Diagnostics;
 using System.Linq;
+using MessagePack;
 
 namespace Script
 {
@@ -235,7 +236,23 @@ namespace Script
                 list.Add(null);
                 if (!values[i].IsNullOrEmpty)
                 {
-                    var data = JsonUtils.parse<DataType>(values[i]!);
+                    DataType data;
+                    string format = this.RedisValueFormat();
+                    switch (format)
+                    {
+                        case "json":
+                            data = JsonUtils.parse<DataType>(values[i]!);
+                            break;
+
+                        case "binary":
+                            data = MessagePackSerializer.Deserialize<DataType>(values[i]!);
+                            break;
+
+                        case "hash":
+                        case "single":
+                        default:
+                            throw new Exception("Not handle redis format: " + format);
+                    }
                     if (!data.IsPlaceholder())
                     {
                         list[i] = data;

@@ -15,7 +15,7 @@ namespace Script
         {
             string log = $"{this.msgType} otherUserId {msg.otherUserId}";
             this.service.logger.Info(log);
-            MyDebug.Assert(msg.privateRoomId > 0);
+            MyDebug.Assert(msg.roomId > 0);
 
             ECode e;
             User? user = await this.service.LockUser(msg.userId, context);
@@ -58,17 +58,17 @@ namespace Script
             long receivedSeq = 0;
             if (removedFriendInfo != null)
             {
-                if (msg.privateRoomId == removedFriendInfo.roomId)
+                if (msg.roomId == removedFriendInfo.roomId)
                 {
                     readSeq = removedFriendInfo.readSeq;
                     receivedSeq = removedFriendInfo.receivedSeq;
                 }
                 else
                 {
-                    this.service.logger.Error($"{log} msg.privateRoomId {msg.privateRoomId} != removedFriendInfo.roomId {removedFriendInfo.roomId}, set readSeq = 0, receivedSeq = 0");
+                    this.service.logger.Error($"{log} msg.roomId {msg.roomId} != removedFriendInfo.roomId {removedFriendInfo.roomId}, set readSeq = 0, receivedSeq = 0");
                 }
             }
-            FriendInfo friendInfo = this.service.friendScript.DoAddFriend(userInfo, msg.otherUserId, TimeUtils.GetTimeS(), msg.privateRoomId, readSeq, receivedSeq);
+            FriendInfo friendInfo = this.service.friendScript.DoAddFriend(userInfo, msg.otherUserId, TimeUtils.GetTimeS(), msg.roomId, readSeq, receivedSeq);
 
             if (user.connection != null)
             {
