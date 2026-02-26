@@ -22,11 +22,11 @@ namespace Script
 
             UserInfo userInfo = user.userInfo;
 
-            // bool alreadyFriends = userInfo.friends.Exists(x => x.userId == msg.fromUserId);
-            // if (alreadyFriends)
-            // {
-            //     return ECode.AlreadyFriends;
-            // }
+            bool alreadyFriends = userInfo.friends.Exists(x => x.userId == msg.fromUserId);
+            if (alreadyFriends)
+            {
+                return ECode.AlreadyFriends;
+            }
 
             int incomingIndex = userInfo.incomingFriendRequests.FindIndex(x => x.fromUserId == msg.fromUserId);
             if (incomingIndex < 0)
