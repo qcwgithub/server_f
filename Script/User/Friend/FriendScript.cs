@@ -8,7 +8,7 @@ namespace Script
         {
         }
 
-        public FriendInfo DoAddFriend(UserInfo userInfo, long friendUserId, long timeS, long privateRoomId, long readSeq, long receivedSeq)
+        public FriendInfo DoAddFriend(UserInfo userInfo, long friendUserId, long timeS, long roomId, long readSeq, long receivedSeq)
         {
             // 1
             int friendIndex = userInfo.friends.FindIndex(x => x.userId == friendUserId);
@@ -16,7 +16,7 @@ namespace Script
             if (friendIndex >= 0)
             {
                 friendInfo = userInfo.friends[friendIndex];
-                friendInfo.roomId = privateRoomId;
+                friendInfo.roomId = roomId;
             }
             else
             {
@@ -25,7 +25,7 @@ namespace Script
                 userInfo.friends.Add(friendInfo);
             }
             friendInfo.timeS = timeS;
-            friendInfo.roomId = privateRoomId;
+            friendInfo.roomId = roomId;
             friendInfo.readSeq = readSeq;
             friendInfo.receivedSeq = receivedSeq;
 

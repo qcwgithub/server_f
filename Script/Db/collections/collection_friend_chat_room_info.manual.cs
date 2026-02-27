@@ -60,7 +60,7 @@ public partial class collection_friend_chat_room_info
 
         if (infoNullable.users != null)
         {
-            var users_Db = XInfoHelper_Db.Copy_ListClass<PrivateRoomUser_Db, PrivateRoomUser>(infoNullable.users);
+            var users_Db = XInfoHelper_Db.Copy_ListClass<FriendChatRoomUser_Db, FriendChatRoomUser>(infoNullable.users);
             var upd = users_Db != null
                 ? Builders<FriendChatRoomInfo_Db>.Update.Set(nameof(FriendChatRoomInfo_Db.users), users_Db)
                 : Builders<FriendChatRoomInfo_Db>.Update.Unset(nameof(FriendChatRoomInfo_Db.users));

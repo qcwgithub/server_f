@@ -12,7 +12,7 @@ namespace Data
         [Key(2)]
         public long messageSeq;
         [Key(3)]
-        public List<PrivateRoomUser> users;
+        public List<FriendChatRoomUser> users;
 
         public static FriendChatRoomInfo Ensure(FriendChatRoomInfo? p)
         {
@@ -28,11 +28,11 @@ namespace Data
         {
             if (this.users == null)
             {
-                this.users = new List<PrivateRoomUser>();
+                this.users = new List<FriendChatRoomUser>();
             }
             for (int i = 0; i < this.users.Count; i++)
             {
-                this.users[i] = PrivateRoomUser.Ensure(this.users[i]);
+                this.users[i] = FriendChatRoomUser.Ensure(this.users[i]);
             }
         }
 

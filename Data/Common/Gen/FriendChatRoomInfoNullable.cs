@@ -15,7 +15,7 @@ namespace Data
         [Key(2)]
         public long? messageSeq;
         [Key(3)]
-        public List<PrivateRoomUser> users;
+        public List<FriendChatRoomUser> users;
 
         #endregion auto
     }

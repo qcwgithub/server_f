@@ -38,7 +38,7 @@ namespace Script
             long nowS = TimeUtils.GetTimeS();
             foreach (long userId in msg.userIds)
             {
-                var roomUser = PrivateRoomUser.Ensure(null);
+                var roomUser = FriendChatRoomUser.Ensure(null);
                 roomUser.userId = userId;
                 roomUser.joinTimeS = nowS;
                 roomInfo.users.Add(roomUser);

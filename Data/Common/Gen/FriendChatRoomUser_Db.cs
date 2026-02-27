@@ -5,14 +5,14 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Data
 {
-    public class PrivateRoomUser_Db : IIsDifferent_Db<PrivateRoomUser>
+    public class FriendChatRoomUser_Db : IIsDifferent_Db<FriendChatRoomUser>
     {
         [BsonIgnoreIfNull]
         public long? userId;
         [BsonIgnoreIfNull]
         public long? joinTimeS;
 
-        public bool DeepCopyFrom(PrivateRoomUser other)
+        public bool DeepCopyFrom(FriendChatRoomUser other)
         {
             bool empty = true;
 

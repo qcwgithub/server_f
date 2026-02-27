@@ -106,7 +106,7 @@ namespace Script
             return (ECode.Success, friendChatRoomInfo);
         }
 
-        public async Task<(ECode, FriendChatRoom?)> LoadPrivateRoom(long roomId)
+        public async Task<(ECode, FriendChatRoom?)> LoadFriendChatRoom(long roomId)
         {
             (ECode e, FriendChatRoomInfo? friendChatRoomInfo) = await this.QueryFriendChatRoomInfo(roomId);
             if (e != ECode.Success)

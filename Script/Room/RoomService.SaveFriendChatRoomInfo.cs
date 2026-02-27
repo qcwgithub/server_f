@@ -4,26 +4,26 @@ namespace Script
 {
     public partial class RoomService
     {
-        public async Task<ECode> SaveFriendChatRoomInfo(FriendChatRoom privateRoom, string reason)
+        public async Task<ECode> SaveFriendChatRoomInfo(FriendChatRoom friendChatRoom, string reason)
         {
-            await this.server.roomLocationRedisW.WriteLocation(privateRoom.roomId, this.serviceId, this.sd.saveIntervalS + 60);
+            await this.server.roomLocationRedisW.WriteLocation(friendChatRoom.roomId, this.serviceId, this.sd.saveIntervalS + 60);
 
             var msgDb = new MsgSave_FriendChatRoomInfo
             {
-                roomId = privateRoom.roomId,
+                roomId = friendChatRoom.roomId,
                 roomInfoNullable = new FriendChatRoomInfoNullable()
             };
             var infoNullable = msgDb.roomInfoNullable;
 
             List<string>? buffer = null;
-            if (privateRoom.lastFriendChatRoomInfo == null)
+            if (friendChatRoom.lastFriendChatRoomInfo == null)
             {
-                this.logger.Error($"SaveRoom room.lastPrivateRoomInfo == null");
+                this.logger.Error($"SaveRoom room.lastFriendChatRoomInfo == null");
                 return ECode.Error;
             }
 
-            FriendChatRoomInfo last = privateRoom.lastFriendChatRoomInfo;
-            FriendChatRoomInfo curr = privateRoom.friendChatRoomInfo;
+            FriendChatRoomInfo last = friendChatRoom.lastFriendChatRoomInfo;
+            FriendChatRoomInfo curr = friendChatRoom.friendChatRoomInfo;
 
             #region auto
 
@@ -69,7 +69,7 @@ namespace Script
             {
                 fieldsStr = string.Join(", ", buffer.ToArray());
 
-                this.logger.InfoFormat("SaveRoom roomId {0}, reason {1}, fields [{2}]", privateRoom.roomId, reason, fieldsStr);
+                this.logger.InfoFormat("SaveRoom roomId {0}, reason {1}, fields [{2}]", friendChatRoom.roomId, reason, fieldsStr);
             }
 
             if (buffer != null)
@@ -81,7 +81,7 @@ namespace Script
                 var r = await this.dbServiceProxy.Save_FriendChatRoomInfo(msgDb);
                 if (r.e != ECode.Success)
                 {
-                    this.logger.ErrorFormat("{0} error: {1}, roomId {2}", MsgType._Save_FriendChatRoomInfo, r.e, privateRoom.roomId);
+                    this.logger.ErrorFormat("{0} error: {1}, roomId {2}", MsgType._Save_FriendChatRoomInfo, r.e, friendChatRoom.roomId);
                     return r.e;
                 }
             }

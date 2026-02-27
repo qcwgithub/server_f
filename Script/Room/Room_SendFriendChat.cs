@@ -24,7 +24,7 @@ namespace Script
 
             ServerConfig.MessageConfig messageConfig = this.server.data.serverConfig.privateMessageConfig;
 
-            e = this.service.chatScript.CheckRoomSendPrivateChat(msg, messageConfig);
+            e = this.service.chatScript.CheckSendFriendChat(msg, messageConfig);
             if (e != ECode.Success)
             {
                 return e;
@@ -33,7 +33,15 @@ namespace Script
             var friendChatRoom = await this.service.LockRoom<FriendChatRoom>(msg.roomId, context);
             if (friendChatRoom == null)
             {
-                return ECode.RoomNotExist;
+                (e, friendChatRoom) = await this.service.ss.LoadFriendChatRoom(msg.roomId);
+                if (e != ECode.Success)
+                {
+                    return e;
+                }
+                if (friendChatRoom == null)
+                {
+                    return ECode.RoomNotExist;
+                }
             }
 
             long now = TimeUtils.GetTime();

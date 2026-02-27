@@ -24,7 +24,7 @@ namespace Script
 
             ServerConfig.MessageConfig messageConfig = this.server.data.serverConfig.sceneMessageConfig;
 
-            e = this.service.chatScript.CheckRoomSendSceneChat(msg, messageConfig);
+            e = this.service.chatScript.CheckSendSceneChat(msg, messageConfig);
             if (e != ECode.Success)
             {
                 return e;

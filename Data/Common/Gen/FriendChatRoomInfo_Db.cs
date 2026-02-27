@@ -14,7 +14,7 @@ namespace Data
         [BsonIgnoreIfNull]
         public long? messageSeq;
         [BsonIgnoreIfNull]
-        public List<PrivateRoomUser_Db> users;
+        public List<FriendChatRoomUser_Db> users;
 
         public bool DeepCopyFrom(FriendChatRoomInfo other)
         {
@@ -38,7 +38,7 @@ namespace Data
                 empty = false;
             }
 
-            this.users = XInfoHelper_Db.Copy_ListClass<PrivateRoomUser_Db, PrivateRoomUser>(other.users);
+            this.users = XInfoHelper_Db.Copy_ListClass<FriendChatRoomUser_Db, FriendChatRoomUser>(other.users);
             if (this.users != null)
             {
                 empty = false;

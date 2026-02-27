@@ -33,14 +33,26 @@ namespace Script
             }
 
             FriendInfo friendInfo = userInfo.friends[friendIndex];
+            
+            MyResponse r;
 
             stObjectLocation location = await this.service.roomLocator.GetLocation(friendInfo.roomId);
             if (!location.IsValid())
             {
-                return ECode.RoomLocationNotExist;
-            }
+                var msgLoad = new MsgRoomManagerLoadRoom();
+                msgLoad.roomId = friendInfo.roomId;
 
-            MyResponse r;
+                r = await this.service.roomManagerServiceProxy.LoadRoom(msgLoad);
+                if (r.e != ECode.Success)
+                {
+                    return r.e;
+                }
+
+                var resLoad = r.CastRes<ResRoomManagerLoadRoom>();
+                location = resLoad.location;
+
+                this.service.roomLocator.CacheLocation(friendInfo.roomId, location);
+            }
 
             var msgR = new MsgRoomSendFriendChat();
             msgR.roomId = friendInfo.roomId;

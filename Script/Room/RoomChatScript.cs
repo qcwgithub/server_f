@@ -8,7 +8,7 @@ namespace Script
         {
         }
 
-        public ECode CheckRoomSendSceneChat(MsgRoomSendSceneChat msg, ServerConfig.MessageConfig messageConfig)
+        public ECode CheckSendSceneChat(MsgRoomSendSceneChat msg, ServerConfig.MessageConfig messageConfig)
         {
             switch (msg.type)
             {
@@ -71,7 +71,7 @@ namespace Script
             return ECode.Success;
         }
 
-        public ECode CheckRoomSendPrivateChat(MsgRoomSendFriendChat msg, ServerConfig.MessageConfig messageConfig)
+        public ECode CheckSendFriendChat(MsgRoomSendFriendChat msg, ServerConfig.MessageConfig messageConfig)
         {
             switch (msg.type)
             {
