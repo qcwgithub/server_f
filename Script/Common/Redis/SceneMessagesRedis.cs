@@ -18,7 +18,7 @@ namespace Script
 
         string Key(long roomId)
         {
-            return RoomKey.Messages(roomId);
+            return RoomKey.SceneMessages(roomId);
         }
 
         bool logPrecisionError = true;

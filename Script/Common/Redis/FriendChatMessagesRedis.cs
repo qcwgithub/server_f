@@ -19,7 +19,7 @@ namespace Script
 
         string Key(long roomId)
         {
-            return RoomKey.Messages(roomId);
+            return RoomKey.FriendChatMessages(roomId);
         }
 
         public async Task Add(ChatMessage message)

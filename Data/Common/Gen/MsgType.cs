@@ -98,6 +98,7 @@ namespace Data
         SendFriendChat = 10026,
         ReceiveFriendChatMessages = 10027,
         SetFriendChatReadSeq = 10028,
-        Count = 10029,
+        SetFriendChatReceivedSeq = 10029,
+        Count = 10030,
     }
 }

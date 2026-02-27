@@ -36,8 +36,11 @@ namespace Script
                 return ECode.Error;
             }
 
+            //// ok
+
             friendInfo.readSeq = msg.readSeq;
 
+            res.readSeq = friendInfo.readSeq;
             return ECode.Success;
         }
 

@@ -72,6 +72,7 @@ namespace Script
 
             var resR = r.CastRes<ResRoomSendFriendChat>();
 
+            // TEST
             await Task.Delay(1000);
 
             return ECode.Success;

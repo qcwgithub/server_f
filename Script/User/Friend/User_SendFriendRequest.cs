@@ -67,6 +67,7 @@ namespace Script
             req.result = FriendRequestResult.Wait;
             user.userInfo.outgoingFriendRequests.Add(req);
 
+            res.req = req;
             return ECode.Success;
         }
 

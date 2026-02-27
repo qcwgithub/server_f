@@ -28,6 +28,7 @@ namespace Data
     [MessagePackObject]
     public class ResRoomSendFriendChat
     {
-
+        [Key(0)]
+        public ChatMessage message;
     }
 }

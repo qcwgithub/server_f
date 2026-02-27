@@ -63,8 +63,10 @@ namespace Script
 
             var resR = r.CastRes<ResRoomSendSceneChat>();
 
+            // TEST
             await Task.Delay(1000);
 
+            res.message = resR.message;
             return ECode.Success;
         }
 

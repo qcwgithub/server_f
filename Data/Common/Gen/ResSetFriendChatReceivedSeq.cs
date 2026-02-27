@@ -3,9 +3,9 @@ using MessagePack;
 namespace Data
 {
     [MessagePackObject]
-    public class ResSendFriendRequest
+    public class ResSetFriendChatReceivedSeq
     {
         [Key(0)]
-        public OutgoingFriendRequest req;
+        public long receivedSeq;
     }
 }

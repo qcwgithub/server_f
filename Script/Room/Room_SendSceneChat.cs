@@ -108,6 +108,7 @@ namespace Script
                 }
             }
 
+            res.message = message;
             return ECode.Success;
         }
 

@@ -392,6 +392,10 @@ namespace Data
                     ob = MessagePackSerializer.Deserialize<ResSetFriendChatReadSeq>(resBytes);
                     break;
 
+                case MsgType.SetFriendChatReceivedSeq:
+                    ob = MessagePackSerializer.Deserialize<ResSetFriendChatReceivedSeq>(resBytes);
+                    break;
+
                 case MsgType.Count:
                     throw new Exception("Missing config for MsgType.Count");
 
