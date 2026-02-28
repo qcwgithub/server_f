@@ -12,7 +12,7 @@ namespace Script
 
         public override async Task<ECode> Handle(MessageContext context, MsgSetFriendChatReceivedSeq msg, ResSetFriendChatReceivedSeq res)
         {
-            string log = $"{this.msgType} userId {context.msg_userId} friendUserId {msg.friendUserId} receivedSeq {msg.receivedSeq}";
+            string log = $"{this.msgType} userId {context.msg_userId} friendUserId {msg.friendUserId} receivedSeq -> {msg.receivedSeq}";
             this.service.logger.Info(log);
 
             User? user = await this.service.LockUser(context.msg_userId, context);
@@ -32,8 +32,8 @@ namespace Script
             FriendInfo friendInfo = userInfo.friends[friendIndex];
             if (msg.receivedSeq < friendInfo.receivedSeq)
             {
-                this.service.logger.Error($"{log} msg.receivedSeq < friendInfo.receivedSeq {friendInfo.receivedSeq}");
-                return ECode.Error;
+                res.receivedSeq = friendInfo.receivedSeq;
+                return ECode.Success;
             }
 
             //// ok
