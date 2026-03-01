@@ -52,7 +52,7 @@ namespace Script
             msgR.content = msg.content;
             msgR.userName = user.userInfo.userName;
             msgR.avatarIndex = user.userInfo.avatarIndex;
-            msgR.clientMessageId = msg.clientMessageId;
+            msgR.clientSeq = msg.clientSeq;
             msgR.imageContent = msg.imageContent;
 
             r = await this.service.roomServiceProxy.SendSceneChat(location.serviceId, msgR);

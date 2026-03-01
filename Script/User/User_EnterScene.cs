@@ -12,7 +12,7 @@ namespace Script
 
         public override async Task<ECode> Handle(MessageContext context, MsgEnterScene msg, ResEnterScene res)
         {
-            this.service.logger.Info($"{this.msgType} userId {context.msg_userId} roomId {msg.roomId} lastMessageId {msg.lastSeq}");
+            this.service.logger.Info($"{this.msgType} userId {context.msg_userId} roomId {msg.roomId} lastSeq {msg.lastSeq}");
 
             ECode e = RoomUtils.CheckRoomId(msg.roomId);
             if (e != ECode.Success)

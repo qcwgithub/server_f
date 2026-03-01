@@ -12,7 +12,7 @@ namespace Data
         [Key(2)]
         public string content;
         [Key(3)]
-        public long clientMessageId;
+        public long clientSeq;
         [Key(4)]
         public ChatMessageImageContent? imageContent;
     }

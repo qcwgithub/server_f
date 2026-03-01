@@ -26,7 +26,7 @@ namespace Data
         [Key(9)]
         public int senderAvatarIndex;
         [Key(10)]
-        public long clientMessageId;
+        public long clientSeq;
         [Key(11)]
         public ChatMessageStatus status;
         [Key(12)]

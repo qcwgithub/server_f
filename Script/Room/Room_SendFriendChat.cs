@@ -69,7 +69,7 @@ namespace Script
                 timestamp: now,
                 replyTo: 0,
                 senderAvatarIndex: msg.avatarIndex,
-                clientMessageId: msg.clientMessageId,
+                clientSeq: msg.clientSeq,
                 status: ChatMessageStatus.Normal,
                 imageContent: msg.imageContent
             );

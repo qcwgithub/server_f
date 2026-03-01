@@ -20,7 +20,7 @@ namespace Data
         [Key(6)]
         public int avatarIndex;
         [Key(7)]
-        public long clientMessageId;
+        public long clientSeq;
         [Key(8)]
         public ChatMessageImageContent? imageContent;
     }

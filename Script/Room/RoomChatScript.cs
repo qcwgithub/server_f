@@ -180,7 +180,7 @@ namespace Script
             long timestamp,
             long replyTo,
             int senderAvatarIndex,
-            long clientMessageId,
+            long clientSeq,
             ChatMessageStatus status,
             ChatMessageImageContent? imageContent)
         {
@@ -195,7 +195,7 @@ namespace Script
             message.timestamp = timestamp;
             message.replyTo = replyTo;
             message.senderAvatarIndex = senderAvatarIndex;
-            message.clientMessageId = clientMessageId;
+            message.clientSeq = clientSeq;
             message.status = status;
             message.imageContent = imageContent;
             return message;

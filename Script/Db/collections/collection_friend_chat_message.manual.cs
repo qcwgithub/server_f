@@ -22,7 +22,7 @@ public partial class collection_friend_chat_message : ServiceScript<DbService>
         }
         catch (MongoBulkWriteException<ChatMessage> ex)
         {
-            // 只处理“重复 key”这种情况（比如 messageId 唯一索引冲突）
+            // 只处理“重复 key”这种情况（比如 messageSeq 唯一索引冲突）
             foreach (var error in ex.WriteErrors)
             {
                 if (error.Category != ServerErrorCategory.DuplicateKey)
