@@ -8,6 +8,8 @@ namespace Data
         [Key(0)]
         public long roomId;
         [Key(1)]
-        public long lastSeq;
+        public long beforeSeq;
+        [Key(2)]
+        public int count;
     }
 }

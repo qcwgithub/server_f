@@ -6,6 +6,6 @@ namespace Data
     public class ResGetSceneChatHistory
     {
         [Key(0)]
-        public List<ChatMessage> history;
+        public List<ChatMessage> messages;
     }
 }

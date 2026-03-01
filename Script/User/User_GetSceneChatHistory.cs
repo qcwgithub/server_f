@@ -19,7 +19,7 @@ namespace Script
                 return ECode.InvalidRoomId;
             }
 
-            if (msg.lastSeq <= 0)
+            if (msg.beforeSeq <= 0)
             {
                 return ECode.InvalidParam;
             }
@@ -36,7 +36,7 @@ namespace Script
             }
 
             var roomMessageConfig = this.server.data.serverConfig.sceneMessageConfig;
-            res.history = await this.server.sceneMessagesRedis.GetHistory(msg.roomId, msg.lastSeq, roomMessageConfig.getHistoryMessageCount);
+            res.messages = await this.server.sceneMessagesRedis.GetHistory(msg.roomId, msg.beforeSeq, msg.count);
 
             return ECode.Success;
         }
