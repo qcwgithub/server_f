@@ -12,7 +12,7 @@ namespace Script
         public override MsgType msgType => MsgType._Save_FriendChatRoomInfo;
         public override async Task<ECode> Handle(MessageContext context, MsgSave_FriendChatRoomInfo msg, ResSave_FriendChatRoomInfo res)
         {
-            this.service.logger.InfoFormat("{0} roomIdId:{1}", this.msgType, msg.roomId);
+            this.service.logger.InfoFormat("{0} roomId {1}", this.msgType, msg.roomId);
             //MyResponse r = await this.service.table_player.Save(msg.playerId, msg.roomInfoNullable);
 
             ECode e = await this.service.collection_friend_chat_room_info.Save(msg.roomId, msg.roomInfoNullable);

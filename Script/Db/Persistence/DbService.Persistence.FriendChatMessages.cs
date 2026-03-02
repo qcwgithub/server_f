@@ -13,7 +13,7 @@ namespace Script
             if (messages.Length > 0)
             {
                 await this.collection_friend_chat_message.Save(messages);
-                await this.server.friendChatMessagesRedis.Trim(roomId, messages.Length);
+                await this.server.friendChatMessagesRedis.TrimLeft(roomId, messages.Length);
             }
             return (ECode.Success, false);
         }

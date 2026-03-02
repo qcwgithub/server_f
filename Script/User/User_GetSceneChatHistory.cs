@@ -12,7 +12,7 @@ namespace Script
 
         public override async Task<ECode> Handle(MessageContext context, MsgGetSceneChatHistory msg, ResGetSceneChatHistory res)
         {
-            this.service.logger.Info($"{this.msgType} userId {context.msg_userId} roomId {msg.roomId} lastSeq {msg.lastSeq}");
+            this.service.logger.Info($"{this.msgType} userId {context.msg_userId} roomId {msg.roomId} beforeSeq {msg.beforeSeq}");
 
             if (msg.roomId <= 0)
             {

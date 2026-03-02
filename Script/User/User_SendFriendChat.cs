@@ -33,7 +33,7 @@ namespace Script
             }
 
             FriendInfo friendInfo = userInfo.friends[friendIndex];
-            
+
             MyResponse r;
 
             stObjectLocation location = await this.service.roomLocator.GetLocation(friendInfo.roomId);
@@ -75,6 +75,7 @@ namespace Script
             // TEST
             await Task.Delay(1000);
 
+            res.message = resR.message;
             return ECode.Success;
         }
 

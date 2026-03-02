@@ -67,7 +67,7 @@ namespace Script
             {
                 isNewUser = true;
                 userId = this.service.userIdSnowflakeScript.NextUserId();
-                newUserInfo = this.service.ss.NewUserInfo(userId);
+                newUserInfo = this.service.ss.NewUserInfo(userId, accountInfo.channelUserId);
 
                 e = await this.service.ss.InsertUserInfo(newUserInfo);
                 if (e != ECode.Success)

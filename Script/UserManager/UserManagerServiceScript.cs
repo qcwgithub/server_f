@@ -28,7 +28,7 @@ namespace Script
             return "User_" + createTimeS;
         }
 
-        public UserInfo NewUserInfo(long userId)
+        public UserInfo NewUserInfo(long userId, string? userName)
         {
             UserInfo userInfo = UserInfo.Ensure(null);
             userInfo.userId = userId;
@@ -36,7 +36,7 @@ namespace Script
             long nowS = TimeUtils.GetTimeS();
             userInfo.createTimeS = nowS;
             userInfo.lastLoginTimeS = nowS;
-            userInfo.userName = DefaultUserName(nowS);
+            userInfo.userName = userName ?? DefaultUserName(nowS);
             userInfo.avatarIndex = this.server.data.random.Next(
                 this.server.data.serverConfig.userAvatarConfig.minIndex,
                 this.server.data.serverConfig.userAvatarConfig.maxIndex + 1

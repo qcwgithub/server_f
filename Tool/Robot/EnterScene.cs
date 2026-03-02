@@ -36,31 +36,31 @@ namespace Tool
 
                 if (res.recentMessages.Count > 0)
                 {
-                    long lastSeq = res.recentMessages[0].seq;
-                    while (lastSeq > 0)
+                    long beforeSeq = res.recentMessages[0].seq;
+                    while (beforeSeq > 0)
                     {
                         Console.WriteLine();
-                        Console.WriteLine("Requesting scene chat history..., lastSeq {0}", lastSeq);
+                        Console.WriteLine("Requesting scene chat history..., lastSeq {0}", beforeSeq);
 
                         var msgHistory = new MsgGetSceneChatHistory
                         {
                             roomId = roomId,
-                            lastSeq = lastSeq,
+                            beforeSeq = beforeSeq,
                         };
 
                         r = await this.connection.Request(MsgType.GetSceneChatHistory, msgHistory);
 
                         var resHistory = r.CastRes<ResGetSceneChatHistory>();
-                        Console.WriteLine("history count: {0}", resHistory.history.Count);
-                        for (int i = 0; i < resHistory.history.Count; i++)
+                        Console.WriteLine("history count: {0}", resHistory.messages.Count);
+                        for (int i = 0; i < resHistory.messages.Count; i++)
                         {
-                            var m = resHistory.history[i];
+                            var m = resHistory.messages[i];
                             Console.WriteLine($"history[{i}] seq: {m.seq} {TimeUtils.MillisecondsToDateTime(m.timestamp)} senderId: {m.senderId} content: {m.content}");
                         }
 
-                        if (resHistory.history.Count > 0)
+                        if (resHistory.messages.Count > 0)
                         {
-                            lastSeq = resHistory.history[0].seq;
+                            beforeSeq = resHistory.messages[0].seq;
                         }
                         else
                         {

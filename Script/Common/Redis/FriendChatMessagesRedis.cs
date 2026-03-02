@@ -40,9 +40,9 @@ namespace Script
             return redisValues.Select(x => MessagePackSerializer.Deserialize<ChatMessage>(x)).ToArray();
         }
 
-        public async Task Trim(long roomId, int count)
+        public async Task TrimLeft(long roomId, int removeCount)
         {
-            await this.GetDb().ListTrimAsync(Key(roomId), 0, count - 1);
+            await this.GetDb().ListTrimAsync(Key(roomId), removeCount, -1);
         }
     }
 }
