@@ -6,7 +6,7 @@ namespace Data
     public class ResReceiveFriendChatMessages
     {
         [Key(0)]
-        public List<ChatMessage> messages;
+        public Dictionary<long, ChatMessageList> messageListDict;
         [Key(1)]
         public bool hasMore;
     }
