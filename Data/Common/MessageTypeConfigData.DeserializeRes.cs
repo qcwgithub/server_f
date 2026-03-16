@@ -179,6 +179,10 @@ namespace Data
                     ob = MessagePackSerializer.Deserialize<ResRoomSendFriendChat>(resBytes);
                     break;
 
+                case MsgType._Room_SendSceneChatTest:
+                    ob = MessagePackSerializer.Deserialize<ResRoomSendSceneChatTest>(resBytes);
+                    break;
+
                 case MsgType._RoomManager_LoadRoom:
                     ob = MessagePackSerializer.Deserialize<ResRoomManagerLoadRoom>(resBytes);
                     break;

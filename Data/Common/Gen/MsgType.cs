@@ -43,6 +43,7 @@ namespace Data
         _Room_SaveRoomImmediately = 607,
         _Room_SendSceneChat = 608,
         _Room_SendFriendChat = 609,
+        _Room_SendSceneChatTest = 610,
         _RoomManager_LoadRoom = 800,
         _RoomManager_ImportRoomConfig = 801,
         _RoomManager_CreateFriendChatRoom = 802,

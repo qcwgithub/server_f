@@ -17,6 +17,7 @@ namespace Tool
         TaskQueueLengthes,
         ImportRoomConfig,
         SearchRoom,
+        SendSceneChatTest,
         Exit,
 
         Count,
@@ -58,6 +59,8 @@ namespace Tool
                     return "Import Room Config";
                 case Action.SearchRoom:
                     return "Search Room";
+                case Action.SendSceneChatTest:
+                    return "Send Scene Chat Test";
                 case Action.Exit:
                     return "Exit";
                 default:

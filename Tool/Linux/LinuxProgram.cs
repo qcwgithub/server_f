@@ -52,6 +52,10 @@ namespace Tool
                         await this.SearchScene();
                         break;
 
+                    case Action.SendSceneChatTest:
+                        await this.SendSceneChatTest();
+                        break;
+
                     case Action.UserResetName:
                         await this.UserResetName();
                         break;

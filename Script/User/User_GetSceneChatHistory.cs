@@ -12,7 +12,8 @@ namespace Script
 
         public override async Task<ECode> Handle(MessageContext context, MsgGetSceneChatHistory msg, ResGetSceneChatHistory res)
         {
-            this.service.logger.Info($"{this.msgType} userId {context.msg_userId} roomId {msg.roomId} beforeSeq {msg.beforeSeq}");
+            string log = $"{this.msgType} userId {context.msg_userId} roomId {msg.roomId} beforeSeq {msg.beforeSeq}";
+            this.service.logger.Info(log);
 
             if (msg.roomId <= 0)
             {
@@ -37,6 +38,16 @@ namespace Script
 
             var roomMessageConfig = this.server.data.serverConfig.sceneMessageConfig;
             res.messages = await this.server.sceneMessagesRedis.GetHistory(msg.roomId, msg.beforeSeq, msg.count);
+
+            int L = res.messages.Count;
+            if (L > 0)
+            {
+                this.service.logger.Info($"{log} result count: {L}, seq range [{res.messages[0].seq}, {res.messages[L - 1].seq}]");
+            }
+            else
+            {
+                this.service.logger.Info($"{log} result count: {L}");
+            }
 
             return ECode.Success;
         }

@@ -38,6 +38,10 @@ namespace Script
         {
             return await this.Request(serviceId, MsgType._Room_SendFriendChat, msg);
         }
+        public async Task<MyResponse> SendSceneChatTest(int serviceId, MsgRoomSendSceneChatTest msg)
+        {
+            return await this.Request(serviceId, MsgType._Room_SendSceneChatTest, msg);
+        }
 
         #endregion auto_proxy
     }

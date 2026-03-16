@@ -45,6 +45,7 @@ _Room_UserLeaveScene,605,MsgRoomUserLeaveScene,ResRoomUserLeaveScene,1,1
 _Room_SaveRoomImmediately,607,MsgSaveRoomImmediately,ResSaveRoomImmediately,1,1
 _Room_SendSceneChat,608,MsgRoomSendSceneChat,ResRoomSendSceneChat,1,1
 _Room_SendFriendChat,609,MsgRoomSendFriendChat,ResRoomSendFriendChat,1,1
+_Room_SendSceneChatTest,610,MsgRoomSendSceneChatTest,ResRoomSendSceneChatTest,1,1
 #,,,,,
 _RoomManager_LoadRoom,800,MsgRoomManagerLoadRoom,ResRoomManagerLoadRoom,1,0
 _RoomManager_ImportRoomConfig,801,MsgRoomManagerImportRoomConfig,ResRoomManagerImportRoomConfig,1,0

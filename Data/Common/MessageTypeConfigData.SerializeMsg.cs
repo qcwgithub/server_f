@@ -180,6 +180,10 @@ namespace Data
                     msgBytes = MessagePackSerializer.Serialize((MsgRoomSendFriendChat)msg);
                     break;
 
+                case MsgType._Room_SendSceneChatTest:
+                    msgBytes = MessagePackSerializer.Serialize((MsgRoomSendSceneChatTest)msg);
+                    break;
+
                 case MsgType._RoomManager_LoadRoom:
                     msgBytes = MessagePackSerializer.Serialize((MsgRoomManagerLoadRoom)msg);
                     break;
