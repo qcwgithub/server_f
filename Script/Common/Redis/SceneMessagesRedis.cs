@@ -79,18 +79,37 @@ namespace Script
         }
 
         // 返回值是从旧到新
-        public async Task<List<ChatMessage>> GetHistory(long roomId, long lastSeq, int count)
+        public async Task<List<ChatMessage>> GetOlders(long roomId, long beforeSeq, int count)
         {
             string key = Key(roomId);
             RedisValue[] redisValues = await this.GetDb().SortedSetRangeByScoreAsync(key,
                 start: double.NegativeInfinity,
-                stop: lastSeq,
+                stop: beforeSeq,
                 exclude: Exclude.Stop,
                 order: Order.Descending,
                 take: count);
 
             var list = new List<ChatMessage>();
             for (int i = redisValues.Length - 1; i >= 0; i--)
+            {
+                list.Add(MessagePackSerializer.Deserialize<ChatMessage>(redisValues[i]));
+            }
+            return list;
+        }
+
+        // 返回值是从旧到新
+        public async Task<List<ChatMessage>> GetNewers(long roomId, long afterSeq, int count)
+        {
+            string key = Key(roomId);
+            RedisValue[] redisValues = await this.GetDb().SortedSetRangeByScoreAsync(key,
+                start: afterSeq,
+                stop: double.PositiveInfinity,
+                exclude: Exclude.Start,
+                order: Order.Ascending,
+                take: count);
+
+            var list = new List<ChatMessage>();
+            for (int i = 0; i < redisValues.Length; i++)
             {
                 list.Add(MessagePackSerializer.Deserialize<ChatMessage>(redisValues[i]));
             }

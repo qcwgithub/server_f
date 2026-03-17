@@ -12,17 +12,12 @@ namespace Script
 
         public override async Task<ECode> Handle(MessageContext context, MsgGetSceneChatHistory msg, ResGetSceneChatHistory res)
         {
-            string log = $"{this.msgType} userId {context.msg_userId} roomId {msg.roomId} beforeSeq {msg.beforeSeq}";
+            string log = $"{this.msgType} userId {context.msg_userId} roomId {msg.roomId} beforeSeq {msg.beforeSeq} afterSeq {msg.afterSeq}";
             this.service.logger.Info(log);
 
             if (msg.roomId <= 0)
             {
                 return ECode.InvalidRoomId;
-            }
-
-            if (msg.beforeSeq <= 0)
-            {
-                return ECode.InvalidParam;
             }
 
             User? user = await this.service.LockUser(context.msg_userId, context);
@@ -37,7 +32,19 @@ namespace Script
             }
 
             var roomMessageConfig = this.server.data.serverConfig.sceneMessageConfig;
-            res.messages = await this.server.sceneMessagesRedis.GetHistory(msg.roomId, msg.beforeSeq, msg.count);
+            if (msg.beforeSeq != -1)
+            {
+                res.messages = await this.server.sceneMessagesRedis.GetOlders(msg.roomId, msg.beforeSeq, msg.count);
+            }
+            else if (msg.afterSeq != -1)
+            {
+                res.messages = await this.server.sceneMessagesRedis.GetNewers(msg.roomId, msg.afterSeq, msg.count);
+            }
+            else
+            {
+                // bad arguments
+                res.messages = [];
+            }
 
             int L = res.messages.Count;
             if (L > 0)

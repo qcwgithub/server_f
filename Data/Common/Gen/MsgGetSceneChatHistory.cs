@@ -10,6 +10,8 @@ namespace Data
         [Key(1)]
         public long beforeSeq;
         [Key(2)]
+        public long afterSeq;
+        [Key(3)]
         public int count;
     }
 }
